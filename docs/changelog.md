@@ -1,3 +1,11 @@
+## 2026-10-27 Play 11 种语言商店列表审核通过并线上生效（公网逐语种实测）
+
+- **状态**：用户在 Play Console 确认 11 种语言（ja-JP / ko-KR / zh-TW / es-ES / pt-BR / ar / ru-RU / fr-FR / de-DE / id / vi）**已审核通过上线**，此前 API 提交的「正在审核中的更改」已清除。
+- **公网实测（2026-10-27）**：按 `https://play.google.com/store/apps/details?id=com.clawbook.tianji&hl=<locale>&gl=US` 逐语种抓取页面（HTTP 全 200），比对 `<h1 itemprop="name">` / `og:title`，**12 个 locale（11 种语言 + en-US）标题 100% 与 `docs/play-listing-i18n.md` 一致**：易経インサイト：性格診断 / 주역 인사이트: 성격 테스트 / 易經洞察：人格測驗 / I Ching Insight: Personalidad / Personalidade / الشخصية / Личность / Personnalité / Persönlichkeit / Kepribadian / Tính cách / Personality。
+- **简短说明抽查**：ja-JP、ar 两语种的简短说明原文在返回 HTML 中命中（`shortdesc_present=True`）。
+- **抓取方式备注**：本机 `node fetch` 直连 play.google.com 全部 `fetch failed`（网络层拦截），改用 PowerShell `Invoke-WebRequest` + UTF-8 解码 + `Accept-Language` 头可正常返回 200（页面约 1.1–1.2 MB）；`og:description` / `meta description` 在 Play 页面为空，故简短说明改用「原文是否出现在 HTML 中」判定。
+- **文档**：`docs/play-listing-i18n.md` 头部已补「上线状态」一行；海外增长行动方案中「11 语言待审核」的挂账项至此关闭。
+
 ## 2026-10-27 全量源码开源至 GitHub（PolyForm Noncommercial 1.0.0 + 商用联系授权）
 
 - **仓库地址**：https://github.com/ccbaby2813-boop/tianji-insight（public，默认分支 main，首个 commit `7b88a5a`，**608 个文件 / 约 56 MB**）。
