@@ -1,0 +1,162 @@
+<view class="page-letter page-match-pool {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 引言引导浮层（首次进入显示） -->
+  <view class="intro-mask" wx:if="{{showIntro}}">
+    <view class="intro-modal">
+      <image class="intro-bg" src="/assets/images/match-pool-header.jpg" mode="aspectFill"></image>
+      <view class="intro-bg-mask"></view>
+      <!-- 莲花水印背景（半透明居中） -->
+      <view class="intro-lotus-watermark">
+        <icon-guo name="lotus" size="360" color="#C8A55B" />
+      </view>
+      <view class="intro-content">
+        <view class="intro-decor">
+          <icon-guo name="lotus" size="48" color="#C8A55B" />
+        </view>
+        <view class="intro-text-wrap">
+          <text class="intro-title font-title">{{t.introTitle}}</text>
+          <text class="intro-line">{{t.introLine1}}</text>
+          <text class="intro-line intro-line-indent">{{t.introLine2}}</text>
+          <text class="intro-line intro-line-indent">{{t.introLine3}}</text>
+          <text class="intro-line">{{t.introLine4}}</text>
+          <text class="intro-line">{{t.introLine5}}</text>
+          <text class="intro-line intro-line-em">{{t.introLine6}}</text>
+          <text class="intro-line intro-line-em">{{t.introLine7}}</text>
+        </view>
+        <view class="intro-divider"></view>
+        <text class="intro-tip">{{t.introTip}}</text>
+        <view class="intro-btn-row">
+          <view class="intro-btn intro-btn-cancel" bindtap="onIntroCancel">
+            <text class="intro-btn-cancel-text">{{t.cancel}}</text>
+          </view>
+          <view class="intro-btn intro-btn-confirm" bindtap="onIntroAgree">
+            <text class="intro-btn-confirm-text">{{t.agree}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 头部 -->
+  <view class="pool-header" wx:if="{{!showIntro}}">
+    <view class="title-row">
+      <text class="title-main font-title">{{t.titleMain}}</text>
+      <!-- 游客模式提示 -->
+      <view class="pill-badge pill-badge-guest" wx:if="{{isGuest}}">
+        <text class="pill-text">{{t.loginAfter}}</text>
+      </view>
+      <!-- 剩余次数徽章 -->
+      <view class="pill-badge" wx:if="{{!isGuest && remaining == -1}}">
+        <text class="pill-text">{{t.vipInfinite}}</text>
+      </view>
+      <view class="pill-badge" wx:elif="{{!isGuest && remaining >= 0}}">
+        <text class="pill-text">{{remainStr}}</text>
+      </view>
+    </view>
+    <text class="title-sub font-title">{{t.subTitle}}</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="state-box" wx:if="{{!showIntro && pageState==='loading'}}">
+    <text class="state-text">{{t.loading}}</text>
+  </view>
+
+  <!-- 加载失败 -->
+  <view class="state-box" wx:elif="{{!showIntro && pageState==='error'}}">
+    <text class="state-text">{{errorMsg || t.loadFail}}</text>
+    <view class="state-btn" bindtap="retry"><text>{{t.retry}}</text></view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="state-box state-box-empty" wx:elif="{{!showIntro && pageState==='empty'}}">
+    <view class="empty-lotus-wrap">
+      <icon-guo name="lotus" size="120" color="#C8A55B" />
+    </view>
+    <text class="poem-text empty-poem">{{emptyMsg || t.emptyMsg}}</text>
+    <view class="state-btn" bindtap="goBack"><text>{{t.back}}</text></view>
+  </view>
+
+  <!-- 候选卡牌（v6.0 极简·暧昧·艺术：纯净留白 + 性感艺术曲线 + 诗意排版） -->
+  <view class="pool-content" wx:if="{{!showIntro && pageState==='loaded'}}">
+    <!-- 顶部诗意标题 -->
+    <view class="pool-poem-header">
+      <view class="poem-header-line"></view>
+      <text class="poem-header-text font-title">{{t.poemHeader}}</text>
+      <view class="poem-header-line"></view>
+    </view>
+    <text class="poem-subtitle font-quote">{{t.poemSubtitle}}</text>
+
+    <view class="card-stack">
+      <!-- 单张候选卡牌：极简艺术风格 -->
+      <view class="greeting-card" wx:for="{{candidates}}" wx:key="openid" data-item="{{item}}">
+
+        <!-- 卡牌主面：纯净留白 + 单层柔影 -->
+        <view class="greeting-face">
+
+          <!-- 艺术曲线装饰层（canvas绘制：女性S曲线 + 男性肌肉线） -->
+          <view class="greeting-art-lines" aria-hidden="true">
+            <canvas class="art-canvas-female" canvas-id="artFemale{{index}}" style="width:200rpx;height:120rpx;"></canvas>
+            <canvas class="art-canvas-male" canvas-id="artMale{{index}}" style="width:160rpx;height:112rpx;"></canvas>
+          </view>
+
+          <!-- 极简序号（左上角小字） -->
+          <view class="greeting-index" aria-hidden="true">
+            <text class="greeting-index-text font-quote">{{index + 1 < 10 ? '0' : ''}}{{index + 1}}</text>
+          </view>
+
+          <!-- 卦象符号：极简纯字，无光环 -->
+          <view class="greeting-symbol-section">
+            <text class="greeting-symbol font-display">{{item.guaSymbol || item.avatarChar}}</text>
+          </view>
+
+          <!-- 主体信息区 -->
+          <view class="greeting-body">
+
+            <!-- 卦名卦格 + 五行极简标记 -->
+            <view class="greeting-gua-row" wx:if="{{item.guaName}}">
+              <view class="greeting-gua-info">
+                <text class="greeting-gua-name font-title">{{item.guaName}}</text>
+                <text class="greeting-gua-ge font-quote" wx:if="{{item.guaGe}}">· {{item.guaGe}}</text>
+              </view>
+              <text class="greeting-wuxing-text font-title wuxing-{{item.wuxingClass}}" wx:if="{{item.wuxing}}">{{item.wuxing}}</text>
+            </view>
+
+            <!-- 昵称 + 性别 + VIP -->
+            <view class="greeting-name-row">
+              <text class="greeting-nickname font-display">{{item.nickname}}</text>
+              <text class="greeting-gender-text greeting-gender-{{item.gender === 1 ? 'male' : 'female'}} font-title" wx:if="{{item.genderLabel}}">{{item.genderLabel}}</text>
+              <text class="greeting-vip-mark" wx:if="{{item.isVip}}">V</text>
+            </view>
+
+            <!-- 生辰信息：极简一行文字 -->
+            <view class="greeting-birth-row" wx:if="{{item.birthDisplay || item.birthSolarDisplay}}">
+              <text class="greeting-birth-text font-quote" wx:if="{{item.birthDisplay}}">{{item.birthDisplay}}</text>
+              <text class="greeting-birth-divider" wx:if="{{item.birthDisplay && item.birthSolarDisplay}}">·</text>
+              <text class="greeting-birth-solar-text font-quote" wx:if="{{item.birthSolarDisplay}}">{{item.birthSolarDisplay}}</text>
+            </view>
+
+            <!-- 艺术细线分隔 -->
+            <view class="greeting-thin-line"></view>
+
+            <!-- 性格自嘲：诗意斜体 -->
+            <view class="greeting-personality" wx:if="{{item.personalityDesc}}">
+              <text class="greeting-personality-text font-quote">{{item.personalityDesc}}</text>
+            </view>
+
+            <!-- 结缘按钮：极简文字 + 细线 -->
+            <view class="greeting-match-btn-wrap" data-item="{{item}}" bindtap="onMatchTap">
+              <text class="greeting-btn-text font-title">{{matching ? t.loading : t.unmatch}}</text>
+              <view class="greeting-btn-line"></view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+
+      <view class="pool-bottom-spacer"></view>
+    </view>
+    <view class="pool-bottom"><text class="font-quote">{{t.refreshTip}}</text></view>
+  </view>
+
+  <!-- 底部3-tab导航 -->
+  <letter-tab-bar active="match"></letter-tab-bar>
+</view>

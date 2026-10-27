@@ -1,0 +1,6 @@
+/* v7.1 Canvas分享海报组件 —— 隐藏的离屏Canvas */
+.poster-canvas {
+  position: fixed;
+  top: -9999rpx;
+  left: -9999rpx;
+}

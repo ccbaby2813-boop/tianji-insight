@@ -1,0 +1,42 @@
+/* components/bottom-declaration/bottom-declaration.wxss - v2.0 视觉升级
+ * 分隔线渐变动效 + 金色细线点缀 + L4 点缀字
+ */
+.footer-disclaimer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 32rpx 48rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  font-size: 22rpx;
+  color: var(--text-muted);
+  line-height: 1.7;
+  letter-spacing: 1rpx;
+  background: transparent;
+  font-family: 'STSong', 'SimSun', 'KaiTi', serif;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 顶部渐变分隔线 */
+.footer-disclaimer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1rpx;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.1) 20%,
+    rgba(200, 165, 91, 0.5) 50%,
+    rgba(200, 165, 91, 0.1) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+  animation: lineGradientFlow 4s ease-in-out infinite;
+}
+
+@keyframes lineGradientFlow {
+  0%, 100% { background-position: 0% 50%; opacity: 0.6; }
+  50% { background-position: 100% 50%; opacity: 1; }
+}

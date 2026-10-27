@@ -1,0 +1,880 @@
+/* pages/about/about.wxss - 关于页：纯黑夜卷·现代艺术装置
+ * Visual Thesis: Co-Star 纯黑画布 + Logo 金光呼吸 + § 章节编号 + Type-as-hero 大字 + 非对称错落
+ * v3.6 重构：诗集式宣言 + 4 功能块 § 编号排版，替代旧版平铺简介
+ */
+
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-ink);
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.about-content {
+  height: 100vh;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+}
+
+/* 错落入场（7 个直接子元素） */
+.about-content > view {
+  animation: fadeInUp 0.7s var(--ease-out-expo) both;
+}
+
+.about-content > view:nth-child(1) { animation-delay: 0s; }
+.about-content > view:nth-child(2) { animation-delay: 0.08s; }
+.about-content > view:nth-child(3) { animation-delay: 0.16s; }
+.about-content > view:nth-child(4) { animation-delay: 0.24s; }
+.about-content > view:nth-child(5) { animation-delay: 0.32s; }
+.about-content > view:nth-child(6) { animation-delay: 0.40s; }
+.about-content > view:nth-child(7) { animation-delay: 0.48s; }
+
+/* ========================================
+ * 头部：Logo 金光呼吸 + L0 展示字
+ * ======================================== */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 96rpx 0 64rpx;
+}
+
+.logo-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  margin-bottom: 40rpx;
+  filter:
+    drop-shadow(0 0 8rpx rgba(200, 165, 91, 0.6))
+    drop-shadow(0 0 24rpx rgba(200, 165, 91, 0.4));
+}
+
+.hex-line {
+  height: 8rpx;
+  border-radius: 0;
+}
+
+.hex-line.yang {
+  width: 88rpx;
+  background: var(--gold-pure);
+}
+
+.hex-line.yin {
+  width: 88rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hl {
+  width: 34rpx;
+  height: 8rpx;
+  border-radius: 0;
+  background: var(--gold-pure);
+}
+
+/* L0 展示字：天机推演 */
+.app-name {
+  font-size: 64rpx;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 16rpx;
+  text-indent: 16rpx;
+  text-shadow: 0 0 32rpx rgba(200, 165, 91, 0.3);
+}
+
+.title-gold-line {
+  width: 64rpx;
+  height: 2rpx;
+  background: var(--gold-pure);
+  margin: 24rpx 0 32rpx;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.4);
+}
+
+/* 版本信息区：卷轴边框装饰 */
+.version-scroll {
+  position: relative;
+  padding: 12rpx 40rpx;
+  border-top: 1rpx solid var(--gold-pure-dim);
+  border-bottom: 1rpx solid var(--gold-pure-dim);
+}
+
+.scroll-frame-top {
+  position: absolute;
+  top: -1rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8rpx;
+  height: 8rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.6);
+}
+
+.scroll-frame-bottom {
+  position: absolute;
+  bottom: -1rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8rpx;
+  height: 8rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.6);
+}
+
+.app-version {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  letter-spacing: 4rpx;
+  display: block;
+  text-align: center;
+}
+
+/* ========================================
+ * 产品宣言：诗集式排版，关键词金色高亮
+ * ======================================== */
+.manifesto-section {
+  padding: 32rpx 8rpx 48rpx;
+}
+
+.manifesto-eyebrow {
+  display: block;
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  letter-spacing: 8rpx;
+  margin-bottom: 32rpx;
+  text-transform: uppercase;
+}
+
+.manifesto-text {
+  display: block;
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  line-height: 2.2;
+  letter-spacing: 2rpx;
+  margin-bottom: 4rpx;
+}
+
+/* 段落间额外留白 */
+.manifesto-break {
+  margin-top: 24rpx;
+  margin-bottom: 4rpx;
+}
+
+/* 金色关键词高亮 */
+.gold-accent {
+  color: var(--gold-pure);
+  font-weight: 600;
+}
+
+/* 宣言后的极细金线 */
+.manifesto-divider {
+  margin: 0 8rpx 56rpx;
+}
+
+/* ========================================
+ * § 核心功能：3D 悬浮卡牌（v15.3.6 升级：多层投影 + 玻璃光泽 + 浮起交互 + 深度景深）
+ * ======================================== */
+.features-section {
+  padding: 0 8rpx 32rpx;
+}
+
+.section-eyebrow {
+  display: block;
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  letter-spacing: 8rpx;
+  margin-bottom: 56rpx;
+}
+
+/* ========================================
+ * v15.3.7 黑金信用卡金属质感：厚重3D + 拉丝金属 + 烫金边框 + 流光扫过
+ * 视觉特征：
+ *   - 多层金属拉丝纹理（横向细纹+对角高光）
+ *   - 三层投影（厚重黑底散射+中层主体阴影+边缘高光）
+ *   - 烫金双线边框（外粗渐变金+内细金）
+ *   - 信用卡式比例 + 圆角 + 微旋透视
+ *   - 光泽周期性斜向扫过
+ *   - hover浮起 + 金光晕扩散
+ * ======================================== */
+
+/* 3D 透视舞台 */
+.card-stage {
+  perspective: 1800rpx;
+  perspective-origin: center 30%;
+  transform-style: preserve-3d;
+}
+
+/* 单张信用卡 */
+.float-card {
+  position: relative;
+  width: 92%;
+  max-width: 640rpx;
+  margin-bottom: 80rpx;
+  transform-style: preserve-3d;
+  animation: cardFloatIn 1.0s var(--ease-out-expo) both;
+  transition: transform 0.5s var(--ease-out-expo);
+  cursor: pointer;
+}
+
+/* 左浮：信用卡微旋 */
+.float-card-left {
+  margin-left: 0;
+  margin-right: auto;
+  transform: rotateY(-8deg) rotateX(2deg);
+}
+
+.float-card-left:hover {
+  transform: rotateY(-4deg) translateZ(40rpx) rotateX(1deg) translateY(-10rpx);
+}
+
+/* 右浮 */
+.float-card-right {
+  margin-left: auto;
+  margin-right: 0;
+  transform: rotateY(8deg) rotateX(2deg);
+}
+
+.float-card-right:hover {
+  transform: rotateY(4deg) translateZ(40rpx) rotateX(1deg) translateY(-10rpx);
+}
+
+/* 入场动画 */
+@keyframes cardFloatIn {
+  0% {
+    opacity: 0;
+    transform: rotateY(-25deg) translateZ(-180rpx) translateY(48rpx) rotateX(6deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(-8deg) rotateX(2deg);
+  }
+}
+
+@keyframes cardFloatRightIn {
+  0% {
+    opacity: 0;
+    transform: rotateY(25deg) translateZ(-180rpx) translateY(48rpx) rotateX(6deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(8deg) rotateX(2deg);
+  }
+}
+
+.float-card-right {
+  animation-name: cardFloatRightIn;
+}
+
+/* 三层投影：厚重黑金散射 + 主体阴影 + 边缘高光 */
+.card-shadow-layer {
+  position: absolute;
+  top: 28rpx;
+  left: 20rpx;
+  right: -20rpx;
+  bottom: -32rpx;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 35%, transparent 75%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.12) 60%, transparent 100%);
+  border-radius: 20rpx;
+  z-index: -2;
+  filter: blur(28rpx);
+  opacity: 0.85;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+/* 紧贴卡片的深色投影 */
+.float-card::after {
+  content: '';
+  position: absolute;
+  top: 10rpx;
+  left: 6rpx;
+  right: -6rpx;
+  bottom: -12rpx;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 70%, transparent 100%);
+  border-radius: 16rpx;
+  z-index: -1;
+  filter: blur(12rpx);
+  opacity: 0.7;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.float-card:hover .card-shadow-layer {
+  top: 44rpx;
+  left: 28rpx;
+  right: -28rpx;
+  bottom: -48rpx;
+  opacity: 1;
+  filter: blur(36rpx);
+}
+
+/* ========================================
+ * 卡面：黑金信用卡金属质感
+ * ======================================== */
+.card-face {
+  position: relative;
+  padding: 64rpx 48rpx 56rpx;
+  /* 多层金属拉丝背景：横向细纹 + 对角高光 + 深黑金底 */
+  background:
+    /* 对角高光带 */
+    linear-gradient(135deg,
+      rgba(255, 232, 168, 0.06) 0%,
+      transparent 25%,
+      transparent 50%,
+      rgba(200, 165, 91, 0.04) 75%,
+      transparent 100%),
+    /* 横向拉丝细纹 */
+    repeating-linear-gradient(0deg,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 3px),
+    /* 主体金属黑金渐变 */
+    linear-gradient(145deg,
+      #1A1A24 0%,
+      #0F0F18 35%,
+      #14141C 65%,
+      #0A0A12 100%);
+  border: 2rpx solid;
+  border-image: linear-gradient(135deg,
+    #C8A55B 0%,
+    #FFE8A8 20%,
+    #8B7340 40%,
+    #C8A55B 60%,
+    #FFE8A8 80%,
+    #8B7340 100%) 1;
+  border-radius: 20rpx;
+  box-shadow:
+    /* 厚重投影 */
+    0 40rpx 80rpx rgba(0, 0, 0, 0.65),
+    0 20rpx 40rpx rgba(0, 0, 0, 0.45),
+    0 8rpx 16rpx rgba(0, 0, 0, 0.35),
+    /* 内边缘高光：模拟金属边框反光 */
+    inset 0 2rpx 0 rgba(255, 232, 168, 0.15),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.5),
+    inset 2rpx 0 0 rgba(200, 165, 91, 0.12),
+    inset -2rpx 0 0 rgba(200, 165, 91, 0.12);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.5s var(--ease-out-expo);
+}
+
+/* 内层细金线（烫金双线效果） */
+.card-face::before {
+  content: '';
+  position: absolute;
+  top: 8rpx; left: 8rpx; right: 8rpx; bottom: 8rpx;
+  border: 1rpx solid rgba(255, 232, 168, 0.18);
+  border-radius: 14rpx;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 周期性光泽扫过：信用卡金属反光 */
+.card-face::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -50%;
+  width: 200%;
+  height: 60%;
+  background: linear-gradient(
+    175deg,
+    transparent 0%,
+    rgba(255, 232, 168, 0.04) 40%,
+    rgba(255, 232, 168, 0.12) 50%,
+    rgba(255, 232, 168, 0.04) 60%,
+    transparent 100%
+  );
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: cardMetalSheen 5s ease-in-out infinite;
+}
+
+@keyframes cardMetalSheen {
+  0%, 20% { top: -100%; opacity: 0; }
+  30%     { opacity: 1; }
+  60%, 100% { top: 150%; opacity: 0; }
+}
+
+.float-card:hover .card-face {
+  box-shadow:
+    0 56rpx 112rpx rgba(0, 0, 0, 0.75),
+    0 28rpx 56rpx rgba(0, 0, 0, 0.55),
+    0 12rpx 24rpx rgba(0, 0, 0, 0.4),
+    0 0 80rpx rgba(200, 165, 91, 0.2),
+    inset 0 2rpx 0 rgba(255, 232, 168, 0.2),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.5),
+    inset 2rpx 0 0 rgba(200, 165, 91, 0.2),
+    inset -2rpx 0 0 rgba(200, 165, 91, 0.2);
+}
+
+/* 金色光晕（卡面右上角金色辉光） */
+.card-glow {
+  position: absolute;
+  top: -80rpx;
+  right: -80rpx;
+  width: 320rpx;
+  height: 320rpx;
+  background: radial-gradient(circle,
+    rgba(255, 232, 168, 0.18) 0%,
+    rgba(200, 165, 91, 0.08) 40%,
+    transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.float-card:hover .card-glow {
+  top: -100rpx;
+  right: -100rpx;
+  width: 380rpx;
+  height: 380rpx;
+  background: radial-gradient(circle,
+    rgba(255, 232, 168, 0.3) 0%,
+    rgba(200, 165, 91, 0.12) 40%,
+    transparent 70%);
+}
+
+/* ========================================
+ * 卡片内容：信用卡式排版
+ * ======================================== */
+
+/* 编号区：信用卡卡号风格 */
+.card-numeral-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+  transform: translateZ(40rpx);
+  position: relative;
+  z-index: 3;
+}
+
+.float-card-right .card-numeral-wrap {
+  justify-content: flex-end;
+}
+
+/* 编号：大字号烫金 */
+.card-numeral {
+  font-size: 80rpx;
+  font-weight: 800;
+  color: transparent;
+  background: linear-gradient(135deg,
+    #C8A55B 0%,
+    #FFE8A8 25%,
+    #8B7340 50%,
+    #FFE8A8 75%,
+    #C8A55B 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  line-height: 1;
+  letter-spacing: 2rpx;
+  filter: drop-shadow(0 4rpx 16rpx rgba(200, 165, 91, 0.45))
+          drop-shadow(0 0 32rpx rgba(255, 232, 168, 0.2));
+}
+
+.card-numeral-line {
+  width: 48rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, var(--gold-pure), transparent);
+}
+
+.float-card-right .card-numeral-line {
+  background: linear-gradient(270deg, var(--gold-pure), transparent);
+}
+
+.card-tag {
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  letter-spacing: 8rpx;
+  text-indent: 8rpx;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* 卡牌标题：烫金大字 */
+.card-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 8rpx;
+  text-indent: 8rpx;
+  line-height: 1.3;
+  margin-bottom: 32rpx;
+  text-shadow:
+    0 2rpx 8rpx rgba(0, 0, 0, 0.5),
+    0 0 28rpx rgba(200, 165, 91, 0.15);
+  transform: translateZ(30rpx);
+  position: relative;
+  z-index: 3;
+}
+
+.float-card-right .card-title {
+  text-align: right;
+}
+
+/* 卡牌正文 */
+.card-body {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 2.0;
+  letter-spacing: 2rpx;
+  transform: translateZ(20rpx);
+  position: relative;
+  z-index: 3;
+}
+
+.float-card-right .card-body {
+  text-align: right;
+}
+
+/* 四角金线装饰：信用卡角标 */
+.card-deco {
+  position: absolute;
+  width: 44rpx;
+  height: 44rpx;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0.7;
+  transition: opacity 0.4s var(--ease-out-expo);
+}
+
+.float-card:hover .card-deco {
+  opacity: 1;
+}
+
+.card-deco-tl {
+  top: 20rpx;
+  left: 20rpx;
+  border-top: 1rpx solid var(--gold-pure);
+  border-left: 1rpx solid var(--gold-pure);
+}
+
+.card-deco-br {
+  bottom: 20rpx;
+  right: 20rpx;
+  border-bottom: 1rpx solid var(--gold-pure);
+  border-right: 1rpx solid var(--gold-pure);
+}
+
+/* 右上角金色印记 */
+.card-deco-tr {
+  position: absolute;
+  top: 28rpx;
+  right: 28rpx;
+  width: 10rpx;
+  height: 10rpx;
+  background: linear-gradient(135deg, #FFE8A8 0%, #C8A55B 50%, #8B7340 100%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 16rpx rgba(255, 232, 168, 0.7),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.4);
+  opacity: 0.7;
+  pointer-events: none;
+  transition: all 0.4s var(--ease-out-expo);
+  z-index: 4;
+}
+
+.float-card:hover .card-deco-tr {
+  opacity: 1;
+  box-shadow:
+    0 0 24rpx rgba(255, 232, 168, 1),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.5);
+}
+
+/* 功能区后的极细金线 */
+.footer-divider {
+  margin: 0 8rpx 48rpx;
+}
+
+/* ========================================
+ * 积分体系说明（v17.0）：诗集式、去卡片化
+ * ======================================== */
+.points-intro-section {
+  padding: 8rpx 16rpx 56rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.points-intro-section .section-eyebrow {
+  margin-bottom: 8rpx;
+}
+
+.points-hint {
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+  letter-spacing: 3rpx;
+  opacity: 0.8;
+}
+
+/* ========================================
+ * 公司信息：极简分隔
+ * ======================================== */
+.company-section {
+  background: transparent;
+  overflow: hidden;
+  margin-bottom: 48rpx;
+  border-top: 1rpx solid rgba(232, 232, 240, 0.08);
+  border-bottom: 1rpx solid rgba(232, 232, 240, 0.08);
+}
+
+.company-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 16rpx;
+  border-bottom: 1rpx solid rgba(232, 232, 240, 0.05);
+  transition: all 0.2s var(--ease-out-expo);
+}
+
+.company-item:last-child {
+  border-bottom: none;
+}
+
+.company-item:active {
+  background: rgba(200, 165, 91, 0.04);
+}
+
+.company-label {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
+}
+
+.company-value {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  letter-spacing: 1rpx;
+  text-align: right;
+}
+
+/* ========================================
+ * APP 下载入口：黑金卡片
+ * ======================================== */
+.download-section {
+  padding: 48rpx 8rpx;
+}
+
+.download-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 40rpx 32rpx;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 232, 168, 0.04) 0%,
+      transparent 50%,
+      rgba(200, 165, 91, 0.02) 100%),
+    linear-gradient(145deg, #1A1A24 0%, #0F0F18 100%);
+  border: 1rpx solid;
+  border-image: linear-gradient(135deg,
+    #C8A55B 0%,
+    #FFE8A8 50%,
+    #8B7340 100%) 1;
+  border-radius: 16rpx;
+  box-shadow:
+    0 24rpx 48rpx rgba(0, 0, 0, 0.5),
+    0 8rpx 16rpx rgba(0, 0, 0, 0.3),
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.1);
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.download-card:active {
+  transform: scale(0.98);
+  box-shadow:
+    0 16rpx 32rpx rgba(0, 0, 0, 0.4),
+    0 4rpx 8rpx rgba(0, 0, 0, 0.2),
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.05);
+}
+
+.download-icon {
+  flex-shrink: 0;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle,
+    rgba(200, 165, 91, 0.15) 0%,
+    transparent 70%);
+  border-radius: 50%;
+}
+
+.download-icon-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+  transform: scale(0.6);
+  filter: drop-shadow(0 0 8rpx rgba(200, 165, 91, 0.6));
+}
+
+.download-icon-inner .hex-line {
+  height: 6rpx;
+}
+
+.download-icon-inner .hex-line.yang {
+  width: 60rpx;
+  background: var(--gold-pure);
+}
+
+.download-icon-inner .hex-line.yin {
+  width: 60rpx;
+}
+
+.download-icon-inner .hl {
+  width: 24rpx;
+  height: 6rpx;
+  background: var(--gold-pure);
+}
+
+.download-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.download-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 4rpx;
+}
+
+.download-desc {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  letter-spacing: 2rpx;
+}
+
+.download-btn {
+  flex-shrink: 0;
+  padding: 20rpx 32rpx;
+  background: linear-gradient(135deg, #C8A55B 0%, #B8944A 100%);
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 12rpx rgba(200, 165, 91, 0.3);
+  transition: all 0.2s var(--ease-out-expo);
+}
+
+.download-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(200, 165, 91, 0.2);
+}
+
+.download-btn-text {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #0A0A12;
+  letter-spacing: 4rpx;
+  white-space: nowrap;
+}
+
+.download-hint {
+  margin-top: 24rpx;
+  text-align: center;
+}
+
+.download-hint-text {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  letter-spacing: 2rpx;
+}
+
+/* ========================================
+ * 协议列表：极简分隔
+ * ======================================== */
+.legal-section {
+  background: transparent;
+  overflow: hidden;
+  margin-bottom: 64rpx;
+  border-top: 1rpx solid rgba(232, 232, 240, 0.08);
+  border-bottom: 1rpx solid rgba(232, 232, 240, 0.08);
+}
+
+.legal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 16rpx;
+  border-bottom: 1rpx solid rgba(232, 232, 240, 0.05);
+  font-size: 30rpx;
+  color: var(--text-primary);
+  transition: all 0.2s var(--ease-out-expo);
+  letter-spacing: 4rpx;
+}
+
+.legal-item:last-child {
+  border-bottom: none;
+}
+
+.legal-item:active {
+  background: rgba(200, 165, 91, 0.04);
+}
+
+.legal-item:active icon-guo {
+  transform: translateX(8rpx);
+}
+
+/* ========================================
+ * 删除数据：极简危险按钮
+ * ======================================== */
+.danger-section {
+  margin-top: 48rpx;
+  padding-bottom: 80rpx;
+  text-align: center;
+}
+
+.btn-delete {
+  width: 80%;
+  height: 96rpx;
+  background: transparent;
+  color: var(--gold-pure);
+  font-size: 28rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-radius: 0;
+  transition: all 0.25s var(--ease-out-expo);
+  letter-spacing: 4rpx;
+}
+
+.btn-delete:active {
+  background: rgba(231, 76, 60, 0.08);
+  border-color: rgba(231, 76, 60, 0.5);
+  transform: scale(0.97);
+}
+
+.danger-hint {
+  display: block;
+  font-size: 22rpx;
+  color: var(--text-muted);
+  margin-top: 16rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .btn-delete { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 26rpx; line-height: 1.3; }
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .app-name { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 42rpx; line-height: 1.25; }
+.lang-en .card-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .manifesto-eyebrow { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }
+.lang-en .section-eyebrow { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }
+.lang-en .card-tag { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }

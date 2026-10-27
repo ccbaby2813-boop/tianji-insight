@@ -1,0 +1,5 @@
+<!-- components/share-button/share-button.wxml -->
+<button aria-label="分享结果" class="share-btn" open-type="share" hover-class="share-btn-hover">
+  <icon-guo name="share" size="24" color="#C8A55B" />
+  <text class="share-text">{{text}}</text>
+</button>

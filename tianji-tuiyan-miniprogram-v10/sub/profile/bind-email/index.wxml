@@ -1,0 +1,81 @@
+<!-- sub/profile/bind-email/index.wxml - 绑定邮箱页（v19.4 账号安全） -->
+<!-- 已登录账号绑定邮箱：邮箱 + 验证码 + 密码；若邮箱已有独立账号，弹窗确认后合并 -->
+<view class="bind-page theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <view class="bind-bg"></view>
+
+  <view class="bind-header">
+    <view class="bind-title font-display">{{t.title}}</view>
+    <view class="title-gold-line"></view>
+    <view class="bind-subtitle">{{t.subtitle}}</view>
+  </view>
+
+  <!-- 已绑定态 -->
+  <view class="bound-box" wx:if="{{boundEmail}}">
+    <text class="bound-label">{{t.boundLabel}}</text>
+    <text class="bound-email">{{boundEmail}}</text>
+  </view>
+
+  <!-- 绑定表单 -->
+  <view class="bind-form" wx:else>
+    <!-- 邮箱 -->
+    <view class="form-group">
+      <text class="form-label">{{t.emailLabel}}</text>
+      <input
+        class="form-input"
+        type="text"
+        placeholder="{{t.emailPlaceholder}}"
+        placeholder-class="input-placeholder"
+        value="{{email}}"
+        bindinput="onEmailInput"
+      />
+    </view>
+
+    <!-- 验证码 -->
+    <view class="form-group">
+      <text class="form-label">{{t.codeLabel}}</text>
+      <view class="code-row">
+        <input
+          class="form-input code-input"
+          type="number"
+          maxlength="6"
+          placeholder="{{t.codePlaceholder}}"
+          placeholder-class="input-placeholder"
+          value="{{ecode}}"
+          bindinput="onEcodeInput"
+        />
+        <button
+          class="send-code-btn {{countdown > 0 ? 'disabled' : ''}}"
+          disabled="{{countdown > 0 || sending}}"
+          bindtap="sendCode"
+        >
+          {{countdown > 0 ? countdown + 's' : t.sendCode}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 密码 -->
+    <view class="form-group">
+      <text class="form-label">{{t.passwordLabel}}</text>
+      <input
+        class="form-input"
+        type="text"
+        password
+        maxlength="40"
+        placeholder="{{t.passwordPlaceholder}}"
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <text class="password-hint">{{t.passwordHint}}</text>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button
+      class="bind-btn"
+      disabled="{{submitting}}"
+      bindtap="submitBind"
+    >
+      {{submitting ? t.submitting : t.submitBtn}}
+    </button>
+  </view>
+</view>

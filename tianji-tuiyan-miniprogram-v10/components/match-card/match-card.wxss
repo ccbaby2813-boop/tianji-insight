@@ -1,0 +1,147 @@
+/* components/match-card/match-card.wxss - 匹配记录卡片
+ * Visual Thesis: 深色卡片 + press 缩放 + 等级 tint 标签
+ */
+
+/* ===== 卡片主体 ===== */
+.match-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1rpx solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+  overflow-x: hidden;
+  transition: all 0.25s var(--ease-out-expo);
+  box-shadow: var(--shadow-sm);
+}
+
+/* v2.0 装饰SVG纹样背景（按匹配等级） */
+.match-decor {
+  position: absolute;
+  top: 50%;
+  right: 16rpx;
+  transform: translateY(-50%);
+  z-index: 0;
+  opacity: 0.6;
+  pointer-events: none;
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+.match-card:active .match-decor {
+  opacity: 0.9;
+  transform: translateY(-50%) scale(1.08) rotate(5deg);
+}
+
+/* 天作：双莲并蒂，左上角渐显 */
+.match-pattern-tianzuo {
+  border-left: 3rpx solid rgba(82, 196, 26, 0.5);
+}
+
+/* 默契：日月相辉，金色微光底色 */
+.match-pattern-moqi {
+  border-left: 3rpx solid rgba(24, 144, 255, 0.5);
+}
+
+/* 互补：阴阳鱼，柔和橙色光晕 */
+.match-pattern-hubu {
+  border-left: 3rpx solid rgba(250, 140, 22, 0.5);
+}
+
+/* 默认：祥云纹样 */
+.match-pattern- {
+  border-left: 3rpx solid var(--accent-gold-border);
+}
+
+/* press 态：缩放 0.98 + 边框高亮 */
+.match-card:active {
+  border-color: var(--accent-gold-border);
+  transform: scale(0.98);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== 头部：名称 + 等级标签 ===== */
+.match-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+  gap: 16rpx;
+}
+
+.match-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--accent-gold);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 1rpx;
+}
+
+/* 等级标签：tint 背景 */
+.match-level {
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  padding: 6rpx 18rpx;
+  border: 1rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  white-space: nowrap;
+  letter-spacing: 1rpx;
+  background: var(--accent-gold-subtle);
+  max-width: 240rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 天作：金色 tint（v3.6 统一单色金） */
+.match-level.tianzuo {
+  color: var(--gold-pure);
+  border-color: rgba(200, 165, 91, 0.3);
+  background: rgba(200, 165, 91, 0.1);
+}
+
+/* 默契：金色浅 tint（v3.6 统一单色金，用 opacity 区分等级） */
+.match-level.moqi {
+  color: rgba(200, 165, 91, 0.8);
+  border-color: rgba(200, 165, 91, 0.2);
+  background: rgba(200, 165, 91, 0.06);
+}
+
+/* 互补：金色更浅 tint */
+.match-level.hubu {
+  color: rgba(200, 165, 91, 0.6);
+  border-color: rgba(200, 165, 91, 0.15);
+  background: rgba(200, 165, 91, 0.04);
+}
+
+/* ===== 一句话描述 ===== */
+.match-oneliner {
+  position: relative;
+  z-index: 1;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-bottom: 8rpx;
+  line-height: 1.5;
+  word-break: break-word;
+  letter-spacing: 1rpx;
+}
+
+/* ===== 时间 ===== */
+.match-time {
+  position: relative;
+  z-index: 1;
+  font-size: 22rpx;
+  color: var(--text-muted);
+  display: block;
+  letter-spacing: 1rpx;
+}

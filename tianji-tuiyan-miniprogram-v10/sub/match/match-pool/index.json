@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "icon-guo": "/components/icon-guo/icon-guo",
+    "letter-tab-bar": "/components/letter-tab-bar/index"
+  },
+  "navigationBarTitleText": "易缘匹配",
+  "disableScroll": false
+}

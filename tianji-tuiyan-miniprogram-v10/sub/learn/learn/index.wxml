@@ -1,0 +1,155 @@
+<view class="page-container page-learn theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab===0?'active':''}}" bindtap="switchTab" data-tab="0">
+      {{t.tabArchetype}}
+      <view class="tab-badge" wx:if="{{newCardCount > 0 && activeTab !== 0}}">
+        <text class="tab-badge-text">{{newCardCount}}</text>
+      </view>
+    </view>
+    <view class="tab-item {{activeTab===1?'active':''}}" bindtap="switchTab" data-tab="1">{{t.tabQimen}}</view>
+  </view>
+
+  <!-- Tab 1: 64型人格塔罗牌收集 -->
+  <scroll-view class="gua-grid" scroll-y wx:if="{{activeTab===0}}">
+    <!-- 背景氛围 -->
+    <view class="grid-atmosphere"></view>
+    <view class="grid-stars"></view>
+
+    <!-- 收集进度条 -->
+    <view class="collection-bar {{collectionCount >= 64 ? 'completed' : ''}}" bindtap="onCollectionTap">
+      <view class="collection-progress-track">
+        <view class="collection-progress-fill" style="width:{{collectionCount / 64 * 100}}%"></view>
+      </view>
+      <view class="collection-info">
+        <text class="collection-count {{countBouncing ? 'bounce' : ''}}">{{collectionCount}}<text class="count-total">/64</text></text>
+        <text class="collection-sub" wx:if="{{collectionCount < 64}}">{{countRemainText}}</text>
+        <text class="collection-sub completed-text" wx:else>{{t.collectDone}}</text>
+      </view>
+    </view>
+
+    <!-- 塔罗牌网格 -->
+    <view class="gua-grid-inner">
+      <view class="card-float-wrapper" wx:for="{{guaList}}" wx:for-item="item" wx:key="id">
+        <view
+          class="tarot-card flip-card rarity-{{item.wuxingClass || 'jin'}} {{collectedMap[item.id] ? 'lit' : 'shadow'}}"
+          bindtap="onGuaTap" data-item="{{item}}">
+
+          <!-- 卡牌内边框 -->
+          <view class="card-border"></view>
+
+          <!-- 已收集：金色光扫 -->
+          <view class="card-shimmer" wx:if="{{collectedMap[item.id]}}"></view>
+
+          <!-- v2.0 五行稀有度角标（已收集才显示） -->
+          <view class="rarity-badge rarity-badge-{{item.wuxingClass || 'jin'}}" wx:if="{{collectedMap[item.id]}}">{{item.wuxing || t.rarityDefault || '金'}}</view>
+
+          <!-- 人格符号：已收集显示卦象（L0展示字），未收集显示灵光占位 -->
+          <text class="tarot-symbol font-display" wx:if="{{collectedMap[item.id]}}">{{item.symbol || '䷀'}}</text>
+          <view class="tarot-symbol-placeholder" wx:else>
+            <icon-guo name="sparkle" size="48" color="#8B7340" />
+          </view>
+
+          <!-- 人格名称 -->
+          <text class="tarot-name">{{item.name || ''}}</text>
+
+          <!-- 人格特质 -->
+          <text class="tarot-tag" wx:if="{{item.gua_ge}}">{{item.gua_ge}}</text>
+
+          <!-- 未收集：锁角标 -->
+          <view class="lock-badge" wx:if="{{!collectedMap[item.id]}}"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Tab 2: 奇门遁甲罗盘 -->
+  <view class="qimen-section scroll-unroll" wx:if="{{activeTab===1}}">
+    <view class="compass-area">
+      <view class="compass-nebula" style="width:{{compassSize}}rpx;height:{{compassSize}}rpx;"></view>
+      <qimen-compass size="{{compassSize}}" bind:ringtap="onRingTap" />
+      <!-- v2.0 罗盘交互引导（首次进入显示） -->
+      <view class="compass-guide {{showCompassGuide ? 'show' : ''}}" wx:if="{{showCompassGuide}}" catchtap="onCloseCompassGuide">
+        <view class="compass-guide-arrow"></view>
+        <view class="compass-guide-text">
+          <text class="guide-title">{{t.qimenTitle}}</text>
+          <text class="guide-desc">{{t.qimenDesc}}</text>
+        </view>
+        <view class="compass-guide-close">{{t.known}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 人格详情弹窗 -->
+  <view class="gua-modal" wx:if="{{showGuaModal}}">
+    <view class="gua-modal-mask" bindtap="hideGuaModal"></view>
+    <scroll-view class="modal-content" scroll-y catchtap="stop" enhanced show-scrollbar="{{false}}">
+      <view class="modal-header">
+        <text class="modal-symbol">{{modalGua.symbol}}</text>
+        <view class="modal-close" bindtap="hideGuaModal">×</view>
+      </view>
+      <text class="modal-name font-soul">{{modalGua.full_name}}</text>
+      <view class="modal-block">
+        <text class="modal-label font-title">{{t.labelJudgment}}</text>
+        <text class="modal-text font-quote">{{modalGua.judgment}}</text>
+      </view>
+      <view class="modal-block">
+        <text class="modal-label font-title">{{t.labelImage}}</text>
+        <text class="modal-text font-quote">{{modalGua.image}}</text>
+      </view>
+      <view class="modal-block">
+        <text class="modal-label font-title">{{t.labelPersonality}}</text>
+        <text class="modal-text font-body">{{modalGua.renGe}}</text>
+      </view>
+      <view class="modal-block" wx:if="{{modalGua.emotionMode}}">
+        <text class="modal-label font-title">{{t.labelEmotion}}</text>
+        <text class="modal-text font-body">{{modalGua.emotionMode}}</text>
+      </view>
+      <view class="modal-block" wx:if="{{modalGua.growthAdvice}}">
+        <text class="modal-label font-body" wx:if="{{modalGua.growthAdvice.talent}}">{{t.labelTalent}}：{{modalGua.growthAdvice.talent}}</text>
+        <text class="modal-label font-body" wx:if="{{modalGua.growthAdvice.blindspot}}" style="margin-top:12rpx">{{t.labelBlindSpot}}：{{modalGua.growthAdvice.blindspot}}</text>
+      </view>
+      <view class="modal-block" wx:if="{{modalGua.li_shi_ren_wu && modalGua.li_shi_ren_wu.male && modalGua.li_shi_ren_wu.male.length}}">
+        <text class="modal-label font-title">{{t.labelHistory}}</text>
+        <view class="tag-row">
+          <text class="history-tag" wx:for="{{modalGua.li_shi_ren_wu.male}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 罗盘弹窗 -->
+  <view class="gua-modal" wx:if="{{showRingModal}}">
+    <view class="gua-modal-mask" bindtap="hideRingModal"></view>
+    <scroll-view class="modal-content ring-modal-content" scroll-y catchtap="stop" enhanced show-scrollbar="{{false}}">
+      <view class="modal-header">
+        <text class="modal-title">{{ringDetail.title}}</text>
+        <view class="modal-close" bindtap="hideRingModal">×</view>
+      </view>
+      <view class="modal-block">
+        <text class="modal-label">{{t.labelIntro}}</text>
+        <text class="modal-text" space="ensp">{{ringDetail.desc}}</text>
+      </view>
+      <view class="modal-block" wx:if="{{ringDetail.items}}">
+        <text class="modal-label">{{t.labelContents}}</text>
+        <text class="modal-text">{{ringDetail.items}}</text>
+      </view>
+      <view class="modal-block">
+        <text class="modal-label">{{t.labelRole}}</text>
+        <text class="modal-text" space="ensp">{{ringDetail.role}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 欢迎弹窗 -->
+  <view class="welcome-popup" wx:if="{{showWelcomePopup}}" catchtouchmove="noop">
+    <view class="welcome-mask" bindtap="onCloseWelcome"></view>
+    <view class="welcome-content">
+      <text class="welcome-title">{{t.congrats}}</text>
+      <text class="welcome-desc">{{t.welcomeDescPrefix}} {{welcomeGua.full_name || ''}}·{{welcomeGua.gua_ge || ''}}
+{{t.welcomeDescSuffix}}</text>
+      <text class="welcome-hint">{{t.welcomeHint}}</text>
+      <view class="welcome-btn" bindtap="onCloseWelcome">{{t.known}}</view>
+    </view>
+  </view>
+</view>

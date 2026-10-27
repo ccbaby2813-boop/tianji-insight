@@ -1,0 +1,523 @@
+/* pages/login/login.wxss - 登录页：纯黑夜卷·现代艺术装置
+ * Visual Thesis: Co-Star 纯黑画布 + Logo 金光呼吸 + 诗意排版 + 极致留白
+ */
+.login-page {
+  min-height: 100vh;
+  background: var(--bg-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 48rpx;
+  /* v19.4.1 注册模式内容较多：上边距收窄，允许小屏机型滚动查看底部协议勾选 */
+  padding-top: calc(120rpx + env(safe-area-inset-top));
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 极淡金光晕背景 */
+.login-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center top, rgba(200, 165, 91, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ========================================
+ * 返回按钮
+ * ======================================== */
+.back-btn {
+  position: fixed;
+  top: calc(20rpx + env(safe-area-inset-top));
+  left: 24rpx;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: rgba(200, 165, 91, 0.1);
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-radius: 50%;
+}
+
+.back-icon {
+  font-size: 48rpx;
+  color: #C8A55B;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+
+.back-btn:active {
+  background: rgba(200, 165, 91, 0.2);
+  transform: scale(0.95);
+}
+
+/* v19.0 语言切换按钮：右上角，半透明金边圆形，风格与返回按钮一致 */
+.lang-switch-btn {
+  position: fixed;
+  top: calc(20rpx + env(safe-area-inset-top));
+  right: 24rpx;
+  min-width: 80rpx;
+  height: 80rpx;
+  padding: 0 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background: rgba(200, 165, 91, 0.1);
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  color: #C8A55B;
+  box-sizing: border-box;
+}
+
+.lang-switch-btn:active {
+  background: rgba(200, 165, 91, 0.2);
+  transform: scale(0.95);
+}
+
+/* v19.0 英文字体：美国惯例用衬线体（Georgia，双端系统内置，可读性优于手写体）
+   标题斜体营造艺术感，正文正体保证可读性 */
+.lang-en .login-title,
+.lang-en .login-subtitle,
+.lang-en .form-label,
+.lang-en .login-btn,
+.lang-en .send-code-btn,
+.lang-en .agree-text,
+.lang-en .link,
+.lang-en .lang-switch-btn {
+  font-family: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
+}
+
+.lang-en .login-title {
+  font-style: italic;
+  letter-spacing: 1rpx;
+}
+
+.lang-en .login-subtitle {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* v19.0 登录方式切换 tab（手机号/邮箱） */
+.mode-tabs {
+  display: flex;
+  border-bottom: 1rpx solid rgba(200, 165, 91, 0.25);
+  margin-bottom: 40rpx; /* v19.4.1 48→40 */
+}
+
+.mode-tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0 24rpx;
+  font-size: 28rpx;
+  letter-spacing: 4rpx;
+  color: rgba(255, 255, 255, 0.45);
+  position: relative;
+  transition: color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lang-en .mode-tab {
+  font-size: 24rpx;
+  letter-spacing: 0;
+}
+
+.mode-tab.active {
+  color: #C8A55B;
+}
+
+.mode-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -1rpx;
+  width: 48rpx;
+  height: 3rpx;
+  background: linear-gradient(90deg, transparent, #C8A55B, transparent);
+}
+
+/* v19.0 邮箱 登录/注册 切换链接 */
+.email-mode-switch {
+  text-align: center;
+  margin-top: 32rpx;
+  font-size: 24rpx;
+  letter-spacing: 2rpx;
+  color: rgba(200, 165, 91, 0.75);
+  padding: 8rpx 0;
+}
+
+.email-mode-switch:active {
+  opacity: 0.6;
+}
+
+/* ========================================
+ * Logo 区：爻线 + 金色光晕呼吸
+ * ======================================== */
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 56rpx; /* v19.4.1 96→56：注册模式争取一屏内容纳协议勾选 */
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-expo) both;
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  margin-bottom: 40rpx;
+  /* 金色光晕：drop-shadow 多层叠加 */
+  filter:
+    drop-shadow(0 0 8rpx rgba(200, 165, 91, 0.6))
+    drop-shadow(0 0 24rpx rgba(200, 165, 91, 0.4));
+}
+
+.login-hex-line {
+  width: 64rpx;
+  height: 8rpx;
+  border-radius: 0;
+}
+
+.login-hex-line.yang {
+  background: var(--gold-pure);
+}
+
+.login-hex-line.yin {
+  background: transparent;
+  border-top: 4rpx solid var(--gold-pure);
+  border-bottom: 4rpx solid var(--gold-pure);
+  height: 0;
+}
+
+/* L0 展示字：天机推演 */
+.login-title {
+  font-size: 72rpx;
+  color: var(--text-primary);
+  letter-spacing: 16rpx;
+  margin-bottom: 24rpx;
+  text-indent: 16rpx;
+  /* 极淡金光晕，不喧宾夺主 */
+  text-shadow: 0 0 32rpx rgba(200, 165, 91, 0.3);
+}
+
+.title-gold-line {
+  width: 64rpx;
+  height: 2rpx;
+  background: var(--gold-pure);
+  margin-bottom: 24rpx;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.4);
+}
+
+.login-subtitle {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  letter-spacing: 6rpx;
+}
+
+/* ========================================
+ * 表单区
+ * ======================================== */
+.login-form {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
+}
+
+.form-group {
+  margin-bottom: 44rpx; /* v19.4.1 56→44：注册模式争取一屏内容纳协议勾选 */
+}
+
+.form-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-muted);
+  margin-bottom: 20rpx;
+  letter-spacing: 6rpx;
+  text-transform: uppercase;
+}
+
+/* 输入框：与建档页统一风格（聚焦金色边框 + 微光阴影） */
+.form-input {
+  width: 100%;
+  height: 104rpx;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1rpx solid rgba(232, 232, 240, 0.08);
+  border-radius: 0;
+  padding: 0 32rpx;
+  color: var(--text-primary);
+  font-size: 32rpx;
+  letter-spacing: 2rpx;
+  box-sizing: border-box;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.form-input:focus {
+  border-color: var(--gold-pure);
+  background: rgba(200, 165, 91, 0.04);
+  box-shadow:
+    0 0 0 1rpx var(--gold-pure),
+    0 0 24rpx rgba(200, 165, 91, 0.15);
+}
+
+.input-placeholder {
+  color: var(--text-muted);
+}
+
+.code-row {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.code-input {
+  flex: 1;
+}
+
+/* 发送验证码按钮：极简描边 */
+.send-code-btn {
+  flex-shrink: 0;
+  width: 240rpx;
+  height: 104rpx;
+  line-height: 104rpx;
+  background: transparent;
+  border: 1rpx solid var(--gold-pure);
+  color: var(--gold-pure);
+  font-size: 24rpx;
+  border-radius: 0;
+  padding: 0;
+  letter-spacing: 2rpx;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.send-code-btn.disabled {
+  opacity: 0.4;
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+.send-code-btn::after {
+  border: none;
+}
+
+.send-code-btn:not(.disabled):active {
+  background: rgba(200, 165, 91, 0.08);
+}
+
+/* ========================================
+ * 登录按钮：盖章仪式感
+ * ======================================== */
+.login-btn {
+  width: 100%;
+  height: 112rpx;
+  line-height: 112rpx;
+  background: linear-gradient(135deg, #E8C896 0%, #C8A55B 50%, #B08B56 100%);
+  color: #0A0A0A;
+  font-size: 34rpx;
+  font-weight: 800;
+  border-radius: 0;
+  margin-top: 32rpx;
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+  box-shadow:
+    0 8rpx 32rpx rgba(200, 165, 91, 0.3),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+/* 高光横扫 */
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s var(--ease-out-expo);
+}
+
+.login-btn::after {
+  border: none;
+}
+
+.login-btn[disabled] {
+  background: rgba(200, 165, 91, 0.08);
+  color: rgba(232, 232, 240, 0.25);
+  box-shadow: none;
+}
+
+.login-btn[disabled]::before {
+  display: none;
+}
+
+.login-btn:not([disabled]):active {
+  transform: scale(0.97);
+  box-shadow:
+    0 4rpx 16rpx rgba(200, 165, 91, 0.5),
+    inset 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+}
+
+.login-btn:not([disabled]):active::before {
+  left: 100%;
+}
+
+/* ========================================
+ * 分割线
+ * ======================================== */
+.divider {
+  display: flex;
+  align-items: center;
+  height: auto;
+  background: none;
+  margin: 64rpx 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--gold-pure-dim), transparent);
+}
+
+.divider-text {
+  padding: 0 24rpx;
+  color: var(--text-muted);
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+}
+
+/* ========================================
+ * 微信登录按钮：极简描边（避免绿色撞色）
+ * ======================================== */
+.wechat-login-btn {
+  width: 100%;
+  height: 104rpx;
+  line-height: 104rpx;
+  background: transparent;
+  border: 1rpx solid rgba(232, 232, 240, 0.16);
+  color: var(--text-secondary);
+  font-size: 30rpx;
+  border-radius: 0;
+  letter-spacing: 6rpx;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.wechat-login-btn::after {
+  border: none;
+}
+
+.wechat-login-btn:active {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--gold-pure);
+  color: var(--gold-pure);
+}
+
+/* ========================================
+ * 底部协议
+ * ======================================== */
+.login-footer {
+  margin-top: 32rpx; /* v19.4.1 48→32 */
+  font-size: 22rpx;
+  color: var(--text-muted);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 2rpx;
+  line-height: 2.0;
+}
+
+.login-footer .link {
+  color: var(--gold-pure);
+}
+
+/* v18.6 协议勾选（默认不勾选） */
+.agree-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  padding: 8rpx 0;
+}
+
+.agree-check-box {
+  width: 30rpx;
+  height: 30rpx;
+  border: 2rpx solid rgba(200, 165, 91, 0.45);
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: all 0.25s ease;
+}
+
+.agree-check.checked .agree-check-box {
+  background: rgba(200, 165, 91, 0.18);
+  border-color: var(--gold-pure);
+}
+
+.agree-check-mark {
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  line-height: 1;
+}
+
+.agree-text {
+  color: var(--text-muted);
+}
+
+.agree-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+}
+
+/* v19.4 登录/注册/找回密码切换链接 */
+.form-link-row {
+  text-align: center;
+  margin-top: 32rpx;
+}
+
+.form-link {
+  font-size: 24rpx;
+  color: rgba(200, 165, 91, 0.75);
+  letter-spacing: 2rpx;
+  padding: 8rpx 16rpx;
+}
+
+.form-link:active {
+  color: var(--gold-pure);
+  opacity: 0.8;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .login-btn {
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 2rpx; text-indent: 2rpx; font-size: 30rpx;
+  line-height: 1.3; height: auto; min-height: 112rpx;
+  padding: 0 24rpx; box-sizing: border-box; white-space: normal;
+}
+.lang-en .send-code-btn { letter-spacing: 1rpx; text-indent: 1rpx; font-size: 26rpx; }
+.lang-en .form-label { letter-spacing: 1rpx; }
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .login-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 44rpx; line-height: 1.25; }
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .login-subtitle { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }
+.lang-en .wechat-login-btn { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }

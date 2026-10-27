@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>天机推演官网 - UX/UI 用户体验审计报告 | 2026-09-01</title>
+<style>
+:root{--bg:#0a0a0f;--card:#12121c;--line:#23232f;--gold:#c9a96a;--gold-2:#e8d5a3;--text:#e8e6e1;--muted:#9a968c;--green:#5cb85c;--orange:#f0ad4e;--red:#d9534f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",Georgia,serif;line-height:1.8;font-size:15px}
+.container{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+.header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--line);margin-bottom:40px}
+.header h1{font-size:30px;color:var(--gold-2);letter-spacing:3px;margin-bottom:10px}
+.header .subtitle{color:var(--muted);font-size:14px;letter-spacing:2px}
+.header .date{color:var(--gold);font-size:13px;margin-top:8px}
+.score-overview{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:40px}
+@media(max-width:768px){.score-overview{grid-template-columns:1fr}}
+.score-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:30px;text-align:center}
+.score-card .label{font-size:13px;color:var(--muted);letter-spacing:2px;margin-bottom:15px;text-transform:uppercase}
+.score-card .score{font-size:64px;font-weight:bold;color:var(--gold);line-height:1}
+.score-card .score .total{font-size:24px;color:var(--muted)}
+.score-card .grade{display:inline-block;margin-top:12px;padding:4px 16px;border-radius:20px;font-size:14px;font-weight:bold}
+.grade-a{background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green)}
+.dim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:40px}
+@media(max-width:768px){.dim-grid{grid-template-columns:1fr}}
+.dim-card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px}
+.dim-card .dim-name{font-size:14px;color:var(--muted);margin-bottom:8px}
+.dim-card .dim-score{font-size:28px;font-weight:bold;margin-bottom:8px}
+.dim-card .dim-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.dim-card .dim-bar-fill{height:100%;border-radius:3px}
+.dim-card .dim-desc{font-size:12px;color:var(--muted);margin-top:8px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:30px;margin-bottom:30px}
+.section h2{font-size:20px;color:var(--gold-2);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line);letter-spacing:1px}
+.section h3{font-size:16px;color:var(--gold);margin:20px 0 10px}
+.issue-list{list-style:none}
+.issue-item{padding:14px 0;border-bottom:1px solid rgba(35,35,47,.5);display:flex;gap:12px;align-items:flex-start}
+.issue-item:last-child{border-bottom:none}
+.issue-severity{flex-shrink:0;width:60px;text-align:center;padding:3px 0;border-radius:3px;font-size:11px;font-weight:bold;letter-spacing:1px}
+.sev-high{background:rgba(217,83,79,.15);color:var(--red);border:1px solid var(--red)}
+.sev-medium{background:rgba(240,173,78,.15);color:var(--orange);border:1px solid var(--orange)}
+.sev-low{background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green)}
+.issue-content{flex:1}
+.issue-title{font-size:14px;color:var(--text);margin-bottom:4px}
+.issue-desc{font-size:13px;color:var(--muted)}
+.issue-fix{font-size:12px;color:var(--gold);margin-top:4px}
+.good-list{list-style:none}
+.good-item{padding:10px 0;border-bottom:1px solid rgba(35,35,47,.3);display:flex;gap:10px;align-items:flex-start}
+.good-item:last-child{border-bottom:none}
+.good-check{color:var(--green);font-weight:bold;flex-shrink:0}
+.good-text{font-size:14px;color:var(--text)}
+.chart-container{width:100%;height:380px;margin:20px 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;margin:15px 0;font-size:13px}
+th{background:var(--bg);color:var(--gold);text-align:left;padding:10px 12px;border-bottom:2px solid var(--gold)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted)}
+tr:hover td{background:rgba(201,169,106,.03)}
+.footer{text-align:center;padding:30px 0;color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:40px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>天机推演官网 · UX/UI 用户体验审计</h1>
+  <div class="subtitle">用户视角 10 大维度 · 86 页面全量扫描 + 浏览器实测走查</div>
+  <div class="date">审计日期：2026-09-01</div>
+</div>
+
+<div class="score-overview">
+  <div class="score-card">
+    <div class="label">UX/UI 综合评分</div>
+    <div class="score">88<span class="total">/100</span></div>
+    <div class="grade grade-a">A 级 · 优秀</div>
+  </div>
+  <div class="score-card">
+    <div class="label">用户核心路径完成度</div>
+    <div class="score" style="font-size:48px;color:var(--orange)">3<span class="total">/4</span></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">下载App / 读知识库 / 中英文切换 / 注销账号</div>
+  </div>
+</div>
+
+<div class="dim-grid">
+  <div class="dim-card">
+    <div class="dim-name">① 导航与信息架构</div>
+    <div class="dim-score" style="color:var(--green)">92</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:92%;background:var(--green)"></div></div>
+    <div class="dim-desc">79/86页统一导航，面包屑清晰，首页导航含注销链接待优化</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">② 视觉设计与一致性</div>
+    <div class="dim-score" style="color:var(--green)">95</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:95%;background:var(--green)"></div></div>
+    <div class="dim-desc">黑金风格统一，品牌调性强，H1/H2层级清晰，知识库页排版优秀</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">③ 交互设计与反馈</div>
+    <div class="dim-score" style="color:var(--green)">90</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:90%;background:var(--green)"></div></div>
+    <div class="dim-desc">100% hover样式，无模糊按钮，CTA醒目；但84页缺焦点样式</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">④ 内容可读性与文案</div>
+    <div class="dim-score" style="color:var(--green)">93</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:93%;background:var(--green)"></div></div>
+    <div class="dim-desc">行高1.85，正文字号15-16px，段落舒适；仅协议页有长段落</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">⑤ 移动端体验</div>
+    <div class="dim-score" style="color:var(--green)">90</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:90%;background:var(--green)"></div></div>
+    <div class="dim-desc">100% viewport，82/86有媒体查询；触摸目标大小待验证</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">⑥ 任务完成与转化</div>
+    <div class="dim-score" style="color:var(--orange)">80</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:80%;background:var(--orange)"></div></div>
+    <div class="dim-desc">知识库页CTA好；首页首屏无下载按钮，需滚动，影响转化</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">⑦ 信任与可信度</div>
+    <div class="dim-score" style="color:var(--orange)">82</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:82%;background:var(--orange)"></div></div>
+    <div class="dim-desc">100%隐私/公司信息；仅7/86页有ICP备案，footer链接偏少</div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">⑧ 可访问性(WCAG)</div>
+    <div class="dim-score" style="color:var(--red)">70</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:70%;background:var(--red)"></div></div>
+    <div class="dim-desc">100% lang/alt；但84/86页缺焦点样式，键盘用户无法定位</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>各维度得分对比</h2>
+  <div id="radarChart" class="chart-container"></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>问题严重程度分布</h2>
+    <div id="severityChart" class="chart-container" style="height:300px"></div>
+  </div>
+  <div class="section">
+    <h2>页面覆盖率指标</h2>
+    <div id="coverageChart" class="chart-container" style="height:300px"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>做得好的地方（保持）</h2>
+  <ul class="good-list">
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>视觉风格高度统一</strong>：黑金极简高贵风格贯穿全站，品牌调性强，太极星球 Hero 图有记忆点</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>知识库文章页排版优秀</strong>：面包屑 + TOC目录 + H1/H2层级 + 引用块 + 行高1.85，阅读体验舒适</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>导航一致性好</strong>：79/86 页面有统一顶部导航（首页/知识库/下载/EN），用户不会迷路</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>交互反馈到位</strong>：100% 页面有 hover 样式，无"提交/确定/点击这里"等模糊按钮文字，CTA 按钮视觉突出</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>内容可读性强</strong>：正文字号 15-16px，行高 1.85，段落长度适中，仅法律协议页有长段落</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>移动端基础扎实</strong>：100% 页面有 viewport，82/86 有响应式媒体查询</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>信任基础完善</strong>：100% 页面有隐私政策链接和公司信息，HTTPS 全站强制</span></li>
+    <li class="good-item"><span class="good-check">✓</span><span class="good-text"><strong>中英文切换闭环</strong>：首页 i18n 切换 + 知识库 EN 入口 + 英文索引页，海外用户可浏览</span></li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>问题清单与修复建议（按优先级）</h2>
+  
+  <h3>高优先级（影响可访问性/合规）</h3>
+  <ul class="issue-list">
+    <li class="issue-item">
+      <span class="issue-severity sev-high">高</span>
+      <div class="issue-content">
+        <div class="issue-title">84/86 页面缺少键盘焦点样式（:focus）</div>
+        <div class="issue-desc">全站仅 2 个页面有 :focus 样式。键盘导航用户（Tab 键切换）无法看到当前焦点位置，违反 WCAG 2.4.7 Focus Visible。这是可访问性最大短板。</div>
+        <div class="issue-fix">修复：在全局 CSS 中添加 a:focus, button:focus { outline: 2px solid #c9a96a; outline-offset: 2px; }，一行代码覆盖全站。</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3>中优先级（影响转化/信任）</h3>
+  <ul class="issue-list">
+    <li class="issue-item">
+      <span class="issue-severity sev-medium">中</span>
+      <div class="issue-content">
+        <div class="issue-title">首页首屏无 CTA 下载按钮</div>
+        <div class="issue-desc">浏览器实测：打开首页后，首屏被太极星球大图占据，看不到任何下载按钮或 CTA。用户需要向下滚动才能找到下载入口。研究显示首屏 CTA 可提升转化率 20-30%。</div>
+        <div class="issue-fix">修复：在 Hero 区太极图下方或叠加一个"立即下载"金色按钮，或缩小 Hero 图比例让 CTA 进入首屏。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-medium">中</span>
+      <div class="issue-content">
+        <div class="issue-title">仅 7/86 页面 footer 有 ICP 备案号</div>
+        <div class="issue-desc">79 个知识库页面 footer 缺少 ICP 备案号（京ICP备16050769号-4）。国内合规要求经营性网站在页脚标注备案号，缺失影响信任度和合规性。</div>
+        <div class="issue-fix">修复：批量在 79 个知识库页 footer 添加 ICP 备案号链接（指向 beian.miit.gov.cn）。</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3>低优先级（优化体验）</h3>
+  <ul class="issue-list">
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">首页主导航放了"Delete Account"链接</div>
+        <div class="issue-desc">浏览器实测：首页顶部导航包含 Download / Knowledge / Sign in / Register / Delete Account / 中。"Delete Account"（注销账号）放在主导航不合适，容易误触，应该放在 footer 或用户设置菜单里。</div>
+        <div class="issue-fix">修复：从主导航移除"Delete Account"，保留在 footer（已有）和登录页内。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">首页导航文字对比度偏低</div>
+        <div class="issue-desc">首页导航文字为浅灰色（#9a968c），在深色背景（#0a0a0f）上对比度约 4.0:1，略低于 WCAG AA 标准的 4.5:1（正常文本）。知识库页导航文字对比度正常。</div>
+        <div class="issue-fix">修复：首页导航文字颜色调亮至 #b8b4a8 或添加 hover 时变金色（已有）。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">footer 链接偏少（平均 3.1 个）</div>
+        <div class="issue-desc">全站 footer 平均仅 3.1 个链接（服务协议/隐私政策/账号注销）。可以增加"关于我们""知识库""联系方式"等有用链接，提升站内互链和用户导航。</div>
+        <div class="issue-fix">修复：footer 增加"关于我们""知识库""联系方式"链接，分组展示。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">英文知识库索引页缺少面包屑导航</div>
+        <div class="issue-desc">knowledge.en.html 没有面包屑导航（Home / Knowledge），而中文知识库页都有。英文用户无法快速返回上级页面。</div>
+        <div class="issue-fix">修复：在 knowledge.en.html 顶部添加面包屑导航（Home / Knowledge Center）。</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>用户核心路径走查结果</h2>
+  <table>
+    <tr><th>用户任务</th><th>路径</th><th>完成度</th><th>问题</th></tr>
+    <tr><td>下载 App</td><td>首页 → 滚动 → 下载区 → 点击下载</td><td style="color:var(--orange)">需滚动</td><td>首屏无 CTA，需滚动 1-2 屏</td></tr>
+    <tr><td>阅读知识库</td><td>首页 → 知识库 → 选文章 → 阅读</td><td style="color:var(--green)">顺畅</td><td>面包屑/TOC/上下篇完整，体验好</td></tr>
+    <tr><td>中英文切换</td><td>首页 EN → 英文态 / 知识库 EN → 英文索引</td><td style="color:var(--green)">顺畅</td><td>闭环已建立，英文索引页缺面包屑</td></tr>
+    <tr><td>注销账号</td><td>导航 Delete Account → 注销页 → 操作</td><td style="color:var(--orange)">可达但位置不当</td><td>注销链接在主导航，易误触，应移至 footer</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>审计方法说明</h2>
+  <p style="color:var(--muted);font-size:13px;line-height:2">
+    本次 UX/UI 审计采用<strong>代码批量扫描 + 浏览器实测走查</strong>双轨方法：<br/>
+    <strong>代码扫描</strong>：对 sitemap 中 86 个 URL 并发抓取，检查导航一致性、视觉层级、交互反馈、可读性、移动端、信任度、可访问性 7 大维度共 30+ 指标。<br/>
+    <strong>浏览器走查</strong>：用真实浏览器访问首页和知识库文章页，截图验证视觉效果、导航布局、CTA 可见性、排版舒适度，模拟用户核心任务路径。<br/>
+    <strong>参考标准</strong>：Nielsen 十大可用性原则、WCAG 2.1 AA、Maze UX Audit Checklist、WowMakers 50-point UX Audit、Heurilens UX Checklist。
+  </p>
+</div>
+
+<div class="footer">
+  天机推演官网 UX/UI 用户体验审计报告 · 2026-09-01 · 北京无元数字科技有限公司
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+var radarChart = echarts.init(document.getElementById('radarChart'));
+radarChart.setOption({
+  tooltip: {},
+  radar: {
+    indicator: [
+      {name: '导航与IA', max: 100},
+      {name: '视觉一致性', max: 100},
+      {name: '交互反馈', max: 100},
+      {name: '内容可读性', max: 100},
+      {name: '移动端', max: 100},
+      {name: '任务转化', max: 100},
+      {name: '信任度', max: 100},
+      {name: '可访问性', max: 100}
+    ],
+    axisName: {color: '#9a968c', fontSize: 12},
+    splitArea: {areaStyle: {color: ['rgba(201,169,106,0.02)', 'rgba(201,169,106,0.05)']}},
+    splitLine: {lineStyle: {color: '#23232f'}},
+    axisLine: {lineStyle: {color: '#23232f'}}
+  },
+  series: [{
+    type: 'radar',
+    data: [{
+      value: [92,95,90,93,90,80,82,70],
+      name: 'UX/UI 得分',
+      itemStyle: {color: '#c9a96a'},
+      areaStyle: {color: 'rgba(201,169,106,0.3)'},
+      lineStyle: {color: '#c9a96a', width: 2}
+    }]
+  }]
+});
+
+var severityChart = echarts.init(document.getElementById('severityChart'));
+severityChart.setOption({
+  tooltip: {trigger: 'item'},
+  legend: {bottom: 0, textStyle: {color: '#9a968c'}},
+  series: [{
+    type: 'pie',
+    radius: ['40%', '70%'],
+    data: [
+      {value: 1, name: '高优先级', itemStyle: {color: '#d9534f'}},
+      {value: 2, name: '中优先级', itemStyle: {color: '#f0ad4e'}},
+      {value: 4, name: '低优先级', itemStyle: {color: '#5cb85c'}}
+    ],
+    label: {color: '#e8e6e1', formatter: '{b}: {c}'}
+  }]
+});
+
+var coverageChart = echarts.init(document.getElementById('coverageChart'));
+coverageChart.setOption({
+  tooltip: {trigger: 'axis'},
+  grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+  xAxis: {type: 'value', max: 100, axisLabel: {color: '#9a968c'}, splitLine: {lineStyle: {color: '#23232f'}}},
+  yAxis: {type: 'category', data: ['焦点样式','ICP备案','有媒体查询','有顶部导航','有footer','图片alt','有viewport','有lang'], axisLabel: {color: '#9a968c', fontSize: 11}},
+  series: [{
+    type: 'bar',
+    data: [
+      {value: 2, itemStyle: {color: '#d9534f'}},
+      {value: 7, itemStyle: {color: '#d9534f'}},
+      {value: 82, itemStyle: {color: '#f0ad4e'}},
+      {value: 79, itemStyle: {color: '#f0ad4e'}},
+      {value: 82, itemStyle: {color: '#5cb85c'}},
+      {value: 86, itemStyle: {color: '#5cb85c'}},
+      {value: 86, itemStyle: {color: '#5cb85c'}},
+      {value: 86, itemStyle: {color: '#5cb85c'}}
+    ],
+    label: {show: true, position: 'right', color: '#e8e6e1', formatter: '{c}/86'},
+    barWidth: 16
+  }]
+});
+
+window.addEventListener('resize', function(){
+  radarChart.resize(); severityChart.resize(); coverageChart.resize();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!-- pages/login/login.wxml -->
+<!-- v19.4 邮箱登录页：仅保留邮箱模式（注册/登录/找回密码） -->
+<view class="login-page theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <view class="login-bg"></view>
+
+  <view class="back-btn" bindtap="goBack">
+    <text class="back-icon">‹</text>
+  </view>
+
+  <view class="login-header">
+    <view class="login-logo animate-breathe">
+      <view class="login-hex-line yang"></view>
+      <view class="login-hex-line yin"></view>
+      <view class="login-hex-line yang"></view>
+      <view class="login-hex-line yin"></view>
+      <view class="login-hex-line yang"></view>
+      <view class="login-hex-line yin"></view>
+    </view>
+    <view class="login-title font-display">{{t.title}}</view>
+    <view class="title-gold-line"></view>
+    <view class="login-subtitle">{{t.subtitle}}</view>
+  </view>
+
+  <view class="login-form">
+    <!-- 模式切换：登录 / 注册 / 找回密码 -->
+    <view class="mode-tabs">
+      <view class="mode-tab {{emailMode === 'signin' ? 'active' : ''}}" bindtap="switchEmailMode" data-mode="signin">{{t.tabSignin}}</view>
+      <view class="mode-tab {{emailMode === 'signup' ? 'active' : ''}}" bindtap="switchEmailMode" data-mode="signup">{{t.tabSignup}}</view>
+      <view class="mode-tab {{emailMode === 'forgot' ? 'active' : ''}}" bindtap="switchEmailMode" data-mode="forgot">{{t.tabForgot}}</view>
+    </view>
+
+    <!-- 邮箱 -->
+    <view class="form-group">
+      <text class="form-label">{{t.emailLabel}}</text>
+      <input
+        class="form-input"
+        type="text"
+        placeholder="{{t.emailPlaceholder}}"
+        placeholder-class="input-placeholder"
+        value="{{email}}"
+        bindinput="onEmailInput"
+      />
+    </view>
+
+    <!-- 注册/找回密码：验证码 -->
+    <view class="form-group" wx:if="{{emailMode === 'signup' || emailMode === 'forgot'}}">
+      <text class="form-label">{{t.codeLabel}}</text>
+      <view class="code-row">
+        <input
+          class="form-input code-input"
+          type="number"
+          maxlength="6"
+          placeholder="{{t.codePlaceholder}}"
+          placeholder-class="input-placeholder"
+          value="{{ecode}}"
+          bindinput="onEcodeInput"
+        />
+        <button
+          class="send-code-btn {{ecountdown > 0 ? 'disabled' : ''}}"
+          disabled="{{ecountdown > 0 || esending}}"
+          bindtap="sendEmailCode"
+        >
+          {{ecountdown > 0 ? ecountdown + 's' : t.sendCode}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 密码 -->
+    <view class="form-group" wx:if="{{emailMode === 'signin' || emailMode === 'signup'}}">
+      <text class="form-label">{{t.passwordLabel}}</text>
+      <input
+        class="form-input"
+        type="text"
+        password
+        maxlength="40"
+        placeholder="{{t.passwordPlaceholder}}"
+        placeholder-class="input-placeholder"
+        value="{{epassword}}"
+        bindinput="onEpasswordInput"
+      />
+    </view>
+
+    <!-- 找回密码：新密码 -->
+    <view class="form-group" wx:if="{{emailMode === 'forgot'}}">
+      <text class="form-label">{{t.newPasswordLabel}}</text>
+      <input
+        class="form-input"
+        type="text"
+        password
+        maxlength="40"
+        placeholder="{{t.newPasswordPlaceholder}}"
+        placeholder-class="input-placeholder"
+        value="{{newPassword}}"
+        bindinput="onNewPasswordInput"
+      />
+    </view>
+
+    <!-- 提交按钮 -->
+    <button
+      class="login-btn"
+      disabled="{{isSubmitDisabled}}"
+      bindtap="submitAction"
+    >
+      {{esubmitting ? t.logging : submitBtnText}}
+    </button>
+
+    <!-- 登录态：忘记密码链接 -->
+    <view class="form-link-row" wx:if="{{emailMode === 'signin'}}">
+      <text class="form-link" bindtap="switchEmailMode" data-mode="forgot">{{t.forgotPassword}}</text>
+    </view>
+
+    <!-- 注册/找回密码：切换回登录 -->
+    <view class="form-link-row" wx:if="{{emailMode !== 'signin'}}">
+      <text class="form-link" bindtap="switchEmailMode" data-mode="signin">{{t.backToSignin}}</text>
+    </view>
+  </view>
+
+  <view class="login-footer" wx:if="{{emailMode === 'signup'}}">
+    <view class="agree-check {{agreed ? 'checked' : ''}}" bindtap="toggleAgree">
+      <view class="agree-check-box">
+        <text wx:if="{{agreed}}" class="agree-check-mark">✓</text>
+      </view>
+      <text class="agree-text">{{t.agreePrefix}}</text>
+    </view>
+    <view class="agree-links">
+      <text class="link" bindtap="goAgreement">{{t.agreement}}</text>
+      <text class="agree-text">{{t.agreeAnd}}</text>
+      <text class="link" bindtap="goPrivacy">{{t.privacy}}</text>
+    </view>
+  </view>
+</view>

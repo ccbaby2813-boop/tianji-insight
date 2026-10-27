@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "震惊三界",
+  "navigationBarBackgroundColor": "#000000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#000000",
+  "disableScroll": true,
+  "usingComponents": {
+    "icon-guo": "/components/icon-guo/icon-guo"
+  }
+}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta property="og:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>易缘契合 · 天机推演</title>
+<meta name="description" content="天机推演·易缘匹配结果页。查看两个卦象的合盘关系解读。" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: #FFF8F3;
+    color: #3A2E28;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { width: 100%; max-width: 460px; padding: 40px 26px 48px; display: flex; flex-direction: column; align-items: center; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 34px; }
+  .brand img { width: 30px; height: 30px; border-radius: 8px; }
+  .brand-name { font-size: 15px; letter-spacing: 4px; color: #8a6d4a; font-weight: 500; }
+  .lang-row { position: absolute; top: 18px; right: 20px; }
+  .lang-btn { font-size: 13px; color: #8a6d4a; background: none; border: 1px solid #c9b594; border-radius: 20px; padding: 4px 14px; cursor: pointer; }
+  .seal { width: 64px; height: 64px; border: 2px solid #b08d57; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #b08d57; font-size: 30px; margin-bottom: 20px; background: #fff8f3; }
+  .card {
+    width: 100%; background: #fffdfa; border: 1px solid #eadbc4; border-radius: 16px;
+    padding: 30px 24px 26px; text-align: center; box-shadow: 0 6px 24px rgba(138,109,74,.06);
+  }
+  .kicker { font-size: 12px; letter-spacing: 3px; color: #b08d57; margin-bottom: 14px; }
+  .title { font-size: 22px; line-height: 1.4; letter-spacing: 1px; font-weight: 600; color: #3A2E28; }
+  .title .name { color: #b08d57; }
+  .divider { width: 40px; height: 1px; background: #c9b594; margin: 22px auto; }
+  .desc { font-size: 14px; line-height: 1.9; color: #6b5a4c; }
+  .desc .gua { color: #b08d57; font-weight: 500; }
+  .hint { font-size: 12px; color: #a89a8a; margin-top: 18px; line-height: 1.7; }
+  .btn-wrap { width: 100%; display: flex; flex-direction: column; gap: 14px; margin-top: 26px; }
+  .btn {
+    width: 100%; height: 52px; border-radius: 12px; font-size: 16px; letter-spacing: 2px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity .2s;
+  }
+  .btn:active { opacity: .75; }
+  .btn-primary { background: #b08d57; color: #FFF6EA; border: none; }
+  .btn-ghost { background: transparent; color: #6b5a4c; border: 1px solid #c9b594; }
+  .dl-hint { font-size: 12px; color: #c0392b; margin-top: 14px; display: none; line-height: 1.6; }
+  .foot { margin-top: 30px; font-size: 11px; color: #b7a99a; letter-spacing: 1px; text-align: center; line-height: 1.8; }
+  .loading, .error { padding: 40px 20px; font-size: 15px; color: #6b5a4c; text-align: center; line-height: 1.8; }
+  .wechat-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; z-index: 99; }
+  .wechat-tip { width: 86%; max-width: 380px; background: #fffdfa; border-radius: 16px; padding: 30px 24px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,.2); }
+  .wechat-tip-title { font-size: 18px; font-weight: 600; color: #3A2E28; margin-bottom: 14px; }
+  .wechat-tip-body { font-size: 14px; line-height: 1.9; color: #6b5a4c; margin-bottom: 22px; }
+  .wechat-tip-body b { color: #b08d57; }
+  .wechat-tip .btn { height: 46px; font-size: 15px; }
+  @media (max-width: 360px) { .title { font-size: 20px; } }
+</style>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?bc2eeb3274de3884460e0368816fdd39";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNDSJZPLG6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NNDSJZPLG6');
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://claw-book.cn/"},{"@type":"ListItem","position":2,"name":"易缘契合 · 天机推演"}]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://claw-book.cn/#organization","name":"天机推演","alternateName":"I Ching Insight","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png"},"description":"天机推演将5000年易经智慧与AI技术结合，提供64卦解读、AI星座、人格分析与灵魂匹配服务。","sameAs":["https://x.com/ccbaby2813","https://www.instagram.com/ccbaby2813/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","availableLanguage":["Chinese","English"]}}</script>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://claw-book.cn/images/og-default.jpg"/>
+</head>
+<body>
+<div class="wrap">
+  <div class="lang-row"><button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button></div>
+  <div class="brand">
+    <img src="/taiji-logo.png" alt="天机推演" fetchpriority="high" fetchpriority="high" width="512" height="512">
+    <span class="brand-name">天 · 机 · 推 · 演</span>
+  </div>
+  <div class="seal">卦</div>
+
+  <div class="card" id="cardLoading">
+    <div class="loading" data-i18n="loading">正在解读缘分之契…</div>
+  </div>
+
+  <div class="card" id="cardError" style="display:none">
+    <div class="error" data-i18n="error">这份契合链接已失效或不存在，请让分享方重新生成。</div>
+  </div>
+
+  <div class="card" id="cardMain" style="display:none">
+    <div class="kicker" data-i18n="kicker">易 · 缘 · 契 · 合</div>
+    <div class="title"><span class="name" id="sharerName"></span> <span data-i18n="title_tail">想与你共结一段缘分契合</span></div>
+    <div class="divider"></div>
+    <div class="desc">
+      <span data-i18n="desc_pre">TA 的命格之卦是</span> <span class="gua" id="sharerGua"></span><span data-i18n="desc_mid">。</span><br>
+      <span data-i18n="desc_tail">打开天机推演 App，查看你们之间的相生与契合。</span>
+    </div>
+    <div class="hint" data-i18n="hint">* 需已安装并登录天机推演、且完成建档，方可查看双方匹配关系</div>
+  </div>
+
+  <div class="btn-wrap" id="btnWrap" style="display:none">
+    <button class="btn btn-primary" id="openBtn" onclick="openApp()" data-i18n="open">打开 App</button>
+    <button class="btn btn-ghost" id="dlBtn" onclick="downloadApp()" data-i18n="download">下载 App</button>
+    <button class="btn btn-ghost" id="copyBtn" onclick="copyLink()" style="display:none" data-i18n="copy_link">复制链接</button>
+    <div class="dl-hint" id="dlHint" data-i18n="dl_hint">仍未唤醒应用，若已安装请点击上方"下载/重新打开"；否则请先下载安装。</div>
+    <div class="wechat-mask" id="wechatMask" style="display:none">
+      <div class="wechat-tip">
+        <div class="wechat-tip-title" data-i18n="wx_title">微信内无法直接打开 App</div>
+        <div class="wechat-tip-body" data-i18n="wx_body">请点右上角「···」选择<b>「在浏览器打开」</b>，将自动唤起天机推演 App 进入匹配页；或点击下方按钮复制链接，粘贴到手机浏览器打开。</div>
+        <button class="btn btn-ghost" onclick="copyLink()" data-i18n="copy_link2">复制链接用浏览器打开</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">天机推演 · 以易经智慧，解读人与人之间的契合<br>App 需在手机端安装运行</div>
+</div>
+
+<script>
+var STRINGS = {
+  loading: '正在解读缘分之契…',
+  error: '这份契合链接已失效或不存在，请让分享方重新生成。',
+  kicker: '易 · 缘 · 契 · 合',
+  desc_pre: 'TA 的命格之卦是',
+  desc_mid: '。',
+  desc_tail: '打开天机推演 App，解锁你们之间的相生与契合。',
+  hint: '* 需已安装并登录天机推演、且完成建档，方可查看双方匹配关系',
+  open: '打开 App',
+  download: '下载 App',
+  copy_link: '复制链接',
+  copy_link2: '复制链接用浏览器打开',
+  dl_hint: '仍未唤醒应用，若已安装请再次点击"打开 App"；否则请先下载安装。',
+  wx_title: '微信内无法直接打开 App',
+  wx_body: '请点右上角「···」选择「在浏览器打开」，将自动唤起天机推演 App 进入匹配页；或点击下方按钮复制链接，粘贴到手机浏览器打开。',
+  still_loading: '链接解析中…'
+};
+var STRINGS_EN = {
+  loading: 'Decoding the bond…',
+  error: 'This match link has expired or is invalid. Please ask the sharer to regenerate it.',
+  kicker: 'DESTINED · BOND',
+  title_tail: 'wants to share a destined bond with you',
+  desc_pre: 'Their life-hexagram is',
+  desc_mid: '.',
+  desc_tail: 'Open Tianji to reveal the resonance between you two.',
+  hint: '* Requires the I Ching Insight app installed & signed in, and a completed profile to view the match',
+  open: 'Open App',
+  download: 'Download App',
+  copy_link: 'Copy Link',
+  copy_link2: 'Copy link & open in browser',
+  dl_hint: 'Could not wake the app. If installed, tap "Open App" again; otherwise download it first.',
+  wx_title: 'Cannot open App inside WeChat',
+  wx_body: 'Tap "···" at the top-right and choose "Open in Browser" to auto-launch the Tianji app into the match page; or copy the link below and open it in your phone browser.',
+  still_loading: 'Resolving link…'
+};
+
+function t() { return i18n === 'en' ? STRINGS_EN : STRINGS; }
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    var k = el.getAttribute('data-i18n');
+    if (k in t()) el.textContent = t()[k];
+  });
+}
+var i18n = 'zh';
+function toggleLang() {
+  i18n = i18n === 'zh' ? 'en' : 'zh';
+  document.getElementById('langBtn').textContent = i18n === 'zh' ? 'EN' : '中文';
+  applyLang();
+}
+
+function qs(name) {
+  var m = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+var sid = (qs('sid') || '').replace(/\D/g, '');
+var sharerName = '', sharerGua = '', sharerNickname = '';
+var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+var isWechat = /MicroMessenger/i.test(navigator.userAgent);
+var _autoLaunchDone = false; // 自动唤起只触发一次
+
+function show(id) {
+  ['cardLoading', 'cardError', 'cardMain'].forEach(function (c) { document.getElementById(c).style.display = (c === id ? 'block' : 'none'); });
+  document.getElementById('btnWrap').style.display = (id === 'cardMain' ? 'flex' : 'none');
+}
+
+function resolveShare() {
+  if (!sid) { show('cardError'); return; }
+  fetch(location.origin + '/tianji/api/share/resolve/' + sid)
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res && res.success && res.data && res.data.sharerGuaId) {
+        sharerName = res.data.sharerNickname || '';
+        sharerGua = res.data.sharerGuaId || '';
+        document.getElementById('sharerName').textContent = sharerName || t().still_loading;
+        document.getElementById('sharerGua').textContent = '第' + sharerGua + '卦';
+        show('cardMain');
+        // [SEC-FIX/深链] 页面加载后自动尝试唤起 App：已装 App 用户点击链接即自动拉起，无需再点按钮
+        setTimeout(tryAutoLaunch, 600);
+      } else {
+        show('cardError');
+      }
+    })
+    .catch(function () { show('cardError'); });
+}
+
+// 唤起入口：Android 走 scheme，iOS 走 Universal Link；微信内两者均会被拦截，直接给"浏览器打开"引导
+function launch(showHint) {
+  if (!sid) return;
+  var uri = isIOS ? ('https://claw-book.cn/app?sid=' + sid) : ('tianji://match?sid=' + sid);
+  // iOS 用 iframe 方式避免未装 App 时 Safari 弹"无法打开"警告；Android 用 location 更可靠
+  if (isIOS) {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = uri;
+    document.body.appendChild(iframe);
+    setTimeout(function () { if (iframe.parentNode) iframe.parentNode.removeChild(iframe); }, 3000);
+  } else {
+    location.href = uri;
+  }
+  if (showHint) {
+    setTimeout(function () {
+      if (!document.hidden) {
+        document.getElementById('dlHint').style.display = 'block';
+        if (isWechat) showWechatGuide();
+      }
+    }, 2500);
+  }
+}
+
+function showWechatGuide() {
+  // 微信内置浏览器内 scheme/Universal Link 均被微信安全策略拦截，无法唤起 App，
+  // 显示醒目引导：右上角"···"在浏览器打开，或复制链接用手机浏览器打开
+  document.getElementById('copyBtn').style.display = 'block';
+  document.getElementById('wechatMask').style.display = 'flex';
+}
+
+function copyLink() {
+  var url = location.href;
+  var done = function () { wxToast('已复制链接，请用手机浏览器打开'); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done, function () { fallbackCopy(url, done); });
+  } else {
+    fallbackCopy(url, done);
+  }
+}
+function fallbackCopy(text, done) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  done();
+}
+function wxToast(msg) {
+  var el = document.createElement('div');
+  el.textContent = msg;
+  el.style.cssText = 'position:fixed;left:50%;top:46%;transform:translate(-50%,-50%);background:rgba(0,0,0,.72);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:999;';
+  document.body.appendChild(el);
+  setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 2000);
+}
+
+function tryAutoLaunch() {
+  if (_autoLaunchDone || !sid) return;
+  _autoLaunchDone = true;
+  if (isWechat) {
+    // 微信内 scheme/Universal Link 均被拦截，无法自动唤起，直接给"浏览器打开"引导
+    showWechatGuide();
+    return;
+  }
+  launch(true);
+}
+
+function openApp() {
+  if (!sid) return;
+  // 手动点击：不重复自动尝试，直接唤起 + 未唤起时给提示
+  launch(true);
+}
+document.addEventListener('visibilitychange', function () {
+  if (!document.hidden) {
+    // 回到页面：若之前自动唤起失败（App 未装/未唤起），把"打开 App"按钮保留给用户手动重试
+    document.getElementById('dlHint').style.display = 'block';
+  }
+});
+function downloadApp() {
+  // 直接跳转 .apk 会被部分浏览器（如腾讯）拦截；改为跳官网首页【下载】板块，由用户自行点击下载
+  location.href = location.origin + '/#download';
+}
+
+resolveShare();
+</script>
+</body>
+</html>

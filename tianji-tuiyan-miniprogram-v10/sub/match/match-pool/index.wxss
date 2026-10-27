@@ -1,0 +1,1428 @@
+/* sub/match/match-pool/index.wxss - 易缘传书：纯黑画布·诗意留白
+ * Visual Thesis: Co-Star 纯黑画布 + 诗意排版 + 极致留白 + 零装饰 + 单色 + 一点金色
+ * 候选卡片如夜空中浮现的卦象，金线勾勒仪式感，结缘印章封缄缘分
+ */
+
+/* ========================================
+ * 根容器：纯黑画布（Co-Star 风格）
+ * ======================================== */
+.page-letter {
+  /* 易缘匹配类页面：宣纸浅色主题变量（覆盖 page 级深色变量） */
+  --bg-base: #FFF8F3;
+  --bg-elevated: #FFFFFF;
+  --bg-warm: #FEF0E5;
+  --bg-warmer: #FFFBF5;
+  --bg-muted: rgba(200, 165, 91, 0.04);
+
+  --text-primary: #3A2E1F;
+  --text-secondary: #6B5A45;
+  --text-muted: #9B8B75;
+  --text-faint: #B5A695;
+  --text-inverse: #FFF8F3;
+
+  --accent-gold: #C8A55B;
+  --accent-gold-deep: #8B7340;
+  --accent-gold-light: #C8A55B;
+  --accent-gold-hover: #C8A55B;
+  --accent-gold-muted: rgba(200, 165, 91, 0.12);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.04);
+  --accent-gold-border: rgba(200, 165, 91, 0.3);
+
+  --border-subtle: rgba(200, 165, 91, 0.08);
+  --border-default: rgba(200, 165, 91, 0.15);
+  --border-strong: rgba(200, 165, 91, 0.35);
+  --border-paper: #F0E4D8;
+  --border-paper-strong: #E8D5C4;
+
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 28rpx;
+  --radius-full: 999rpx;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 16rpx 48rpx rgba(61, 43, 31, 0.18);
+  --shadow-gold: none;
+  --shadow-gold-glow: 0 0 24rpx rgba(200, 165, 91, 0.15);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  width: 100%;
+  min-height: 100vh;
+  background: #FFF8F3;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  color: var(--text-primary);
+}
+
+/* ========================================
+ * 头部：极致留白·诗意排版
+ * ======================================== */
+.pool-header {
+  padding: 80rpx 32rpx 48rpx;
+  background: transparent;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 0.6s var(--ease-out-expo) both;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.title-main {
+  font-size: 48rpx;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 12rpx;
+  text-shadow: none;
+}
+
+.title-sub {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  margin-top: 20rpx;
+  letter-spacing: 6rpx;
+  font-weight: 300;
+}
+
+/* 剩余次数徽章：极简金线描边 */
+.pill-badge {
+  padding: 6rpx 20rpx;
+  background: transparent;
+  border: 1rpx solid var(--border-strong);
+  border-radius: 24rpx;
+  box-shadow: none;
+  animation: badgePopIn 0.5s var(--ease-spring) both;
+}
+
+.pill-text {
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  letter-spacing: 2rpx;
+  font-weight: 400;
+}
+
+/* 游客模式徽章：虚线边框 */
+.pill-badge-guest {
+  border-style: dashed;
+  border-color: rgba(200, 165, 91, 0.4);
+}
+
+.pill-badge-guest .pill-text {
+  color: rgba(200, 165, 91, 0.6);
+}
+
+/* ========================================
+ * 状态区：居中留白
+ * ======================================== */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 0 64rpx;
+  box-sizing: border-box;
+}
+
+.state-text {
+  font-size: 28rpx;
+  color: var(--text-muted);
+  line-height: 2.0;
+  text-align: center;
+  margin-top: 32rpx;
+  letter-spacing: 4rpx;
+  font-weight: 300;
+}
+
+.empty-icon {
+  font-size: 96rpx;
+  color: var(--accent-gold);
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.state-btn {
+  margin-top: 48rpx;
+  padding: 16rpx 56rpx;
+  border: 1rpx solid var(--border-strong);
+  border-radius: 0;
+  font-size: 26rpx;
+  color: var(--accent-gold);
+  letter-spacing: 6rpx;
+  transition: all 0.2s var(--ease-out-expo);
+  background: transparent;
+}
+
+.state-btn:active {
+  background: var(--accent-gold-subtle);
+  transform: scale(0.97);
+}
+
+/* ========================================
+ * 空状态：莲花SVG + 诗意文案
+ * ======================================== */
+.state-box-empty {
+  padding: 0 48rpx;
+}
+
+.empty-lotus-wrap {
+  margin-bottom: 16rpx;
+  opacity: 0.7;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.empty-poem {
+  font-size: 36rpx;
+  color: var(--accent-gold);
+  line-height: 2.0;
+  letter-spacing: 4rpx;
+  text-align: center;
+  padding: 24rpx 0;
+  max-width: 560rpx;
+}
+
+/* ========================================
+ * 卡片堆叠区：纯黑画布上的卦象
+ * ======================================== */
+.pool-content {
+  padding: 56rpx 32rpx 32rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部诗意标题 */
+.pool-poem-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+  animation: fadeInUp 0.7s var(--ease-out-expo) both;
+}
+
+.poem-header-line {
+  width: 80rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.poem-header-text {
+  font-size: 36rpx;
+  color: var(--accent-gold);
+  letter-spacing: 16rpx;
+  font-weight: 500;
+}
+
+.poem-subtitle {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-muted);
+  letter-spacing: 8rpx;
+  margin-bottom: 56rpx;
+  opacity: 0.7;
+  animation: fadeInUp 0.7s var(--ease-out-expo) 0.1s both;
+}
+
+.card-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========================================
+ * 候选卡牌（v6.0 极简·暧昧·艺术）
+ * 设计理念：极简 + 暧昧 + 艺术
+ * 视觉特征：
+ *   - 纯净留白背景，仅一层极淡柔影
+ *   - 三条性感艺术曲线（贝塞尔）作为唯一装饰
+ *   - 无烫金、无纹理、无光环、无角标
+ *   - 诗集式排版，大量留白，细金线分隔
+ *   - 启封按钮：纯文字 + 细下划线，触感优雅
+ * ======================================== */
+
+.greeting-card {
+  position: relative;
+  width: 100%;
+  max-width: 620rpx;
+  margin-bottom: 64rpx;
+  box-sizing: border-box;
+  animation: greetingCardIn 0.9s var(--ease-out-expo) both;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+/* 逐张错落入场 */
+.greeting-card:nth-child(1) { animation-delay: 0.08s; }
+.greeting-card:nth-child(2) { animation-delay: 0.18s; }
+.greeting-card:nth-child(3) { animation-delay: 0.28s; }
+.greeting-card:nth-child(4) { animation-delay: 0.38s; }
+.greeting-card:nth-child(5) { animation-delay: 0.48s; }
+.greeting-card:nth-child(n+6) { animation-delay: 0.58s; }
+
+@keyframes greetingCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.greeting-card:active {
+  transform: translateY(-2rpx);
+}
+
+/* 卡牌主面：纯净留白 + 单层柔影 */
+.greeting-face {
+  position: relative;
+  background: #FFFCF7;
+  padding: 80rpx 48rpx 64rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 4rpx;
+  box-shadow:
+    0 8rpx 32rpx rgba(61, 43, 31, 0.04),
+    0 2rpx 8rpx rgba(61, 43, 31, 0.03);
+  transition: box-shadow 0.4s var(--ease-out-expo);
+}
+
+.greeting-card:active .greeting-face {
+  box-shadow:
+    0 4rpx 16rpx rgba(61, 43, 31, 0.05),
+    0 1rpx 4rpx rgba(61, 43, 31, 0.03);
+}
+
+/* ========================================
+ * 极简艺术曲线层（canvas绘制：女性S曲线 + 男性肌肉线）
+ * 设计理念：一柔一刚，暧昧张力
+ * ======================================== */
+.greeting-art-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* 女性S曲线canvas：淡粉色，流畅波浪 */
+.art-canvas-female {
+  position: absolute;
+  top: 30rpx;
+  right: 40rpx;
+  width: 200rpx;
+  height: 120rpx;
+  pointer-events: none;
+}
+
+/* 男性肌肉线canvas：金色，三条线段 */
+.art-canvas-male {
+  position: absolute;
+  bottom: 50rpx;
+  left: 24rpx;
+  width: 160rpx;
+  height: 112rpx;
+  pointer-events: none;
+}
+
+/* 极简序号（左上角小字，无装饰） */
+.greeting-index {
+  position: absolute;
+  top: 32rpx;
+  left: 36rpx;
+  z-index: 2;
+}
+
+.greeting-index-text {
+  font-size: 22rpx;
+  color: rgba(155, 139, 117, 0.5);
+  letter-spacing: 4rpx;
+  font-weight: 300;
+  font-family: "Georgia", serif;
+}
+
+/* 卦象符号区：极简纯字，无光环无背景 */
+.greeting-symbol-section {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40rpx;
+  padding: 12rpx 0;
+}
+
+.greeting-symbol {
+  font-size: 96rpx;
+  color: var(--text-primary);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 0.85;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+}
+
+/* 主体信息区 */
+.greeting-body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 卦名卦格行：左信息 + 右五行极简标记 */
+.greeting-gua-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+  margin-bottom: 14rpx;
+  width: 100%;
+}
+
+.greeting-gua-info {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 卦名：眉头小字 + 衬线 + 字距 */
+.greeting-gua-name {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  letter-spacing: 6rpx;
+  text-indent: 6rpx;
+  font-weight: 400;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+}
+
+.greeting-gua-ge {
+  font-size: 22rpx;
+  color: var(--text-faint);
+  letter-spacing: 3rpx;
+  text-indent: 3rpx;
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+/* 五行：极简单字，无徽章，颜色暗示 */
+.greeting-wuxing-text {
+  font-size: 22rpx;
+  font-weight: 400;
+  letter-spacing: 2rpx;
+  line-height: 1;
+  opacity: 0.7;
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+/* 五行配色（金/木/水/火/土）：单色不同透明度 */
+.wuxing-jin { color: #B8860B; }
+.wuxing-mu { color: #5A7A3D; }
+.wuxing-shui { color: #3A5F8C; }
+.wuxing-huo { color: #B0432F; }
+.wuxing-tu { color: #C8A55B; }
+
+/* 昵称行：昵称 + 性别 + VIP */
+.greeting-name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  min-width: 0;
+}
+
+/* 昵称：诗集式大字号 + 字距，无阴影（超长 ellipsis） */
+.greeting-nickname {
+  font-size: 44rpx;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 8rpx;
+  text-indent: 8rpx;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 性别：极简单字，无背景无框 */
+.greeting-gender-text {
+  font-size: 22rpx;
+  font-weight: 400;
+  letter-spacing: 2rpx;
+  opacity: 0.55;
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+.greeting-gender-male { color: #4A6B8A; }
+.greeting-gender-female { color: #C45A4C; }
+
+/* VIP 标记：极简小字 */
+.greeting-vip-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28rpx;
+  height: 28rpx;
+  padding: 0 8rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.4);
+  color: rgba(200, 165, 91, 0.75);
+  font-size: 20rpx;
+  font-weight: 400;
+  background: transparent;
+  border-radius: 2rpx;
+}
+
+/* 生辰信息：极简一行文字，无背景无框 */
+.greeting-birth-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  margin-bottom: 32rpx;
+}
+
+.greeting-birth-text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  letter-spacing: 2rpx;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.greeting-birth-solar-text {
+  font-size: 22rpx;
+  color: var(--text-faint);
+  letter-spacing: 1rpx;
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+.greeting-birth-divider {
+  font-size: 20rpx;
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+/* 艺术细线分隔：单条极细渐变金线 */
+.greeting-thin-line {
+  width: 40rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.5) 50%,
+    transparent 100%);
+  margin: 0 0 32rpx;
+}
+
+/* 性格自嘲：诗意斜体，无引号装饰 */
+.greeting-personality {
+  margin: 0 32rpx 48rpx;
+  text-align: center;
+  position: relative;
+}
+
+.greeting-personality-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 2.0;
+  letter-spacing: 3rpx;
+  font-style: italic;
+  font-family: "STKaiti", "KaiTi", "Georgia", serif;
+  text-shadow: none;
+  opacity: 0.9;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 结缘按钮：极简文字 + 细下划线 */
+.greeting-match-btn-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  margin-top: 8rpx;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.greeting-match-btn-wrap:active {
+  transform: scale(0.98);
+  opacity: 0.7;
+}
+
+.greeting-btn-text {
+  font-size: 28rpx;
+  color: var(--accent-gold);
+  letter-spacing: 16rpx;
+  text-indent: 16rpx;
+  font-weight: 400;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+  transition: color 0.3s var(--ease-out-expo);
+}
+
+.greeting-btn-line {
+  width: 48rpx;
+  height: 1rpx;
+  background: var(--accent-gold);
+  opacity: 0.6;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.greeting-match-btn-wrap:active .greeting-btn-line {
+  width: 64rpx;
+  opacity: 1;
+}
+
+.pool-bottom-spacer {
+  height: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+.pool-bottom {
+  text-align: center;
+  padding: 48rpx 0 16rpx;
+  font-size: 22rpx;
+  color: var(--text-faint);
+  letter-spacing: 4rpx;
+  font-weight: 300;
+}
+
+/* ========================================
+ * 引言引导浮层：纯黑画布 + 莲花水印 + 诗意排版
+ * ======================================== */
+.intro-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48rpx;
+  backdrop-filter: blur(16rpx);
+}
+
+.intro-modal {
+  width: 100%;
+  max-width: 620rpx;
+  background: #FFF8F3;
+  border-radius: var(--radius-xl);
+  padding: 64rpx 40rpx 48rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1rpx solid var(--border-default);
+  animation: scaleIn 0.4s var(--ease-out-expo) both;
+}
+
+.intro-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.intro-bg-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 248, 243, 0.7), rgba(255, 248, 243, 0.9));
+  z-index: 0;
+}
+
+/* 莲花水印背景（半透明居中） */
+.intro-lotus-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 1;
+}
+
+.intro-decor {
+  text-align: center;
+  margin-bottom: 32rpx;
+  opacity: 0.9;
+}
+
+.intro-decor-icon {
+  font-size: 56rpx;
+  color: var(--accent-gold);
+  text-shadow: none;
+}
+
+.intro-text-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+/* 引言标题：L2 标题字 */
+.intro-title {
+  font-size: 36rpx;
+  color: var(--accent-gold);
+  line-height: 1.8;
+  letter-spacing: 8rpx;
+  text-align: center;
+  margin-bottom: 16rpx;
+  font-weight: 400;
+}
+
+.intro-line {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 2.0;
+  letter-spacing: 4rpx;
+  text-align: center;
+  text-shadow: none;
+  font-weight: 300;
+}
+
+.intro-line-indent {
+  color: var(--text-secondary);
+}
+
+.intro-line-em {
+  color: var(--accent-gold-light);
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 32rpx;
+  font-weight: 400;
+  margin-top: 8rpx;
+}
+
+.intro-divider {
+  width: 80rpx;
+  height: 1rpx;
+  background: var(--accent-gold);
+  margin: 0 auto 24rpx;
+  opacity: 0.6;
+}
+
+.intro-tip {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-muted);
+  letter-spacing: 6rpx;
+  margin-bottom: 40rpx;
+  font-weight: 300;
+  text-shadow: none;
+}
+
+.intro-btn-row {
+  display: flex;
+  gap: 24rpx;
+}
+
+.intro-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s var(--ease-out-expo);
+}
+
+.intro-btn-cancel {
+  background: transparent;
+  border: 1rpx solid var(--border-strong);
+}
+
+.intro-btn-cancel:active {
+  background: var(--accent-gold-subtle);
+  transform: scale(0.97);
+}
+
+.intro-btn-cancel-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  letter-spacing: 8rpx;
+  font-weight: 300;
+}
+
+.intro-btn-confirm {
+  background: var(--accent-gold);
+  box-shadow: none;
+}
+
+.intro-btn-confirm:active {
+  transform: scale(0.97);
+  background: var(--accent-gold-hover);
+}
+
+.intro-btn-confirm-text {
+  font-size: 28rpx;
+  color: var(--text-inverse);
+  font-weight: 400;
+  letter-spacing: 8rpx;
+}
+
+/* ========================================
+ * 匹配结果浮层（宣纸古卷风·与独立 match 页统一）
+ * 双线装裱边框 + 朱砂印章 + 千纸鹤莲花装饰 + 水墨晕染
+ * ======================================== */
+.match-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1100;
+  padding: 48rpx;
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  backdrop-filter: blur(12rpx);
+}
+
+/* 信纸浮层：宣纸古卷风（覆盖深色变量） */
+.match-letter {
+  --bg-base: #F5EBD8;
+  --bg-elevated: #F5EBD8;
+  --text-primary: #3D2B1F;
+  --text-secondary: #6B5A45;
+  --text-muted: #9B8B75;
+  --text-inverse: #FFF5E8;
+  --accent-gold: #C8A55B;
+  --accent-gold-deep: #8B7340;
+  --accent-gold-light: #C8A55B;
+  --accent-gold-muted: rgba(200, 165, 91, 0.12);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.04);
+  --accent-gold-border: rgba(200, 165, 91, 0.25);
+  --border-subtle: rgba(139, 107, 74, 0.08);
+  --border-default: rgba(139, 107, 74, 0.15);
+  --border-strong: rgba(139, 107, 74, 0.3);
+
+  width: 100%;
+  max-width: 620rpx;
+  background: #F5EBD8;
+  border-radius: var(--radius-sm);
+  position: relative;
+  box-shadow: 0 16rpx 48rpx rgba(61, 43, 31, 0.4);
+  margin: auto 0;
+  animation: scaleIn 0.4s var(--ease-out-expo) both;
+  overflow: hidden;
+}
+
+/* 装裱外层：双线边框模拟古卷装裱（外粗内细） */
+.match-mount-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2rpx solid #8B6B4A;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.match-mount-border::after {
+  content: '';
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  right: 8rpx;
+  bottom: 8rpx;
+  border: 1rpx solid rgba(139, 107, 74, 0.4);
+  border-radius: 2rpx;
+  pointer-events: none;
+}
+
+.match-letter-inner {
+  position: relative;
+  z-index: 1;
+  padding: 48rpx 40rpx 40rpx;
+  overflow: hidden;
+}
+
+/* ===== 匹配结果浮层艺术曲线（canvas绘制：女性S曲线 + 男性肌肉线） ===== */
+.match-art-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* 女性S曲线canvas：淡粉色，流畅波浪 */
+.m-canvas-female {
+  position: absolute;
+  top: 30rpx;
+  right: 40rpx;
+  width: 200rpx;
+  height: 120rpx;
+  pointer-events: none;
+}
+
+/* 男性肌肉线canvas：金色，三条线段 */
+.m-canvas-male {
+  position: absolute;
+  bottom: 50rpx;
+  left: 24rpx;
+  width: 160rpx;
+  height: 112rpx;
+  pointer-events: none;
+}
+
+/* 宣纸纹理层：淡墨晕染斑点 */
+.match-paper-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(139, 107, 74, 0.06) 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 60%, rgba(139, 107, 74, 0.05) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 85%, rgba(139, 107, 74, 0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 10% 70%, rgba(200, 165, 91, 0.03) 0%, transparent 25%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 装饰元素层：千纸鹤 + 莲花 + 桃心 + 月亮 */
+.match-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.match-deco-crane {
+  position: absolute;
+  animation: matchCraneFloat 6s ease-in-out infinite;
+}
+
+.match-deco-crane-1 {
+  top: 80rpx;
+  left: 24rpx;
+  animation-delay: 0s;
+}
+
+.match-deco-crane-2 {
+  bottom: 200rpx;
+  right: 40rpx;
+  animation-delay: 1.5s;
+  animation-duration: 7s;
+}
+
+.match-deco-crane-3 {
+  top: 320rpx;
+  right: 60rpx;
+  animation-delay: 3s;
+  animation-duration: 8s;
+  opacity: 0.7;
+}
+
+@keyframes matchCraneFloat {
+  0%, 100% { transform: translate(0, 0) rotate(-8deg); }
+  50%      { transform: translate(8rpx, -12rpx) rotate(2deg); }
+}
+
+.match-deco-lotus {
+  position: absolute;
+  bottom: 60rpx;
+  left: 32rpx;
+  animation: matchLotusBreathe 5s ease-in-out infinite;
+}
+
+@keyframes matchLotusBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+
+.match-deco-heart {
+  position: absolute;
+  bottom: 120rpx;
+  right: 80rpx;
+  animation: matchHeartBeat 3s ease-in-out infinite;
+}
+
+@keyframes matchHeartBeat {
+  0%, 100% { transform: scale(1); }
+  15%      { transform: scale(1.15); }
+  30%      { transform: scale(1); }
+  45%      { transform: scale(1.1); }
+}
+
+.match-deco-moon {
+  position: absolute;
+  top: 200rpx;
+  right: 24rpx;
+  animation: matchMoonGlow 4s ease-in-out infinite;
+}
+
+@keyframes matchMoonGlow {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* 朱砂印章装饰（右上角，"缘"字印） */
+.match-seal {
+  position: absolute;
+  top: 32rpx;
+  right: 32rpx;
+  z-index: 3;
+  animation: matchSealStampIn 0.6s var(--ease-spring) 0.3s both;
+}
+
+.match-seal-square {
+  width: 72rpx;
+  height: 72rpx;
+  background: linear-gradient(135deg, #C8423A 0%, #A83028 100%);
+  border: 2rpx solid #8B2820;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4rpx 12rpx rgba(168, 48, 40, 0.35),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.15);
+  transform: rotate(-6deg);
+}
+
+.match-seal-text {
+  font-size: 38rpx;
+  font-weight: 900;
+  color: #FFF5E8;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
+}
+
+@keyframes matchSealStampIn {
+  0% { opacity: 0; transform: scale(1.8) rotate(-30deg); }
+  60% { opacity: 1; transform: scale(0.9) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+}
+
+/* 水墨晕染装饰角（左下角） */
+.match-ink-corner {
+  position: absolute;
+  bottom: -20rpx;
+  left: -20rpx;
+  width: 200rpx;
+  height: 200rpx;
+  background:
+    radial-gradient(ellipse at 30% 70%,
+      rgba(61, 43, 31, 0.12) 0%,
+      rgba(61, 43, 31, 0.06) 25%,
+      transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-15deg);
+}
+
+/* 竖排标题装饰（右侧"缘"字） */
+.match-vertical-title {
+  position: absolute;
+  top: 120rpx;
+  right: 16rpx;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.match-vertical-char {
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 56rpx;
+  color: #C8A55B;
+  font-weight: 600;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+.match-title-wrap {
+  text-align: center;
+  margin-bottom: 32rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.match-title {
+  font-size: 40rpx;
+  color: #C8A55B;
+  font-weight: 700;
+  letter-spacing: 8rpx;
+  text-shadow: none;
+}
+
+.match-title-divider {
+  width: 80rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, rgba(200, 165, 91, 0.4), transparent);
+  margin: 16rpx auto 0;
+}
+
+.match-parties {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.match-party {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.party-name {
+  font-size: 32rpx;
+  color: #C8A55B;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+
+.party-gua {
+  font-size: 22rpx;
+  color: #C8A55B;
+  letter-spacing: 1rpx;
+  margin-top: 8rpx;
+}
+
+.match-link {
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+}
+
+.match-link-icon {
+  font-size: 32rpx;
+  color: #C8A55B;
+}
+
+.match-relation-wrap {
+  text-align: center;
+  margin-bottom: 20rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.match-relation-label {
+  display: block;
+  font-size: 22rpx;
+  color: #C8A55B;
+  letter-spacing: 4rpx;
+  margin-bottom: 8rpx;
+}
+
+.match-relation-name {
+  font-size: 36rpx;
+  color: #C8A55B;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  text-shadow: none;
+}
+
+.match-level-wrap {
+  text-align: center;
+  margin-bottom: 24rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.match-level-wrap .match-level-text {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #C8A55B;
+  padding: 6rpx 24rpx;
+  background: rgba(200, 165, 91, 0.08);
+  border: 1rpx solid rgba(200, 165, 91, 0.25);
+  border-radius: var(--radius-full);
+  letter-spacing: 2rpx;
+}
+
+.match-desc {
+  display: block;
+  text-align: center;
+  font-size: 26rpx;
+  color: #C8A55B;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+  margin-bottom: 40rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.match-section {
+  margin-bottom: 24rpx;
+  padding: 20rpx 24rpx;
+  background: rgba(200, 165, 91, 0.04);
+  border-radius: 12rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+.match-oneliner-wrap {
+  background: transparent;
+  border: none;
+  padding: 8rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.match-oneliner-text {
+  display: block;
+  font-size: 26rpx;
+  color: #C8A55B;
+  line-height: 1.7;
+  letter-spacing: 1rpx;
+  text-align: center;
+  font-style: italic;
+}
+
+/* section-label：支持图标+文字 flex 布局 */
+.match-section-label {
+  display: block;
+  font-size: 22rpx;
+  color: #C8A55B;
+  letter-spacing: 4rpx;
+  margin-bottom: 10rpx;
+  font-weight: 600;
+}
+
+.match-section-label-icon {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.match-section-label-text {
+  font-size: 22rpx;
+  color: #C8A55B;
+  letter-spacing: 4rpx;
+  font-weight: 600;
+}
+
+.match-section-text {
+  display: block;
+  font-size: 26rpx;
+  color: #C8A55B;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.match-list-item {
+  display: block;
+  font-size: 26rpx;
+  color: #C8A55B;
+  line-height: 1.7;
+  letter-spacing: 1rpx;
+}
+
+.match-btn-row {
+  display: flex;
+  gap: 48rpx;
+  position: relative;
+  z-index: 2;
+  margin-top: 24rpx;
+  padding: 32rpx 0 16rpx;
+  justify-content: center;
+}
+
+/* 艺术感性按钮：极简文字 + 双线装饰（细金线+点） */
+.match-art-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 16rpx 24rpx;
+  background: transparent;
+  border: none;
+  line-height: 1;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.match-art-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -24rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: rgba(139, 107, 74, 0.4);
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+.match-art-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -24rpx;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: rgba(139, 107, 74, 0.4);
+  transform: translateY(-50%);
+  opacity: 0.6;
+  /* v16.4 button 元素默认 ::after 带边框，此处一并清除（保留装饰点圆点） */
+  border: none;
+}
+
+/* v16.4 button 组件默认样式重置（分享按钮由 view 改为 button 后，避免默认边框/字号/外边距） */
+button.match-art-btn {
+  margin: 0;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+
+.match-art-btn-text {
+  font-size: 32rpx;
+  color: #C8A55B;
+  font-weight: 400;
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+}
+
+.match-art-btn-line {
+  width: 96rpx;
+  height: 1rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 107, 74, 0.35) 20%,
+    rgba(139, 107, 74, 0.85) 50%,
+    rgba(139, 107, 74, 0.35) 80%,
+    transparent 100%
+  );
+  transition: width 0.4s var(--ease-out-expo), opacity 0.3s var(--ease-out-expo);
+}
+
+.match-art-btn:active {
+  opacity: 0.7;
+}
+
+.match-art-btn:active .match-art-btn-line {
+  width: 160rpx;
+}
+
+.match-art-btn:active .match-art-btn-text {
+  letter-spacing: 16rpx;
+  text-indent: 16rpx;
+}
+
+.match-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: var(--radius-full);
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  margin: 0;
+  border: none;
+  line-height: 1;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.match-btn::after {
+  border: none;
+}
+
+.match-btn:active {
+  transform: scale(0.97);
+}
+
+.match-btn-write {
+  background: var(--gold-pure);
+  box-shadow: none;
+}
+
+.match-btn-share {
+  background: #FFFFFF;
+  border: 2rpx solid rgba(200, 165, 91, 0.3);
+  box-shadow: none;
+}
+
+.match-btn-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.match-btn-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+}
+
+.match-btn-write .match-btn-icon,
+.match-btn-write .match-btn-text {
+  color: #FFF8F3;
+}
+
+.match-btn-share .match-btn-icon,
+.match-btn-share .match-btn-text {
+  color: #C8A55B;
+}
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .title-main { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 32rpx; line-height: 1.25; }
+.lang-en .greeting-nickname { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 30rpx; line-height: 1.25; }
+.lang-en .match-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 28rpx; line-height: 1.25; }
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .title-sub { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }
+.lang-en .state-btn { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }
+.lang-en .poem-header-text { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 28rpx; line-height: 1.3; }
+.lang-en .poem-subtitle { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }

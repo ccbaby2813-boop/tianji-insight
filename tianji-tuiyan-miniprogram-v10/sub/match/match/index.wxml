@@ -1,0 +1,162 @@
+<!-- sub/match/match/index.wxml - 易缘匹配结果页 v3.0 -->
+<!-- 视觉方向：宣纸留白 · 双卦交辉 · 大波浪S曲线连接 · 分享欲优先 -->
+<view class="page-container page-match theme-light {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 双卦关系分享海报 Canvas（隐藏，仅用于生成分享图） -->
+  <share-poster
+    id="sharePoster"
+    mode="match"
+    gua-symbol-a="{{guaA.symbol || '䷀'}}"
+    gua-name-a="{{guaA.name || ''}}"
+    gua-symbol-b="{{guaB.symbol || '䷀'}}"
+    gua-name-b="{{guaB.name || ''}}"
+    relation-name="{{relation.relationship_name || ''}}"
+    match-level="{{relation.match_level || ''}}"
+  />
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{pageState==='loading'}}">
+    <text>{{loadingText || t.loading}}</text>
+  </view>
+
+  <!-- 加载失败 -->
+  <view class="empty-state" wx:elif="{{pageState==='error'}}">
+    <text>{{errorMsg || t.loadFail}}</text>
+    <button aria-label="返回首页" class="btn btn-gold retry-btn" bindtap="goHome">{{t.back}}</button>
+  </view>
+
+  <!-- 正常结果：宣纸留白 · 双卦交辉 · 大波浪曲线 -->
+  <scroll-view class="match-scroll" scroll-y wx:if="{{pageState==='loaded'}}">
+    <view class="match-canvas">
+      <!-- 水墨晕染装饰角 -->
+      <view class="ink-wash ink-wash-tl" aria-hidden="true"></view>
+      <view class="ink-wash ink-wash-br" aria-hidden="true"></view>
+
+      <!-- 导语 -->
+      <view class="match-preface animate-fade-in-up">
+        <text class="preface-line">{{t.prefaceLine}}</text>
+        <text class="preface-tip">{{t.prefaceTip}}</text>
+      </view>
+
+      <!-- 双卦交辉：S 型大波浪曲线连接 -->
+      <view class="match-hero animate-fade-in-up delay-1">
+        <view class="gua-side gua-side-a">
+          <view class="gua-glow"></view>
+          <text class="gua-symbol font-display">{{guaA.symbol || '䷀'}}</text>
+          <text class="gua-name">{{guaA.name || ''}}</text>
+          <text class="gua-ge">{{guaA.gua_ge || ''}}</text>
+          <view class="nickname-chip" wx:if="{{nicknameA}}">
+            <text class="nickname-text">{{nicknameA}}</text>
+            <text class="vip-dot" wx:if="{{isVipA}}">V</text>
+          </view>
+        </view>
+
+        <view class="connection-wave" aria-hidden="true">
+          <view class="wave-strand wave-strand-1"></view>
+          <view class="wave-strand wave-strand-2"></view>
+          <view class="wave-node">
+            <icon-guo name="taiji" size="28" color="#C8A55B" />
+          </view>
+        </view>
+
+        <view class="gua-side gua-side-b">
+          <view class="gua-glow"></view>
+          <text class="gua-symbol font-display">{{guaB.symbol || '䷀'}}</text>
+          <text class="gua-name">{{guaB.name || ''}}</text>
+          <text class="gua-ge">{{guaB.gua_ge || ''}}</text>
+          <view class="nickname-chip" wx:if="{{nicknameB}}">
+            <text class="nickname-text">{{nicknameB}}</text>
+            <text class="vip-dot" wx:if="{{isVipB}}">V</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 极细金线分隔 -->
+      <view class="line-gold-thin animate-draw-gold-line delay-2"></view>
+
+      <!-- 关系名称 -->
+      <view class="relation-name font-display animate-gold-reveal delay-2">{{relation.relationship_name || '--'}}</view>
+      <view class="relation-oneliner animate-fade-in delay-3" wx:if="{{relation.one_liner}}">
+        <text>「 {{relation.one_liner}} 」</text>
+      </view>
+
+      <!-- 匹配等级印章 -->
+      <view class="level-seal {{levelClass}} animate-badge-pop delay-3" wx:if="{{relation.match_level}}">
+        <text class="level-seal-text">{{relation.match_level}}</text>
+      </view>
+
+      <!-- 极细金线分隔 -->
+      <view class="line-gold-thin"></view>
+
+      <!-- 折叠区：详细分析 -->
+      <view class="fold-section animate-fade-in-up delay-4" wx:if="{{relation.analysis}}">
+        <view class="fold-header" bindtap="toggleCollapse" data-key="analysis">
+          <text class="fold-title">{{t.analysis}}</text>
+          <icon-guo class="fold-arrow {{collapseKeys.analysis ? 'expanded' : ''}}" name="chevron-down" size="28" color="#C8A55B" />
+        </view>
+        <view class="fold-body {{collapseKeys.analysis ? 'expanded' : ''}}">
+          <text class="fold-text">{{relation.analysis}}</text>
+        </view>
+      </view>
+
+      <!-- 折叠区：共鸣点 -->
+      <view class="fold-section animate-fade-in-up delay-4" wx:if="{{relation.resonance && relation.resonance.length}}">
+        <view class="fold-header" bindtap="toggleCollapse" data-key="resonance">
+          <text class="fold-title">{{t.resonance}}</text>
+          <icon-guo class="fold-arrow {{collapseKeys.resonance ? 'expanded' : ''}}" name="chevron-down" size="28" color="#C8A55B" />
+        </view>
+        <view class="fold-body {{collapseKeys.resonance ? 'expanded' : ''}}">
+          <view class="fold-list-item" wx:for="{{relation.resonance}}" wx:key="*this">
+            <view class="fold-bullet fold-bullet-gold"></view>
+            <text class="fold-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 折叠区：冲突点 -->
+      <view class="fold-section animate-fade-in-up delay-5" wx:if="{{relation.conflict && relation.conflict.length}}">
+        <view class="fold-header" bindtap="toggleCollapse" data-key="conflict">
+          <text class="fold-title">{{t.conflict}}</text>
+          <icon-guo class="fold-arrow {{collapseKeys.conflict ? 'expanded' : ''}}" name="chevron-down" size="28" color="#C8A55B" />
+        </view>
+        <view class="fold-body {{collapseKeys.conflict ? 'expanded' : ''}}">
+          <view class="fold-list-item" wx:for="{{relation.conflict}}" wx:key="*this">
+            <view class="fold-bullet fold-bullet-ink"></view>
+            <text class="fold-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 折叠区：建议 -->
+      <view class="fold-section animate-fade-in-up delay-5" wx:if="{{relation.advice}}">
+        <view class="fold-header" bindtap="toggleCollapse" data-key="advice">
+          <text class="fold-title">{{t.advice}}</text>
+          <icon-guo class="fold-arrow {{collapseKeys.advice ? 'expanded' : ''}}" name="chevron-down" size="28" color="#C8A55B" />
+        </view>
+        <view class="fold-body {{collapseKeys.advice ? 'expanded' : ''}}">
+          <text class="fold-text">{{relation.advice}}</text>
+        </view>
+      </view>
+
+      <!-- 合规声明 -->
+      <bottom-declaration />
+      <!-- 底部占位，给 fixed 按钮留空间 -->
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部双按钮：分享 + 给 ta 写信 -->
+  <view class="match-actions" wx:if="{{pageState==='loaded'}}">
+    <button wx:if="{{isMpWeixin}}" aria-label="分享" class="action-btn action-btn-share" open-type="share">
+      <icon-guo name="share" size="32" color="#C8A55B" />
+      <text class="action-btn-text">{{t.share}}</text>
+    </button>
+    <button wx:else aria-label="分享" class="action-btn action-btn-share" bindtap="onShareTap">
+      <icon-guo name="share" size="32" color="#C8A55B" />
+      <text class="action-btn-text">{{t.share}}</text>
+    </button>
+    <button wx:if="{{sharerOpenid}}" aria-label="给 ta 写信" class="action-btn action-btn-write" bindtap="goWriteLetter">
+      <icon-guo name="brush" size="32" color="#0A0A1A" />
+      <text class="action-btn-text action-btn-text-write">{{t.writeLetter}}</text>
+    </button>
+  </view>
+</view>

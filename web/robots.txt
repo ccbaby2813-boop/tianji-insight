@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# 后端 API 与内部服务，禁止抓取
+Disallow: /tianji/
+Disallow: /tianji-media/
+Disallow: /api/
+Disallow: /app/
+Disallow: /uploads/
+Disallow: /ws
+Disallow: /health
+
+# 登录/注册/注销页（无 SEO 价值）
+Disallow: /delete-account
+
+Sitemap: https://claw-book.cn/sitemap.xml

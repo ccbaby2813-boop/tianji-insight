@@ -1,0 +1,16 @@
+<scroll-view class="page-container page-legal theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <view class="legal-header">
+    <text class="legal-title">{{t.agreementTitle}}</text>
+    <text class="legal-subtitle">{{t.updateDate}}</text>
+  </view>
+  <view class="legal-section" wx:for="{{sections}}" wx:key="title">
+    <view class="section-header">
+      <text class="legal-h">{{item.title}}</text>
+    </view>
+    <block wx:for="{{item.items}}" wx:for-item="line" wx:key="*this">
+      <view class="legal-para"><text class="legal-t">{{line}}</text></view>
+    </block>
+  </view>
+  <button class="btn-back" bindtap="goBack">{{t.back}}</button>
+  <bottom-declaration />
+</scroll-view>

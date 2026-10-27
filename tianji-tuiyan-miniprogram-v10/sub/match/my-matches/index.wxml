@@ -1,0 +1,78 @@
+<view class="page-letter page-my-matches {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 头部 -->
+  <view class="letter-header">
+    <view class="header-top">
+      <view class="header-title">
+        <text class="title-main font-title">{{t.titleMain}}</text>
+        <text class="title-sub">{{titleSubText}}</text>
+      </view>
+      <view class="count-badge" wx:if="{{pageState==='loaded'}}">
+        <text class="count-num font-display">{{friendCount}}</text>
+        <text class="count-label">{{t.countLabel}}</text>
+      </view>
+    </view>
+    <view class="match-new-btn" bindtap="goMatchPool">
+      <text class="match-new-text">{{t.goMatch}}</text>
+    </view>
+  </view>
+
+  <!-- 极细金线分隔 -->
+  <view class="line-gold-thin"></view>
+
+  <!-- 加载中 -->
+  <view class="state-box" wx:if="{{pageState==='loading'}}">
+    <text class="state-text poem-text">{{t.loading}}</text>
+  </view>
+
+  <!-- 加载失败 -->
+  <view class="state-box" wx:elif="{{pageState==='error'}}">
+    <text class="state-text">{{errorMsg || t.loadFail}}</text>
+    <view class="state-btn" bindtap="retry"><text>{{t.retry}}</text></view>
+  </view>
+
+  <!-- 空状态：信封插画 + 诗意文案 -->
+  <view class="state-box state-box-empty" wx:elif="{{pageState==='empty'}}">
+    <view class="empty-illustration">
+      <icon-guo name="envelope" size="120" color="#C8A55B" />
+    </view>
+    <text class="poem-text">{{t.emptyPoem}}</text>
+    <text class="state-text">{{t.emptyTip}}</text>
+    <view class="state-btn state-btn-primary" bindtap="goMatchPool"><text>{{t.goMatch}}</text></view>
+  </view>
+
+  <!-- 好友列表 -->
+  <scroll-view class="friend-list" scroll-y wx:if="{{pageState==='loaded'}}">
+    <view class="friend-card" wx:for="{{friends}}" wx:key="friendOpenid" data-item="{{item}}" bindtap="onFriendTap">
+      <view class="avatar {{item.friendGua % 3 === 0 ? 'avatar-gradient-gold' : (item.friendGua % 3 === 2 ? 'avatar-gradient-cool' : 'avatar-gradient-warm')}}">
+        <text class="avatar-char font-display">{{item.guaSymbol || item.avatarChar}}</text>
+      </view>
+      <view class="friend-info">
+        <view class="friend-row">
+          <text class="friend-name font-title">{{item.friendNickname}}</text>
+          <text class="vip-badge" wx:if="{{item.friendIsVip}}">V</text>
+          <view class="gua-badge" wx:if="{{item.friendGuaName}}">
+            <text class="gua-badge-text">{{item.friendGuaName}}{{item.friendGuaGe ? '·' + item.friendGuaGe : ''}}</text>
+          </view>
+          <view class="unread-dot" wx:if="{{item.unreadCount > 0}}">
+            <text class="unread-num">{{item.unreadCount}}</text>
+          </view>
+        </view>
+        <view class="friend-bottom">
+          <view class="last-letter-wrap">
+            <text class="last-letter">{{item.lastLetter || t.noLetter}}</text>
+          </view>
+          <text class="last-time" wx:if="{{item.lastLetterTime}}">{{item.lastLetterTime}}</text>
+        </view>
+      </view>
+      <view class="write-icon" data-item="{{item}}" catchtap="onWriteTap">
+        <text class="write-icon-text font-title">{{t.writeLetter}}</text>
+        <view class="write-icon-line"></view>
+      </view>
+    </view>
+    <view class="list-bottom"><text>{{t.listBottom}}</text></view>
+    <view class="list-bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- 底部3-tab导航 -->
+  <letter-tab-bar active="friends"></letter-tab-bar>
+</view>

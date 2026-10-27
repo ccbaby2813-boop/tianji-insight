@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>震惊三界 - 成就页预览</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#000; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+.page {
+  width:375px; min-height:100vh;
+  background:linear-gradient(180deg,#08081A 0%,#12082A 30%,#1A1040 60%,#0A0A1A 100%);
+  display:flex; flex-direction:column; align-items:center;
+  padding:60px 24px 80px;
+  position:relative; overflow:hidden;
+}
+
+/* ===== 背景星空 ===== */
+.starfield { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+.star { position:absolute; border-radius:50%; background:#fff; animation:twinkle 3s ease-in-out infinite; }
+.star.s1  { top:8%; left:12%; width:2px; height:2px; animation-delay:0s; }
+.star.s2  { top:12%; left:78%; width:1.5px; height:1.5px; animation-delay:0.4s; }
+.star.s3  { top:18%; left:35%; width:2px; height:2px; animation-delay:0.8s; }
+.star.s4  { top:22%; left:88%; width:2.5px; height:2.5px; animation-delay:1.2s; }
+.star.s5  { top:28%; left:18%; width:1.5px; height:1.5px; animation-delay:1.6s; }
+.star.s6  { top:32%; left:62%; width:2px; height:2px; animation-delay:0.3s; }
+.star.s7  { top:38%; left:8%; width:1.5px; height:1.5px; animation-delay:0.7s; }
+.star.s8  { top:42%; left:92%; width:2px; height:2px; animation-delay:1.1s; }
+.star.s9  { top:48%; left:45%; width:1.5px; height:1.5px; animation-delay:1.5s; }
+.star.s10 { top:52%; left:72%; width:2px; height:2px; animation-delay:0.2s; }
+.star.s11 { top:56%; left:22%; width:1.5px; height:1.5px; animation-delay:0.6s; }
+.star.s12 { top:60%; left:55%; width:2px; height:2px; animation-delay:1.0s; }
+@keyframes twinkle {
+  0%,100% { opacity:0.2; }
+  50% { opacity:0.9; }
+}
+
+/* ===== 星座连线环 ===== */
+.constellation {
+  position:relative; width:140px; height:140px; margin-bottom:-20px;
+  opacity:0; transform:scale(0.8);
+}
+.constellation.show { animation:ringIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+@keyframes ringIn { to { opacity:1; transform:scale(1); } }
+
+.ring-line {
+  position:absolute; top:50%; left:50%; width:130px; height:130px;
+  margin:-65px 0 0 -65px;
+  border-radius:50%;
+  border:1px solid rgba(200,169,110,0.18);
+  box-shadow:0 0 20px rgba(200,169,110,0.08), inset 0 0 20px rgba(200,169,110,0.05);
+  animation:ringSpin 30s linear infinite;
+}
+@keyframes ringSpin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+
+.node {
+  position:absolute; width:7px; height:7px; border-radius:50%;
+  background:#FFD700;
+  box-shadow:0 0 8px rgba(255,215,0,0.6), 0 0 16px rgba(255,215,0,0.25);
+  top:50%; left:50%;
+  animation:nodePulse 2s ease-in-out infinite;
+}
+.node.n0 { transform:translate(-3.5px, -68px); animation-delay:0s; }
+.node.n1 { transform:translate(45px, -52px); animation-delay:0.15s; }
+.node.n2 { transform:translate(63px, 1.5px); animation-delay:0.3s; }
+.node.n3 { transform:translate(45px, 55px); animation-delay:0.45s; }
+.node.n4 { transform:translate(-3.5px, 65px); animation-delay:0.6s; }
+.node.n5 { transform:translate(-52px, 55px); animation-delay:0.75s; }
+.node.n6 { transform:translate(-70px, 1.5px); animation-delay:0.9s; }
+.node.n7 { transform:translate(-52px, -52px); animation-delay:1.05s; }
+
+@keyframes nodePulse {
+  0%,100% { box-shadow:0 0 8px rgba(255,215,0,0.6), 0 0 16px rgba(255,215,0,0.25); }
+  50% { box-shadow:0 0 12px rgba(255,215,0,0.9), 0 0 24px rgba(255,215,0,0.4); }
+}
+
+/* ===== CSS五角星冠 ===== */
+.crown-wrap {
+  position:relative; width:100px; height:90px; z-index:2;
+  display:flex; flex-direction:column; align-items:center;
+  opacity:0; transform:translateY(-20px);
+}
+.crown-wrap.show { animation:crownIn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards; }
+@keyframes crownIn { to { opacity:1; transform:translateY(0); } }
+
+.crown-glow-o {
+  position:absolute; width:100px; height:100px; top:5px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,215,0,0.18) 0%,rgba(200,169,110,0.06) 50%,transparent 70%);
+  animation:glowPulse 2.5s ease-in-out infinite;
+}
+.crown-glow-i {
+  position:absolute; width:65px; height:65px; top:22px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,215,0,0.25) 0%,transparent 60%);
+  animation:glowPulse 2.5s ease-in-out infinite 0.5s;
+}
+@keyframes glowPulse {
+  0%,100% { transform:scale(1); opacity:0.6; }
+  50% { transform:scale(1.2); opacity:1; }
+}
+
+.star-shape {
+  position:relative; width:50px; height:50px; z-index:1; margin-top:5px;
+  animation:starIn 1.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes starIn {
+  0% { transform:rotate(-180deg) scale(0); }
+  100% { transform:rotate(0deg) scale(1); }
+}
+
+.star-pt {
+  position:absolute; width:100%; height:100%;
+}
+.star-pt::before {
+  content:''; position:absolute;
+  width:0; height:0;
+  border-left:9px solid transparent;
+  border-right:9px solid transparent;
+  border-bottom:25px solid #FFD700;
+  left:50%; transform:translateX(-50%);
+  filter:drop-shadow(0 0 4px rgba(255,215,0,0.5));
+}
+.star-pt.p0 { transform:rotate(0deg); }
+.star-pt.p1 { transform:rotate(72deg); }
+.star-pt.p2 { transform:rotate(144deg); }
+.star-pt.p3 { transform:rotate(216deg); }
+.star-pt.p4 { transform:rotate(288deg); }
+
+.star-core {
+  position:absolute; width:12px; height:12px; border-radius:50%;
+  background:radial-gradient(circle,#FFE88C,#FFD700);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  box-shadow:0 0 10px rgba(255,215,0,0.7), 0 0 20px rgba(255,215,0,0.3);
+}
+
+.crown-base {
+  width:65px; height:14px;
+  background:linear-gradient(180deg,rgba(200,169,110,0.8),rgba(160,130,70,0.9));
+  border-radius:0 0 10px 10px;
+  margin-top:-2px;
+  box-shadow:0 2px 10px rgba(200,169,110,0.35);
+  position:relative;
+}
+.crown-base::before,.crown-base::after {
+  content:''; position:absolute; bottom:3px;
+  width:5px; height:5px; border-radius:50%;
+  background:rgba(255,215,0,0.8);
+  box-shadow:0 0 5px rgba(255,215,0,0.5);
+}
+.crown-base::before { left:8px; }
+.crown-base::after { right:8px; }
+
+/* ===== 标题 ===== */
+.title {
+  font-size:26px; font-weight:800; color:#FFD700;
+  text-align:center; margin-top:12px; margin-bottom:4px;
+  text-shadow:0 0 12px rgba(255,215,0,0.35);
+  letter-spacing:4px;
+  opacity:0; transform:translateY(10px);
+}
+.title.show { animation:slideUp 0.6s ease 0.5s forwards; }
+
+.subtitle {
+  font-size:13px; color:#C8A96E; text-align:center; margin-bottom:18px;
+  letter-spacing:1px;
+  opacity:0; transform:translateY(10px);
+}
+.subtitle.show { animation:slideUp 0.6s ease 0.7s forwards; }
+@keyframes slideUp { to { opacity:1; transform:translateY(0); } }
+
+/* ===== 描述 ===== */
+.desc-box {
+  width:100%; background:rgba(255,255,255,0.025);
+  border-radius:10px; padding:16px 14px; margin-bottom:18px;
+  border:1px solid rgba(200,169,110,0.1);
+  opacity:0; transform:translateY(10px);
+}
+.desc-box.show { animation:slideUp 0.6s ease 0.6s forwards; }
+
+.desc {
+  font-size:12.5px; color:#B8B8D0; line-height:1.85; display:block;
+}
+.desc.sub { margin-top:10px; color:#C8A96E; font-size:12px; text-align:center; }
+
+/* ===== 称号 ===== */
+.badge-wrap {
+  text-align:center; margin-bottom:26px;
+  opacity:0; transform:translateY(10px);
+}
+.badge-wrap.show { animation:slideUp 0.6s ease 0.8s forwards; }
+
+.badge-label {
+  font-size:11px; color:#8B8BA0; display:block; margin-bottom:5px; letter-spacing:3px;
+}
+.badge-name {
+  font-size:26px; font-weight:800; color:#FFD700;
+  text-shadow:0 0 14px rgba(255,215,0,0.35);
+  letter-spacing:6px; display:block;
+  animation:badgeShimmer 3s ease-in-out infinite;
+}
+@keyframes badgeShimmer {
+  0%,100% { text-shadow:0 0 14px rgba(255,215,0,0.35); }
+  50% { text-shadow:0 0 24px rgba(255,215,0,0.6), 0 0 40px rgba(255,215,0,0.2); }
+}
+.badge-order {
+  font-size:11px; color:#C8A96E; display:block; margin-top:7px;
+}
+
+/* ===== 按钮 ===== */
+.btns {
+  width:100%; display:flex; flex-direction:column; gap:10px;
+  opacity:0; transform:translateY(10px);
+}
+.btns.show { animation:slideUp 0.6s ease 1.0s forwards; }
+
+.btn {
+  text-align:center; padding:12px 0; border-radius:22px; font-size:15px; font-weight:600;
+  cursor:pointer;
+}
+.btn-gold {
+  background:linear-gradient(135deg,#D4A574,#C8A96E);
+  color:#0A0A1A; border:none; letter-spacing:2px;
+  box-shadow:0 4px 15px rgba(200,169,110,0.2);
+}
+.btn-outline {
+  border:1px solid rgba(200,169,110,0.3); color:#C8A96E; background:transparent;
+  letter-spacing:2px;
+}
+.btn:active { opacity:0.8; }
+
+/* ===== 导航栏模拟 ===== */
+.navbar {
+  position:absolute; top:0; left:0; width:100%; height:44px;
+  background:#0A0A1A;
+  display:flex; align-items:center; justify-content:center;
+  padding-top:env(safe-area-inset-top);
+}
+.nav-title { color:#fff; font-size:16px; font-weight:600; }
+
+/* ===== 显示/隐藏控制 ===== */
+.constellation,.crown-wrap,.title,.subtitle,.desc-box,.badge-wrap,.btns {
+  visibility:hidden;
+}
+</style>
+</head>
+<body>
+<div class="page" id="page">
+  <!-- 模拟导航栏 -->
+  <div class="navbar"><span class="nav-title">震惊三界</span></div>
+
+  <!-- 星空 -->
+  <div class="starfield">
+    <div class="star s1"></div><div class="star s2"></div><div class="star s3"></div>
+    <div class="star s4"></div><div class="star s5"></div><div class="star s6"></div>
+    <div class="star s7"></div><div class="star s8"></div><div class="star s9"></div>
+    <div class="star s10"></div><div class="star s11"></div><div class="star s12"></div>
+  </div>
+
+  <!-- 星座连线环 -->
+  <div class="constellation" id="ring">
+    <div class="ring-line"></div>
+    <div class="node n0"></div><div class="node n1"></div><div class="node n2"></div><div class="node n3"></div>
+    <div class="node n4"></div><div class="node n5"></div><div class="node n6"></div><div class="node n7"></div>
+  </div>
+
+  <!-- CSS星冠 -->
+  <div class="crown-wrap" id="crown">
+    <div class="crown-glow-o"></div>
+    <div class="crown-glow-i"></div>
+    <div class="star-shape">
+      <div class="star-pt p0"></div><div class="star-pt p1"></div>
+      <div class="star-pt p2"></div><div class="star-pt p3"></div>
+      <div class="star-pt p4"></div>
+      <div class="star-core"></div>
+    </div>
+    <div class="crown-base"></div>
+  </div>
+
+  <!-- 标题 -->
+  <div class="title" id="title">震惊三界</div>
+  <div class="subtitle" id="subtitle">六十四型人格，你的社交传奇</div>
+
+  <!-- 描述 -->
+  <div class="desc-box" id="desc">
+    <span class="desc">六十四型人格中，有些极为罕见——如属性至纯的乾、坤，能量极致的既济、未济等。能集齐全部，说明你的人脉广度世间罕见，识人无数，知交遍天下。</span>
+    <span class="desc sub">人以群分，物以类聚——能遇见如此多样的灵魂，恰是人格魅力的证明。</span>
+  </div>
+
+  <!-- 称号 -->
+  <div class="badge-wrap" id="badge">
+    <span class="badge-label">已解锁称号</span>
+    <span class="badge-name">人脉王</span>
+    <span class="badge-order">你是第 127 位达成此成就的人</span>
+  </div>
+
+  <!-- 按钮 -->
+  <div class="btns" id="btns">
+    <div class="btn btn-gold" onclick="alert('分享成就')">分享成就</div>
+    <div class="btn btn-outline" onclick="alert('返回')">返回</div>
+  </div>
+</div>
+
+<script>
+// 模拟小程序 staged animation
+(function() {
+  const ids = ['ring','crown','title','subtitle','desc','badge','btns'];
+  ids.forEach((id, i) => {
+    setTimeout(() => {
+      var el = document.getElementById(id);
+      if (el) { el.style.visibility = 'visible'; el.classList.add('show'); }
+    }, 100 + i * 200);
+  });
+})();
+</script>
+</body>
+</html>

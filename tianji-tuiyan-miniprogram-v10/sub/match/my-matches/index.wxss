@@ -1,0 +1,466 @@
+/* sub/match/my-matches/index.wxss - 我的匹配：好友列表·宣纸浅底·金线指引
+ * Visual Thesis: #FFF8F3 宣纸浅底 + 诗意排版 + 极致留白 + 零装饰 + 单色 + 一点金色
+ * 风格参考：Editorial Swiss revival——浅底无卡，金线指引，信纸纹理藏于细节
+ */
+
+/* ========================================
+ * 根容器：易缘匹配类页面宣纸浅色主题
+ * ======================================== */
+.page-letter {
+  /* 易缘匹配类页面：宣纸浅色主题变量（覆盖深色变量） */
+  --bg-base: #FFF8F3;
+  --bg-elevated: #FFFFFF;
+  --bg-warm: #FEF0E5;
+  --bg-warmer: #FFFBF5;
+  --bg-muted: rgba(200, 165, 91, 0.04);
+
+  --text-primary: #3A2E1F;
+  --text-secondary: #6B5A45;
+  --text-muted: #9B8B75;
+  --text-faint: #B5A695;
+  --text-inverse: #FFF8F3;
+
+  --accent-gold: #C8A55B;
+  --accent-gold-deep: #8B7340;
+  --accent-gold-light: #E8D4A0;
+  --accent-gold-hover: #E8D4A0;
+  --accent-gold-muted: rgba(200, 165, 91, 0.12);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.04);
+  --accent-gold-border: rgba(200, 165, 91, 0.25);
+
+  --border-subtle: rgba(200, 165, 91, 0.06);
+  --border-default: rgba(200, 165, 91, 0.12);
+  --border-strong: rgba(200, 165, 91, 0.3);
+  --border-paper: rgba(200, 165, 91, 0.08);
+  --border-paper-strong: rgba(200, 165, 91, 0.18);
+
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 28rpx;
+  --radius-full: 999rpx;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 16rpx 48rpx rgba(0, 0, 0, 0.6);
+  --shadow-gold: 0 0 24rpx rgba(200, 165, 91, 0.15);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-base);
+  box-sizing: border-box;
+  overflow-x: hidden;
+  color: var(--text-primary);
+  /* v3.4.1 L19：flex 布局替代固定高度减法，列表高度自适应头部 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+ * 头部：极致留白，标题如诗
+ * ======================================== */
+.letter-header {
+  padding: 64rpx 48rpx 32rpx;
+  background: transparent;
+  border-bottom: none;
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.title-main {
+  font-size: 56rpx;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 12rpx;
+  line-height: 1.2;
+}
+
+.title-sub {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  margin-top: 16rpx;
+  letter-spacing: 4rpx;
+  font-weight: 300;
+}
+
+/* 数量徽章：极简金圈 */
+.count-badge {
+  display: flex;
+  align-items: baseline;
+  padding: 6rpx 24rpx;
+  background: transparent;
+  border: 1rpx solid var(--border-strong);
+  border-radius: var(--radius-full);
+  margin-top: 8rpx;
+  flex-shrink: 0;
+}
+
+.count-num {
+  font-size: 36rpx;
+  color: var(--accent-gold);
+  font-weight: 800;
+  letter-spacing: 2rpx;
+}
+
+.count-label {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  margin-left: 6rpx;
+  letter-spacing: 2rpx;
+}
+
+/* 新匹配按钮：金色描边，零填充感 */
+.match-new-btn {
+  margin-top: 40rpx;
+  height: 96rpx;
+  background: transparent;
+  border: 1rpx solid var(--accent-gold);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.match-new-btn:active {
+  transform: scale(0.97);
+  background: var(--accent-gold-subtle);
+}
+
+.match-new-text {
+  font-size: 26rpx;
+  color: var(--accent-gold);
+  letter-spacing: 8rpx;
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========================================
+ * 状态盒子：诗意留白
+ * ======================================== */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 0 64rpx;
+  box-sizing: border-box;
+}
+
+.state-box-empty {
+  gap: 24rpx;
+}
+
+.state-text {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  line-height: 2;
+  text-align: center;
+  margin-top: 16rpx;
+  letter-spacing: 4rpx;
+  font-weight: 300;
+}
+
+.empty-illustration {
+  margin-bottom: 16rpx;
+  opacity: 0.9;
+}
+
+.state-btn {
+  margin-top: 48rpx;
+  padding: 18rpx 56rpx;
+  border: 1rpx solid var(--accent-gold);
+  border-radius: var(--radius-full);
+  font-size: 24rpx;
+  color: var(--accent-gold);
+  background: transparent;
+  letter-spacing: 6rpx;
+  transition: all 0.2s var(--ease-out-expo);
+}
+
+.state-btn:active {
+  opacity: 0.7;
+  transform: scale(0.97);
+}
+
+.state-btn-primary {
+  background: var(--accent-gold);
+  color: var(--text-inverse);
+  border-color: var(--accent-gold);
+}
+
+/* ========================================
+ * 好友列表：零卡片，金线分隔
+ * ======================================== */
+.friend-list {
+  /* v3.4.1 L19：flex:1 自适应，替代固定高度减法 */
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+}
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1rpx solid var(--border-subtle);
+  border-radius: 0;
+  padding: 48rpx 0;
+  margin-bottom: 0;
+  box-shadow: none;
+  transition: all 0.2s var(--ease-out-expo);
+  animation: cardSlideIn 0.5s var(--ease-out-expo) both;
+}
+
+.friend-card:active {
+  background: var(--accent-gold-subtle);
+  transform: scale(0.99);
+  box-shadow: none;
+}
+
+.friend-card:last-child {
+  border-bottom: none;
+}
+
+/* 头像：渐变抽类（暖/冷/金 三色） */
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+.avatar-char {
+  font-size: 44rpx;
+  color: var(--text-inverse);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+/* 好友信息 */
+.friend-info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 28rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.friend-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.friend-name {
+  font-size: 32rpx;
+  color: var(--text-primary);
+  font-family: "STKaiti", "KaiTi", serif;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240rpx;
+  letter-spacing: 2rpx;
+}
+
+/* VIP 金色徽章：极简金圈 */
+.vip-badge {
+  display: inline-block;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  padding: 0 8rpx;
+  margin-left: 8rpx;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1rpx solid var(--accent-gold);
+  color: var(--accent-gold);
+  font-size: 22rpx;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: none;
+  flex-shrink: 0;
+}
+
+.gua-badge {
+  padding: 4rpx 16rpx;
+  background: transparent;
+  border: 1rpx solid var(--border-default);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.gua-badge-text {
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  letter-spacing: 2rpx;
+}
+
+/* 未读标识：呼吸动效（badgePopIn + 持续呼吸） */
+.unread-dot {
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 10rpx;
+  background: var(--accent-gold);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  box-shadow: 0 0 16rpx rgba(200, 165, 91, 0.5);
+  animation: badgePopIn 0.5s var(--ease-spring) both,
+             unreadBreathe 2.4s ease-in-out 0.5s infinite;
+}
+
+@keyframes unreadBreathe {
+  0%, 100% { box-shadow: 0 0 16rpx rgba(200, 165, 91, 0.5); transform: scale(1); }
+  50%      { box-shadow: 0 0 28rpx rgba(200, 165, 91, 0.85); transform: scale(1.06); }
+}
+
+.unread-num {
+  font-size: 22rpx;
+  color: var(--text-inverse);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.friend-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+/* 最后信件预览：信纸纹理容器 */
+.last-letter-wrap {
+  flex: 1;
+  min-width: 0;
+  padding: 8rpx 16rpx;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 14rpx,
+      rgba(200, 165, 91, 0.05) 14rpx,
+      rgba(200, 165, 91, 0.05) 15rpx
+    );
+  border-left: 2rpx solid rgba(200, 165, 91, 0.2);
+  border-radius: 0 4rpx 4rpx 0;
+}
+
+.last-letter {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 1rpx;
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", serif;
+}
+
+.last-time {
+  font-size: 22rpx;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  letter-spacing: 1rpx;
+}
+
+/* 写信按钮：艺术感性风格（极简文字 + 细金线下划线，与匹配页面风格统一） */
+.write-icon {
+  position: relative;
+  margin-left: 16rpx;
+  padding: 12rpx 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.write-icon-text {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  letter-spacing: 8rpx;
+  text-indent: 8rpx;
+  font-weight: 400;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: none;
+}
+
+.write-icon-line {
+  width: 56rpx;
+  height: 1rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.35) 20%,
+    rgba(200, 165, 91, 0.85) 50%,
+    rgba(200, 165, 91, 0.35) 80%,
+    transparent 100%
+  );
+  transition: width 0.4s var(--ease-out-expo), opacity 0.3s var(--ease-out-expo);
+}
+
+.write-icon:active {
+  opacity: 0.7;
+}
+
+.write-icon:active .write-icon-line {
+  width: 88rpx;
+}
+
+.write-icon:active .write-icon-text {
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+}
+
+.list-bottom {
+  text-align: center;
+  padding: 48rpx 0 24rpx;
+  font-size: 22rpx;
+  color: var(--text-faint);
+  letter-spacing: 8rpx;
+  word-break: break-word;
+}
+
+.list-bottom-spacer {
+  height: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .title-main { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 36rpx; line-height: 1.25; }
+.lang-en .match-new-text { letter-spacing: 2rpx; text-indent: 2rpx; white-space: nowrap; }

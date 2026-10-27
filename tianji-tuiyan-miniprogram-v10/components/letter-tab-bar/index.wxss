@@ -1,0 +1,109 @@
+/* components/letter-tab-bar/index.wxss - 底部3-tab导航（易缘传书）·Co-Star 纯黑
+ * Visual Thesis: 纯黑画布承托金色图标，选中态金线从底部展开流光
+ * 风格参考：Co-Star 极简——零装饰，单色金，诗意留白
+ */
+
+/* ===== 底栏容器：纯黑毛玻璃 ===== */
+.letter-tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  height: 104rpx;
+  background: rgba(0, 0, 0, 0.92);
+  border-top: 1rpx solid rgba(200, 165, 91, 0.12);
+  padding-bottom: env(safe-area-inset-bottom);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.6);
+}
+
+/* ===== tab 项 ===== */
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  color: #5A5A5A;
+  transition: all 0.25s var(--ease-out-expo);
+  position: relative;
+}
+
+.tab-item:active {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.tab-item.active {
+  color: #C8A55B;
+}
+
+/* active 态底部金线展开（从左到右 scaleX + 持续流光） */
+.tab-item.active::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 64rpx;
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, #C8A55B, transparent);
+  background-size: 200% 100%;
+  border-radius: 2rpx;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.7);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  animation: goldLineExpand 0.4s var(--ease-out-expo) 0.05s forwards,
+             goldLineFlow 2.4s ease-in-out 0.45s infinite;
+}
+
+@keyframes goldLineExpand {
+  from { transform: translateX(-50%) scaleX(0); opacity: 0; }
+  to   { transform: translateX(-50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes goldLineFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== 图标容器 ===== */
+.tab-icon {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.25s var(--ease-out-expo);
+  opacity: 0.5;
+}
+
+/* active 图标：scale(1.08) + 金色 drop-shadow */
+.tab-item.active .tab-icon {
+  transform: translateY(-2rpx) scale(1.08);
+  opacity: 1;
+  filter: drop-shadow(0 2rpx 10rpx rgba(200, 165, 91, 0.6));
+}
+
+/* ===== 标签文字（L2 标题字） ===== */
+.tab-label {
+  font-size: 22rpx;
+  font-weight: 400;
+  letter-spacing: 4rpx;
+  line-height: 1;
+  transition: all 0.25s var(--ease-out-expo);
+  opacity: 0.5;
+}
+
+.tab-item.active .tab-label {
+  font-weight: 400;
+  letter-spacing: 6rpx;
+  opacity: 1;
+  text-shadow: 0 0 8rpx rgba(200, 165, 91, 0.3);
+}

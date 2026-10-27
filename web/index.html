@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="免费在线易经人格测试：输入生辰获取你的64卦本命卦、人格画像与4096种合盘配对。基于梅花易数算法，Google Play已上架，无需注册即可体验。" />
+  <meta name="keywords" content="天机推演,易经,周易,六十四卦,梅花易数,奇门遁甲,AI推演,人格解读,易缘匹配,卦象,命理推演" />
+  <title>天机推演 — 免费易经人格测试 | 64卦本命卦·4096合盘·梅花易数</title>
+  <link rel="canonical" href="https://claw-book.cn/" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="天机推演" />
+  <meta property="og:title" content="天机推演 — 用易经智慧解读人生" />
+  <meta property="og:description" content="基于易经六十四卦与奇门遁甲的AI人格解读与人生推演工具：专属人格画像、深度解读、易缘匹配、节气养生。" />
+  <meta property="og:url" content="https://claw-book.cn/" />
+  <meta property="og:image" content="https://claw-book.cn/taiji-logo.png" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="天机推演 — 用易经智慧解读人生" />
+  <meta name="twitter:description" content="基于易经六十四卦与奇门遁甲的AI人格解读与人生推演工具" />
+  <meta name="twitter:image" content="https://claw-book.cn/taiji-logo.png" />
+  <meta name="theme-color" content="#0B0B12" />
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="zh-CN" href="https://claw-book.cn/" />
+  <link rel="alternate" hreflang="en" href="https://claw-book.cn/i-ching-personality.en.html" />
+  <link rel="alternate" hreflang="x-default" href="https://claw-book.cn/i-ching-personality.en.html" />
+  <!-- 结构化数据 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://claw-book.cn/#website",
+        "url": "https://claw-book.cn/",
+        "name": "天机推演",
+        "description": "基于易经六十四卦与奇门遁甲的AI人格解读与人生推演工具",
+        "inLanguage": "zh-CN",
+        "publisher": { "@id": "https://claw-book.cn/#organization" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://claw-book.cn/#software",
+        "name": "天机推演",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Android, iOS, WeChat Mini Program",
+        "url": "https://claw-book.cn/",
+        "description": "基于易经六十四卦与奇门遁甲的AI人格解读与人生推演工具，提供专属人格画像、人生推演、易缘匹配、节气养生等服务。",
+        "inLanguage": "zh-CN",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://claw-book.cn/#organization",
+        "name": "北京无元数字科技有限公司",
+        "url": "https://claw-book.cn/",
+        "logo": { "@type": "ImageObject", "url": "https://claw-book.cn/taiji-logo.png" }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☯</text></svg>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css">
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --bg: #0B0B12;
+      --bg-2: #101018;
+      --fg: #E6E2DA;
+      --fg-2: #9C988E;
+      --fg-3: #5C5A54;
+      --gold: #C8A55B;
+      --gold-dim: rgba(200,165,91,0.5);
+      --rule: rgba(200,165,91,0.12);
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --max: 1080px;
+      --gutter: clamp(24px, 5vw, 80px);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'LXGW WenKai', 'PingFang SC', serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.85;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* v19.0 英文态字体：Georgia 衬线体（美国网站惯例，古典优雅且可读），标题斜体 */
+    html[lang="en"] body,
+    html[lang="en"] .nav,
+    html[lang="en"] .member-login,
+    html[lang="en"] .foot {
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    html[lang="en"] .hero-title,
+    html[lang="en"] .sec-title,
+    html[lang="en"] .sec-label,
+    html[lang="en"] h3,
+    html[lang="en"] .foot h4 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+    html[lang="en"] .hero-title { font-size: clamp(40px, 5.5vw, 76px); }
+    html[lang="en"] .sec-label { font-style: normal; letter-spacing: 0.35em; text-transform: uppercase; }
+
+    /* ── Reveal ── */
+    .rv {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .rv.v { opacity: 1; transform: none; }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--gutter);
+      z-index: 100;
+      background: rgba(11,11,18,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0; /* 防止窄屏 flex 压缩导致品牌文字竖排/出框 */
+      min-width: 0;
+    }
+
+    .nav-logo img {
+      height: 26px;
+      width: auto;
+      flex-shrink: 0;
+      /* v20.2 换成无字卦象原图（透明底白线），深色导航直接可见，不再做反白滤镜 */
+    }
+
+    .nav-logo-text {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      color: var(--fg);
+      white-space: nowrap; /* 品牌名禁止换行，避免窄屏竖排溢出导航栏 */
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      color: var(--fg-3);
+      text-decoration: none;
+      letter-spacing: 0.15em;
+      transition: color 0.4s;
+    }
+
+    .nav-links a:hover { color: var(--fg); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--bg);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      padding: 0 var(--gutter);
+      box-sizing: border-box;
+      overflow: visible;
+    }
+
+    /* 太极 logo 容器（图中心对齐屏幕中心，尺寸按黄金比例收缩） */
+    .hero-taiji {
+      position: relative;
+      width: min(75vw, 75vh, 1000px);
+      height: min(75vw, 75vh, 1000px);
+      max-height: 75vh;
+      margin-top: calc(4vh - min(2vh, 30px));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 1;
+    }
+
+    .hero-taiji img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* 四字品牌标题（主视觉） */
+    .hero-title {
+      margin-top: clamp(28px, 4vw, 56px);
+      font-size: clamp(30px, 4vw, 58px);
+      font-weight: 800;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+      background: linear-gradient(135deg, #D4B87A 0%, #C8A55B 40%, #B8944A 70%, #D4B87A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 40px rgba(200,165,91,0.15));
+      font-family: 'LXGW WenKai', serif;
+    }
+
+    /* ── Section base ── */
+    .sec {
+      padding: clamp(80px, 12vw, 160px) var(--gutter);
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .sec-label {
+      font-size: 10px;
+      letter-spacing: 0.5em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sec-label::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .sec-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .sec-desc {
+      font-size: 15px;
+      color: var(--fg-2);
+      letter-spacing: 0.04em;
+      line-height: 2;
+      max-width: 560px;
+    }
+
+    /* ── Rule ── */
+    .rule {
+      border: none;
+      height: 1px;
+      background: var(--rule);
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* ── Manifesto ── */
+    .manifesto {
+      padding: clamp(80px, 12vw, 160px) var(--gutter);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .manifesto p {
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: var(--fg-2);
+      line-height: 2.2;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .manifesto .em {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .manifesto .gap { margin-top: 32px; }
+
+    /* ── Feature cards ── */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .feat {
+      background: var(--bg);
+      padding: clamp(40px, 6vw, 72px) clamp(32px, 5vw, 56px);
+      transition: background 0.5s;
+    }
+
+    .feat:hover { background: var(--bg-2); }
+
+    .feat-num {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--gold);
+      opacity: 0.25;
+      line-height: 1;
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    .feat h3 {
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      color: var(--fg);
+    }
+
+    .feat p {
+      font-size: 14px;
+      color: var(--fg-2);
+      line-height: 2;
+      letter-spacing: 0.02em;
+    }
+
+    .feat .hl {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* ── Products ── */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    .prod {
+      border: 1px solid var(--rule);
+      padding: clamp(32px, 4vw, 48px) clamp(24px, 3vw, 36px);
+      transition: all 0.5s var(--ease);
+      position: relative;
+    }
+
+    .prod:hover {
+      border-color: rgba(200,165,91,0.3);
+      transform: translateY(-2px);
+    }
+
+    .prod-icon {
+      font-size: 28px;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .prod-icon-svg {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    .prod h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .prod > p {
+      font-size: 13px;
+      color: var(--fg-3);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .prod ul {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .prod li {
+      font-size: 13px;
+      color: var(--fg-2);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      letter-spacing: 0.02em;
+    }
+
+    .prod li:last-child { border-bottom: none; }
+
+    .prod-btn {
+      display: block;
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .prod-btn-wx {
+      background: rgba(7,193,96,0.12);
+      color: #4ADE80;
+      border: 1px solid rgba(7,193,96,0.2);
+    }
+    .prod-btn-wx:hover { background: rgba(7,193,96,0.2); }
+
+    .prod-btn-android {
+      background: rgba(200,165,91,0.1);
+      color: var(--gold);
+      border: 1px solid rgba(200,165,91,0.2);
+    }
+    .prod-btn-android:hover { background: rgba(200,165,91,0.2); }
+
+    .dl-note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+      color: var(--gold);
+      background: rgba(200,165,91,0.06);
+      border: 1px solid rgba(200,165,91,0.22);
+      border-radius: 6px;
+    }
+
+    .prod-btn-ios {
+      background: transparent;
+      color: var(--fg-3);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .prod-btn-ios:hover { border-color: rgba(255,255,255,0.2); color: var(--fg-2); }
+
+    /* ── Member (H5 支付购买会员) ── */
+    .member {
+      border: 1px solid var(--rule);
+      background: var(--bg);
+      padding: clamp(40px, 5vw, 64px) var(--gutter);
+      margin-top: 8px;
+    }
+
+    .member-box {
+      max-width: 460px;
+      margin: 48px auto 0;
+      border: 1px solid var(--rule);
+      padding: clamp(28px, 4vw, 40px);
+      background: linear-gradient(180deg, rgba(200,165,91,0.05), transparent 40%);
+    }
+
+    .member-plan {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .member-opt {
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s var(--ease);
+    }
+    .member-opt:hover { border-color: rgba(200,165,91,0.3); }
+    .member-opt.on {
+      border-color: var(--gold);
+      background: rgba(200,165,91,0.1);
+    }
+
+    .member-opt .p-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--fg);
+      margin-bottom: 10px;
+    }
+    .member-opt .p-price {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+    .member-opt .p-price small {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--fg-3);
+    }
+
+    .member-login { margin-bottom: 22px; }
+    .member-login .tip {
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .member-row { display: flex; gap: 10px; margin-bottom: 12px; }
+    .member-input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(200,165,91,0.22);
+      color: var(--fg);
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      letter-spacing: 0.04em;
+      transition: border-color 0.3s;
+    }
+    .member-input:focus { border-color: rgba(200,165,91,0.6); }
+    .member-input::placeholder { color: var(--fg-3); }
+
+    .member-btn-code {
+      width: 110px;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(200,165,91,0.3);
+      padding: 0 12px;
+      font-size: 12px;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .member-btn-code:hover:not(:disabled) { background: rgba(200,165,91,0.15); }
+    .member-btn-code:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .member-btn {
+      width: 100%;
+      margin-top: 8px;
+      text-align: center;
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid rgba(200,165,91,0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .member-btn:hover { background: rgba(200,165,91,0.15); }
+    .member-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .member-status {
+      margin-top: 16px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.9;
+      min-height: 22px;
+      letter-spacing: 0.02em;
+    }
+    .member-status.ok { color: var(--gold); }
+    .member-status.err { color: #E56B6B; }
+
+    .member-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--fg-3);
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+
+    /* v18.6 协议勾选（默认不勾选） */
+    .member-agree {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--fg-3);
+      cursor: pointer;
+      user-select: none;
+    }
+    .member-agree input[type="checkbox"] {
+      accent-color: #C8A55B;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+    .member-link {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .member-link:hover { text-decoration: underline; }
+
+    /* ── About ── */
+    .about-body {
+      font-size: 15px;
+      color: var(--fg-2);
+      line-height: 2.2;
+      letter-spacing: 0.02em;
+      max-width: 600px;
+      margin-top: 48px;
+    }
+
+    .about-body p + p { margin-top: 24px; }
+
+    .about-meta {
+      margin-top: 80px;
+      border-top: 1px solid var(--rule);
+      padding-top: 32px;
+    }
+
+    .about-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .about-row:last-child { border-bottom: none; }
+
+    .about-key {
+      font-size: 12px;
+      color: var(--fg-3);
+      letter-spacing: 0.15em;
+    }
+
+    .about-val {
+      font-size: 13px;
+      color: var(--fg-2);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Footer ── */
+    .foot {
+      border-top: 1px solid var(--rule);
+      padding: 48px var(--gutter) 32px;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .foot h4 {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--fg-3);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .foot ul { list-style: none; }
+    .foot li { margin-bottom: 8px; }
+
+    .foot a {
+      font-size: 13px;
+      color: var(--fg-3);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.3s;
+    }
+
+    .foot a:hover { color: var(--fg); }
+
+    .foot p {
+      font-size: 13px;
+      color: var(--fg-3);
+      margin-bottom: 4px;
+    }
+
+    .foot-bottom {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .foot-bottom p {
+      font-size: 11px;
+      color: var(--fg-3);
+      letter-spacing: 0.04em;
+    }
+
+    .foot-bottom a {
+      color: var(--fg-3);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .foot-bottom a:hover { color: var(--gold); }
+
+    /* ── Responsive ── */
+
+    /* Tablet */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .nav { padding: 0 32px; }
+      .nav-links { gap: 24px; }
+      .nav-links a { font-size: 11px; letter-spacing: 0.12em; }
+      .hero {
+        background: var(--bg);
+      }
+      .foot-grid { gap: 32px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; height: 52px; }
+      .nav-logo { font-size: 14px; letter-spacing: 0.2em; }
+      .nav-links {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        min-width: 0; /* 允许收缩，避免挤压左侧 logo */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        mask-image: linear-gradient(to right, transparent 0, black 8px, black calc(100% - 8px), transparent 100%);
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { font-size: 11px; letter-spacing: 0.1em; white-space: nowrap; }
+
+      .hero {
+        min-height: 100vh;
+        background: var(--bg);
+      }
+
+      .hero-inner {
+        gap: 0;
+        text-align: center;
+      }
+
+      .hero-taiji {
+        order: 1;
+        width: min(84vw, 540px);
+        height: min(84vw, 540px);
+        max-height: 50vh;
+        margin-top: calc(22vh - min(17vh, 270px));
+      }
+
+      .hero-taiji img {
+        max-width: 540px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+        margin-top: 40px;
+      }
+
+      .hero-sub {
+        font-size: 15px;
+        margin-bottom: 40px;
+      }
+
+      .sec { padding: 64px 20px; }
+      .sec-label { font-size: 9px; letter-spacing: 0.4em; margin-bottom: 32px; }
+      .sec-title { font-size: 24px; letter-spacing: 0.04em; margin-bottom: 16px; }
+      .sec-desc { font-size: 14px; }
+
+      .manifesto { padding: 64px 20px; }
+      .manifesto p { font-size: 16px; line-height: 2; }
+
+      .features { grid-template-columns: 1fr; }
+      .feat { padding: 32px 24px; }
+      .feat-num { font-size: 36px; margin-bottom: 16px; }
+      .feat h3 { font-size: 18px; letter-spacing: 0.06em; margin-bottom: 12px; }
+      .feat p { font-size: 13px; }
+
+      .products { grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
+      .prod { padding: 28px 20px; }
+
+      .about-body { font-size: 14px; margin-top: 32px; }
+      .about-meta { margin-top: 48px; }
+      .about-row { padding: 12px 0; }
+      .about-key { font-size: 11px; }
+      .about-val { font-size: 12px; }
+
+      .foot { padding: 40px 20px 24px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+      .foot-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .foot-bottom p { font-size: 10px; }
+    }
+
+    /* Small mobile */
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 36px; }
+      .hero-sub { font-size: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rv { opacity: 1; transform: none; transition: none; }
+    }
+  
+/* UX修复：键盘焦点可见性 WCAG 2.4.7 */
+a:focus, button:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+
+/* UX修复：导航下载按钮加强 + 文字对比度 */
+.nav-download-btn {
+  background: linear-gradient(135deg, #c9a96a, #e8d5a3);
+  color: #0a0a0f !important;
+  padding: 6px 16px !important;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.nav-download-btn:hover {
+  background: linear-gradient(135deg, #e8d5a3, #c9a96a);
+  box-shadow: 0 0 12px rgba(201,169,106,0.4);
+}
+.nav-links a {
+  color: #b8b4a8 !important;
+}
+.nav-links a:hover {
+  color: #c9a96a !important;
+}
+
+/* 知识库导览（SEO 内链 2026-09-06） */
+.kb-gallery { background: #0d0d0d; padding: 56px 0; border-top: 1px solid rgba(212,175,55,.15); }
+.kb-gallery-inner { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.kb-gallery h2 { color: #d4af37; font-size: 26px; text-align: center; margin: 0 0 8px; letter-spacing: .12em; }
+.kb-sub { color: #8a8a8a; text-align: center; margin: 0 0 32px; font-size: 14px; }
+.kb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.kb-card { display: flex; align-items: center; justify-content: center; padding: 16px 12px; background: #161616; border: 1px solid rgba(212,175,55,.18); border-radius: 8px; color: #e8e2d4; text-decoration: none; font-size: 14px; transition: border-color .2s, transform .2s; text-align: center; }
+.kb-card:hover { border-color: #d4af37; transform: translateY(-2px); color: #d4af37; }
+@media (max-width: 640px) { .kb-grid { grid-template-columns: repeat(2, 1fr); } .kb-gallery { padding: 40px 0; } }
+
+    /* no-js 兜底：无 JS 时内容直接可见 */
+    .no-js .rv { opacity: 1; transform: none; }
+</style>
+
+  <!-- SEO性能优化：预连接字体CDN + 预加载Hero图 -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preload" href="/taiji-logo-hero.webp" as="image" type="image/webp" />
+
+<!-- 百度统计 -->
+<script>
+    document.documentElement.classList.remove("no-js");
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?bc2eeb3274de3884460e0368816fdd39";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<meta name="msvalidate.01" content="D805BF1085398AE0349243DD9A093B54" />
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNDSJZPLG6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NNDSJZPLG6');
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://claw-book.cn/"},{"@type":"ListItem","position":2,"name":"天机推演 — AI易经人格解读与人生推演工具"}]}</script>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/taiji-logo-nav.png" alt="天机推演" fetchpriority="high" loading="lazy" decoding="async" width="26" height="26"></a>
+    <ul class="nav-links">
+      <li><a href="/#member" data-i18n="nav_login">登录 / 注册</a></li>
+      <li><a href="/yi-jing.html" data-i18n="nav_kb">知识库</a></li>
+      <li><a href="#download" data-i18n="nav_download">下载</a></li>
+      <!-- v19.0 语言切换 -->
+      <li><a href="javascript:void(0)" id="langSwitch" onclick="I18N.toggle()">EN</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-taiji rv v">
+        <picture>
+          <source srcset="/taiji-logo-hero.webp" type="image/webp"/>
+          <img src="/taiji-logo-hero.webp" alt="太极" fetchpriority="high" decoding="async"/ fetchpriority="high" fetchpriority="high" width="1024" height="1024">
+        </picture>
+      </div>
+      <h1 class="hero-title rv v" data-i18n="hero_title">天僟推演</h1>
+    </div>
+  </section>
+
+  <!-- Origin -->
+  <div class="manifesto" id="origin">
+    <div class="sec-label rv" data-i18n="origin_label">缘起</div>
+    <p class="rv" data-i18n="origin_l1">以宋代 <span class="em">邵雍《梅花易数》</span> 为算法根基，</p>
+    <p class="rv" data-i18n="origin_l2">召 <span class="em">LLM 大模型</span> 作解语之灵。</p>
+    <p class="gap rv" data-i18n="origin_l3">科技与千年国学相撞，</p>
+    <p class="rv" data-i18n="origin_l4">唤醒沉睡的 <span class="em">宇宙运转奥秘</span>。</p>
+  </div>
+
+  <hr class="rule">
+
+  <!-- Features -->
+  <section class="sec" id="features">
+    <div class="sec-label rv" data-i18n="feat_label">核心功能</div>
+    <h2 class="sec-title rv" data-i18n="feat_title">四大模块</h2>
+    <p class="sec-desc rv" data-i18n="feat_desc">全方位解读你的人生密码</p>
+  </section>
+
+  <div class="features">
+    <div class="feat rv">
+      <div class="feat-num">01</div>
+      <h3 data-i18n="feat1_title">专属人格</h3>
+      <p data-i18n="feat1_desc">每人皆有专属画像——<span class="hl">卦辞</span>、人格描述、致命弱点、<span class="hl">历史人物对标</span>、成长建议。</p>
+    </div>
+    <div class="feat rv">
+      <div class="feat-num">02</div>
+      <h3 data-i18n="feat2_title">深度解读</h3>
+      <p data-i18n="feat2_desc">万事皆可问。算法融 <span class="hl">24 时空变量</span> 于卦象之中，为你指点宜行与禁忌。</p>
+    </div>
+    <div class="feat rv">
+      <div class="feat-num">03</div>
+      <h3 data-i18n="feat3_title">易缘匹配</h3>
+      <p data-i18n="feat3_desc">系统展示 <span class="hl">10 位同频陌生人</span>，观卦象相生相克。匹配后可 <span class="hl">互写信件</span>，亦可与微信好友 <span class="hl">合盘</span>。</p>
+    </div>
+    <div class="feat rv">
+      <div class="feat-num">04</div>
+      <h3 data-i18n="feat4_title">节气养生</h3>
+      <p data-i18n="feat4_desc">顺天时而养。这节气该 <span class="hl">吃什么</span>、<span class="hl">注意什么</span>，皆有古法可循。</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- Member (H5 支付购买会员) -->
+  <section class="sec member" id="member">
+    <div class="sec-label rv" data-i18n="mem_label">易学会员</div>
+    <h2 class="sec-title rv" data-i18n="mem_title">开通易学会员</h2>
+    <p class="sec-desc rv" data-i18n="mem_desc">每日 20 次推演 · 每日 1 次深度解读 · 无限匹配</p>
+
+    <div class="member-box rv">
+      <div class="member-plan">
+        <div class="member-opt on" data-product="vip_monthly" onclick="Member.select(this)">
+          <div class="p-name" data-i18n="mem_monthly">月度会员</div>
+          <div class="p-price">19.9<small data-i18n="mem_per_month"> 元/月</small></div>
+        </div>
+        <div class="member-opt" data-product="vip_yearly" onclick="Member.select(this)">
+          <div class="p-name" data-i18n="mem_yearly">年度会员</div>
+          <div class="p-price">168<small data-i18n="mem_per_year"> 元/年</small></div>
+        </div>
+      </div>
+
+      <div class="member-login">
+        <div class="tip" id="memberTip" data-i18n="mem_tip">用于登录并开通会员（邮箱与 App/小程序同一账号）</div>
+        <div class="member-row">
+          <input class="member-input" id="memberEmail" type="email" placeholder="请输入邮箱" data-i18n-ph="mem_email_ph" />
+        </div>
+        <div class="member-row">
+          <input class="member-input" id="memberPassword" type="password" placeholder="请输入密码" data-i18n-ph="mem_pwd_ph" autocomplete="current-password" />
+        </div>
+        <div class="member-links">
+          <a href="/delete-account?view=register" class="member-link" data-i18n="mem_need_reg">还没有账号？去注册</a>
+          <a href="/delete-account?view=forgot" class="member-link" data-i18n="mem_forgot">忘记密码</a>
+        </div>
+        <label class="member-agree" for="memberAgree">
+          <input type="checkbox" id="memberAgree" />
+          <span data-i18n="mem_agree">已阅读并同意<a class="member-link" href="javascript:void(0)" onclick="Member.showDoc('agreement')">《用户协议》</a>和<a class="member-link" href="javascript:void(0)" onclick="Member.showDoc('privacy')">《隐私政策》</a></span>
+        </label>
+        <button class="member-btn" id="memberBuyBtn" onclick="Member.buy()" data-i18n="mem_buy">立即开通</button>
+      </div>
+
+      <div class="member-status" id="memberStatus"></div>
+      <div class="member-note" data-i18n="mem_note">支付成功后会员即时生效；若未自动生效请稍候刷新</div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- Download -->
+  <section class="sec" id="download">
+    <div class="sec-label rv" data-i18n="dl_label">多端应用</div>
+    <h2 class="sec-title rv" data-i18n="dl_title">随时随地</h2>
+    <p class="sec-desc rv" data-i18n="dl_desc">开启你的推演之旅</p>
+
+    <div class="products">
+      <div class="prod rv">
+        <span class="prod-icon"></span>
+        <h3>Android <span class="apk-ver" id="apkVersion" style="font-size:.62em;color:#8a8a8a;font-weight:400;margin-left:4px"></span></h3>
+        <p data-i18n="dl_ad_desc">原生体验，功能更完整</p>
+        <ul>
+          <li data-i18n="dl_ad_li1">手机号验证码登录</li>
+          <li data-i18n="dl_ad_li2">离线缓存支持</li>
+          <li data-i18n="dl_ad_li3">推送通知提醒</li>
+          <li data-i18n="dl_ad_li4">更流畅的交互体验</li>
+        </ul>
+        <a href="/com.clawbook.tianji-3.1.0.apk" id="apkLink" class="prod-btn prod-btn-android" download data-i18n="dl_ad_btn">立即下载 APK</a>
+        <p class="dl-note" data-i18n="dl_apk_note">直接下载的 APK 无法在应用内购买会员；如需开通会员，请使用下方 Google Play 版本。</p>
+        <a href="https://play.google.com/store/apps/details?id=com.clawbook.tianji" class="prod-btn prod-btn-android" style="margin-top:10px" target="_blank" rel="noopener" data-i18n="dl_play_btn">在 Google Play 获取</a>
+        <p class="dl-note" data-i18n="dl_play_note">Google Play 版本支持应用内购买会员。</p>
+      </div>
+      <div class="prod rv">
+        <span class="prod-icon">🍎</span>
+        <h3>iOS</h3>
+        <p data-i18n="dl_ios_desc">App Store 即将上架</p>
+        <ul>
+          <li data-i18n="dl_ios_li1">Apple ID 登录</li>
+          <li data-i18n="dl_ios_li2">iCloud 数据同步</li>
+          <li data-i18n="dl_ios_li3">Face ID 快速登录</li>
+          <li data-i18n="dl_ios_li4">原生 iOS 体验</li>
+        </ul>
+        <a href="#" class="prod-btn prod-btn-ios" onclick="iosSoon(); return false;" data-i18n="dl_ios_btn">即将上架</a>
+      </div>
+      <div class="prod rv">
+        <span class="prod-icon"><svg class="prod-icon-svg" viewBox="0 0 200 200" aria-hidden="true"><g fill="#C9962E"><rect x="24" y="40" width="70" height="14" rx="3"/><rect x="106" y="40" width="70" height="14" rx="3"/><rect x="24" y="64" width="152" height="14" rx="3"/><rect x="24" y="88" width="70" height="14" rx="3"/><rect x="106" y="88" width="70" height="14" rx="3"/><rect x="24" y="112" width="152" height="14" rx="3"/><rect x="24" y="136" width="70" height="14" rx="3"/><rect x="106" y="136" width="70" height="14" rx="3"/><rect x="24" y="160" width="152" height="14" rx="3"/></g></svg></span>
+        <h3 data-i18n="dl_web_title">在线体验</h3>
+        <p data-i18n="dl_web_desc">无需下载，打开即测</p>
+        <ul>
+          <li data-i18n="dl_web_li1">测本命卦 · 64 型人格</li>
+          <li data-i18n="dl_web_li2">测易缘合盘 · 4096 配对</li>
+          <li data-i18n="dl_web_li3">即时生成分享海报</li>
+          <li data-i18n="dl_web_li4">微信内直接使用</li>
+        </ul>
+        <a href="/tianji/gua/" class="prod-btn prod-btn-android" target="_blank" rel="noopener" data-i18n="dl_web_btn">立即体验</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- About -->
+  <section class="sec" id="about">
+    <div class="sec-label rv" data-i18n="about_label">关于</div>
+    <h2 class="sec-title rv" data-i18n="about_title">天机推演</h2>
+    <div class="about-body rv">
+      <p data-i18n="about_p1">天机推演是一款基于易经六十四卦的AI人格解读与人生推演工具。我们以宋代邵雍《梅花易数》为算法根基，融合奇门遁甲的24个时空变量，借助大语言模型的深度解读能力，为用户提供专属人格画像、人生推演、易缘匹配、节气养生等服务。</p>
+      <p data-i18n="about_p2">科技与千年国学相撞，唤醒沉睡的宇宙运转奥秘。我们相信，每个人都有自己的卦象，每段缘分都有定数。</p>
+    </div>
+    <div class="about-meta rv">
+      <div class="about-row">
+        <span class="about-key" data-i18n="about_op">运营主体</span>
+        <span class="about-val">北京无元数字科技有限公司</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key" data-i18n="about_mail">联系邮箱</span>
+        <span class="about-val">ccbaby2813@139.com</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key" data-i18n="about_icp">网站备案</span>
+        <span class="about-val">京ICP备16050769号-4</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 知识库导览（SEO 内链 2026-09-06） -->
+  <section class="kb-gallery">
+    <div class="kb-gallery-inner">
+      <h2 data-i18n="kb_title">探索易经知识库</h2>
+      <p class="kb-sub" data-i18n="kb_sub">从入门到进阶，读懂三千年智慧</p>
+      <div class="kb-grid">
+        <a class="kb-card" href="/knowledge.html" data-i18n="kb_all">完整知识库</a>
+        <a class="kb-card" href="/ben-ming-gua.html" data-i18n="kb_bmg">本命卦</a>
+        <a class="kb-card" href="/liu-shi-si-gua.html" data-i18n="kb_lssg">六十四卦</a>
+        <a class="kb-card" href="/ba-gua.html" data-i18n="kb_bg">八卦</a>
+        <a class="kb-card" href="/meihua-yishu.html" data-i18n="kb_mh">梅花易数</a>
+        <a class="kb-card" href="/qimen-dunjia.html" data-i18n="kb_qm">奇门遁甲</a>
+        <a class="kb-card" href="/he-pan.html" data-i18n="kb_hp">易经合盘</a>
+        <a class="kb-card" href="/yi-yuan-pi-pei.html" data-i18n="kb_yyp">易缘匹配</a>
+        <a class="kb-card" href="/jieqi-health.html" data-i18n="kb_jq">节气养生</a>
+        <a class="kb-card" href="/gua-01.html" data-i18n="kb_g1">乾卦</a>
+        <a class="kb-card" href="/gua-02.html" data-i18n="kb_g2">坤卦</a>
+        <a class="kb-card" href="/gua-03.html" data-i18n="kb_g3">屯卦</a>
+        <a class="kb-card" href="/gua-04.html" data-i18n="kb_g4">蒙卦</a>
+        <a class="kb-card" href="/gua-11.html" data-i18n="kb_g11">泰卦</a>
+        <a class="kb-card" href="/gua-63.html" data-i18n="kb_g63">既济</a>
+        <a class="kb-card" href="/chunfen.html" data-i18n="kb_cf">春分</a>
+        <a class="kb-card" href="/xiazhi.html" data-i18n="kb_xz">夏至</a>
+        <a class="kb-card" href="/qiufen.html" data-i18n="kb_qf">秋分</a>
+        <a class="kb-card" href="/dongzhi.html" data-i18n="kb_dz">冬至</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="foot">
+    <div class="foot-grid">
+      <div>
+        <h3 data-i18n="about_title">天机推演</h3>
+        <p data-i18n="foot_slogan">用易经智慧解读人生</p>
+      </div>
+      <div>
+        <h3 data-i18n="foot_product">产品</h3>
+        <ul>
+          <li><a href="#origin" data-i18n="nav_origin">缘起</a></li>
+          <li><a href="#features" data-i18n="feat_label">核心功能</a></li>
+          <li><a href="#member" data-i18n="nav_member">会员</a></li>
+          <li><a href="#download" data-i18n="foot_dl">产品下载</a></li>
+          <li><a href="/app/" data-i18n="foot_web">网页版</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="foot_support">支持</h3>
+        <ul>
+          <li><a href="/agreement" data-i18n="foot_agreement">用户协议</a></li>
+          <li><a href="/privacy" data-i18n="foot_privacy">隐私政策</a></li>
+          <li><a href="/#member" data-i18n="nav_login">登录 / 注册</a></li>
+          <li><a href="mailto:ccbaby2813@139.com" data-i18n="foot_contact">联系我们</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 data-i18n="nav_about">关于</h3>
+        <ul>
+          <li><a href="#about" data-i18n="foot_aboutus">关于我们</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 北京无元数字科技有限公司</p>
+      <p><a href="/agreement" data-i18n="foot_agreement">用户协议</a> · <a href="/privacy" data-i18n="foot_privacy">隐私政策</a> · 京ICP备16050769号-4</p>
+    </div>
+  </footer>
+
+  <script>
+    // ========== v19.0 官网双语（中/EN 切换，localStorage 记忆，?lang=en 可直链）==========
+    const I18N = (() => {
+      const zh = {
+        _title: '天机推演 — AI易经人格解读与人生推演工具 | 六十四卦·梅花易数·奇门遁甲',
+        nav_origin: '缘起', nav_features: '功能', nav_member: '会员', nav_download: '下载',
+        nav_about: '关于', nav_kb: '知识库', nav_agreement: '协议', nav_privacy: '隐私', nav_delete: '登录 / 注册', nav_login: '登录 / 注册',
+        hero_title: '天僟推演',
+        origin_label: '缘起',
+        origin_l1: '以宋代 <span class="em">邵雍《梅花易数》</span> 为算法根基，',
+        origin_l2: '召 <span class="em">LLM 大模型</span> 作解语之灵。',
+        origin_l3: '科技与千年国学相撞，',
+        origin_l4: '唤醒沉睡的 <span class="em">宇宙运转奥秘</span>。',
+        feat_label: '核心功能', feat_title: '四大模块', feat_desc: '全方位解读你的人生密码',
+        feat1_title: '专属人格',
+        feat1_desc: '每人皆有专属画像——<span class="hl">卦辞</span>、人格描述、致命弱点、<span class="hl">历史人物对标</span>、成长建议。',
+        feat2_title: '深度解读',
+        feat2_desc: '万事皆可问。算法融 <span class="hl">24 时空变量</span> 于卦象之中，为你指点宜行与禁忌。',
+        feat3_title: '易缘匹配',
+        feat3_desc: '系统展示 <span class="hl">10 位同频陌生人</span>，观卦象相生相克。匹配后可 <span class="hl">互写信件</span>，亦可与微信好友 <span class="hl">合盘</span>。',
+        feat4_title: '节气养生',
+        feat4_desc: '顺天时而养。这节气该 <span class="hl">吃什么</span>、<span class="hl">注意什么</span>，皆有古法可循。',
+        mem_label: '易学会员', mem_title: '开通易学会员', mem_desc: '每日 20 次推演 · 每日 1 次深度解读 · 无限匹配',
+        mem_monthly: '月度会员', mem_per_month: ' 元/月', mem_yearly: '年度会员', mem_per_year: ' 元/年',
+        mem_tip: '用于登录并开通会员（邮箱与 App/小程序同一账号）',
+        mem_email_ph: '请输入邮箱', mem_pwd_ph: '请输入密码',
+        mem_need_reg: '还没有账号？去注册', mem_forgot: '忘记密码',
+        mem_agree: '已阅读并同意<a class="member-link" href="javascript:void(0)" onclick="Member.showDoc(\'agreement\')">《用户协议》</a>和<a class="member-link" href="javascript:void(0)" onclick="Member.showDoc(\'privacy\')">《隐私政策》</a>',
+        mem_buy: '立即开通',
+        mem_note: '支付成功后会员即时生效；若未自动生效请稍候刷新',
+        mem_logged_tip: '已登录，可直接选择套餐并开通',
+        msg_agree_first: '请先勾选同意《用户协议》和《隐私政策》',
+        msg_email_invalid: '请输入正确的邮箱',
+        msg_pwd_required: '请输入密码',
+        msg_processing: '处理中...',
+        msg_order_creating: '正在创建订单...',
+        msg_no_pay_url: '未获取到支付地址，请重试',
+        msg_paying: '正在调起微信支付...',
+        msg_buy_success: '购买成功，会员已生效',
+        doc_agree_t: '用户服务协议（摘要）',
+        doc_agree_b: '1. 本产品基于国学经典的 AI 生成内容，仅供娱乐与文化学习参考，不构成任何专业建议。<br>2. 本产品不涉及占卜算运势、算命、付费取名等内容。<br>3. 购买的会员服务自支付成功即时生效，按所选周期（月/年）提供权益。<br>4. 完整协议请参阅 App 内「关于-用户协议」。',
+        doc_privacy_t: '隐私政策（摘要）',
+        doc_privacy_b: '1. 我们仅收集为提供服务所必需的信息（邮箱、昵称、出生日期等），用于账号识别与推演。<br>2. 你的数据经过加密传输与存储，不会向第三方出售或交换。<br>3. 你可随时在 App 内申请删除账号与数据。<br>4. 完整政策请参阅 App 内「关于-隐私政策」。',
+        doc_close: '关闭',
+        dl_label: '多端应用', dl_title: '随时随地', dl_desc: '开启你的推演之旅',
+        dl_ad_desc: '原生体验，功能更完整',
+        dl_ad_li1: '邮箱验证码登录', dl_ad_li2: '离线缓存支持', dl_ad_li3: '推送通知提醒', dl_ad_li4: '更流畅的交互体验',
+        dl_ad_btn: '立即下载 APK',
+        dl_play_btn: '在 Google Play 获取',
+        dl_apk_note: '直接下载的 APK 无法在应用内购买会员；如需开通会员，请使用下方 Google Play 版本。',
+        dl_play_note: 'Google Play 版本支持应用内购买会员。',
+        dl_ios_desc: 'App Store 即将上架',
+        dl_ios_li1: 'Apple ID 登录', dl_ios_li2: 'iCloud 数据同步', dl_ios_li3: 'Face ID 快速登录', dl_ios_li4: '原生 iOS 体验',
+        dl_ios_btn: '即将上架', ios_soon: '即将上线，敬请期待！',
+        dl_web_title: '在线体验', dl_web_desc: '无需下载，打开即测',
+        dl_web_li1: '测本命卦 · 64 型人格', dl_web_li2: '测易缘合盘 · 4096 配对', dl_web_li3: '即时生成分享海报', dl_web_li4: '微信内直接使用',
+        dl_web_btn: '立即体验',
+        about_label: '关于', about_title: '天机推演',
+        about_p1: '天机推演是一款基于易经六十四卦的AI人格解读与人生推演工具。我们以宋代邵雍《梅花易数》为算法根基，融合奇门遁甲的24个时空变量，借助大语言模型的深度解读能力，为用户提供专属人格画像、人生推演、易缘匹配、节气养生等服务。',
+        about_p2: '科技与千年国学相撞，唤醒沉睡的宇宙运转奥秘。我们相信，每个人都有自己的卦象，每段缘分都有定数。',
+        about_op: '运营主体', about_mail: '联系邮箱', about_icp: '网站备案',
+        foot_slogan: '用易经智慧解读人生', foot_product: '产品', foot_dl: '产品下载', foot_web: '网页版',
+        foot_support: '支持', foot_agreement: '用户协议', foot_privacy: '隐私政策',
+        foot_contact: '联系我们', foot_delete: '账号注销', foot_aboutus: '关于我们',
+        kb_title: '探索易经知识库', kb_sub: '从入门到进阶，读懂三千年智慧', kb_all: '完整知识库', kb_bmg: '本命卦', kb_lssg: '六十四卦', kb_bg: '八卦', kb_mh: '梅花易数', kb_qm: '奇门遁甲', kb_hp: '易经合盘', kb_yyp: '易缘匹配', kb_jq: '节气养生', kb_g1: '乾卦', kb_g2: '坤卦', kb_g3: '屯卦', kb_g4: '蒙卦', kb_g11: '泰卦', kb_g63: '既济', kb_cf: '春分', kb_xz: '夏至', kb_qf: '秋分', kb_dz: '冬至',
+      };
+      const en = {
+        _title: 'I Ching Insight — AI I Ching Personality Reading & Life Insight | 64 Hexagrams, Plum Blossom Numerology, Qimen Dunjia',
+        nav_origin: 'Origin', nav_features: 'Features', nav_member: 'Membership', nav_download: 'Download',
+        nav_about: 'About', nav_kb: 'Knowledge', nav_agreement: 'Terms', nav_privacy: 'Privacy', nav_delete: 'Sign in / Register', nav_login: 'Sign in / Register',
+        hero_title: 'I Ching Insight',
+        origin_label: 'ORIGIN',
+        origin_l1: 'Rooted in the Song-dynasty classic <span class="em">Plum Blossom Numerology</span> by Shao Yong,',
+        origin_l2: 'awakened by an <span class="em">LLM</span> as its interpreting spirit.',
+        origin_l3: 'Where technology meets millennia of Chinese wisdom,',
+        origin_l4: 'the <span class="em">hidden order of the universe</span> awakens.',
+        feat_label: 'FEATURES', feat_title: 'Four Modules', feat_desc: 'A complete decode of your life\u2019s cipher',
+        feat1_title: 'Your Personality Hexagram',
+        feat1_desc: 'A portrait unique to you — <span class="hl">hexagram judgment</span>, personality traits, blind spots, <span class="hl">historical figure parallels</span>, and growth advice.',
+        feat2_title: 'Deep Insight',
+        feat2_desc: 'Ask anything. The algorithm weaves <span class="hl">24 spacetime variables</span> into your hexagram, pointing out what to do and what to avoid.',
+        feat3_title: 'Soul Match',
+        feat3_desc: 'Meet <span class="hl">10 kindred strangers</span> through the harmony of your hexagrams. Exchange <span class="hl">letters</span> after matching, or <span class="hl">co-read</span> with WeChat friends.',
+        feat4_title: 'Solar Term Wellness',
+        feat4_desc: 'Live in rhythm with nature. What to <span class="hl">eat</span> and what to <span class="hl">mind</span> this solar term — all rooted in classical wisdom.',
+        mem_label: 'MEMBERSHIP', mem_title: 'Join the Yi Society', mem_desc: '20 insights / day · 1 deep insight / day · unlimited matching',
+        mem_monthly: 'Monthly', mem_per_month: ' CNY/mo', mem_yearly: 'Yearly', mem_per_year: ' CNY/yr',
+        mem_tip: 'Sign in here to purchase (same email account as the App)',
+        mem_email_ph: 'Enter email', mem_pwd_ph: 'Enter password',
+        mem_need_reg: "No account? Register", mem_forgot: 'Forgot password',
+        mem_agree: 'I have read and agree to the <a class="member-link" href="javascript:void(0)" onclick="Member.showDoc(\'agreement\')">User Agreement</a> and <a class="member-link" href="javascript:void(0)" onclick="Member.showDoc(\'privacy\')">Privacy Policy</a>',
+        mem_buy: 'Subscribe Now',
+        mem_note: 'Membership activates immediately after payment; refresh shortly if not yet reflected',
+        mem_logged_tip: 'Signed in — pick a plan and subscribe',
+        msg_agree_first: 'Please agree to the User Agreement and Privacy Policy first',
+        msg_email_invalid: 'Please enter a valid email address',
+        msg_pwd_required: 'Please enter your password',
+        msg_processing: 'Processing...',
+        msg_order_creating: 'Creating order...',
+        msg_no_pay_url: 'No payment URL returned, please retry',
+        msg_paying: 'Opening WeChat Pay...',
+        msg_buy_success: 'Payment successful — membership is now active',
+        doc_agree_t: 'User Service Agreement (Summary)',
+        doc_agree_b: '1. This product provides AI-generated content based on Chinese classics, for entertainment and cultural learning only; it is not professional advice.<br>2. This product does not provide fortune-telling, fate calculation, or paid naming services.<br>3. Purchased membership takes effect immediately after payment and grants benefits for the selected cycle (month/year).<br>4. See the full agreement in the App under About - User Agreement.',
+        doc_privacy_t: 'Privacy Policy (Summary)',
+        doc_privacy_b: '1. We collect only the information necessary to provide the service (email, nickname, birth date, etc.) for account identity and insights.<br>2. Your data is encrypted in transit and at rest, and is never sold or exchanged with third parties.<br>3. You may request account and data deletion in the App at any time.<br>4. See the full policy in the App under About - Privacy Policy.',
+        doc_close: 'Close',
+        dl_label: 'PLATFORMS', dl_title: 'Anytime, Anywhere', dl_desc: 'Begin your journey of insight',
+        dl_ad_desc: 'Native experience with the full feature set',
+        dl_ad_li1: 'Email code sign-in', dl_ad_li2: 'Offline caching', dl_ad_li3: 'Push notifications', dl_ad_li4: 'Smoother interactions',
+        dl_ad_btn: 'Download APK',
+        dl_play_btn: 'Get it on Google Play',
+        dl_apk_note: 'The APK downloaded directly from this site cannot purchase membership in-app. To subscribe, please use the Google Play version below.',
+        dl_play_note: 'The Google Play version supports in-app membership purchases.',
+        dl_ios_desc: 'Coming soon to the App Store',
+        dl_ios_li1: 'Sign in with Apple', dl_ios_li2: 'iCloud sync', dl_ios_li3: 'Face ID sign-in', dl_ios_li4: 'Native iOS experience',
+        dl_ios_btn: 'Coming Soon', ios_soon: 'Coming soon — stay tuned!',
+        dl_web_title: 'Try Online', dl_web_desc: 'No install needed',
+        dl_web_li1: 'Find your natal hexagram · 64 personalities', dl_web_li2: 'Relationship match · 4096 pairs', dl_web_li3: 'Instant shareable result cards', dl_web_li4: 'Works right inside WeChat',
+        dl_web_btn: 'Try Now',
+        about_label: 'ABOUT', about_title: 'I Ching Insight',
+        about_p1: 'I Ching Insight is an AI-powered personality and life-insight tool built on the 64 hexagrams of the I Ching. Grounded in the Song-dynasty \u201cPlum Blossom Numerology\u201d of Shao Yong and enriched with 24 Qimen Dunjia spacetime variables, it leverages large language models to offer personality portraits, life insights, soul matching, and solar-term wellness guidance.',
+        about_p2: 'Where technology meets millennia of Chinese wisdom, the hidden order of the universe awakens. We believe everyone has their own hexagram, and every bond has its own rhythm.',
+        about_op: 'Operated by', about_mail: 'Contact', about_icp: 'ICP License',
+        foot_slogan: 'Decode your life with I Ching wisdom', foot_product: 'Product', foot_dl: 'Download', foot_web: 'Web App',
+        foot_support: 'Support', foot_agreement: 'User Agreement', foot_privacy: 'Privacy Policy',
+        foot_contact: 'Contact Us', foot_delete: 'Delete Account', foot_aboutus: 'About Us',
+        kb_title: 'Explore the I Ching Knowledge Base', kb_sub: 'From basics to depth — 3,000 years of wisdom', kb_all: 'Full Knowledge Base', kb_bmg: 'Birth Hexagram', kb_lssg: '64 Hexagrams', kb_bg: '8 Trigrams', kb_mh: 'Plum Blossom', kb_qm: 'Qimen Dunjia', kb_hp: 'Chart Reading', kb_yyp: 'Soul Matching', kb_jq: 'Solar Terms', kb_g1: 'Qian', kb_g2: 'Kun', kb_g3: 'Zhun', kb_g4: 'Meng', kb_g11: 'Tai', kb_g63: 'Ji Ji', kb_cf: 'Spring Eq.', kb_xz: 'Summer Sol.', kb_qf: 'Autumn Eq.', kb_dz: 'Winter Sol.',
+      };
+
+      const qs = new URLSearchParams(location.search).get('lang');
+      let lang = qs === 'en' ? 'en' : (localStorage.getItem('tj_web_lang') || 'zh');
+      if (qs === 'en' || qs === 'zh') localStorage.setItem('tj_web_lang', lang);
+
+      function apply() {
+        const dict = lang === 'en' ? en : zh;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const k = el.getAttribute('data-i18n');
+          if (dict[k] !== undefined) el.innerHTML = dict[k];
+        });
+        document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+          const k = el.getAttribute('data-i18n-ph');
+          if (dict[k] !== undefined) el.setAttribute('placeholder', dict[k]);
+        });
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+        document.title = dict._title;
+        const sw = document.getElementById('langSwitch');
+        if (sw) sw.textContent = lang === 'en' ? '中' : 'EN';
+        
+        // 更新导航和footer链接指向对应语言版本
+        const linkMap = {
+          '/yi-jing.html': lang === 'en' ? '/knowledge.en.html' : '/yi-jing.html',
+          '/knowledge.en.html': lang === 'en' ? '/knowledge.en.html' : '/yi-jing.html',
+          '/#member': lang === 'en' ? '/?lang=en#member' : '/#member',
+          '/?lang=en#member': lang === 'en' ? '/?lang=en#member' : '/#member',
+          '/login': lang === 'en' ? '/?lang=en#member' : '/#member',
+          '/agreement': lang === 'en' ? '/agreement.en' : '/agreement',
+          '/agreement.en': lang === 'en' ? '/agreement.en' : '/agreement',
+          '/privacy': lang === 'en' ? '/privacy.en' : '/privacy',
+          '/privacy.en': lang === 'en' ? '/privacy.en' : '/privacy',
+          '/tianji/gua/': lang === 'en' ? '/tianji/gua/?lang=en' : '/tianji/gua/',
+          '/tianji/gua/?lang=en': lang === 'en' ? '/tianji/gua/?lang=en' : '/tianji/gua/',
+        };
+        for (const orig in linkMap) {
+          document.querySelectorAll('a[href="' + orig + '"]').forEach(el => el.href = linkMap[orig]);
+        }
+      }
+
+      function toggle() {
+        lang = lang === 'en' ? 'zh' : 'en';
+        localStorage.setItem('tj_web_lang', lang);
+        apply();
+      }
+
+      apply();
+      return { toggle, t: k => (lang === 'en' ? en : zh)[k] || k, lang: () => lang };
+    })();
+
+    function iosSoon() { alert(I18N.t('ios_soon')); }
+
+    // ========== 官网 App 下载链接动态读取（管理后台「内容资产 → App下载版本」维护）==========
+    (function initAppDownload() {
+      const API = location.origin + '/tianji';
+      const apkLink = document.getElementById('apkLink');
+      const verEl = document.getElementById('apkVersion');
+      function apply(d) {
+        if (!d) return; // 接口异常时保留 HTML 默认链接
+        if (d.enabled === false) {
+          if (apkLink) {
+            // 后台停用下载：移除链接并置灰
+            const href = apkLink.getAttribute('href');
+            apkLink.removeAttribute('href');
+            apkLink.style.transition = 'opacity .2s';
+            apkLink.style.opacity = '0.5';
+            apkLink.addEventListener('click', e => e.preventDefault());
+          }
+        } else if (d.url) {
+          if (apkLink) apkLink.href = d.url;
+        }
+        if (verEl && d.version) verEl.textContent = 'v' + d.version;
+      }
+      fetch(API + '/api/app-download')
+        .then(r => r.json())
+        .then(j => apply(j && j.data))
+        .catch(() => { /* 网络失败保留默认，绝不因接口问题让下载入口失效 */ });
+    })();
+
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+    // ========== 易学会员（H5 支付购买）==========
+    const Member = (() => {
+      const API = location.origin + '/tianji';
+      let product = 'vip_monthly';
+      let token = localStorage.getItem('tj_web_token') || '';
+      let pollTimer = null;
+
+      const $ = id => document.getElementById(id);
+      const status = (msg, ok) => {
+        const el = $('memberStatus');
+        if (el) { el.textContent = msg; el.className = 'member-status ' + (ok ? 'ok' : 'err'); }
+      };
+      const setBtnLoading = (btn, loading, text) => {
+        if (!btn) return;
+        btn.disabled = loading;
+        if (text !== undefined) btn.textContent = text;
+      };
+
+      async function apiPost(path, body, useAuth) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (useAuth && token) headers['Authorization'] = 'Bearer ' + token;
+        const res = await fetch(API + path, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body || {})
+        });
+        let data = null;
+        try { data = await res.json(); } catch (e) { /* ignore */ }
+        if (!res.ok && (!data || !data.success)) {
+          const msg = (data && data.message) || ('请求失败(' + res.status + ')');
+          const err = new Error(msg);
+          err.code = data && data.code; err.status = res.status;
+          throw err;
+        }
+        return data || {};
+      }
+
+      return {
+        init() {
+          // 若已登录，提示已登录（简化：仅显示当前状态）
+          if (token) $('memberTip').textContent = I18N.t('mem_logged_tip');
+        },
+
+        select(el) {
+          product = el.dataset.product;
+          document.querySelectorAll('.member-opt').forEach(o => o.classList.toggle('on', o === el));
+        },
+
+        // 协议/隐私阅读弹层
+        showDoc(type) {
+          let existing = document.getElementById('memberDocModal');
+          if (existing) existing.remove();
+          const docs = {
+            agreement: { t: I18N.t('doc_agree_t'), b: I18N.t('doc_agree_b') },
+            privacy: { t: I18N.t('doc_privacy_t'), b: I18N.t('doc_privacy_b') }
+          };
+          const d = docs[type] || docs.agreement;
+          const m = document.createElement('div');
+          m.id = 'memberDocModal';
+          m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,0.85);display:flex;align-items:center;justify-content:center;padding:24px;';
+          m.innerHTML = '<div style="max-width:520px;width:100%;max-height:70vh;overflow:auto;background:#14142A;border:1px solid rgba(200,165,91,0.35);padding:28px;">'
+            + '<div style="font-size:15px;font-weight:700;color:#C8A55B;letter-spacing:0.1em;margin-bottom:16px;">' + d.t + '</div>'
+            + '<div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:2;">' + d.b + '</div>'
+            + '<button onclick="document.getElementById(\'memberDocModal\').remove()" style="margin-top:20px;width:100%;padding:12px;background:transparent;border:1px solid rgba(200,165,91,0.4);color:#C8A55B;font-size:13px;letter-spacing:0.2em;cursor:pointer;">' + I18N.t('doc_close') + '</button>'
+            + '</div>';
+          m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+          document.body.appendChild(m);
+        },
+
+        async buy() {
+          const email = ($('memberEmail').value || '').trim();
+          const password = $('memberPassword').value;
+          if (!$('memberAgree').checked) { status(I18N.t('msg_agree_first'), false); return; }
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { status(I18N.t('msg_email_invalid'), false); return; }
+          if (!this.loggedIn) {
+            if (!password) { status(I18N.t('msg_pwd_required'), false); return; }
+          }
+
+          const btn = $('memberBuyBtn');
+          setBtnLoading(btn, true, I18N.t('msg_processing'));
+          status('', true);
+
+          try {
+            // 1. 未登录：邮箱+密码登录（与登录页同账号体系）
+            if (!this.loggedIn) {
+              const login = await apiPost('/api/auth/email-login', { email, password });
+              if (login.data && login.data.token) {
+                token = login.data.token;
+                localStorage.setItem('tj_web_token', token);
+                this.loggedIn = true;
+              }
+            }
+
+            // 2. 创建 H5 支付订单
+            status(I18N.t('msg_order_creating'), true);
+            const order = await apiPost('/api/payment/create-h5-order', { productId: product }, true);
+            if (!order.data || !order.data.h5Url) {
+              status(I18N.t('msg_no_pay_url'), false);
+              setBtnLoading(btn, false);
+              return;
+            }
+
+            const outTradeNo = order.data.outTradeNo;
+            // 保存订单号，便于回页轮询
+            localStorage.setItem('tj_web_outTradeNo', outTradeNo);
+
+            // 3. 跳转微信 H5 支付
+            status(I18N.t('msg_paying'), true);
+            location.href = order.data.h5Url;
+
+            // H5 支付跳转离开当前页，由回页后的轮询接管
+            setBtnLoading(btn, false, I18N.t('mem_buy'));
+          } catch (e) {
+            status(e.message, false);
+            setBtnLoading(btn, false);
+          }
+        },
+
+        get loggedIn() { return !!token; },
+
+        // 回页后轮询订单状态（由页面恢复时调用）
+        poll() {
+          const outTradeNo = localStorage.getItem('tj_web_outTradeNo');
+          if (!outTradeNo || !token) return;
+          clearInterval(pollTimer);
+          let n = 0;
+          pollTimer = setInterval(async () => {
+            n++;
+            try {
+              const res = await fetch(API + '/api/payment/check-order/' + encodeURIComponent(outTradeNo), {
+                method: 'GET',
+                headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+              });
+              const data = await res.json();
+              if (data.success && data.data && data.data.status === 'completed') {
+                clearInterval(pollTimer);
+                localStorage.removeItem('tj_web_outTradeNo');
+                status(I18N.t('msg_buy_success'), true);
+              }
+            } catch (e) { /* 网络异常，继续轮询 */ }
+            if (n > 20) { clearInterval(pollTimer); } // 最多 60s
+          }, 3000);
+        }
+      };
+    })();
+
+    // 初始化 & 回页轮询
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && (localStorage.getItem('tj_web_outTradeNo'))) Member.poll();
+    });
+    window.addEventListener('focus', () => {
+      if (localStorage.getItem('tj_web_outTradeNo')) Member.poll();
+    });
+    Member.init();
+  </script>
+</body>
+</html>

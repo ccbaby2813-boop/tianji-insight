@@ -1,0 +1,47 @@
+/* components/share-button/share-button.wxss - 分享按钮组件
+ * Visual Thesis: 金色渐变按钮，press 缩放反馈
+ */
+
+/* ===== 分享按钮：渐变背景 + 金色系 ===== */
+.share-btn {
+  background: linear-gradient(135deg, var(--accent-gold-muted), var(--accent-gold-subtle));
+  border: 1rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-full);
+  padding: 0 32rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: var(--accent-gold);
+  transition: all 0.25s var(--ease-out-expo);
+  letter-spacing: 1rpx;
+  box-shadow: var(--shadow-gold);
+}
+
+/* press 态：缩放 0.97 + 加深渐变 */
+.share-btn-hover {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-muted));
+  border-color: var(--accent-gold);
+  transform: scale(0.97);
+  box-shadow: var(--shadow-gold-glow);
+}
+
+.share-btn:active {
+  transform: scale(0.97);
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-muted));
+  border-color: var(--accent-gold);
+}
+
+.share-icon {
+  font-size: 24rpx;
+}
+
+.share-text {
+  font-size: 24rpx;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

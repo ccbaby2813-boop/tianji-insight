@@ -1,0 +1,136 @@
+<view class="page-container letter-write-page {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-btn nav-back" bindtap="onBack">
+      <icon-guo name="chevron-left" size="40" color="#8B7340" />
+    </view>
+    <view class="nav-title">
+      <text class="nav-title-text font-title">{{t.writeTitlePrefix}}{{receiverNickname}}</text>
+      <text class="vip-badge" wx:if="{{receiverIsVip}}">V</text>
+    </view>
+    <view class="nav-btn nav-placeholder"></view>
+  </view>
+
+  <!-- 灵感模板栏（固定在导航栏下方，随时切换） -->
+  <view class="template-section">
+    <view class="template-header">
+      <icon-guo name="sparkle" size="28" color="#C8A55B" />
+      <text class="template-title font-title">{{t.templateTitle}}</text>
+      <text class="template-tip">{{t.templateTip}}</text>
+    </view>
+    <!-- v1.4 话题分组标签 -->
+    <scroll-view class="topic-tabs" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="topic-tabs-list">
+        <view
+          wx:for="{{topicGroups}}"
+          wx:key="id"
+          class="topic-tab {{activeTopic === index ? 'topic-tab-active' : ''}}"
+          data-idx="{{index}}"
+          bindtap="onTopicTap"
+        >
+          <text class="topic-tab-emoji">{{item.emoji}}</text>
+          <text class="topic-tab-label">{{item.label}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 当前分组模板 chip -->
+    <scroll-view class="template-bar" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="template-list">
+        <view
+          wx:for="{{topicTemplates}}"
+          wx:key="index"
+          class="template-chip {{activeTemplate === index ? 'template-chip-active' : ''}}"
+          data-idx="{{index}}"
+          bindtap="onTemplateTap"
+        >
+          <text class="chip-emoji">{{item.emoji}}</text>
+          <text class="chip-label">{{item.label}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 信纸区域（古朴浪漫信纸：宣纸底 + 横纹格子 + 四角金线 + 双线装裱） -->
+  <scroll-view class="letter-scroll" scroll-y>
+    <view class="letter-paper">
+      <!-- 装裱外层：双线边框模拟古卷装裱 -->
+      <view class="paper-mount-border"></view>
+
+      <!-- 四角金线装饰（信纸四角的仪式感装饰） -->
+      <view class="paper-corner paper-corner-tl" aria-hidden="true"></view>
+      <view class="paper-corner paper-corner-tr" aria-hidden="true"></view>
+      <view class="paper-corner paper-corner-bl" aria-hidden="true"></view>
+      <view class="paper-corner paper-corner-br" aria-hidden="true"></view>
+
+      <view class="letter-paper-inner">
+        <!-- 信纸纹理层：横向格子线 + 淡墨晕染（真正的信纸质感） -->
+        <view class="paper-texture"></view>
+
+        <!-- 抬头装饰：竖排"书笺"二字 + 细金线（英文态隐藏，避免中文装饰漏入英文版） -->
+        <view class="paper-vertical-title" aria-hidden="true" wx:if="{{lang !== 'en'}}">
+          <text class="vertical-char">书</text>
+          <text class="vertical-char">笺</text>
+        </view>
+
+        <!-- 抬头分隔：双横线（一粗一细，模拟信纸抬头） -->
+        <view class="paper-header-divider" aria-hidden="true">
+          <view class="header-line-thick"></view>
+          <view class="header-line-thin"></view>
+        </view>
+
+        <!-- 正文输入区 -->
+        <textarea
+          class="letter-textarea letter-textarea-full font-letter"
+          value="{{content}}"
+          bindinput="onInput"
+          maxlength="800"
+          placeholder="{{t.placeholder}}"
+          placeholder-class="letter-placeholder"
+          auto-height="{{false}}"
+          show-confirm-bar="{{false}}"
+          adjust-position="{{false}}"
+          disable-default-padding
+          disabled="{{loadingProfile}}"
+        ></textarea>
+
+        <!-- 字数统计 -->
+        <view class="letter-count">
+          <text class="count-text font-letter {{charCount > 750 ? 'count-warn' : ''}}">{{charCount}} / 800</text>
+        </view>
+
+        <!-- 落款分隔：细金线 -->
+        <view class="paper-signoff-divider" aria-hidden="true"></view>
+
+        <!-- 落款农历日期 -->
+        <view class="letter-signature" wx:if="{{lunarDate}}">
+          <text class="signature-text font-quote">{{lunarDate}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="letter-bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- v2.0 信封飞行动效（发送时触发） -->
+  <view class="envelope-fly {{envelopeFlying ? 'flying' : ''}}" wx:if="{{envelopeFlying}}">
+    <view class="envelope-body">
+      <view class="envelope-flap"></view>
+      <view class="envelope-front">
+        <icon-guo name="lotus" size="48" color="rgba(200,165,91,0.6)" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏（v1.3.1：fixed 定位在 tab-bar 上方，避免被挡住） -->
+  <view class="action-bar">
+    <view class="report-link" bindtap="onReport">
+      <text class="report-text">{{t.report}}</text>
+    </view>
+    <view class="send-btn {{sending ? 'send-btn-disabled' : ''}}" bindtap="onSend">
+      <text class="send-btn-text font-title">{{sending ? t.sending : t.sendBtn}}</text>
+      <view class="send-btn-line"></view>
+    </view>
+  </view>
+
+  <!-- 底部3-tab导航 -->
+  <letter-tab-bar active="friends"></letter-tab-bar>
+</view>

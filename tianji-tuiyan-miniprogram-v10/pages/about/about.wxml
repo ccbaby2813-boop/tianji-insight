@@ -1,0 +1,226 @@
+<!-- pages/about/about.wxml - 关于页面 -->
+<view class="page-container page-about theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <scroll-view class="about-content" scroll-y>
+    <!-- Logo / 标题：金色光晕呼吸动效 -->
+    <view class="header-section">
+      <view class="logo-icon animate-breathe">
+        <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+        <view class="hex-line yang"></view>
+        <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+        <view class="hex-line yang"></view>
+        <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+        <view class="hex-line yang"></view>
+      </view>
+      <text class="app-name font-display">{{t.appName}}</text>
+      <view class="title-gold-line"></view>
+      <!-- 版本信息区：卷轴边框装饰 -->
+      <view class="version-scroll">
+        <view class="scroll-frame-top"></view>
+        <text class="app-version font-quote">{{displayVersion}}</text>
+        <view class="scroll-frame-bottom"></view>
+      </view>
+    </view>
+
+    <!-- 产品宣言：诗集式排版，关键词金色高亮 -->
+    <view class="manifesto-section">
+      <text class="manifesto-eyebrow font-quote">{{t.manifestoEyebrow}}</text>
+      <view class="manifesto-text font-quote">
+        <text>{{t.manifesto1A}}</text>
+        <text class="gold-accent">{{t.manifesto1B}}</text>
+        <text>{{t.manifesto1C}}</text>
+      </view>
+      <view class="manifesto-text font-quote">
+        <text>{{t.manifesto2A}}</text>
+        <text class="gold-accent">{{t.manifesto2B}}</text>
+        <text>{{t.manifesto2C}}</text>
+      </view>
+      <view class="manifesto-text font-quote manifesto-break">
+        <text>{{t.manifesto3}}</text>
+      </view>
+      <view class="manifesto-text font-quote">
+        <text>{{t.manifesto4A}}</text>
+        <text class="gold-accent">{{t.manifesto4B}}</text>
+        <text>{{t.manifesto4C}}</text>
+      </view>
+    </view>
+
+    <!-- 极细金线分隔 -->
+    <view class="line-gold-thin manifesto-divider"></view>
+
+    <!-- § 核心功能：3D悬浮卡牌，左右交错透视 -->
+    <view class="features-section">
+      <text class="section-eyebrow font-quote">{{t.sectionFeatures}}</text>
+
+      <!-- 3D 卡牌容器：透视舞台 -->
+      <view class="card-stage">
+        <!-- § 01 专属人格 — 左浮 -->
+        <view class="float-card float-card-left" style="animation-delay: 0.1s;">
+          <view class="card-shadow-layer"></view>
+          <view class="card-face">
+            <view class="card-glow"></view>
+            <view class="card-numeral-wrap">
+              <text class="card-numeral font-display">01</text>
+              <view class="card-numeral-line"></view>
+              <text class="card-tag font-quote">{{t.cardTagPersonality}}</text>
+            </view>
+            <text class="card-title font-display">{{t.cardTitlePersonality}}</text>
+            <view class="card-body font-quote">
+              <text>{{t.cardBodyPersonality}}</text>
+            </view>
+            <view class="card-deco card-deco-tl"></view>
+            <view class="card-deco card-deco-tr"></view>
+            <view class="card-deco card-deco-br"></view>
+          </view>
+        </view>
+
+        <!-- § 02 易学解读 — 右浮 -->
+        <view class="float-card float-card-right" style="animation-delay: 0.25s;">
+          <view class="card-shadow-layer"></view>
+          <view class="card-face">
+            <view class="card-glow"></view>
+            <view class="card-numeral-wrap">
+              <text class="card-numeral font-display">02</text>
+              <view class="card-numeral-line"></view>
+              <text class="card-tag font-quote">{{t.cardTagDivine}}</text>
+            </view>
+            <text class="card-title font-display">{{t.cardTitleDivine}}</text>
+            <view class="card-body font-quote">
+              <text>{{t.cardBodyDivine}}</text>
+            </view>
+            <view class="card-deco card-deco-tl"></view>
+            <view class="card-deco card-deco-tr"></view>
+            <view class="card-deco card-deco-br"></view>
+          </view>
+        </view>
+
+        <!-- § 03 易缘匹配 — 左浮 -->
+        <view class="float-card float-card-left" style="animation-delay: 0.4s;">
+          <view class="card-shadow-layer"></view>
+          <view class="card-face">
+            <view class="card-glow"></view>
+            <view class="card-numeral-wrap">
+              <text class="card-numeral font-display">03</text>
+              <view class="card-numeral-line"></view>
+              <text class="card-tag font-quote">{{t.cardTagMatch}}</text>
+            </view>
+            <text class="card-title font-display">{{t.cardTitleMatch}}</text>
+            <view class="card-body font-quote">
+              <text>{{t.cardBodyMatch}}</text>
+            </view>
+            <view class="card-deco card-deco-tl"></view>
+            <view class="card-deco card-deco-tr"></view>
+            <view class="card-deco card-deco-br"></view>
+          </view>
+        </view>
+
+        <!-- § 04 节气养生 — 右浮 -->
+        <view class="float-card float-card-right" style="animation-delay: 0.55s;">
+          <view class="card-shadow-layer"></view>
+          <view class="card-face">
+            <view class="card-glow"></view>
+            <view class="card-numeral-wrap">
+              <text class="card-numeral font-display">04</text>
+              <view class="card-numeral-line"></view>
+              <text class="card-tag font-quote">{{t.cardTagHealth}}</text>
+            </view>
+            <text class="card-title font-display">{{t.cardTitleHealth}}</text>
+            <view class="card-body font-quote">
+              <text>{{t.cardBodyHealth}}</text>
+            </view>
+            <view class="card-deco card-deco-tl"></view>
+            <view class="card-deco card-deco-tr"></view>
+            <view class="card-deco card-deco-br"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 极细金线分隔 -->
+    <view class="line-gold-thin footer-divider"></view>
+
+    <!-- 积分体系 -->
+    <view class="points-intro-section">
+      <text class="section-eyebrow font-quote">{{t.sectionPoints}}</text>
+      <view class="manifesto-text font-quote">
+        <text>{{t.points1A}}</text>
+        <text class="gold-accent">{{t.points1B}}</text>
+        <text>{{t.points1C}}</text>
+      </view>
+      <view class="manifesto-text font-quote">
+        <text>{{t.points2A}}</text>
+        <text class="gold-accent">{{t.points2B}}</text>
+        <text>{{t.points2C}}</text>
+      </view>
+      <view class="manifesto-text font-quote manifesto-break">
+        <text>{{t.points3A}}</text>
+        <text class="gold-accent">{{t.points3B}}</text>
+        <text>{{t.points3C}}</text>
+      </view>
+      <view class="manifesto-text font-quote">
+        <text>{{t.points4A}}</text>
+        <text class="gold-accent">{{t.points4B}}</text>
+        <text>{{t.points4C}}</text>
+      </view>
+      <text class="points-hint font-quote">{{t.pointsHint}}</text>
+    </view>
+
+    <!-- 公司信息 -->
+    <view class="company-section">
+      <view class="company-item">
+        <text class="company-label">{{t.companyOperatorLabel}}</text>
+        <text class="company-value">{{t.companyOperator}}</text>
+      </view>
+      <view class="company-item">
+        <text class="company-label">{{t.companyEmailLabel}}</text>
+        <text class="company-value">ccbaby2813@139.com</text>
+      </view>
+    </view>
+
+    <!-- APP 下载入口 -->
+    <view class="download-section">
+      <text class="section-eyebrow font-quote">{{t.sectionDownload}}</text>
+      <view class="download-card">
+        <view class="download-icon">
+          <view class="download-icon-inner">
+            <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+            <view class="hex-line yang"></view>
+            <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+            <view class="hex-line yang"></view>
+            <view class="hex-line yin"><view class="hl hl-left"></view><view class="hl hl-right"></view></view>
+            <view class="hex-line yang"></view>
+          </view>
+        </view>
+        <view class="download-info">
+          <text class="download-title">{{t.downloadTitle}}</text>
+          <text class="download-desc">{{t.downloadDesc}}</text>
+        </view>
+        <view class="download-btn" bindtap="downloadApp">
+          <text class="download-btn-text">{{t.downloadBtn}}</text>
+        </view>
+      </view>
+      <view class="download-hint">
+        <text class="download-hint-text">{{t.downloadHint}}</text>
+      </view>
+    </view>
+
+    <!-- 协议 -->
+    <view class="legal-section">
+      <view class="legal-item" bindtap="goToAgreement">
+        <text>{{t.agreement}}</text>
+        <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+      </view>
+      <view class="legal-item" bindtap="goToPrivacy">
+        <text>{{t.privacy}}</text>
+        <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+      </view>
+    </view>
+
+    <!-- 注销账户 -->
+    <view class="danger-section">
+      <button aria-label="{{t.deleteTitle}}" class="btn-delete" bindtap="requestDelete">
+        {{t.deleteTitle}}
+      </button>
+      <text class="danger-hint">{{t.deleteContent}}</text>
+    </view>
+  </scroll-view>
+</view>

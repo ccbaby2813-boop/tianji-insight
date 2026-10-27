@@ -1,0 +1,334 @@
+<!-- components/jieqi-bar/jieqi-bar.wxml - 节气养生秘典 v2.0（v19.2 中英双语：JS 预翻译，零函数调用）
+  v15.3.5 重设计：去除通用宜忌与专属宜忌的重复列表，保留差异化价值
+  新增：卦格专属箴言、物候日记（轻交互）、未建档悬念钩子
+-->
+
+<!-- ==================== 首屏按钮：右侧竖向拉杆 ==================== -->
+<view class="jieqi-tab {{isEn ? 'lang-en' : ''}}" bindtap="toggleOverlay">
+  <view class="tab-glow"></view>
+  <view class="tab-body">
+    <view class="tab-icon">
+      <icon-guo name="{{termData.termIcon || 'jieqi'}}" size="44" color="#F0E4D0" />
+    </view>
+    <text class="tab-name font-soul">{{termData.name || t.termFallback}}</text>
+    <view class="tab-line"></view>
+    <view class="tab-day-row" wx:if="{{termData}}">
+      <text class="tab-day">{{t.yangsheng}}</text>
+      <text class="tab-day">{{t.midian}}</text>
+    </view>
+    <view class="tab-arrow {{overlayVisible ? 'up' : ''}}">
+      <icon-guo name="chevron-down" size="24" color="#C8A55B" />
+    </view>
+  </view>
+</view>
+
+<!-- ==================== 节气详情全屏浮层 ==================== -->
+<view class="jieqi-overlay {{isEn ? 'lang-en' : ''}}" wx:if="{{termData && overlayVisible}}">
+  <view class="overlay-mask" bindtap="closeOverlay"></view>
+  <view class="overlay-panel theme-ink scroll-unroll" catchtap="stopPropagation">
+
+    <!-- 顶部状态栏占位 + 关闭按钮 -->
+    <view class="panel-header" style="padding-top:{{statusBarHeight || 20}}px">
+      <view class="header-close" bindtap="closeOverlay">
+        <text class="close-icon">✕</text>
+      </view>
+      <text class="header-title font-soul">{{t.headerTitle}}</text>
+      <view class="header-placeholder"></view>
+    </view>
+
+    <scroll-view scroll-y class="panel-scroll" style="height: calc(100vh - {{(statusBarHeight || 20) * 2 + 180}}rpx);">
+
+      <!-- ====== 1. 节气主视觉 ====== -->
+      <view class="hero-section">
+        <view class="hero-update-badge" wx:if="{{termData.daysIn <= 3}}">
+          <view class="badge-dot"></view>
+          <text class="badge-text">{{t.badgeUpdate}}</text>
+        </view>
+        <view class="hero-icon-ring" style="border-color:{{wuxingColorLight[termData.wuxing]}}">
+          <icon-guo name="{{termData.termIcon || 'jieqi'}}" size="76" color="{{wuxingColorLight[termData.wuxing]}}" />
+        </view>
+        <text class="hero-name font-display">{{termData.name}}</text>
+        <text class="hero-date">{{termData.dateRange}} · {{termData.daysInText}}</text>
+        <view class="hero-tags">
+          <view class="hero-tag">{{termData.season}}</view>
+          <view class="hero-tag" style="background:{{wuxingBgTint[termData.wuxing]}}; color:{{wuxingColorLight[termData.wuxing]}}">
+            {{termData.wuxingText}} · {{termData.organText}}
+          </view>
+        </view>
+      </view>
+
+      <view class="line-gold-thin"></view>
+
+      <!-- ====== 2. 物候三候时间轴 ====== -->
+      <view class="wuhou-timeline" wx:if="{{termData.wuHouView && termData.wuHouView.length}}">
+        <view class="wuhou-track">
+          <view class="track-line"></view>
+          <view class="wuhou-node" wx:for="{{termData.wuHouView}}" wx:key="text">
+            <view class="node-dot node-dot-{{index + 1}}">
+              <view class="dot-inner"></view>
+            </view>
+            <view class="node-label">{{item.houText}}</view>
+            <text class="node-text">{{item.text}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 关键词 -->
+      <view class="keyword-row" wx:if="{{termData.keywords && termData.keywords.length}}">
+        <text class="keyword-item" wx:for="{{termData.keywords}}" wx:key="*this">{{item}}</text>
+      </view>
+
+      <!-- ====== 2.5 本节气推荐食材（v2.0 通用，8样宫格，所有用户可见） ====== -->
+      <view class="food-section" wx:if="{{termData.generalYi && termData.generalYi.food && termData.generalYi.food.length}}">
+        <view class="section-label">
+          <view class="label-line"></view>
+          <text class="label-text">{{t.sectionFood}}</text>
+          <view class="label-line"></view>
+        </view>
+        <view class="icon-grid">
+          <view class="icon-cell" wx:for="{{termData.generalYi.food}}" wx:key="*this">
+            <view class="cell-icon-bg cell-icon-bg--food">
+              <icon-guo name="{{termData.generalYi.foodIcons[index]}}" size="48" color="#9CC68A" />
+            </view>
+            <text class="cell-name font-quote">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ====== 2.6 本节气推荐菜（v2.0 通用，三样，所有用户可见） ====== -->
+      <view class="recipe-section" wx:if="{{termData.generalYi && termData.generalYi.recipes && termData.generalYi.recipes.length}}">
+        <view class="section-label">
+          <view class="label-line"></view>
+          <text class="label-text">{{t.sectionRecipe}}</text>
+          <view class="label-line"></view>
+        </view>
+        <view class="recipe-list">
+          <view class="recipe-card" wx:for="{{termData.generalYi.recipes}}" wx:key="name">
+            <view class="recipe-name-row">
+              <text class="recipe-name font-title">{{item.name}}</text>
+              <text class="recipe-effect">{{item.effect}}</text>
+            </view>
+            <text class="recipe-main font-quote">{{t.ingredient}}{{item.main}}</text>
+            <text class="recipe-steps font-quote">{{t.method}}{{item.steps}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ====== 3. 黄帝内经原文（文化感，保留）+ 说人话 + 今天照做 ====== -->
+      <view class="classic-section" wx:if="{{termData.neijingQuote}}">
+        <view class="section-label">
+          <view class="label-line"></view>
+          <text class="label-text">{{t.sectionNeijing}}</text>
+          <view class="label-line"></view>
+        </view>
+        <text class="classic-quote font-quote poem-text">{{termData.neijingQuote}}</text>
+        <text class="classic-cite">——{{termData.neijingSource}}</text>
+        <text class="classic-note" wx:if="{{termData.neijingInterpretation}}">{{termData.neijingInterpretation}}</text>
+        <!-- v2.0 内经说人话 -->
+        <view class="plain-block" wx:if="{{termData.neijingPlain}}">
+          <text class="plain-label font-title">{{t.sectionPlain}}</text>
+          <text class="plain-text font-quote">{{termData.neijingPlain}}</text>
+        </view>
+        <!-- v2.0 今天照做 -->
+        <view class="action-block" wx:if="{{termData.neijingAction && termData.neijingAction.length}}">
+          <text class="action-label font-title">{{t.sectionAction}}</text>
+          <view class="action-item" wx:for="{{termData.neijingAction}}" wx:key="*this">
+            <view class="action-dot"></view>
+            <text class="action-text font-quote">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ====== 4. 已建档：卦格关系图 + 脏腑警示（差异化核心） ====== -->
+      <block wx:if="{{hasProfile && guaGe}}">
+
+        <view class="gua-section-label">
+          <view class="label-line"></view>
+          <text class="label-text gua-label">{{guaGeText}} · {{t.exclusiveSuffix}}</text>
+          <view class="label-line"></view>
+        </view>
+
+        <!-- 加载中 -->
+        <view class="gua-loading" wx:if="{{adviceLoading}}">
+          <view class="loading-spinner-sm"></view>
+          <text class="loading-text-sm">{{loadingText}}</text>
+        </view>
+
+        <!-- 卦格专属内容 -->
+        <block wx:if="{{adviceData && !adviceLoading}}">
+
+          <!-- 4.1 五行关系图（命主 ↔ 节气） -->
+          <view class="relation-map" wx:if="{{adviceData.relation}}">
+            <view class="relation-side">
+              <view class="relation-dot" style="background:{{wuxingBgTint[adviceData.gua.wuxing]}}; border-color:{{wuxingColorLight[adviceData.gua.wuxing]}}">
+                <text class="dot-char" style="color:{{wuxingColorLight[adviceData.gua.wuxing]}}">{{adviceData.gua.wuxingText}}</text>
+              </view>
+              <text class="relation-label">{{guaGeText}}</text>
+            </view>
+            <view class="relation-connector">
+              <view class="connector-line"></view>
+              <view class="connector-tag">
+                <text class="tag-text">{{adviceData.relation.title}}</text>
+              </view>
+              <view class="connector-line"></view>
+            </view>
+            <view class="relation-side">
+              <view class="relation-dot" style="background:{{wuxingBgTint[adviceData.term.wuxing]}}; border-color:{{wuxingColorLight[adviceData.term.wuxing]}}">
+                <text class="dot-char" style="color:{{wuxingColorLight[adviceData.term.wuxing]}}">{{adviceData.term.wuxingText}}</text>
+              </view>
+              <text class="relation-label">{{adviceData.term.name}}</text>
+            </view>
+          </view>
+
+          <!-- 4.2 卦格专属箴言（新增：一句话核心启示，替代冗长列表） -->
+          <view class="gua-axiom" wx:if="{{adviceData.relation}}">
+            <view class="axiom-mark">「</view>
+            <view class="axiom-body">
+              <text class="axiom-text font-title">{{adviceData.relation.warning}}</text>
+              <view class="axiom-meta" wx:if="{{adviceData.relation.correspondingOrgan}}">
+                <view class="meta-dot" style="background:{{wuxingColorLight[adviceData.term.wuxing]}}"></view>
+                <text class="meta-text">{{t.organCorrespondence}}{{adviceData.relation.correspondingOrgan}}</text>
+              </view>
+            </view>
+            <view class="axiom-mark axiom-mark-end">」</view>
+          </view>
+
+          <!-- 4.3 卦格专属经典原文（保留，文化感） -->
+          <view class="gua-classic" wx:if="{{adviceData.detail && adviceData.detail.classicQuote}}">
+            <view class="classic-blockquote">
+              <text class="classic-text font-quote">{{adviceData.detail.classicQuote}}</text>
+              <text class="classic-source">——{{adviceData.detail.classicSource}}</text>
+              <text class="classic-interpretation" wx:if="{{adviceData.detail.classicInterpretation}}">
+                {{adviceData.detail.classicInterpretation}}
+              </text>
+            </view>
+          </view>
+
+          <!-- 4.4 卦格专属宜：推荐行动 + 情志（v2.0 去重：不重复通用推荐菜，只保留卦格差异化内容） -->
+          <view class="gua-yi" wx:if="{{adviceData.detail && ((adviceData.detail.recommendActivity && adviceData.detail.recommendActivity.length) || (adviceData.detail.recommendEmotion && adviceData.detail.recommendEmotion.length))}}">
+
+            <!-- 推荐行动 -->
+            <view class="cate-block" wx:if="{{adviceData.detail.recommendActivity && adviceData.detail.recommendActivity.length}}">
+              <view class="cate-head">
+                <view class="label-line"></view>
+                <text class="cate-title font-title">{{t.yiXing}}</text>
+                <view class="label-line"></view>
+              </view>
+              <view class="icon-grid">
+                <view class="icon-cell" wx:for="{{adviceData.detail.recommendActivity}}" wx:key="name">
+                  <view class="cell-icon-bg cell-icon-bg--activity">
+                    <icon-guo name="{{item.icon}}" size="48" color="#7AABCC" />
+                  </view>
+                  <text class="cell-name font-quote">{{item.name}}</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 推荐情志（卦格专属，v2.0 补上此前未展示的差异化内容，句子式长文本用列表展示） -->
+            <view class="cate-block" wx:if="{{adviceData.detail.recommendEmotion && adviceData.detail.recommendEmotion.length}}">
+              <view class="cate-head">
+                <view class="label-line"></view>
+                <text class="cate-title font-title">{{t.yiQing}}</text>
+                <view class="label-line"></view>
+              </view>
+              <view class="emotion-list">
+                <view class="emotion-item" wx:for="{{adviceData.detail.recommendEmotion}}" wx:key="name">
+                  <view class="emotion-dot"></view>
+                  <text class="emotion-text font-quote">{{item.name}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 4.5 卦格专属忌（精简，只保留忌，不重复宜） -->
+          <view class="gua-ji" wx:if="{{adviceData.detail && adviceData.detail.recommendAvoid && adviceData.detail.recommendAvoid.length}}">
+            <view class="ji-list">
+              <view class="ji-item" wx:for="{{adviceData.detail.recommendAvoid}}" wx:key="*this"
+                    style="border-left-color:{{wuxingColor[adviceData.term.wuxing]}}">
+                <view class="ji-x" style="background:{{wuxingBgTint[adviceData.term.wuxing]}}; color:{{wuxingColorLight[adviceData.term.wuxing]}}">×</view>
+                <text class="ji-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- L2回退提示 -->
+          <view class="l2-fallback" wx:if="{{adviceData.source === 'L2_FALLBACK'}}">
+            <text class="fallback-hint">{{adviceData.hint}}</text>
+          </view>
+
+        </block>
+      </block>
+
+      <!-- ====== 5. 未建档：悬念钩子（重新设计） ====== -->
+      <view class="no-profile-hook" wx:if="{{!hasProfile || !guaGe}}">
+        <view class="hook-oracle">
+          <view class="oracle-glow"></view>
+          <icon-guo name="gua" size="64" color="rgba(212,165,116,0.7)" />
+        </view>
+        <view class="hook-body">
+          <text class="hook-title font-title">{{t.hookTitle}}</text>
+          <text class="hook-desc font-quote">{{t.hookDesc}}</text>
+          <view class="hook-cta" bindtap="goToProfile">
+            <text class="cta-text">{{t.hookCta}}</text>
+            <icon-guo name="chevron-down" size="24" color="#C8A55B" />
+          </view>
+        </view>
+      </view>
+
+      <!-- ====== 6. 物候日记（新增：轻交互，本地存储） ====== -->
+      <view class="diary-section">
+        <view class="section-label">
+          <view class="label-line"></view>
+          <text class="label-text">{{t.diaryTitle}}</text>
+          <view class="label-line"></view>
+        </view>
+        <text class="diary-question font-quote">{{t.diaryQuestion}}</text>
+        <view class="diary-tags">
+          <view class="diary-tag {{diaryToday === 'good' ? 'active good' : ''}}" bindtap="setDiary" data-val="good">
+            <text class="tag-emoji">{{t.diaryGoodEmoji}}</text>
+            <text class="tag-label">{{t.diaryGoodLabel}}</text>
+          </view>
+          <view class="diary-tag {{diaryToday === 'normal' ? 'active normal' : ''}}" bindtap="setDiary" data-val="normal">
+            <text class="tag-emoji">{{t.diaryNormalEmoji}}</text>
+            <text class="tag-label">{{t.diaryNormalLabel}}</text>
+          </view>
+          <view class="diary-tag {{diaryToday === 'tired' ? 'active tired' : ''}}" bindtap="setDiary" data-val="tired">
+            <text class="tag-emoji">{{t.diaryTiredEmoji}}</text>
+            <text class="tag-label">{{t.diaryTiredLabel}}</text>
+          </view>
+        </view>
+        <view class="diary-history" wx:if="{{diaryCount > 0}}">
+          <text class="history-text font-quote">{{diaryHistoryText}}</text>
+        </view>
+      </view>
+
+      <!-- 底部留白（给fixed按钮栏留位置） -->
+      <view style="height:180rpx"></view>
+
+    </scroll-view>
+
+    <!-- ====== 底部固定双按钮栏 ====== -->
+    <view class="bottom-bar" style="padding-bottom:env(safe-area-inset-bottom)">
+      <button wx:if="{{isMpWeixin}}" class="bottom-btn btn-share" open-type="share">
+        <view class="btn-icon">
+          <icon-guo name="xin" size="32" color="#E4B888" />
+        </view>
+        <text class="btn-text">{{t.shareBtn}}</text>
+      </button>
+      <button wx:else class="bottom-btn btn-share" bindtap="onShareTap">
+        <view class="btn-icon">
+          <icon-guo name="xin" size="32" color="#E4B888" />
+        </view>
+        <text class="btn-text">{{t.shareBtn}}</text>
+      </button>
+      <view class="btn-divider"></view>
+      <view class="bottom-btn btn-back" bindtap="closeOverlay">
+        <view class="btn-icon">
+          <icon-guo name="walk" size="32" color="#F0E4D0" />
+        </view>
+        <text class="btn-text">{{t.backBtn}}</text>
+      </view>
+    </view>
+
+  </view>
+</view>

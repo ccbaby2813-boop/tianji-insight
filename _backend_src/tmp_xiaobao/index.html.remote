@@ -1,0 +1,3395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天机推演 · 管理后台</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/element-plus"></script>
+  <script src="https://unpkg.com/@element-plus/icons-vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; }
+    /* Login */
+    .login-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .login-card { width: 400px; padding: 40px; background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .login-card h1 { text-align: center; margin-bottom: 8px; color: #303133; font-size: 24px; }
+    .login-card p { text-align: center; color: #909399; margin-bottom: 30px; }
+    /* Layout */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: #001529; color: #fff; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 100; transition: width 0.28s ease; }
+    .sidebar.collapsed { width: 64px; }
+    .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); overflow: hidden; white-space: nowrap; }
+    .sidebar-header h2 { color: #fff; font-size: 18px; margin: 0; }
+    .sidebar-header p { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 4px; }
+    .sidebar.collapsed .sidebar-header h2 { font-size: 0; }
+    .sidebar.collapsed .sidebar-header p { font-size: 0; margin-top: 0; }
+    .sidebar.collapsed .sidebar-header { padding: 16px 0; }
+    .sidebar.collapsed .sidebar-header::after { content: '🔮'; font-size: 24px; display: block; }
+    .sidebar .el-menu { border-right: none; background: #001529; }
+    .sidebar .el-menu-item, .sidebar .el-sub-menu__title { color: rgba(255,255,255,0.7); }
+    .sidebar .el-menu-item:hover, .sidebar .el-sub-menu__title:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .sidebar .el-menu-item.is-active { color: #fff; background: #1890ff; }
+    .sidebar .el-sub-menu .el-menu { background: #000c17; }
+    .sidebar .el-sub-menu .el-menu-item { padding-left: 54px !important; font-size: 13px; }
+    /* Collapsed sidebar menu overrides */
+    .sidebar.collapsed .el-menu-item span,
+    .sidebar.collapsed .el-sub-menu__title span { display: none; }
+    .sidebar.collapsed .el-sub-menu .el-menu { display: none; }
+    .sidebar.collapsed .el-sub-menu__icon-arrow { display: none; }
+    .sidebar.collapsed .el-menu-item .el-icon,
+    .sidebar.collapsed .el-sub-menu__title .el-icon { margin-right: 0; }
+    .main-content { margin-left: 240px; flex: 1; min-height: 100vh; transition: margin-left 0.28s ease; }
+    .main-content.expanded { margin-left: 64px; }
+    .header-bar { height: 56px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 99; }
+    .header-bar .breadcrumb { font-size: 16px; font-weight: 500; color: #303133; }
+    .hamburger-btn { cursor: pointer; font-size: 20px; color: #606266; padding: 6px; border-radius: 4px; transition: background 0.2s; }
+    .hamburger-btn:hover { background: #f5f7fa; }
+    .page-content { padding: 20px; }
+    /* Cards */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .stat-card .label { font-size: 13px; color: #909399; margin-bottom: 8px; }
+    .stat-card .value { font-size: 28px; font-weight: 600; color: #303133; }
+    .stat-card .extra { font-size: 12px; color: #67c23a; margin-top: 4px; }
+    .stat-card .extra.down { color: #f56c6c; }
+    .chart-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+    .chart-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .chart-card h3 { font-size: 15px; color: #303133; margin-bottom: 16px; }
+    .chart-full { width: 100%; }
+    .stat-card .extra { font-size: 12px; color: #909399; margin-top: 4px; }
+    .report-detail-dialog .el-message-box__message { white-space: pre-wrap; font-family: monospace; font-size: 13px; }
+    .chart-container { height: 300px; }
+    .chart-full { grid-column: 1 / -1; }
+    /* Alert banner */
+    .alert-banner { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .alert-banner .alert-title { font-weight: 500; color: #e6a23c; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .alert-banner .alert-item { font-size: 13px; color: #606266; padding: 4px 0; }
+    /* Tables */
+    .table-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .table-card h3 { font-size: 15px; color: #303133; margin-bottom: 16px; }
+    .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .table-toolbar .filters { display: flex; gap: 10px; flex-wrap: wrap; }
+    /* Retention */
+    .retention-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+    .retention-item { background: #fff; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .retention-item .day { font-size: 14px; color: #909399; margin-bottom: 8px; }
+    .retention-item .rate { font-size: 32px; font-weight: 700; color: #409eff; }
+    .retention-item .detail { font-size: 12px; color: #909399; margin-top: 4px; }
+    /* Heatmap */
+    .heatmap-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+    .heatmap-cell { aspect-ratio: 1; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; cursor: default; }
+    /* User type filter buttons */
+    .user-type-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .user-type-filters .filter-btn { cursor: pointer; }
+    /* Skeleton loading */
+    .skeleton-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .skeleton-row { display: flex; gap: 16px; margin-bottom: 12px; align-items: center; }
+    .skeleton-row .skeleton-label { width: 80px; height: 14px; background: #f0f2f5; border-radius: 4px; animation: skeleton-pulse 1.5s infinite; }
+    .skeleton-row .skeleton-value { width: 120px; height: 28px; background: #f0f2f5; border-radius: 4px; animation: skeleton-pulse 1.5s infinite; }
+    .skeleton-row .skeleton-extra { width: 100px; height: 12px; background: #f0f2f5; border-radius: 4px; animation: skeleton-pulse 1.5s infinite; }
+    @keyframes skeleton-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    /* Responsive */
+    @media (max-width: 1200px) { .chart-row { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } .retention-grid { grid-template-columns: 1fr; } }
+    /* Unread badge */
+    .unread-badge { margin-left: 4px; }
+    /* 虚拟用户列表未读行高亮 */
+    .el-table .warning-row { background: #fef0f0 !important; }
+    .el-table .warning-row:hover > td { background: #fde2e2 !important; }
+    /* Letter list in thread detail */
+    .letter-list { max-height: 480px; overflow-y: auto; padding: 8px 4px; }
+    .letter-item { display: flex; margin-bottom: 16px; }
+    .letter-item.letter-sent { justify-content: flex-end; }
+    .letter-bubble { max-width: 72%; padding: 12px 16px; border-radius: 12px; word-break: break-word; }
+    .letter-received .letter-bubble { background: #f5f7fa; border-bottom-left-radius: 4px; }
+    .letter-sent .letter-bubble { background: #ecf5ff; border-bottom-right-radius: 4px; }
+    .letter-content { font-size: 14px; line-height: 1.6; color: #303133; white-space: pre-wrap; }
+    .letter-time { font-size: 11px; color: #909399; margin-top: 6px; }
+    .letter-load-more { text-align: center; padding: 12px 0; color: #909399; font-size: 13px; }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/template" id="app-template">
+  <!-- Login -->
+  <div v-if="!token" class="login-container">
+    <div class="login-card">
+      <h1>🔮 天机推演</h1>
+      <p>管理后台</p>
+      <el-form :model="loginForm" @submit.prevent="handleLogin">
+        <el-form-item>
+          <el-input v-model="loginForm.username" placeholder="用户名" prefix-icon="User" size="large"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="loginForm.password" type="password" placeholder="密码" prefix-icon="Lock" size="large" show-password></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="large" style="width:100%" @click="handleLogin" :loading="loginLoading">登 录</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div v-else class="admin-layout">
+    <!-- Sidebar -->
+    <div class="sidebar" :class="{ collapsed: sidebarCollapsed }">
+      <div class="sidebar-header">
+        <h2>🔮 天机推演</h2>
+        <p>管理后台 v2.0</p>
+      </div>
+      <el-menu :default-active="activeMenu" @select="handleMenuSelect" background-color="#001529" text-color="rgba(255,255,255,0.7)" active-text-color="#fff">
+        <el-menu-item index="overview">
+          <el-icon><component is="DataAnalysis"/></el-icon>
+          <span>总览</span>
+        </el-menu-item>
+        <el-sub-menu index="user-ops">
+          <template #title>
+            <el-icon><component is="User"/></el-icon>
+            <span>用户运营</span>
+          </template>
+          <el-menu-item index="users">用户列表</el-menu-item>
+          <el-menu-item index="vip">VIP管理</el-menu-item>
+          <el-menu-item index="deletions">删除合规</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="analytics">
+          <template #title>
+            <el-icon><component is="TrendCharts"/></el-icon>
+            <span>数据分析</span>
+          </template>
+          <el-menu-item index="funnel">转化漏斗</el-menu-item>
+          <el-menu-item index="tuiyan-analysis">推演分析</el-menu-item>
+          <el-menu-item index="match-analysis">匹配分析</el-menu-item>
+          <el-menu-item index="share-analysis">分享分析</el-menu-item>
+          <el-menu-item index="revenue-analysis">收入分析</el-menu-item>
+          <el-menu-item index="retention">留存分析</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="letter">
+          <template #title>
+            <el-icon><component is="Message"/></el-icon>
+            <span>易缘传书</span>
+          </template>
+          <el-menu-item index="letter-pool">匹配池概览</el-menu-item>
+          <el-menu-item index="letter-stats">数据统计</el-menu-item>
+          <el-menu-item index="letter-funnel">转化漏斗</el-menu-item>
+          <el-menu-item index="letter-analysis">信件分析</el-menu-item>
+          <el-menu-item index="virtual-users">虚拟用户</el-menu-item>
+          <el-menu-item index="letter-reports">举报管理</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="content">
+          <template #title>
+            <el-icon><component is="Files"/></el-icon>
+            <span>内容资产</span>
+          </template>
+          <el-menu-item index="ai-quality">AI质量监控</el-menu-item>
+          <el-menu-item index="hexagrams">卦象管理</el-menu-item>
+          <el-menu-item index="match-corpus">匹配语料</el-menu-item>
+          <el-menu-item index="achievements">成就管理</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="system">
+          <template #title>
+            <el-icon><component is="Setting"/></el-icon>
+            <span>系统管理</span>
+          </template>
+          <el-menu-item index="settings">系统设置</el-menu-item>
+          <el-menu-item index="logs">操作日志</el-menu-item>
+          <el-menu-item index="health">系统健康</el-menu-item>
+        </el-sub-menu>
+      </el-menu>
+    </div>
+
+    <!-- Main -->
+    <div class="main-content" :class="{ expanded: sidebarCollapsed }">
+      <div class="header-bar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="hamburger-btn" @click="sidebarCollapsed = !sidebarCollapsed">
+            <el-icon><component :is="sidebarCollapsed ? 'Expand' : 'Fold'"/></el-icon>
+          </span>
+          <span class="breadcrumb">{{ pageTitle }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <el-tag size="small" type="info">{{ adminUser }}</el-tag>
+          <el-button size="small" @click="handleLogout">退出</el-button>
+        </div>
+      </div>
+      <div class="page-content">
+        <!-- ==================== OVERVIEW ==================== -->
+        <div v-if="activeMenu==='overview'">
+          <!-- Alerts -->
+          <div v-if="alerts.length" class="alert-banner">
+            <div class="alert-title"><el-icon><component is="WarningFilled"/></el-icon> 异常告警</div>
+            <div v-for="a in alerts" :key="a" class="alert-item">⚠️ {{ a }}</div>
+          </div>
+          <!-- Skeleton Loading -->
+          <template v-if="overviewLoading">
+            <div class="stat-cards">
+              <div class="skeleton-card" v-for="i in 8" :key="i">
+                <div class="skeleton-row"><div class="skeleton-label"></div></div>
+                <div class="skeleton-row"><div class="skeleton-value"></div></div>
+                <div class="skeleton-row"><div class="skeleton-extra"></div></div>
+              </div>
+            </div>
+            <div class="chart-row">
+              <div class="skeleton-card" style="height:340px"></div>
+              <div class="skeleton-card" style="height:340px"></div>
+            </div>
+          </template>
+          <!-- Stat Cards -->
+          <template v-else>
+            <div class="stat-cards">
+              <div class="stat-card">
+                <div class="label">总用户数</div>
+                <div class="value">{{ overview.totalUsers?.toLocaleString() || 0 }}</div>
+                <div class="extra">本月 +{{ kpi.thisMonth?.newUsers || 0 }}</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">今日新增</div>
+                <div class="value">{{ dashboardAggregate.todayNewUsers?.toLocaleString() || 0 }}</div>
+                <div class="extra" :class="dashboardAggregate.todayNewUsers > 0 ? '' : 'down'">{{ dashboardAggregate.todayNewUsers || 0 }} 人</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">今日活跃</div>
+                <div class="value">{{ dashboardAggregate.todayActiveUsers?.toLocaleString() || 0 }}</div>
+                <div class="extra">DAU</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">今日推演</div>
+                <div class="value">{{ dashboardAggregate.todayTuiyan?.toLocaleString() || 0 }}</div>
+                <div class="extra">今日推演次数</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">今日匹配</div>
+                <div class="value">{{ dashboardAggregate.todayMatches?.toLocaleString() || 0 }}</div>
+                <div class="extra">今日匹配次数</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">VIP总数</div>
+                <div class="value">{{ dashboardAggregate.totalVip?.toLocaleString() || 0 }}</div>
+                <div class="extra">付费用户</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">待删除</div>
+                <div class="value" :style="{color: (dashboardAggregate.pendingDeletions || 0) > 0 ? '#f56c6c' : '#67c23a'}">{{ dashboardAggregate.pendingDeletions?.toLocaleString() || 0 }}</div>
+                <div class="extra">GDPR待处理</div>
+              </div>
+              <div class="stat-card">
+                <div class="label">今日收入</div>
+                <div class="value" style="color:#67c23a">¥{{ dashboardAggregate.todayRevenue?.toLocaleString() || 0 }}</div>
+                <div class="extra">本月 ¥{{ kpi.thisMonth?.revenue || 0 }}</div>
+              </div>
+            </div>
+          </template>
+          <!-- Charts Row 1 -->
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>用户增长趋势 (近7天)</h3>
+              <div class="chart-container" ref="chartUserTrend" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>推演趋势 (近7天)</h3>
+              <div class="chart-container" ref="chartTuiyanTrend" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <!-- Charts Row 2 -->
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>卦象分布</h3>
+              <div class="chart-container" ref="chartGuaDist" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>套餐分布</h3>
+              <div class="chart-container" ref="chartPlanDist" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <!-- Retention -->
+          <div class="retention-grid">
+            <div class="retention-item">
+              <div class="day">D1 留存</div>
+              <div class="rate">{{ retention.d1?.rate || 0 }}%</div>
+              <div class="detail">{{ retention.d1?.retained || 0 }} / {{ retention.d1?.new || 0 }}</div>
+            </div>
+            <div class="retention-item">
+              <div class="day">D3 留存</div>
+              <div class="rate">{{ retention.d3?.rate || 0 }}%</div>
+              <div class="detail">{{ retention.d3?.retained || 0 }} / {{ retention.d3?.new || 0 }}</div>
+            </div>
+            <div class="retention-item">
+              <div class="day">D7 留存</div>
+              <div class="rate">{{ retention.d7?.rate || 0 }}%</div>
+              <div class="detail">{{ retention.d7?.retained || 0 }} / {{ retention.d7?.new || 0 }}</div>
+            </div>
+          </div>
+          <!-- Hourly Activity -->
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>24小时活跃热力 (近7天)</h3>
+              <div class="chart-container" ref="chartHourly" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <!-- Recent Activity -->
+          <div class="table-card">
+            <h3>最近动态</h3>
+            <el-table :data="recentActivity.users || []" stripe size="small" max-height="300">
+              <el-table-column prop="nickname" label="用户" width="150"></el-table-column>
+              <el-table-column prop="plan_type" label="套餐" width="100"></el-table-column>
+              <el-table-column prop="created_at" label="注册时间" width="180">
+                <template #default="{row}">{{ formatTime(row.created_at) }}</template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <!-- 活跃用户排行 -->
+          <div class="table-card">
+            <h3>活跃用户排行 TOP10</h3>
+            <el-table :data="topActiveUsers" stripe size="small" v-loading="topActiveLoading">
+              <el-table-column label="排名" width="70">
+                <template #default="{row}">{{ row._rank }}</template>
+              </el-table-column>
+              <el-table-column prop="nickname" label="昵称" width="150"></el-table-column>
+              <el-table-column prop="tuiyan_count" label="推演次数" width="100"></el-table-column>
+              <el-table-column label="最后活跃时间">
+                <template #default="{row}">{{ formatTime(row.updated_at) }}</template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== USERS ==================== -->
+        <div v-if="activeMenu==='users'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总用户</div><div class="value">{{ userStats.total || 0 }}</div></div>
+            <div class="stat-card"><div class="label">已建档</div><div class="value">{{ userStats.withProfile || 0 }}</div></div>
+            <div class="stat-card"><div class="label">免费用户</div><div class="value">{{ userStats.free || 0 }}</div></div>
+            <div class="stat-card"><div class="label">月费用户</div><div class="value">{{ userStats.monthly || 0 }}</div></div>
+            <div class="stat-card"><div class="label">年费用户</div><div class="value">{{ userStats.yearly || 0 }}</div></div>
+            <div class="stat-card"><div class="label">已过期</div><div class="value">{{ userStats.expired || 0 }}</div></div>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar">
+              <div class="filters">
+                <el-input v-model="userSearch" placeholder="搜索昵称/OpenID" style="width:220px" clearable @clear="handleUserSearchClear" @keyup.enter="handleUserSearch"></el-input>
+                <el-select v-model="userPlanFilter" placeholder="套餐筛选" clearable style="width:140px" @change="handleUserFilterChange">
+                  <el-option label="免费" value="free"></el-option>
+                  <el-option label="月费" value="monthly"></el-option>
+                  <el-option label="年费" value="yearly"></el-option>
+                </el-select>
+                <!-- 用户类型筛选 -->
+                <div class="user-type-filters">
+                  <el-radio-group v-model="userTypeFilter" size="small" @change="handleUserFilterChange">
+                    <el-radio-button label="">全部</el-radio-button>
+                    <el-radio-button label="vip">VIP</el-radio-button>
+                    <el-radio-button label="free">免费</el-radio-button>
+                    <el-radio-button label="profiled">已建档</el-radio-button>
+                    <el-radio-button label="guest">游客</el-radio-button>
+                  </el-radio-group>
+                </div>
+                <el-button type="primary" @click="handleUserSearch">搜索</el-button>
+                <!-- 导出CSV按钮 -->
+                <el-button type="success" @click="exportUsersCSV" :loading="userExportLoading">
+                  <el-icon><component is="Download"/></el-icon> 导出
+                </el-button>
+              </div>
+            </div>
+            <el-table :data="userList" stripe size="small" v-loading="userLoading" @sort-change="handleUserSortChange" @selection-change="handleUserSelectionChange">
+              <el-table-column type="selection" width="45"></el-table-column>
+              <el-table-column prop="nickname" label="昵称" width="100" sortable="custom" :sort-orders="['ascending','descending']"></el-table-column>
+              <!-- 用户类型标签列 -->
+              <el-table-column label="类型" width="80">
+                <template #default="{row}">
+                  <el-tag v-if="!row.has_profile" type="" size="small" style="background:#409eff;border-color:#409eff;color:#fff">游客</el-tag>
+                  <el-tag v-else-if="row.plan_type && row.plan_type !== 'free'" size="small" style="background:#e6a23c;border-color:#e6a23c;color:#fff">VIP</el-tag>
+                  <el-tag v-else type="info" size="small">免费</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="plan_type" label="套餐" width="70">
+                <template #default="{row}"><el-tag :type="row.plan_type==='free'?'':'success'" size="small">{{ row.plan_type }}</el-tag></template>
+              </el-table-column>
+              <el-table-column prop="tuiyan_count" label="推演" width="70" sortable="custom" :sort-orders="['ascending','descending']">
+                <template #default="{row}"><span :style="{fontWeight: row.tuiyan_count>0?'bold':'normal', color: row.tuiyan_count>0?'#409eff':'#ccc'}">{{ row.tuiyan_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="vip_tuiyan_count" label="超级" width="60">
+                <template #default="{row}"><span :style="{color: row.vip_tuiyan_count>0?'#f56c6c':'#ccc'}">{{ row.vip_tuiyan_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="match_count" label="匹配" width="60" sortable="custom" :sort-orders="['ascending','descending']">
+                <template #default="{row}"><span :style="{fontWeight: row.match_count>0?'bold':'normal', color: row.match_count>0?'#67c23a':'#ccc'}">{{ row.match_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="share_count" label="分享" width="60" sortable="custom" :sort-orders="['ascending','descending']">
+                <template #default="{row}"><span :style="{fontWeight: row.share_count>0?'bold':'normal', color: row.share_count>0?'#e6a23c':'#ccc'}">{{ row.share_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="has_profile" label="建档" width="50">
+                <template #default="{row}"><el-tag :type="row.has_profile?'success':'info'" size="small">{{ row.has_profile ? '✓' : '✗' }}</el-tag></template>
+              </el-table-column>
+              <el-table-column label="注册时间" width="150" prop="created_at" sortable="custom" :sort-orders="['ascending','descending']">
+                <template #default="{row}">{{ formatTime(row.created_at) }}</template>
+              </el-table-column>
+              <!-- 最后活跃时间列 -->
+              <el-table-column label="状态" width="80">
+                <template #default="{row}">
+                  <el-tag :type="row.status === 0 ? 'danger' : 'success'" size="small">{{ row.status === 0 ? '封禁' : '正常' }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="最后活跃" width="150">
+                <template #default="{row}">{{ formatTime(row.updated_at) }}</template>
+              </el-table-column>
+              <el-table-column label="操作" width="230" fixed="right">
+                <template #default="{row}">
+                  <el-button size="small" @click="viewUser(row.openid)">画像</el-button>
+                  <el-button size="small" type="warning" @click="resetQuota(row.openid)">重置</el-button>
+                  <el-button size="small" type="danger" v-if="row.status === 0" @click="unbanUser(row.openid)">解封</el-button>
+                  <el-button size="small" type="danger" v-else @click="banUser(row.openid, row.nickname)">封禁</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+              <el-pagination background layout="prev,pager,next" :total="userTotal" :page-size="20" v-model:current-page="userPage" @current-change="loadUsers"></el-pagination>
+            </div>
+            <!-- 批量操作栏 -->
+            <div v-if="selectedUsers.length > 0" style="margin-top:12px;padding:12px 16px;background:#ecf5ff;border-radius:8px;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:14px;color:#409eff;font-weight:500;">已选 {{ selectedUsers.length }} 人</span>
+              <el-select v-model="batchPlanType" placeholder="选择套餐" size="small" style="width:120px">
+                <el-option label="设为VIP" value="vip"></el-option>
+                <el-option label="设为免费" value="free"></el-option>
+              </el-select>
+              <el-button type="primary" size="small" @click="handleBatchUpdatePlan" :loading="batchUpdateLoading">确认修改</el-button>
+            </div>
+          </div>
+          <!-- User Detail Drawer (replaces Dialog) -->
+          <el-drawer v-model="userDetailVisible" title="用户详情" size="70%" :destroy-on-close="true">
+            <div v-if="userDetail">
+              <el-tabs v-model="userDetailTab" @tab-change="handleUserDetailTabChange">
+                <!-- 基本信息 Tab -->
+                <el-tab-pane label="基本信息" name="basic">
+                  <el-descriptions :column="3" border size="small" title="基本信息">
+                    <el-descriptions-item label="昵称">{{ userDetail.user.nickname || '未建档' }}</el-descriptions-item>
+                    <el-descriptions-item label="性别">{{ userDetail.user.gender === 1 ? '男' : userDetail.user.gender === 2 ? '女' : '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="建档状态"><el-tag :type="userDetail.user.has_profile?'success':'info'" size="small">{{ userDetail.user.has_profile ? '已建档' : '未建档' }}</el-tag></el-descriptions-item>
+                    <el-descriptions-item label="出生时间" :span="2">{{ userDetail.user.birth_year ? userDetail.user.birth_year + '-' + String(userDetail.user.birth_month||'').padStart(2,'0') + '-' + String(userDetail.user.birth_day||'').padStart(2,'0') + ' ' + ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'][userDetail.user.birth_shichen||0] + '时' : '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="本命卦">{{ userDetail.user.ming_ben_gua || '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="OpenID" :span="3"><span style="font-size:12px;color:#999">{{ userDetail.user.openid }}</span></el-descriptions-item>
+                    <el-descriptions-item label="手机号">{{ userDetail.user.phone || '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="套餐"><el-tag :type="userDetail.user.plan_type==='free'?'':'success'" size="small">{{ userDetail.user.plan_type }}</el-tag></el-descriptions-item>
+                    <el-descriptions-item label="VIP到期">{{ userDetail.user.expire_time ? formatTime(userDetail.user.expire_time) : '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="额度剩余">{{ userDetail.user.quota_remaining }}</el-descriptions-item>
+                    <el-descriptions-item label="最近活跃">{{ userDetail.usageStats?.last_active_at ? formatTime(userDetail.usageStats.last_active_at) : '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="注销申请">{{ userDetail.user.delete_request_time ? formatTime(userDetail.user.delete_request_time) : '-' }}</el-descriptions-item>
+                    <el-descriptions-item label="注册时间">{{ formatTime(userDetail.user.created_at) }}</el-descriptions-item>
+                    <el-descriptions-item label="更新时间">{{ formatTime(userDetail.user.updated_at) }}</el-descriptions-item>
+                  </el-descriptions>
+
+                  <!-- 行为统计卡片 -->
+                  <div v-if="userDetail.usageStats" style="margin-top:16px">
+                    <el-row :gutter="12">
+                      <el-col :span="6">
+                        <div style="background:#ecf5ff;padding:12px;border-radius:8px;text-align:center">
+                          <div style="font-size:24px;font-weight:bold;color:#409eff">{{ userDetail.usageStats.tuiyan.total }}</div>
+                          <div style="font-size:12px;color:#666;margin-top:4px">推演次数</div>
+                          <div style="font-size:11px;color:#999;margin-top:2px">普通{{ userDetail.usageStats.tuiyan.free_count }} / VIP{{ userDetail.usageStats.tuiyan.vip_count }}</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div style="background:#f0f9eb;padding:12px;border-radius:8px;text-align:center">
+                          <div style="font-size:24px;font-weight:bold;color:#67c23a">{{ userDetail.usageStats.match.total }}</div>
+                          <div style="font-size:12px;color:#666;margin-top:4px">匹配次数</div>
+                          <div style="font-size:11px;color:#999;margin-top:2px">首次: {{ userDetail.usageStats.match.first_at ? formatTime(userDetail.usageStats.match.first_at).slice(0,10) : '-' }}</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div style="background:#fdf6ec;padding:12px;border-radius:8px;text-align:center">
+                          <div style="font-size:24px;font-weight:bold;color:#e6a23c">{{ userDetail.usageStats.share.total }}</div>
+                          <div style="font-size:12px;color:#666;margin-top:4px">分享次数</div>
+                          <div style="font-size:11px;color:#999;margin-top:2px">被使用{{ userDetail.usageStats.share.total_uses }}次</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="6">
+                        <div style="background:#fef0f0;padding:12px;border-radius:8px;text-align:center">
+                          <div style="font-size:24px;font-weight:bold;color:#f56c6c">¥{{ userDetail.usageStats.order.total_spent_yuan }}</div>
+                          <div style="font-size:12px;color:#666;margin-top:4px">累计消费</div>
+                          <div style="font-size:11px;color:#999;margin-top:2px">{{ userDetail.usageStats.order.completed }}笔完成</div>
+                        </div>
+                      </el-col>
+                    </el-row>
+
+                    <!-- 活跃时间线 -->
+                    <el-descriptions :column="2" border size="small" style="margin-top:12px" title="活跃时间线">
+                      <el-descriptions-item label="首次推演">{{ userDetail.usageStats.tuiyan.first_at ? formatTime(userDetail.usageStats.tuiyan.first_at) : '-' }}</el-descriptions-item>
+                      <el-descriptions-item label="最近推演">{{ userDetail.usageStats.tuiyan.last_at ? formatTime(userDetail.usageStats.tuiyan.last_at) : '-' }}</el-descriptions-item>
+                      <el-descriptions-item label="首次匹配">{{ userDetail.usageStats.match.first_at ? formatTime(userDetail.usageStats.match.first_at) : '-' }}</el-descriptions-item>
+                      <el-descriptions-item label="最近匹配">{{ userDetail.usageStats.match.last_at ? formatTime(userDetail.usageStats.match.last_at) : '-' }}</el-descriptions-item>
+                    </el-descriptions>
+                  </div>
+
+                  <!-- VIP订单记录 -->
+                  <h4 style="margin-top:16px" v-if="userDetail.orders && userDetail.orders.length">VIP订单</h4>
+                  <el-table v-if="userDetail.orders && userDetail.orders.length" :data="userDetail.orders" stripe size="small" max-height="200">
+                    <el-table-column prop="product_id" label="产品" width="120">
+                      <template #default="{row}">{{ row.product_id === 'vip_monthly' ? '月度VIP' : '年度VIP' }}</template>
+                    </el-table-column>
+                    <el-table-column prop="goods_price" label="金额" width="80"><template #default="{row}">¥{{ (row.goods_price/100).toFixed(0) }}</template></el-table-column>
+                    <el-table-column prop="status" label="状态" width="80">
+                      <template #default="{row}"><el-tag :type="row.status==='completed'?'success':row.status==='pending'?'warning':'danger'" size="small">{{ row.status }}</el-tag></template>
+                    </el-table-column>
+                    <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                </el-tab-pane>
+
+                <!-- 推演记录 Tab -->
+                <el-tab-pane label="推演记录" name="records">
+                  <el-table :data="userDetailRecords" stripe size="small" v-loading="userDetailRecordsLoading" max-height="500">
+                    <el-table-column prop="question" label="问题" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="is_vip_decode" label="类型" width="80">
+                      <template #default="{row}"><el-tag :type="row.is_vip_decode?'danger':''" size="small">{{ row.is_vip_decode ? '超级' : '普通' }}</el-tag></template>
+                    </el-table-column>
+                    <el-table-column prop="gua_name" label="卦象" width="100"></el-table-column>
+                    <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                  <div style="margin-top:16px;display:flex;justify-content:flex-end;" v-if="userDetailRecordsTotal > 20">
+                    <el-pagination background layout="prev,pager,next" :total="userDetailRecordsTotal" :page-size="20" v-model:current-page="userDetailRecordsPage" @current-change="loadUserDetailRecords"></el-pagination>
+                  </div>
+                </el-tab-pane>
+
+                <!-- 匹配记录 Tab -->
+                <el-tab-pane label="匹配记录" name="matches">
+                  <el-table :data="userDetailMatches" stripe size="small" v-loading="userDetailMatchesLoading" max-height="500">
+                    <el-table-column prop="relationship_name" label="关系" width="120"></el-table-column>
+                    <el-table-column prop="match_level" label="等级" width="100"></el-table-column>
+                    <el-table-column prop="match_score" label="分数" width="70"></el-table-column>
+                    <el-table-column label="对方" width="120">
+                      <template #default="{row}">{{ row.user_a_openid === userDetailOpenid ? (row.user_b_nickname || row.user_b_openid.slice(0,8)) : (row.user_a_nickname || row.user_a_openid.slice(0,8)) }}</template>
+                    </el-table-column>
+                    <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                  <div style="margin-top:16px;display:flex;justify-content:flex-end;" v-if="userDetailMatchesTotal > 20">
+                    <el-pagination background layout="prev,pager,next" :total="userDetailMatchesTotal" :page-size="20" v-model:current-page="userDetailMatchesPage" @current-change="loadUserDetailMatches"></el-pagination>
+                  </div>
+                </el-tab-pane>
+
+                <!-- 操作日志 Tab -->
+                <el-tab-pane label="操作日志" name="logs">
+                  <el-table :data="userDetailLogs" stripe size="small" v-loading="userDetailLogsLoading" max-height="500">
+                    <el-table-column prop="action" label="操作" width="150"></el-table-column>
+                    <el-table-column prop="target" label="目标" width="200" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="detail" label="详情" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="ip" label="IP" width="130"></el-table-column>
+                    <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                  <div style="margin-top:16px;display:flex;justify-content:flex-end;" v-if="userDetailLogsTotal > 20">
+                    <el-pagination background layout="prev,pager,next" :total="userDetailLogsTotal" :page-size="20" v-model:current-page="userDetailLogsPage" @current-change="loadUserDetailLogs"></el-pagination>
+                  </div>
+                </el-tab-pane>
+
+                <!-- 举报记录 Tab -->
+                <el-tab-pane label="举报记录" name="reports">
+                  <el-table :data="userDetailReports" stripe size="small" v-loading="userDetailReportsLoading" max-height="500">
+                    <el-table-column prop="reason" label="举报原因" width="120"></el-table-column>
+                    <el-table-column prop="reporter_nickname" label="举报人" width="120"></el-table-column>
+                    <el-table-column prop="status" label="状态" width="80">
+                      <template #default="{row}">
+                        <el-tag :type="row.status === 'pending' ? 'danger' : (row.status === 'reviewed' ? 'warning' : 'success')" size="small">{{ row.status === 'pending' ? '待处理' : (row.status === 'reviewed' ? '已查看' : '已处理') }}</el-tag>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="letter_content" label="信件内容" show-overflow-tooltip></el-table-column>
+                    <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                </el-tab-pane>
+
+                <!-- 拉黑记录 Tab -->
+                <el-tab-pane label="拉黑记录" name="blocks">
+                  <h4 style="margin-bottom:8px;color:#f56c6c">主动拉黑（该用户拉黑了他人）</h4>
+                  <el-table :data="userDetailBlocks.blockedByMe" stripe size="small" max-height="200" empty-text="无拉黑记录">
+                    <el-table-column prop="blocked_nickname" label="被拉黑用户" width="200"></el-table-column>
+                    <el-table-column label="时间"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                  <h4 style="margin-top:16px;margin-bottom:8px;color:#e6a23c">被他人拉黑</h4>
+                  <el-table :data="userDetailBlocks.blockedMe" stripe size="small" max-height="200" empty-text="无被拉黑记录">
+                    <el-table-column prop="blocker_nickname" label="拉黑者" width="200"></el-table-column>
+                    <el-table-column label="时间"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+                  </el-table>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </el-drawer>
+        </div>
+
+        <!-- ==================== VIP ==================== -->
+        <div v-if="activeMenu==='vip'">
+          <div class="table-card">
+            <h3>VIP订单管理</h3>
+            <div class="table-toolbar">
+              <div class="filters">
+                <el-select v-model="orderStatusFilter" placeholder="状态" clearable style="width:120px" @change="loadOrders">
+                  <el-option label="待支付" value="pending"></el-option>
+                  <el-option label="已完成" value="completed"></el-option>
+                  <el-option label="失败" value="failed"></el-option>
+                </el-select>
+                <el-select v-model="orderProductFilter" placeholder="产品" clearable style="width:140px" @change="loadOrders">
+                  <el-option label="月费" value="vip_monthly"></el-option>
+                  <el-option label="年费" value="vip_yearly"></el-option>
+                </el-select>
+                <el-button @click="loadOrders">刷新</el-button>
+              </div>
+            </div>
+            <el-table :data="orderList" stripe size="small" v-loading="orderLoading">
+              <el-table-column prop="out_trade_no" label="订单号" width="200" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="nickname" label="用户" width="120"></el-table-column>
+              <el-table-column prop="product_id" label="产品" width="100"></el-table-column>
+              <el-table-column prop="goods_price" label="金额" width="80">
+                <template #default="{row}">¥{{ row.goods_price }}</template>
+              </el-table-column>
+              <el-table-column prop="status" label="状态" width="80">
+                <template #default="{row}">
+                  <el-tag :type="row.status==='completed'?'success':row.status==='pending'?'warning':'danger'" size="small">{{ row.status }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="时间" width="160">
+                <template #default="{row}">{{ formatTime(row.created_at) }}</template>
+              </el-table-column>
+              <el-table-column label="操作" width="160">
+                <template #default="{row}">
+                  <el-button v-if="row.status==='pending'" size="small" type="success" @click="updateOrderStatus(row.out_trade_no,'completed')">完成</el-button>
+                  <el-button v-if="row.status==='pending'" size="small" type="danger" @click="updateOrderStatus(row.out_trade_no,'failed')">取消</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+              <el-pagination background layout="prev,pager,next" :total="orderTotal" :page-size="20" v-model:current-page="orderPage" @current-change="loadOrders"></el-pagination>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== DELETIONS ==================== -->
+        <div v-if="activeMenu==='deletions'">
+          <div class="table-card">
+            <h3>待删除用户 (GDPR合规)</h3>
+            <el-table :data="pendingDeletions" stripe size="small" v-loading="deletionLoading">
+              <el-table-column prop="openid" label="OpenID" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="reason" label="原因"></el-table-column>
+              <el-table-column label="申请时间" width="160">
+                <template #default="{row}">{{ formatTime(row.requested_at) }}</template>
+              </el-table-column>
+              <el-table-column label="操作" width="200">
+                <template #default="{row}">
+                  <el-button size="small" type="danger" @click="confirmDeleteUser(row.openid)">执行删除</el-button>
+                  <el-button size="small" @click="cancelDeletion(row.id)">取消</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== FUNNEL ==================== -->
+        <div v-if="activeMenu==='funnel'">
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>用户转化漏斗</h3>
+              <div class="chart-container" style="height:400px" ref="chartFunnel"></div>
+            </div>
+          </div>
+          <div class="table-card">
+            <h3>漏斗数据明细</h3>
+            <el-table :data="funnelData" stripe size="small">
+              <el-table-column prop="step" label="步骤">
+                <template #default="{row}">{{ row.label || stepLabel(row.step) }}</template>
+              </el-table-column>
+              <el-table-column prop="count" label="用户数"></el-table-column>
+              <el-table-column prop="conversionRate" label="转化率">
+                <template #default="{row}">{{ row.conversionRate }}%</template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== TUIYAN ANALYSIS ==================== -->
+        <div v-if="activeMenu==='tuiyan-analysis'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总推演数</div><div class="value">{{ overview.totalTuiyan || 0 }}</div></div>
+            <div class="stat-card"><div class="label">人均推演</div><div class="value">{{ userStats.avgTuiyanPerUser || 0 }}</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>推演趋势 (近30天)</h3>
+              <div class="chart-container" ref="chartTuiyanTrend30" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>问题类型分布</h3>
+              <div class="chart-container" ref="chartQuestionType" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== MATCH ANALYSIS ==================== -->
+        <div v-if="activeMenu==='match-analysis'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总匹配</div><div class="value">{{ matchStats.total || 0 }}</div></div>
+            <div class="stat-card"><div class="label">独立用户对</div><div class="value">{{ matchStats.uniquePairs || 0 }}</div></div>
+            <div class="stat-card"><div class="label">平均匹配分</div><div class="value">{{ matchStats.avgMatchScore || 0 }}</div></div>
+            <div class="stat-card"><div class="label">今日匹配</div><div class="value">{{ matchStats.todayCount || 0 }}</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>匹配分分布</h3>
+              <div class="chart-container" ref="chartMatchScore" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>关系类型分布</h3>
+              <div class="chart-container" ref="chartMatchRel" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>匹配趋势 (近7天)</h3>
+              <div class="chart-container" ref="chartMatchTrend" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== SHARE ANALYSIS ==================== -->
+        <div v-if="activeMenu==='share-analysis'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总分享码</div><div class="value">{{ shareStats.total || 0 }}</div></div>
+            <div class="stat-card"><div class="label">活跃分享</div><div class="value">{{ shareStats.active || 0 }}</div></div>
+            <div class="stat-card"><div class="label">总使用次数</div><div class="value">{{ shareStats.totalUses || 0 }}</div></div>
+            <div class="stat-card"><div class="label">使用率</div><div class="value">{{ shareStats.usageRate || 0 }}%</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>分享类型分布</h3>
+              <div class="chart-container" ref="chartShareType" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>分享转化漏斗</h3>
+              <div class="chart-container" ref="chartShareFunnel" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== REVENUE ANALYSIS ==================== -->
+        <div v-if="activeMenu==='revenue-analysis'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总收入</div><div class="value">¥{{ revenueData.totalRevenue || 0 }}</div></div>
+            <div class="stat-card"><div class="label">月费收入</div><div class="value">¥{{ revenueData.monthlyRevenue || 0 }}</div></div>
+            <div class="stat-card"><div class="label">年费收入</div><div class="value">¥{{ revenueData.yearlyRevenue || 0 }}</div></div>
+            <div class="stat-card"><div class="label">待支付订单</div><div class="value">{{ revenueData.pendingOrders || 0 }}</div></div>
+          </div>
+          <!-- 增长指标卡片区域 -->
+          <div class="table-card" style="margin-bottom:20px;">
+            <h3>收入增长指标</h3>
+            <el-row :gutter="16">
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">ARPU（每用户平均收入）</div>
+                  <div class="value" style="color:#409eff">¥{{ Number(orderStats.arpu || 0).toFixed(2) }}</div>
+                  <div class="extra">总用户平均贡献</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">ARPAU（每活跃用户平均收入）</div>
+                  <div class="value" style="color:#409eff">¥{{ Number(orderStats.arpau || 0).toFixed(2) }}</div>
+                  <div class="extra">活跃用户平均贡献</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">付费用户数</div>
+                  <div class="value" style="color:#e6a23c">{{ orderStats.payingUserCount || 0 }} 人</div>
+                  <div class="extra">累计付费用户</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">首次付费周期</div>
+                  <div class="value" style="color:#909399">{{ Number(orderStats.paidConversionCycle || 0).toFixed(1) }} 天</div>
+                  <div class="extra">注册到首次付费平均</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">复购率</div>
+                  <div class="value" style="color:#67c23a">{{ orderStats.repurchaseRate || 0 }}%</div>
+                  <div class="extra">重复付费用户占比</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">今日收入</div>
+                  <div class="value" style="color:#67c23a">¥{{ orderStats.todayRevenue || 0 }}</div>
+                  <div class="extra">当日实时收入</div>
+                </div>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom:16px;">
+                <div class="stat-card" style="margin:0;">
+                  <div class="label">今日订单</div>
+                  <div class="value" style="color:#409eff">{{ orderStats.todayOrders || 0 }} 笔</div>
+                  <div class="extra">当日实时订单数</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>收入趋势 (近30天)</h3>
+              <div class="chart-container" ref="chartRevenueTrend" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>产品分析</h3>
+              <div class="chart-container" ref="chartProductAnalysis" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>订单状态分布</h3>
+              <div class="chart-container" ref="chartOrderStatus" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== RETENTION ==================== -->
+        <div v-if="activeMenu==='retention'">
+          <div class="retention-grid">
+            <div class="retention-item"><div class="day">D1 留存</div><div class="rate">{{ retention.d1?.rate || 0 }}%</div><div class="detail">{{ retention.d1?.retained || 0 }} / {{ retention.d1?.new || 0 }}</div></div>
+            <div class="retention-item"><div class="day">D3 留存</div><div class="rate">{{ retention.d3?.rate || 0 }}%</div><div class="detail">{{ retention.d3?.retained || 0 }} / {{ retention.d3?.new || 0 }}</div></div>
+            <div class="retention-item"><div class="day">D7 留存</div><div class="rate">{{ retention.d7?.rate || 0 }}%</div><div class="detail">{{ retention.d7?.retained || 0 }} / {{ retention.d7?.new || 0 }}</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>DAU趋势 (近30天)</h3>
+              <div class="chart-container" ref="chartDauTrend" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <!-- 用户留存 Cohort 分析表格 -->
+          <div class="table-card">
+            <h3>用户留存Cohort分析（按注册周）</h3>
+            <el-table :data="retentionCohortData" stripe size="small" v-loading="retentionCohortLoading" empty-text="暂无留存数据">
+              <el-table-column label="注册周次" min-width="120">
+                <template #default="{row}">
+                  <span style="font-weight:600">{{ row.cohort }}</span>
+                  <div style="font-size:12px;color:#909399">{{ row.weekStart }}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="registered" label="注册人数" width="100"></el-table-column>
+              <el-table-column prop="d1Retention" label="次日留存" width="90"></el-table-column>
+              <el-table-column label="次日留存率" width="110">
+                <template #default="{row}">
+                  <span :style="{color: retentionRateColor(row.d1Rate), fontWeight: 600}">{{ row.d1Rate }}%</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="d7Retention" label="7日留存" width="90"></el-table-column>
+              <el-table-column label="7日留存率" width="110">
+                <template #default="{row}">
+                  <span :style="{color: retentionRateColor(row.d7Rate), fontWeight: 600}">{{ row.d7Rate }}%</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="d30Retention" label="30日留存" width="90"></el-table-column>
+              <el-table-column label="30日留存率" width="110">
+                <template #default="{row}">
+                  <span :style="{color: retentionRateColor(row.d30Rate), fontWeight: 600}">{{ row.d30Rate }}%</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== AI QUALITY ==================== -->
+        <div v-if="activeMenu==='ai-quality'">
+          <div class="stat-cards">
+            <div class="stat-card"><div class="label">总调用</div><div class="value">{{ aiStats.totalCalls || 0 }}</div></div>
+            <div class="stat-card"><div class="label">成功率</div><div class="value">{{ aiStats.successRate || 0 }}%</div></div>
+            <div class="stat-card"><div class="label">平均延迟</div><div class="value">{{ aiStats.avgLatency || 0 }}ms</div></div>
+            <div class="stat-card"><div class="label">今日调用</div><div class="value">{{ aiStats.todayCalls || 0 }}</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>AI调用趋势 (近7天)</h3>
+              <div class="chart-container" ref="chartAiTrend" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <div class="table-card">
+            <h3>最近AI调用日志</h3>
+            <el-table :data="aiLogs" stripe size="small">
+              <el-table-column prop="model" label="模型" width="120"></el-table-column>
+              <el-table-column prop="status" label="状态" width="80">
+                <template #default="{row}"><el-tag :type="row.status==='success'?'success':'danger'" size="small">{{ row.status }}</el-tag></template>
+              </el-table-column>
+              <el-table-column prop="latency_ms" label="延迟(ms)" width="100"></el-table-column>
+              <el-table-column prop="prompt_tokens" label="输入Token" width="100"></el-table-column>
+              <el-table-column prop="completion_tokens" label="输出Token" width="100"></el-table-column>
+              <el-table-column label="时间" width="160"><template #default="{row}">{{ formatTime(row.created_at) }}</template></el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== HEXAGRAMS ==================== -->
+        <div v-if="activeMenu==='hexagrams'">
+          <div class="table-card">
+            <h3>六十四卦管理</h3>
+            <el-table :data="hexagramList" stripe size="small" v-loading="hexagramLoading">
+              <el-table-column prop="id" label="ID" width="60"></el-table-column>
+              <el-table-column prop="symbol" label="符号" width="60"></el-table-column>
+              <el-table-column prop="name" label="卦名" width="100"></el-table-column>
+              <el-table-column prop="full_name" label="全称" width="150"></el-table-column>
+              <el-table-column prop="upper" label="上卦" width="80"></el-table-column>
+              <el-table-column prop="lower" label="下卦" width="80"></el-table-column>
+              <el-table-column prop="judgment" label="卦辞" show-overflow-tooltip></el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== MATCH CORPUS ==================== -->
+        <div v-if="activeMenu==='match-corpus'">
+          <div class="table-card">
+            <h3>匹配语料库 (2080条)</h3>
+            <el-table :data="matchCorpusList" stripe size="small" v-loading="corpusLoading">
+              <el-table-column prop="id" label="ID" width="60"></el-table-column>
+              <el-table-column prop="gua_a" label="卦A" width="80"></el-table-column>
+              <el-table-column prop="gua_b" label="卦B" width="80"></el-table-column>
+              <el-table-column prop="relationship" label="关系" width="100"></el-table-column>
+              <el-table-column prop="score" label="分数" width="80"></el-table-column>
+              <el-table-column prop="summary" label="摘要" show-overflow-tooltip></el-table-column>
+            </el-table>
+            <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+              <el-pagination background layout="prev,pager,next" :total="corpusTotal" :page-size="50" v-model:current-page="corpusPage" @current-change="loadCorpus"></el-pagination>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== ACHIEVEMENTS ==================== -->
+        <div v-if="activeMenu==='achievements'">
+          <div class="table-card">
+            <h3>成就管理</h3>
+            <el-table :data="achievementList" stripe size="small">
+              <el-table-column prop="id" label="ID" width="60"></el-table-column>
+              <el-table-column prop="name" label="名称" width="150"></el-table-column>
+              <el-table-column prop="description" label="描述"></el-table-column>
+              <el-table-column prop="condition_type" label="条件类型" width="120"></el-table-column>
+              <el-table-column prop="condition_value" label="条件值" width="100"></el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== SETTINGS ==================== -->
+        <div v-if="activeMenu==='settings'">
+          <div class="table-card">
+            <h3>系统设置</h3>
+            <el-form label-width="150px" style="max-width:600px;">
+              <el-form-item label="小程序版本">
+                <el-tag>{{ systemInfo.miniappVersion || '-' }}</el-tag>
+              </el-form-item>
+              <el-form-item label="维护模式">
+                <el-switch v-model="systemInfo.maintenanceMode" @change="toggleMaintenance"></el-switch>
+              </el-form-item>
+              <el-form-item label="强制更新">
+                <el-switch v-model="systemInfo.forceUpdate" @change="toggleForceUpdate"></el-switch>
+              </el-form-item>
+              <el-form-item label="更新提示">
+                <el-input v-model="systemInfo.updateMessage" type="textarea" :rows="2"></el-input>
+                <el-button style="margin-top:8px" type="primary" @click="saveUpdateMessage">保存</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <!-- 手动数据库备份 -->
+          <div class="table-card">
+            <h3>数据库备份</h3>
+            <el-button type="primary" @click="handleDbBackup" :loading="dbBackupLoading">手动备份数据库</el-button>
+          </div>
+          <!-- 修改密码 -->
+          <div class="table-card">
+            <h3>修改密码</h3>
+            <el-form label-width="150px" style="max-width:500px;">
+              <el-form-item label="旧密码">
+                <el-input v-model="passwordForm.oldPassword" type="password" placeholder="请输入旧密码" show-password></el-input>
+              </el-form-item>
+              <el-form-item label="新密码">
+                <el-input v-model="passwordForm.newPassword" type="password" placeholder="请输入新密码" show-password></el-input>
+              </el-form-item>
+              <el-form-item label="确认新密码">
+                <el-input v-model="passwordForm.confirmPassword" type="password" placeholder="请再次输入新密码" show-password></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="handleChangePassword" :loading="changePasswordLoading">修改密码</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <!-- 清除缓存 -->
+          <div class="table-card">
+            <h3>缓存管理</h3>
+            <el-button type="warning" @click="handleClearCache" :loading="clearCacheLoading">清除系统缓存</el-button>
+          </div>
+        </div>
+
+        <!-- ==================== LOGS ==================== -->
+        <div v-if="activeMenu==='logs'">
+          <div class="table-card">
+            <h3>管理员操作日志</h3>
+            <el-table :data="adminLogs" stripe size="small" v-loading="logLoading">
+              <el-table-column prop="id" label="ID" width="60"></el-table-column>
+              <el-table-column prop="admin_id" label="管理员" width="80"></el-table-column>
+              <el-table-column prop="action" label="操作" width="150"></el-table-column>
+              <el-table-column prop="target" label="目标" width="180" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="detail" label="详情" show-overflow-tooltip></el-table-column>
+              <el-table-column prop="ip" label="IP" width="130"></el-table-column>
+              <el-table-column label="时间" width="160">
+                <template #default="{row}">{{ formatTime(row.created_at) }}</template>
+              </el-table-column>
+            </el-table>
+            <div style="margin-top:16px;display:flex;justify-content:flex-end;">
+              <el-pagination background layout="prev,pager,next" :total="logTotal" :page-size="50" v-model:current-page="logPage" @current-change="loadLogs"></el-pagination>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== HEALTH ==================== -->
+        <div v-if="activeMenu==='health'">
+          <div class="stat-cards">
+            <div class="stat-card">
+              <div class="label">API状态</div>
+              <div class="value" :style="{color: healthStatus.api ? '#67c23a' : '#f56c6c', fontSize:'18px'}">{{ healthStatus.api ? '✅ 正常' : '❌ 异常' }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">数据库</div>
+              <div class="value" :style="{color: healthStatus.db ? '#67c23a' : '#f56c6c', fontSize:'18px'}">{{ healthStatus.db ? '✅ 正常' : '❌ 异常' }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">Redis</div>
+              <div class="value" :style="{color: healthStatus.redis ? '#67c23a' : '#f56c6c', fontSize:'18px'}">{{ healthStatus.redis ? '✅ 正常' : '❌ 异常' }}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">运行时间</div>
+              <div class="value" style="font-size:16px">{{ healthStatus.uptime || '-' }}</div>
+            </div>
+          </div>
+          <div class="table-card">
+            <h3>服务管理</h3>
+            <el-button type="warning" @click="reloadService('tianji-tuiyan-api')" :loading="reloading">重启API服务</el-button>
+            <el-button @click="checkHealth">刷新状态</el-button>
+          </div>
+          <!-- 测试DeepSeek连接 -->
+          <div class="table-card">
+            <h3>AI连接测试</h3>
+            <el-button type="primary" @click="handleTestDeepSeek" :loading="testDeepSeekLoading">测试AI连接</el-button>
+            <div v-if="testDeepSeekResult" style="margin-top:12px;">
+              <el-tag :type="testDeepSeekResult.success ? 'success' : 'danger'" size="large">
+                {{ testDeepSeekResult.success ? '连接成功' : '连接失败' }}
+              </el-tag>
+              <span v-if="testDeepSeekResult.latency" style="margin-left:12px;color:#909399;font-size:13px;">耗时: {{ testDeepSeekResult.latency }}ms</span>
+              <div v-if="testDeepSeekResult.message" style="margin-top:8px;font-size:13px;color:#606266;">{{ testDeepSeekResult.message }}</div>
+            </div>
+          </div>
+          <div class="table-card">
+            <h3>错误日志 (最近50行)</h3>
+            <div style="max-height:400px;overflow-y:auto;font-family:monospace;font-size:12px;background:#1e1e1e;color:#d4d4d4;padding:12px;border-radius:6px;">
+              <div v-for="(line,i) in errorLogs" :key="i">{{ line }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== LETTER POOL OVERVIEW ==================== -->
+        <div v-if="activeMenu==='letter-pool'">
+          <div class="stat-cards" v-if="letterStats.overview">
+            <div class="stat-card"><div class="label">真实男性</div><div class="value">{{ letterStats.overview.real_male }}</div></div>
+            <div class="stat-card"><div class="label">真实女性</div><div class="value">{{ letterStats.overview.real_female }}</div></div>
+            <div class="stat-card"><div class="label">虚拟男性</div><div class="value">{{ letterStats.overview.virtual_male }}</div></div>
+            <div class="stat-card"><div class="label">虚拟女性</div><div class="value">{{ letterStats.overview.virtual_female }}</div></div>
+          </div>
+          <div class="table-card">
+            <h3>性别比例</h3>
+            <div style="display:flex;gap:24px;align-items:center;margin-top:12px;">
+              <div v-if="letterStats.overview">
+                <div>真实男：{{ letterStats.overview.real_male }} / 女：{{ letterStats.overview.real_female }}（比例 {{ letterStats.overview.real_male && letterStats.overview.real_female ? (letterStats.overview.real_male / letterStats.overview.real_female).toFixed(2) : '-' }}）</div>
+                <div style="margin-top:8px;">虚拟男：{{ letterStats.overview.virtual_male }} / 女：{{ letterStats.overview.virtual_female }}</div>
+              </div>
+              <el-button @click="loadLetterStats" :loading="letterStatsLoading">刷新</el-button>
+            </div>
+            <div v-if="letterStats.overview && letterStats.overview.real_male > letterStats.overview.real_female * 1.5" style="margin-top:16px;padding:12px;background:#fff7e6;border-left:4px solid #faad14;border-radius:4px;">
+              💡 智能提示：真实男性较多，建议增加虚拟女性用户以平衡匹配池
+            </div>
+            <div v-else-if="letterStats.overview && letterStats.overview.real_female > letterStats.overview.real_male * 1.5" style="margin-top:16px;padding:12px;background:#fff7e6;border-left:4px solid #faad14;border-radius:4px;">
+              💡 智能提示：真实女性较多，建议增加虚拟男性用户以平衡匹配池
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== LETTER STATS ==================== -->
+        <div v-if="activeMenu==='letter-stats'">
+          <div class="stat-cards" v-if="letterStats.overview">
+            <div class="stat-card"><div class="label">总匹配数</div><div class="value">{{ letterStats.overview.total_matches || 0 }}</div></div>
+            <div class="stat-card"><div class="label">总信件数</div><div class="value">{{ letterStats.overview.total_letters || 0 }}</div></div>
+            <div class="stat-card"><div class="label">今日匹配</div><div class="value">{{ letterStats.overview.today_matches || 0 }}</div></div>
+            <div class="stat-card"><div class="label">今日信件</div><div class="value">{{ letterStats.overview.today_letters || 0 }}</div></div>
+            <div class="stat-card"><div class="label">待处理举报</div><div class="value" :style="{color: (letterStats.overview.pending_reports || 0) > 0 ? '#f56c6c' : '#67c23a'}">{{ letterStats.overview.pending_reports || 0 }}</div></div>
+            <div class="stat-card"><div class="label">拉黑总数</div><div class="value">{{ letterStats.overview.total_blocks || 0 }}</div></div>
+          </div>
+          <div class="table-card">
+            <h3>近7天匹配/信件趋势</h3>
+            <el-table :data="letterStats.trend7d" style="width:100%" size="small">
+              <el-table-column prop="date" label="日期" />
+              <el-table-column prop="match_count" label="匹配数" />
+              <el-table-column prop="letter_count" label="信件数" />
+            </el-table>
+          </div>
+          <div class="table-card">
+            <h3>虚拟用户卦象分布</h3>
+            <el-table :data="letterStats.guaDistribution" style="width:100%" size="small">
+              <el-table-column prop="gua_name" label="卦象" />
+              <el-table-column prop="cnt" label="人数" />
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== VIRTUAL USERS ==================== -->
+        <div v-if="activeMenu==='virtual-users'">
+          <div class="table-card">
+            <h3>代回信总开关 <el-tag size="small" type="info" style="margin-left:8px">手动代发，非自动回复</el-tag></h3>
+            <div style="display:flex;gap:16px;align-items:center;margin-top:12px;">
+              <el-switch v-model="globalReplyEnabled" @change="onGlobalReplyToggle" active-text="开启" inactive-text="关闭" />
+              <span style="color:#909399;font-size:13px;">关闭后所有虚拟用户都无法被代回信（不影响你手动登录虚拟账号回复）</span>
+              <el-button @click="loadReplyConfig" :loading="replyConfigLoading">刷新</el-button>
+            </div>
+          </div>
+          <div class="table-card">
+            <h3>虚拟用户列表（共 {{ virtualUsers.total }} 个，未读来信 <el-badge :value="virtualUsers.totalUnread || 0" :hidden="!virtualUsers.totalUnread" type="danger" style="margin-left:8px" />）<span style="font-size:12px;color:#909399;font-weight:normal;margin-left:8px">按最后收信时间倒序排列，未读行高亮</span></h3>
+            <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+              <el-input v-model="virtualUsers.keyword" placeholder="昵称/openid" style="width:200px" clearable @keyup.enter="loadVirtualUsers(1)" />
+              <el-select v-model="virtualUsers.gender" placeholder="性别" clearable style="width:120px" @change="loadVirtualUsers(1)">
+                <el-option label="男" :value="1" /><el-option label="女" :value="2" />
+              </el-select>
+              <el-button type="primary" @click="loadVirtualUsers(1)">搜索</el-button>
+              <el-button @click="loadVirtualUsers(virtualUsers.page)">刷新</el-button>
+              <el-divider direction="vertical" />
+              <el-button :type="virtualUsers.unreadOnly ? 'danger' : 'default'" size="small" @click="virtualUsers.unreadOnly = !virtualUsers.unreadOnly; loadVirtualUsers(1)">
+                {{ virtualUsers.unreadOnly ? '✓ 仅看未读' : '仅看未读' }}
+              </el-button>
+              <el-divider direction="vertical" />
+              <el-button size="small" type="success" @click="batchToggleVirtualReply(true)">批量开启代回信</el-button>
+              <el-button size="small" type="warning" @click="batchToggleVirtualReply(false)">批量关闭代回信</el-button>
+            </div>
+            <el-table :data="virtualUsers.list" style="width:100%" size="small" v-loading="virtualUsersLoading" @selection-change="handleUserSelectionChange" :row-class-name="virtualUserRowClass">
+              <el-table-column type="selection" width="40" />
+              <el-table-column prop="nickname" label="昵称" width="140">
+                <template #default="{row}">
+                  <span>{{ row.nickname || '未命名' }}</span>
+                  <el-tag v-if="row.status === 0" size="small" type="danger" style="margin-left:4px">封禁</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="性别" width="60">
+                <template #default="{row}">{{ row.gender === 1 ? '男' : '女' }}</template>
+              </el-table-column>
+              <el-table-column prop="gua_name" label="命卦" width="100" />
+              <el-table-column prop="match_count" label="匹配数" width="70" sortable />
+              <el-table-column prop="sent_letter_count" label="发信" width="60" />
+              <el-table-column label="收信" width="80" sortable :sort-method="(a,b) => a.received_letter_count - b.received_letter_count">
+                <template #default="{row}">
+                  <span :style="{color: row.received_letter_count > 0 ? '#409eff' : '#ccc', fontWeight: row.received_letter_count > 0 ? 'bold' : 'normal'}">{{ row.received_letter_count }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="未读" width="70" sortable :sort-method="(a,b) => a.unread_letter_count - b.unread_letter_count">
+                <template #default="{row}">
+                  <el-badge v-if="row.unread_letter_count > 0" :value="row.unread_letter_count" type="danger" />
+                  <span v-else style="color:#ccc">-</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="被举报" width="70">
+                <template #default="{row}">
+                  <span :style="{color: row.reported_count > 0 ? '#f56c6c' : '#ccc', fontWeight: row.reported_count > 0 ? 'bold' : 'normal'}">{{ row.reported_count }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="最后收信" width="160" sortable :sort-method="(a,b) => new Date(a.last_received_time || 0).getTime() - new Date(b.last_received_time || 0).getTime()">
+                <template #default="{row}">
+                  <span v-if="row.last_received_time" :style="{color: row.unread_letter_count > 0 ? '#f56c6c' : '#606266', fontWeight: row.unread_letter_count > 0 ? 'bold' : 'normal'}">{{ formatTime(row.last_received_time) }}</span>
+                  <span v-else style="color:#ccc">从未收信</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="最后匹配" width="150">
+                <template #default="{row}">{{ formatTime(row.last_match_time) }}</template>
+              </el-table-column>
+              <el-table-column label="代回信" width="100">
+                <template #default="{row}">
+                  <el-switch v-model="row.letter_reply_enabled" :active-value="1" :inactive-value="0" @change="(v) => onUserReplyToggle(row.openid, v)" />
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="220" fixed="right">
+                <template #default="{row}">
+                  <el-button size="small" :type="row.unread_letter_count > 0 ? 'danger' : 'primary'" @click="openThreadsDialog(row)">
+                    来信
+                    <el-badge v-if="row.unread_letter_count > 0" :value="row.unread_letter_count" class="unread-badge" />
+                  </el-button>
+                  <el-button size="small" type="success" @click="openReplyDialog(row)">代回信</el-button>
+                  <el-button size="small" type="danger" v-if="row.status !== 0" @click="banUser(row.openid, row.nickname)">封禁</el-button>
+                  <el-button size="small" type="success" v-else @click="unbanUser(row.openid)">解封</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin-top:12px;text-align:right;">
+              <el-pagination
+                v-model:current-page="virtualUsers.page"
+                :page-size="virtualUsers.pageSize"
+                :total="virtualUsers.total"
+                layout="prev, pager, next, total"
+                @current-change="loadVirtualUsers"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== LETTER REPORTS ==================== -->
+        <div v-if="activeMenu==='letter-reports'">
+          <!-- 举报统计概览 -->
+          <div class="stat-cards" v-if="reportStats.overview">
+            <div class="stat-card">
+              <div class="label">待处理举报</div>
+              <div class="value" :style="{color: (reportStats.overview.pending_reports || 0) > 0 ? '#f56c6c' : '#67c23a'}">{{ reportStats.overview.pending_reports || 0 }}</div>
+              <div class="extra">需及时处理</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">今日新增举报</div>
+              <div class="value">{{ reportStats.overview.today_reports || 0 }}</div>
+              <div class="extra">本周 {{ reportStats.overview.week_reports || 0 }} 条</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">被举报用户</div>
+              <div class="value">{{ reportStats.overview.reported_users || 0 }}</div>
+              <div class="extra">总举报 {{ reportStats.overview.total_reports || 0 }} 条</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">已封禁用户</div>
+              <div class="value" style="color:#f56c6c">{{ reportStats.overview.banned_users || 0 }}</div>
+              <div class="extra">累计封禁</div>
+            </div>
+          </div>
+          <!-- 举报原因分布 -->
+          <div class="chart-row" v-if="reportStats.reasonDistribution && reportStats.reasonDistribution.length">
+            <div class="chart-card chart-full">
+              <h3>举报原因分布</h3>
+              <div class="chart-container" ref="chartReportReason" style="width:100%;height:260px"></div>
+            </div>
+          </div>
+          <!-- 被举报用户排行 -->
+          <div class="table-card">
+            <h3>被举报用户排行 TOP20</h3>
+            <el-table :data="reportRanking" stripe size="small" v-loading="reportRankingLoading" empty-text="暂无举报数据">
+              <el-table-column label="排名" width="70">
+                <template #default="{row}">{{ row._rank }}</template>
+              </el-table-column>
+              <el-table-column prop="target_nickname" label="用户昵称" width="140">
+                <template #default="{row}">
+                  <span :style="{color: row.is_virtual ? '#e6a23c' : '#303133'}">{{ row.target_nickname || '未知' }}</span>
+                  <el-tag v-if="row.is_virtual" size="small" type="warning" style="margin-left:4px">虚拟</el-tag>
+                  <el-tag v-if="row.status === 0" size="small" type="danger" style="margin-left:4px">已封禁</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="report_count" label="被举报次数" width="100" sortable>
+                <template #default="{row}"><span style="font-weight:bold;color:#f56c6c">{{ row.report_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="pending_count" label="待处理" width="80">
+                <template #default="{row}"><span :style="{color: row.pending_count > 0 ? '#f56c6c' : '#ccc'}">{{ row.pending_count }}</span></template>
+              </el-table-column>
+              <el-table-column prop="reasons" label="举报原因" show-overflow-tooltip />
+              <el-table-column label="首次举报" width="150">
+                <template #default="{row}">{{ formatTime(row.first_report_time) }}</template>
+              </el-table-column>
+              <el-table-column label="最近举报" width="150">
+                <template #default="{row}">{{ formatTime(row.last_report_time) }}</template>
+              </el-table-column>
+              <el-table-column label="操作" width="140" fixed="right">
+                <template #default="{row}">
+                  <el-button size="small" type="danger" v-if="row.status !== 0" @click="banUser(row.target_openid, row.target_nickname)">封禁</el-button>
+                  <el-button size="small" type="success" v-else @click="unbanUser(row.target_openid)">解封</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <!-- 举报列表 -->
+          <div class="table-card">
+            <h3>信件举报列表</h3>
+            <div style="display:flex;gap:12px;margin-bottom:12px;">
+              <el-select v-model="letterReports.status" placeholder="状态" clearable style="width:140px" @change="loadLetterReports(1)">
+                <el-option label="待处理" value="pending" /><el-option label="已查看" value="reviewed" /><el-option label="已处理" value="resolved" />
+              </el-select>
+              <el-button @click="loadLetterReports(1)">搜索</el-button>
+              <el-button @click="loadLetterReports(letterReports.page)">刷新</el-button>
+              <el-button @click="loadReportStats">刷新统计</el-button>
+            </div>
+            <el-table :data="letterReports.list" style="width:100%" size="small" v-loading="letterReportsLoading">
+              <el-table-column prop="id" label="ID" width="60" />
+              <el-table-column prop="reporter_nickname" label="举报人" width="120" />
+              <el-table-column prop="target_nickname" label="被举报人" width="120">
+                <template #default="{row}">
+                  <span>{{ row.target_nickname || '未知' }}</span>
+                  <el-tag v-if="row.target_is_virtual" size="small" type="warning" style="margin-left:4px">虚拟</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="reason" label="原因" width="100" />
+              <el-table-column prop="letter_content" label="信件内容" show-overflow-tooltip />
+              <el-table-column prop="status" label="状态" width="100">
+                <template #default="{row}">
+                  <el-tag :type="row.status === 'pending' ? 'danger' : (row.status === 'reviewed' ? 'warning' : 'success')">{{ row.status === 'pending' ? '待处理' : (row.status === 'reviewed' ? '已查看' : '已处理') }}</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="created_at" label="时间" width="160" />
+              <el-table-column label="操作" width="260" fixed="right">
+                <template #default="{row}">
+                  <el-button size="small" @click="viewReportDetail(row.id)">详情</el-button>
+                  <el-button size="small" @click="updateReportStatus(row.id, 'reviewed')">已查看</el-button>
+                  <el-button size="small" type="success" @click="updateReportStatus(row.id, 'resolved')">已处理</el-button>
+                  <el-button size="small" type="danger" v-if="row.target_status !== 0" @click="banUser(row.target_openid, row.target_nickname)">封禁</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div style="margin-top:12px;text-align:right;">
+              <el-pagination
+                v-model:current-page="letterReports.page"
+                :page-size="letterReports.pageSize"
+                :total="letterReports.total"
+                layout="prev, pager, next, total"
+                @current-change="loadLetterReports"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== LETTER FUNNEL ==================== -->
+        <div v-if="activeMenu==='letter-funnel'">
+          <div class="table-card" style="margin-bottom:20px">
+            <h3>易缘传书转化漏斗（近{{ letterFunnelDays }}天）</h3>
+            <div style="margin-bottom:12px;display:flex;gap:10px;align-items:center">
+              <el-radio-group v-model="letterFunnelDays" size="small" @change="loadLetterFunnel">
+                <el-radio-button :label="7">7天</el-radio-button>
+                <el-radio-button :label="30">30天</el-radio-button>
+                <el-radio-button :label="90">90天</el-radio-button>
+              </el-radio-group>
+              <el-button @click="loadLetterFunnel">刷新</el-button>
+            </div>
+            <div class="chart-container" style="height:400px" ref="chartLetterFunnel" v-loading="letterFunnelLoading"></div>
+          </div>
+          <div class="table-card">
+            <h3>漏斗数据明细</h3>
+            <el-table :data="letterFunnelData" stripe size="small">
+              <el-table-column prop="step" label="序号" width="70" />
+              <el-table-column prop="label" label="步骤" />
+              <el-table-column prop="count" label="用户数" width="120" />
+              <el-table-column label="转化率（相对上一步）" width="180">
+                <template #default="{row}">{{ row.conversionRate }}%</template>
+              </el-table-column>
+              <el-table-column label="整体转化率" width="150">
+                <template #default="{row}">{{ letterFunnelData.length > 0 ? ((row.count / letterFunnelData[0].count) * 100).toFixed(1) : 0 }}%</template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- ==================== LETTER ANALYSIS ==================== -->
+        <div v-if="activeMenu==='letter-analysis'">
+          <div class="table-card" style="margin-bottom:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <h3>信件深度分析（近{{ letterAnalysisDays }}天）</h3>
+              <div style="display:flex;gap:10px;align-items:center">
+                <el-radio-group v-model="letterAnalysisDays" size="small" @change="loadLetterAnalysis">
+                  <el-radio-button :label="7">7天</el-radio-button>
+                  <el-radio-button :label="30">30天</el-radio-button>
+                  <el-radio-button :label="90">90天</el-radio-button>
+                </el-radio-group>
+                <el-button @click="loadLetterAnalysis">刷新</el-button>
+              </div>
+            </div>
+            <div class="stat-cards" v-if="letterAnalysis.overview">
+              <div class="stat-card"><div class="label">总信件数</div><div class="value">{{ letterAnalysis.overview.totalLetters || 0 }}</div></div>
+              <div class="stat-card"><div class="label">发信用户</div><div class="value">{{ letterAnalysis.overview.uniqueSenders || 0 }}</div></div>
+              <div class="stat-card"><div class="label">人均发信</div><div class="value">{{ letterAnalysis.overview.avgPerSender || 0 }}</div></div>
+              <div class="stat-card"><div class="label">平均长度</div><div class="value">{{ letterAnalysis.overview.avgLength || 0 }}字</div></div>
+              <div class="stat-card"><div class="label">阅读率</div><div class="value" style="color:#409eff">{{ letterAnalysis.overview.readRate || 0 }}%</div></div>
+              <div class="stat-card"><div class="label">回信率</div><div class="value" style="color:#67c23a">{{ letterAnalysis.overview.replyRate || 0 }}%</div></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card">
+              <h3>信件数量趋势</h3>
+              <div class="chart-container" ref="chartLetterTrend" style="width:100%;height:300px"></div>
+            </div>
+            <div class="chart-card">
+              <h3>信件长度分布</h3>
+              <div class="chart-container" ref="chartLetterLength" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-card chart-full">
+              <h3>发送时段分布（24小时）</h3>
+              <div class="chart-container" ref="chartLetterHourly" style="width:100%;height:300px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 代回信弹窗（全局共享） ==================== -->
+        <el-dialog v-model="replyDialogVisible" :title="`代回信 - ${replyDialogUser ? replyDialogUser.nickname : ''}`" width="560px" :close-on-click-modal="false">
+          <el-form :model="replyForm" label-width="80px">
+            <el-form-item label="发信人">
+              <el-input :model-value="replyDialogUser ? replyDialogUser.nickname : ''" disabled />
+            </el-form-item>
+            <el-form-item label="收信人">
+              <el-select
+                v-model="replyForm.receiverOpenid"
+                filterable
+                clearable
+                placeholder="搜索昵称选择（仅显示已匹配且未拉黑的好友）"
+                style="width:100%"
+                :loading="replyMatchesLoading"
+                @visible-change="(v) => v && replyMatches.length === 0 && loadReplyMatches()"
+              >
+                <el-option
+                  v-for="m in replyMatches"
+                  :key="m.openid"
+                  :label="`${m.nickname || '未命名'}（${m.gender === 1 ? '男' : '女'}${m.is_virtual ? '·虚拟' : ''}${m.unread_from_friend > 0 ? '·未读' + m.unread_from_friend : ''}）`"
+                  :value="m.openid"
+                />
+              </el-select>
+              <div v-if="replyMatches.length === 0 && !replyMatchesLoading" style="font-size:12px;color:#909399;margin-top:4px;">
+                暂无匹配好友，<el-button type="text" size="small" @click="loadReplyMatches">点此加载</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item label="信件内容">
+              <el-input v-model="replyForm.content" type="textarea" :rows="8" placeholder="10-800 字" maxlength="800" show-word-limit />
+            </el-form-item>
+          </el-form>
+          <template #footer>
+            <el-button @click="replyDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="sendReply" :loading="replySending">发送</el-button>
+          </template>
+        </el-dialog>
+
+        <!-- ==================== 虚拟用户对话列表弹窗 ==================== -->
+        <el-dialog v-model="threadsDialogVisible" :title="`来信列表 - ${threadsDialogUser ? threadsDialogUser.nickname : ''}`" width="720px" :close-on-click-modal="false">
+          <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:#606266;font-size:13px;">
+              共 <b>{{ threadList.total || 0 }}</b> 个对话
+              <span v-if="threadList.totalUnread > 0" style="color:#f56c6c;margin-left:12px;">
+                <b>{{ threadList.totalUnread }}</b> 封未读
+              </span>
+            </span>
+            <el-button size="small" @click="loadThreads(1)">刷新</el-button>
+          </div>
+          <el-table :data="threadList.list" size="small" v-loading="threadsLoading" height="480" empty-text="暂无信件往来">
+            <el-table-column label="对方用户" width="180">
+              <template #default="{row}">
+                <span :style="{color: row.other_is_virtual ? '#e6a23c' : '#303133', fontWeight: 600}">{{ row.other_nickname || '匿名用户' }}</span>
+                <el-tag v-if="row.other_is_virtual" size="small" type="warning" style="margin-left:4px">虚拟</el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="最后消息" show-overflow-tooltip>
+              <template #default="{row}">
+              <span :style="{color: row.last_side === 'sent' ? '#409eff' : '#606266'}">
+                {{ row.last_side === 'sent' ? '我：' : 'TA：' }}{{ row.last_content || '' }}
+              </span>
+              </template>
+            </el-table-column>
+            <el-table-column label="未读" width="60" align="center">
+              <template #default="{row}">
+                <el-badge v-if="row.unread_count > 0" :value="row.unread_count" type="danger" />
+                <span v-else style="color:#c0c4cc;">-</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="最后时间" width="160">
+              <template #default="{row}">{{ formatTime(row.last_time) }}</template>
+            </el-table-column>
+            <el-table-column label="操作" width="100" fixed="right">
+              <template #default="{row}">
+                <el-button size="small" type="primary" link @click="openThreadDetail(row)">查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="margin-top:12px;text-align:right;">
+            <el-pagination
+              v-model:current-page="threadList.page"
+              :page-size="threadList.pageSize"
+              :total="threadList.total"
+              layout="prev, pager, next, total"
+              @current-change="loadThreads"
+              small
+            />
+          </div>
+        </el-dialog>
+
+        <!-- ==================== 对话详情弹窗 ==================== -->
+        <el-dialog v-model="threadDetailVisible" :title="threadDetailTitle" width="680px" :close-on-click-modal="false" class="thread-detail-dialog">
+          <div style="margin-bottom:12px;padding:10px 14px;background:#f5f7fa;border-radius:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-weight:600;">{{ threadFriendInfo?.nickname || '对方' }}</span>
+                <el-tag v-if="threadFriendInfo?.is_virtual" size="small" type="warning" style="margin-left:6px;">虚拟</el-tag>
+                <el-tag v-if="threadMatched" size="small" type="success" style="margin-left:6px;">已匹配</el-tag>
+                <el-tag v-else size="small" type="info" style="margin-left:6px;">未匹配</el-tag>
+              </div>
+              <span style="font-size:12px;color:#909399;">共 {{ threadLetters.total }} 封信</span>
+            </div>
+          </div>
+          <div class="letter-list" ref="letterListRef" v-loading="threadLettersLoading" @scroll="onLetterListScroll">
+            <div v-for="letter in threadLetters.list" :key="letter.id" :class="['letter-item', letter.direction === 'sent' ? 'letter-sent' : 'letter-received']">
+              <div class="letter-bubble">
+                <div class="letter-content">{{ letter.content }}</div>
+                <div class="letter-time">
+                  {{ formatTime(letter.created_at) }}
+                  <span v-if="letter.direction === 'received' && letter.is_read === 0" style="color:#f56c6c;margin-left:8px;">未读</span>
+                </div>
+              </div>
+            </div>
+            <div v-if="threadLetters.list.length === 0 && !threadLettersLoading" style="text-align:center;color:#909399;padding:40px 0;">
+              暂无信件
+            </div>
+            <div v-if="threadLetters.loadingMore" class="letter-load-more">
+              <el-icon class="is-loading"><Loading /></el-icon> 加载中...
+            </div>
+            <div v-else-if="!threadLetters.hasMore && threadLetters.list.length > 0" class="letter-load-more">
+              没有更多了
+            </div>
+          </div>
+          <div style="margin-top:12px;border-top:1px solid #ebeef5;padding-top:12px;">
+            <div style="margin-bottom:8px;font-size:13px;color:#606266;">以 <b>{{ threadsDialogUser?.nickname || '' }}</b> 的身份回复：</div>
+            <el-input v-model="threadReplyContent" type="textarea" :rows="4" placeholder="输入回信内容..." maxlength="800" show-word-limit />
+            <div style="margin-top:10px;text-align:right;">
+              <el-button @click="threadDetailVisible = false">关闭</el-button>
+              <el-button type="primary" @click="sendThreadReply" :loading="threadReplySending">发送回信</el-button>
+            </div>
+          </div>
+        </el-dialog>
+
+      </div>
+    </div>
+  </div>
+</div>
+</script>
+
+<script>
+const { createApp, ref, reactive, computed, onMounted, nextTick, watch } = Vue;
+
+const app = createApp({
+  template: document.getElementById('app-template').textContent,
+  setup() {
+    const token = ref(localStorage.getItem('admin_token') || '');
+    const adminUser = ref(localStorage.getItem('admin_user') || '');
+    const loginForm = reactive({ username: '', password: '' });
+    const loginLoading = ref(false);
+    const activeMenu = ref('overview');
+    const api = axios.create({ baseURL: '/api/admin' });
+
+    // Sidebar collapse state
+    const sidebarCollapsed = ref(false);
+
+    // Auth interceptor
+    api.interceptors.request.use(config => {
+      if (token.value) config.headers.Authorization = `Bearer ${token.value}`;
+      return config;
+    });
+    api.interceptors.response.use(r => r, err => {
+      if (err.response?.status === 401) { token.value = ''; localStorage.removeItem('admin_token'); }
+      return Promise.reject(err);
+    });
+
+    // Data
+    const overview = ref({});
+    const kpi = ref({ thisMonth: {}, lastMonth: {} });
+    const retention = ref({});
+    const orderStats = ref({});
+    const matchStats = ref({});
+    const shareStats = ref({});
+    const userStats = ref({});
+    const revenueData = ref({});
+    const aiStats = ref({});
+    const alerts = ref([]);
+    const recentActivity = ref({});
+
+    // Overview aggregate data & loading
+    const dashboardAggregate = ref({});
+    const overviewLoading = ref(false);
+
+    // Users - enhanced
+    const userList = ref([]);
+    const userTotal = ref(0);
+    const userPage = ref(1);
+    const userSearch = ref('');
+    const userPlanFilter = ref('');
+    const userTypeFilter = ref('');
+    const userSortField = ref('');
+    const userSortOrder = ref('');
+    const userLoading = ref(false);
+    const userExportLoading = ref(false);
+    const selectedUsers = ref([]);
+    const batchPlanType = ref('vip');
+    const batchUpdateLoading = ref(false);
+    const userDetailVisible = ref(false);
+    const userDetail = ref(null);
+    // User detail tabs
+    const userDetailTab = ref('basic');
+    const userDetailOpenid = ref('');
+    const userDetailRecords = ref([]);
+    const userDetailRecordsLoading = ref(false);
+    const userDetailRecordsTotal = ref(0);
+    const userDetailRecordsPage = ref(1);
+    const userDetailMatches = ref([]);
+    const userDetailMatchesLoading = ref(false);
+    const userDetailMatchesTotal = ref(0);
+    const userDetailMatchesPage = ref(1);
+    const userDetailLogs = ref([]);
+    const userDetailLogsLoading = ref(false);
+    const userDetailLogsTotal = ref(0);
+    const userDetailLogsPage = ref(1);
+
+    // Orders
+    const orderList = ref([]);
+    const orderTotal = ref(0);
+    const orderPage = ref(1);
+    const orderStatusFilter = ref('');
+    const orderProductFilter = ref('');
+    const orderLoading = ref(false);
+
+    // Deletions
+    const pendingDeletions = ref([]);
+    const deletionLoading = ref(false);
+
+    // Funnel
+    const funnelData = ref([]);
+
+    // Retention Cohort
+    const retentionCohortData = ref([]);
+    const retentionCohortLoading = ref(false);
+
+    // Hexagrams
+    const hexagramList = ref([]);
+    const hexagramLoading = ref(false);
+
+    // Corpus
+    const matchCorpusList = ref([]);
+    const corpusLoading = ref(false);
+    const corpusTotal = ref(0);
+    const corpusPage = ref(1);
+
+    // Achievements
+    const achievementList = ref([]);
+
+    // AI
+    const aiLogs = ref([]);
+
+    // Logs
+    const adminLogs = ref([]);
+    const logTotal = ref(0);
+    const logPage = ref(1);
+    const logLoading = ref(false);
+
+    // System
+    const systemInfo = reactive({ miniappVersion: '', maintenanceMode: false, forceUpdate: false, updateMessage: '' });
+    const healthStatus = reactive({ api: false, db: false, redis: false, uptime: '' });
+    const errorLogs = ref([]);
+    const reloading = ref(false);
+    // Settings new
+    const dbBackupLoading = ref(false);
+    const passwordForm = reactive({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    const changePasswordLoading = ref(false);
+    const clearCacheLoading = ref(false);
+    // Health new
+    const testDeepSeekLoading = ref(false);
+    const testDeepSeekResult = ref(null);
+    // Overview new
+    const topActiveUsers = ref([]);
+    const topActiveLoading = ref(false);
+
+    // Letter feature (v1.3) - 易缘传书管理后台
+    const letterStats = ref({ overview: null, trend7d: [], guaDistribution: [] });
+    const letterStatsLoading = ref(false);
+    const virtualUsers = reactive({ list: [], total: 0, page: 1, pageSize: 20, keyword: '', gender: '', unreadOnly: false, totalUnread: 0 });
+    const virtualUsersLoading = ref(false);
+    const globalReplyEnabled = ref(false);
+    const replyConfigLoading = ref(false);
+    const letterReports = reactive({ list: [], total: 0, page: 1, pageSize: 20, status: '' });
+    const letterReportsLoading = ref(false);
+    // 举报统计 & 被举报排行
+    const reportStats = ref({});
+    const reportRanking = ref([]);
+    const reportRankingLoading = ref(false);
+    // 易缘漏斗
+    const letterFunnelData = ref([]);
+    const letterFunnelDays = ref(30);
+    const letterFunnelLoading = ref(false);
+    // 信件分析
+    const letterAnalysis = ref({});
+    const letterAnalysisDays = ref(30);
+    // 用户详情 - 举报/拉黑记录
+    const userDetailReports = ref([]);
+    const userDetailReportsLoading = ref(false);
+    const userDetailBlocks = ref({ blockedByMe: [], blockedMe: [] });
+    // 代回信弹窗
+    const replyDialogVisible = ref(false);
+    const replyDialogUser = ref(null);
+    const replyForm = reactive({ receiverOpenid: '', content: '' });
+    const replySending = ref(false);
+    const replyMatches = ref([]);
+    const replyMatchesLoading = ref(false);
+
+    // 对话列表 & 对话详情
+    const threadsDialogVisible = ref(false);
+    const threadsDialogUser = ref(null);
+    const threadsLoading = ref(false);
+    const threadList = reactive({ list: [], total: 0, totalUnread: 0, page: 1, pageSize: 20 });
+    const threadDetailVisible = ref(false);
+    const threadLettersLoading = ref(false);
+    const threadLetters = reactive({ list: [], total: 0, page: 1, pageSize: 50, hasMore: false, loadingMore: false });
+    const threadFriendInfo = ref(null);
+    const threadMatched = ref(false);
+    const threadReplyContent = ref('');
+    const threadReplySending = ref(false);
+    const threadCurrentFriendOpenid = ref('');
+    const threadDetailTitle = computed(() => {
+      if (!threadFriendInfo.value) return '对话详情';
+      return `与 ${threadFriendInfo.value.nickname || '对方'} 的往来信件`;
+    });
+
+    // Chart refs
+    const chartUserTrend = ref(null);
+    const chartTuiyanTrend = ref(null);
+    const chartGuaDist = ref(null);
+    const chartPlanDist = ref(null);
+    const chartHourly = ref(null);
+    const chartFunnel = ref(null);
+    const chartTuiyanTrend30 = ref(null);
+    const chartQuestionType = ref(null);
+    const chartMatchScore = ref(null);
+    const chartMatchRel = ref(null);
+    const chartMatchTrend = ref(null);
+    const chartShareType = ref(null);
+    const chartShareFunnel = ref(null);
+    const chartRevenueTrend = ref(null);
+    const chartProductAnalysis = ref(null);
+    const chartOrderStatus = ref(null);
+    const chartDauTrend = ref(null);
+    const chartAiTrend = ref(null);
+    // v2.1 新增图表
+    const chartReportReason = ref(null);
+    const chartLetterFunnel = ref(null);
+    const chartLetterTrend = ref(null);
+    const chartLetterLength = ref(null);
+    const chartLetterHourly = ref(null);
+
+    const chartInstances = {};
+
+    // Computed
+    const pageTitle = computed(() => {
+      const map = {
+        overview: '总览', users: '用户列表', vip: 'VIP管理', deletions: '删除合规',
+        funnel: '转化漏斗', 'tuiyan-analysis': '推演分析', 'match-analysis': '匹配分析',
+        'share-analysis': '分享分析', 'revenue-analysis': '收入分析', retention: '留存分析',
+        'ai-quality': 'AI质量监控', hexagrams: '卦象管理', 'match-corpus': '匹配语料',
+        achievements: '成就管理', settings: '系统设置', logs: '操作日志', health: '系统健康',
+        'letter-pool': '易缘传书 · 匹配池概览', 'letter-stats': '易缘传书 · 数据统计',
+        'letter-funnel': '易缘传书 · 转化漏斗', 'letter-analysis': '易缘传书 · 信件分析',
+        'virtual-users': '易缘传书 · 虚拟用户管理', 'letter-reports': '易缘传书 · 举报管理'
+      };
+      return map[activeMenu.value] || '总览';
+    });
+
+    // Methods
+    function formatTime(t) {
+      if (!t) return '-';
+      return new Date(t).toLocaleString('zh-CN', { hour12: false });
+    }
+
+    function stepLabel(step) {
+      const map = { app_open: '打开应用', page_view: '页面浏览', profile_create: '创建档案', tuiyan: '推演', match: '匹配', share: '分享', vip_purchase: 'VIP购买' };
+      return map[step] || step;
+    }
+
+    // 解析留存率数值，用于颜色标识
+    function parseRate(rate) {
+      const n = parseFloat(rate);
+      return isNaN(n) ? 0 : n;
+    }
+    function retentionRateColor(rate) {
+      const n = parseRate(rate);
+      if (n > 30) return '#67c23a';      // 绿色
+      if (n >= 10) return '#e6a23c';     // 橙色
+      return '#f56c6c';                  // 红色
+    }
+
+    async function handleLogin() {
+      loginLoading.value = true;
+      try {
+        const res = await api.post('/login', loginForm);
+        if (res.data.success) {
+          token.value = res.data.data.token;
+          adminUser.value = loginForm.username;
+          localStorage.setItem('admin_token', token.value);
+          localStorage.setItem('admin_user', loginForm.username);
+          loadOverview();
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error(e.response?.data?.message || '登录失败');
+      }
+      loginLoading.value = false;
+    }
+
+    function handleLogout() {
+      token.value = '';
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+    }
+
+    function handleMenuSelect(index) {
+      activeMenu.value = index;
+      nextTick(() => loadPageData(index));
+    }
+
+    async function loadPageData(page) {
+      switch (page) {
+        case 'overview': await loadOverview(); break;
+        case 'users': await loadUserStats(); await loadUsers(); break;
+        case 'vip': await loadOrders(); break;
+        case 'deletions': await loadDeletions(); break;
+        case 'funnel': await loadFunnel(); break;
+        case 'tuiyan-analysis': await loadTuiyanAnalysis(); break;
+        case 'match-analysis': await loadMatchAnalysis(); break;
+        case 'share-analysis': await loadShareAnalysis(); break;
+        case 'revenue-analysis': await loadRevenueAnalysis(); break;
+        case 'retention': await loadRetentionPage(); await loadRetentionCohort(); break;
+        case 'ai-quality': await loadAiQuality(); break;
+        case 'hexagrams': await loadHexagrams(); break;
+        case 'match-corpus': await loadCorpus(); break;
+        case 'achievements': await loadAchievements(); break;
+        case 'settings': await loadSettings(); break;
+        case 'logs': await loadLogs(); break;
+        case 'health': await checkHealth(); break;
+        // 易缘传书 (v1.3)
+        case 'letter-pool': await loadLetterStats(); break;
+        case 'letter-stats': await loadLetterStats(); break;
+        case 'letter-funnel': await loadLetterFunnel(); break;
+        case 'letter-analysis': await loadLetterAnalysis(); break;
+        case 'virtual-users': await loadReplyConfig(); await loadVirtualUsers(1); break;
+        case 'letter-reports': await loadLetterReports(1); await loadReportStats(); await loadReportRanking(); break;
+      }
+    }
+
+    // Overview - with aggregate API
+    async function loadOverview() {
+      overviewLoading.value = true;
+      try {
+        // Try aggregate API first, fall back to parallel calls
+        const aggRes = await api.get('/dashboard/aggregate');
+        const aggData = aggRes.data.data || {};
+        dashboardAggregate.value = aggData;
+        overview.value = {
+          totalUsers: aggData.totalUsers || 0,
+          todayNewUsers: aggData.todayNewUsers || 0,
+          todayActiveUsers: aggData.todayActiveUsers || 0,
+          todayTuiyan: aggData.todayTuiyan || 0,
+          todayMatches: aggData.todayMatches || 0,
+          totalVip: aggData.totalVip || 0,
+          pendingDeletions: aggData.pendingDeletions || 0,
+          revenueToday: aggData.revenueToday || 0
+        };
+        kpi.value = aggData.kpi || { thisMonth: {}, lastMonth: {} };
+        retention.value = aggData.retention || {};
+        orderStats.value = aggData.orderStats || {};
+        matchStats.value = aggData.matchStats || {};
+        shareStats.value = aggData.shareStats || {};
+        userStats.value = aggData.userStats || {};
+        recentActivity.value = aggData.recentActivity || {};
+        // Check alerts
+        alerts.value = [];
+        if (retention.value.d1?.rate < 20) alerts.value.push('D1留存率低于20%，需关注');
+        if (orderStats.value.pending > 10) alerts.value.push(`${orderStats.value.pending}个待处理订单`);
+        // Load charts
+        await Vue.nextTick();
+        setTimeout(async () => {
+          try {
+            const containers = document.querySelectorAll('.chart-container');
+            const safeInitChart = (container, option) => {
+              if (!container || container.offsetWidth === 0 || container.offsetHeight === 0) {
+                console.warn('Chart container not ready, skipping');
+                return null;
+              }
+              try {
+                const chart = echarts.init(container);
+                chart.setOption(option);
+                return chart;
+              } catch (e) {
+                console.error('Chart init error:', e);
+                return null;
+              }
+            };
+            // User trend (container 0)
+            const userTrendRes = await api.get('/dashboard/trends?type=users&days=7');
+            const userTrendData = userTrendRes.data.data || [];
+            safeInitChart(containers[0], {
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: userTrendData.map(d => d.date?.slice(5)) },
+              yAxis: { type: 'value' },
+              series: [{ data: userTrendData.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#409eff' } }]
+            });
+            // Tuiyan trend (container 1)
+            const tuiyanRes = await api.get('/dashboard/trends?type=tuiyan&days=7');
+            const tuiyanData = tuiyanRes.data.data || [];
+            safeInitChart(containers[1], {
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: tuiyanData.map(d => d.date?.slice(5)) },
+              yAxis: { type: 'value' },
+              series: [{ data: tuiyanData.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#67c23a' } }]
+            });
+            // Hourly activity (container 4)
+            const hourlyRes = await api.get('/dashboard/hourly-activity');
+            const hourlyData = hourlyRes.data.data || [];
+            const hours = Array.from({ length: 24 }, (_, i) => i);
+            const values = hours.map(h => { const found = hourlyData.find(d => d.hour == h); return found ? found.cnt : 0; });
+            safeInitChart(containers[4], {
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: hours.map(h => h + ':00') },
+              yAxis: { type: 'value' },
+              series: [{ data: values, type: 'bar', itemStyle: { color: '#409eff' }, barWidth: '60%' }]
+            });
+          } catch (e) { console.error('Direct chart rendering error:', e); }
+          loadGuaDistChart();
+          loadPlanDistChart();
+        }, 300);
+      } catch (e) {
+        // Fallback to original parallel calls if aggregate API is not available
+        console.warn('Aggregate API not available, falling back to parallel calls');
+        try {
+          const [ov, kp, ret, os, ms, ss, us, ra] = await Promise.all([
+            api.get('/dashboard/overview'),
+            api.get('/dashboard/kpi-comparison'),
+            api.get('/dashboard/retention'),
+            api.get('/orders/stats'),
+            api.get('/matches/stats'),
+            api.get('/shares/stats'),
+            api.get('/users/stats'),
+            api.get('/dashboard/recent-activity?limit=10')
+          ]);
+          overview.value = ov.data.data || {};
+          kpi.value = kp.data.data || {};
+          retention.value = ret.data.data || {};
+          orderStats.value = os.data.data || {};
+          matchStats.value = ms.data.data || {};
+          shareStats.value = ss.data.data || {};
+          userStats.value = us.data.data || {};
+          recentActivity.value = ra.data.data || {};
+          dashboardAggregate.value = {
+            todayNewUsers: ov.data.data?.todayNewUsers || 0,
+            todayActiveUsers: ov.data.data?.todayActiveUsers || 0,
+            todayTuiyan: ov.data.data?.todayTuiyan || 0,
+            todayMatches: ms.data.data?.todayCount || 0,
+            totalVip: us.data.data?.monthly || 0,
+            pendingDeletions: ov.data.data?.pendingDeletions || 0,
+            todayRevenue: os.data.data?.todayRevenue || 0
+          };
+          alerts.value = [];
+          if (ret.data.data?.d1?.rate < 20) alerts.value.push('D1留存率低于20%，需关注');
+          if (os.data.data?.pending > 10) alerts.value.push(`${os.data.data.pending}个待处理订单`);
+          await Vue.nextTick();
+          setTimeout(async () => {
+            try {
+              const containers = document.querySelectorAll('.chart-container');
+              const safeInitChart = (container, option) => {
+                if (!container || container.offsetWidth === 0 || container.offsetHeight === 0) return null;
+                try { const chart = echarts.init(container); chart.setOption(option); return chart; } catch (e) { return null; }
+              };
+              const userTrendRes = await api.get('/dashboard/trends?type=users&days=7');
+              const userTrendData = userTrendRes.data.data || [];
+              safeInitChart(containers[0], {
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                tooltip: { trigger: 'axis' },
+                xAxis: { type: 'category', data: userTrendData.map(d => d.date?.slice(5)) },
+                yAxis: { type: 'value' },
+                series: [{ data: userTrendData.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#409eff' } }]
+              });
+              const tuiyanRes = await api.get('/dashboard/trends?type=tuiyan&days=7');
+              const tuiyanData = tuiyanRes.data.data || [];
+              safeInitChart(containers[1], {
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                tooltip: { trigger: 'axis' },
+                xAxis: { type: 'category', data: tuiyanData.map(d => d.date?.slice(5)) },
+                yAxis: { type: 'value' },
+                series: [{ data: tuiyanData.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#67c23a' } }]
+              });
+              const hourlyRes = await api.get('/dashboard/hourly-activity');
+              const hourlyData = hourlyRes.data.data || [];
+              const hours = Array.from({ length: 24 }, (_, i) => i);
+              const values = hours.map(h => { const found = hourlyData.find(d => d.hour == h); return found ? found.cnt : 0; });
+              safeInitChart(containers[4], {
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                tooltip: { trigger: 'axis' },
+                xAxis: { type: 'category', data: hours.map(h => h + ':00') },
+                yAxis: { type: 'value' },
+                series: [{ data: values, type: 'bar', itemStyle: { color: '#409eff' }, barWidth: '60%' }]
+              });
+            } catch (e) { console.error('Direct chart rendering error:', e); }
+            loadGuaDistChart();
+            loadPlanDistChart();
+          }, 300);
+        } catch (e2) { console.error('Overview load error:', e2); }
+      }
+      // 加载活跃用户排行
+      loadTopActiveUsers();
+      overviewLoading.value = false;
+    }
+    // 加载活跃用户排行
+    async function loadTopActiveUsers() {
+      topActiveLoading.value = true;
+      try {
+        const res = await api.get('/users/top-active', { params: { limit: 10 } });
+        const list = res.data.data || [];
+        topActiveUsers.value = list.map((item, idx) => ({ ...item, _rank: idx + 1 }));
+      } catch (e) {}
+      topActiveLoading.value = false;
+    }
+
+    async function loadUserTrendChart() {
+      try {
+        const res = await api.get('/dashboard/trends?type=users&days=7');
+        const data = res.data.data || [];
+        renderChart('userTrend', chartUserTrend.value, {
+          xAxis: { type: 'category', data: data.map(d => d.date?.slice(5)) },
+          series: [{ data: data.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#409eff' } }]
+        });
+      } catch (e) { console.error('User trend chart error:', e); }
+    }
+
+    async function loadTuiyanTrendChart() {
+      try {
+        const res = await api.get('/dashboard/trends?type=tuiyan&days=7');
+        const data = res.data.data || [];
+        renderChart('tuiyanTrend', chartTuiyanTrend.value, {
+          xAxis: { type: 'category', data: data.map(d => d.date?.slice(5)) },
+          series: [{ data: data.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#67c23a' } }]
+        });
+      } catch (e) { console.error('Tuiyan trend chart error:', e); }
+    }
+
+    async function loadGuaDistChart() {
+      try {
+        const res = await api.get('/dashboard/gua-distribution');
+        const data = (res.data.data || []).slice(0, 15);
+        renderChart('guaDist', chartGuaDist.value, {
+          tooltip: { trigger: 'item' },
+          series: [{ type: 'pie', radius: ['40%', '70%'], data: data.map(d => ({ name: d.name || d.ming_ben_gua, value: d.cnt })), emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } } }]
+        });
+      } catch (e) {}
+    }
+
+    async function loadPlanDistChart() {
+      try {
+        const res = await api.get('/dashboard/plan-distribution');
+        const data = res.data.data || [];
+        renderChart('planDist', chartPlanDist.value, {
+          tooltip: { trigger: 'item' },
+          series: [{ type: 'pie', radius: '60%', data: data.map(d => ({ name: d.plan_type, value: d.cnt })), label: { formatter: '{b}: {c} ({d}%)' } }]
+        });
+      } catch (e) {}
+    }
+
+    async function loadHourlyChart() {
+      try {
+        const res = await api.get('/dashboard/hourly-activity');
+        const data = res.data.data || [];
+        const hours = Array.from({ length: 24 }, (_, i) => i);
+        const values = hours.map(h => { const found = data.find(d => d.hour == h); return found ? found.cnt : 0; });
+        renderChart('hourly', chartHourly.value, {
+          xAxis: { type: 'category', data: hours.map(h => h + ':00') },
+          series: [{ data: values, type: 'bar', itemStyle: { color: '#409eff' }, barWidth: '60%' }]
+        });
+      } catch (e) { console.error('Hourly chart error:', e); }
+    }
+
+    // Users - enhanced with filters, sort, type, export
+    async function loadUserStats() {
+      try { const res = await api.get('/users/stats'); userStats.value = res.data.data || {}; } catch (e) {}
+    }
+    async function loadUsers() {
+      userLoading.value = true;
+      try {
+        const params = { page: userPage.value, pageSize: 20 };
+        if (userSearch.value) params.keyword = userSearch.value;
+        if (userPlanFilter.value) params.planType = userPlanFilter.value;
+        if (userTypeFilter.value) params.userType = userTypeFilter.value;
+        if (userSortField.value) params.sort = userSortField.value;
+        if (userSortOrder.value) params.order = userSortOrder.value;
+        const res = await api.get('/users', { params });
+        userList.value = res.data.data?.list || [];
+        userTotal.value = res.data.data?.total || 0;
+      } catch (e) {}
+      userLoading.value = false;
+    }
+    function handleUserSearch() {
+      userPage.value = 1;
+      loadUsers();
+    }
+    function handleUserSearchClear() {
+      userPage.value = 1;
+      loadUsers();
+    }
+    function handleUserFilterChange() {
+      userPage.value = 1;
+      loadUsers();
+    }
+    function handleUserSortChange({ prop, order }) {
+      if (prop && order) {
+        userSortField.value = prop;
+        userSortOrder.value = order === 'ascending' ? 'asc' : 'desc';
+      } else {
+        userSortField.value = '';
+        userSortOrder.value = '';
+      }
+      loadUsers();
+    }
+    async function exportUsersCSV() {
+      userExportLoading.value = true;
+      try {
+        const params = {};
+        if (userSearch.value) params.keyword = userSearch.value;
+        if (userPlanFilter.value) params.planType = userPlanFilter.value;
+        if (userTypeFilter.value) params.userType = userTypeFilter.value;
+        const res = await api.get('/users/export', { params, responseType: 'blob' });
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'users_export_' + new Date().toISOString().slice(0,10) + '.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        ElementPlus.ElMessage.success('导出成功');
+      } catch (e) {
+        ElementPlus.ElMessage.error('导出失败');
+      }
+      userExportLoading.value = false;
+    }
+    // 用户选择与批量操作
+    function handleUserSelectionChange(selection) {
+      selectedUsers.value = selection;
+    }
+    async function handleBatchUpdatePlan() {
+      if (!batchPlanType.value) {
+        ElementPlus.ElMessage.warning('请选择套餐类型');
+        return;
+      }
+      try {
+        await ElementPlus.ElMessageBox.confirm(`确认将 ${selectedUsers.value.length} 个用户设为 ${batchPlanType.value === 'vip' ? 'VIP' : '免费'}？`, '批量修改套餐');
+        batchUpdateLoading.value = true;
+        const openids = selectedUsers.value.map(u => u.openid);
+        await api.post('/users/batch-update-plan', { openids, plan_type: batchPlanType.value });
+        ElementPlus.ElMessage.success('批量修改成功');
+        selectedUsers.value = [];
+        batchPlanType.value = 'vip';
+        loadUsers();
+      } catch (e) {
+        if (e !== 'cancel') {
+          ElementPlus.ElMessage.error(e.response?.data?.message || '批量修改失败');
+        }
+      }
+      batchUpdateLoading.value = false;
+    }
+
+    // User Detail - drawer with tabs
+    async function viewUser(openid) {
+      try {
+        const res = await api.get(`/users/${openid}`);
+        userDetail.value = res.data.data;
+        userDetailOpenid.value = openid;
+        userDetailTab.value = 'basic';
+        userDetailVisible.value = true;
+        // Reset tab data
+        userDetailRecords.value = [];
+        userDetailMatches.value = [];
+        userDetailLogs.value = [];
+        userDetailRecordsTotal.value = 0;
+        userDetailMatchesTotal.value = 0;
+        userDetailLogsTotal.value = 0;
+        userDetailRecordsPage.value = 1;
+        userDetailMatchesPage.value = 1;
+        userDetailLogsPage.value = 1;
+        userDetailReports.value = [];
+        userDetailBlocks.value = { blockedByMe: [], blockedMe: [] };
+      } catch (e) { ElementPlus.ElMessage.error('加载用户详情失败'); }
+    }
+    function handleUserDetailTabChange(tabName) {
+      if (tabName === 'records' && userDetailRecords.value.length === 0) {
+        loadUserDetailRecords();
+      } else if (tabName === 'matches' && userDetailMatches.value.length === 0) {
+        loadUserDetailMatches();
+      } else if (tabName === 'logs' && userDetailLogs.value.length === 0) {
+        loadUserDetailLogs();
+      } else if (tabName === 'reports') {
+        loadUserDetailReports(userDetailOpenid.value);
+      } else if (tabName === 'blocks') {
+        loadUserDetailBlocks(userDetailOpenid.value);
+      }
+    }
+    async function loadUserDetailRecords() {
+      if (!userDetailOpenid.value) return;
+      userDetailRecordsLoading.value = true;
+      try {
+        const res = await api.get(`/users/${userDetailOpenid.value}/records`, { params: { page: userDetailRecordsPage.value, pageSize: 20 } });
+        userDetailRecords.value = res.data.data?.list || res.data.data || [];
+        userDetailRecordsTotal.value = res.data.data?.total || 0;
+      } catch (e) { ElementPlus.ElMessage.error('加载推演记录失败'); }
+      userDetailRecordsLoading.value = false;
+    }
+    async function loadUserDetailMatches() {
+      if (!userDetailOpenid.value) return;
+      userDetailMatchesLoading.value = true;
+      try {
+        const res = await api.get(`/users/${userDetailOpenid.value}/matches`, { params: { page: userDetailMatchesPage.value, pageSize: 20 } });
+        userDetailMatches.value = res.data.data?.list || res.data.data || [];
+        userDetailMatchesTotal.value = res.data.data?.total || 0;
+      } catch (e) { ElementPlus.ElMessage.error('加载匹配记录失败'); }
+      userDetailMatchesLoading.value = false;
+    }
+    async function loadUserDetailLogs() {
+      if (!userDetailOpenid.value) return;
+      userDetailLogsLoading.value = true;
+      try {
+        const res = await api.get(`/users/${userDetailOpenid.value}/logs`, { params: { page: userDetailLogsPage.value, pageSize: 20 } });
+        userDetailLogs.value = res.data.data?.list || res.data.data || [];
+        userDetailLogsTotal.value = res.data.data?.total || 0;
+      } catch (e) { ElementPlus.ElMessage.error('加载操作日志失败'); }
+      userDetailLogsLoading.value = false;
+    }
+    async function resetQuota(openid) {
+      try {
+        await ElementPlus.ElMessageBox.confirm('确认重置该用户额度？', '提示');
+        await api.put(`/users/${openid}/quota`, { quota: 3 });
+        ElementPlus.ElMessage.success('额度已重置');
+        loadUsers();
+      } catch (e) {}
+    }
+
+    // Orders
+    async function loadOrders() {
+      orderLoading.value = true;
+      try {
+        const params = { page: orderPage.value, pageSize: 20 };
+        if (orderStatusFilter.value) params.status = orderStatusFilter.value;
+        if (orderProductFilter.value) params.productType = orderProductFilter.value;
+        const res = await api.get('/orders', { params });
+        orderList.value = res.data.data?.list || [];
+        orderTotal.value = res.data.data?.total || 0;
+      } catch (e) {}
+      orderLoading.value = false;
+    }
+    async function updateOrderStatus(tradeNo, status) {
+      try {
+        await ElementPlus.ElMessageBox.confirm(`确认将订单状态改为 ${status}？`, '提示');
+        await api.put(`/orders/${tradeNo}/status`, { status });
+        ElementPlus.ElMessage.success('已更新');
+        loadOrders();
+      } catch (e) {}
+    }
+
+    // Deletions
+    async function loadDeletions() {
+      deletionLoading.value = true;
+      try { const res = await api.get('/deletions/pending'); pendingDeletions.value = res.data.data || []; } catch (e) {}
+      deletionLoading.value = false;
+    }
+    async function confirmDeleteUser(openid) {
+      try {
+        await ElementPlus.ElMessageBox.confirm('确认永久删除该用户及其所有数据？此操作不可撤销！', '危险操作', { type: 'warning' });
+        await api.delete(`/users/${openid}`);
+        ElementPlus.ElMessage.success('用户已删除');
+        loadDeletions();
+      } catch (e) {}
+    }
+    async function cancelDeletion(id) {
+      try { await api.put(`/deletions/${id}/cancel`); loadDeletions(); } catch (e) {}
+    }
+
+    // Funnel
+    async function loadFunnel() {
+      try {
+        const res = await api.get('/events/funnel');
+        funnelData.value = res.data.data || [];
+        nextTick(() => {
+          renderChart('funnel', chartFunnel.value, {
+            series: [{
+              type: 'funnel', left: '10%', top: 20, bottom: 20, width: '80%',
+              min: 0, max: Math.max(...funnelData.value.map(d => d.count), 1),
+              sort: 'descending', gap: 2,
+              label: { show: true, position: 'inside', formatter: '{b}\n{c}' },
+              data: funnelData.value.map(d => ({ name: d.label || stepLabel(d.step), value: d.count }))
+            }]
+          });
+        });
+      } catch (e) {}
+    }
+
+    // Tuiyan Analysis
+    async function loadTuiyanAnalysis() {
+      try {
+        const res = await api.get('/dashboard/trends?type=tuiyan&days=30');
+        const data = res.data.data || [];
+        nextTick(() => {
+          renderChart('tuiyanTrend30', chartTuiyanTrend30.value, {
+            xAxis: { type: 'category', data: data.map(d => d.date?.slice(5)) },
+            series: [{ data: data.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, color: '#67c23a' }]
+          });
+        });
+        // Question type chart placeholder
+        renderChart('questionType', chartQuestionType.value, {
+          tooltip: { trigger: 'item' },
+          series: [{ type: 'pie', radius: '60%', data: [
+            { name: '事业', value: 35 }, { name: '感情', value: 28 }, { name: '财运', value: 20 }, { name: '健康', value: 12 }, { name: '其他', value: 5 }
+          ] }]
+        });
+      } catch (e) {}
+    }
+
+    // Match Analysis
+    async function loadMatchAnalysis() {
+      try {
+        const [stats, scoreDist, relDist, trend] = await Promise.all([
+          api.get('/matches/stats'),
+          api.get('/matches/score-distribution'),
+          api.get('/matches/relationship-distribution'),
+          api.get('/matches/trend?days=7')
+        ]);
+        matchStats.value = stats.data.data || {};
+        // Use setTimeout and querySelectorAll to bypass Vue ref issues
+        setTimeout(() => {
+          const containers = document.querySelectorAll('.chart-container');
+          const sd = scoreDist.data.data || {};
+          if (containers[0]) {
+            const chart = echarts.init(containers[0]);
+            chart.setOption({
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: ['低(0-30)', '中(30-60)', '高(60-80)', '优秀(80+)'] },
+              yAxis: { type: 'value' },
+              series: [{ type: 'bar', data: [sd.low || 0, sd.medium || 0, sd.high || 0, sd.excellent || 0], itemStyle: { color: (params) => ['#f56c6c', '#e6a23c', '#409eff', '#67c23a'][params.dataIndex] } }]
+            });
+          }
+          const rd = relDist.data.data || [];
+          if (containers[1]) {
+            const chart = echarts.init(containers[1]);
+            chart.setOption({
+              tooltip: { trigger: 'item' },
+              series: [{ type: 'pie', radius: '60%', data: rd.map(d => ({ name: d.relationship, value: d.cnt })) }]
+            });
+          }
+          const td = trend.data.data || [];
+          if (containers[2]) {
+            const chart = echarts.init(containers[2]);
+            chart.setOption({
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: td.map(d => d.date?.slice(5)) },
+              yAxis: { type: 'value' },
+              series: [{ data: td.map(d => d.cnt), type: 'bar', itemStyle: { color: '#409eff' } }]
+            });
+          }
+        }, 200);
+      } catch (e) { console.error('Match analysis error:', e); }
+    }
+
+    // Share Analysis
+    async function loadShareAnalysis() {
+      try {
+        const [stats, typeDist, funnel] = await Promise.all([
+          api.get('/shares/stats'),
+          api.get('/shares/type-distribution'),
+          api.get('/shares/conversion-funnel')
+        ]);
+        shareStats.value = stats.data.data || {};
+        nextTick(() => {
+          const td = typeDist.data.data || [];
+          renderChart('shareType', chartShareType.value, {
+            tooltip: { trigger: 'item' },
+            series: [{ type: 'pie', radius: ['40%', '70%'], data: td.map(d => ({ name: d.type, value: d.cnt })) }]
+          });
+          const f = funnel.data.data || {};
+          renderChart('shareFunnel', chartShareFunnel.value, {
+            series: [{
+              type: 'funnel', left: '10%', width: '80%', sort: 'descending', gap: 2,
+              label: { show: true, position: 'inside' },
+              data: [
+                { name: '生成分享码', value: f.generated || 0 },
+                { name: '被使用', value: f.used || 0 },
+                { name: '产生推演', value: f.converted || 0 }
+              ]
+            }]
+          });
+        });
+      } catch (e) {}
+    }
+
+    // Revenue Analysis
+    async function loadRevenueAnalysis() {
+      try {
+        const [rev, trend, product, orderSt] = await Promise.all([
+          api.get('/dashboard/revenue'),
+          api.get('/orders/revenue-trend?days=30'),
+          api.get('/orders/product-analysis'),
+          api.get('/orders/stats')
+        ]);
+        revenueData.value = rev.data.data || {};
+        orderStats.value = orderSt.data.data || {};
+        nextTick(() => {
+          const td = trend.data.data || [];
+          renderChart('revenueTrend', chartRevenueTrend.value, {
+            xAxis: { type: 'category', data: td.map(d => d.date?.slice(5)) },
+            yAxis: [{ type: 'value', name: '收入(¥)' }, { type: 'value', name: '订单数' }],
+            series: [
+              { name: '收入', data: td.map(d => d.revenue), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, color: '#67c23a' },
+              { name: '订单', yAxisIndex: 1, data: td.map(d => d.orders), type: 'bar', color: '#409eff', barWidth: '40%' }
+            ]
+          });
+          const pa = product.data.data || [];
+          renderChart('productAnalysis', chartProductAnalysis.value, {
+            tooltip: { trigger: 'item' },
+            series: [{ type: 'pie', radius: '60%', data: pa.map(d => ({ name: d.product_id, value: d.revenue || d.total })) }]
+          });
+          const os = orderSt.data.data || {};
+          renderChart('orderStatus', chartOrderStatus.value, {
+            tooltip: { trigger: 'item' },
+            series: [{ type: 'pie', radius: '60%', data: [
+              { name: '已完成', value: os.completed || 0 }, { name: '待支付', value: os.pending || 0 }, { name: '其他', value: (os.total || 0) - (os.completed || 0) - (os.pending || 0) }
+            ].filter(d => d.value > 0) }]
+          });
+        });
+      } catch (e) {}
+    }
+
+    // Retention Page
+    async function loadRetentionPage() {
+      try {
+        const [ret, activity] = await Promise.all([
+          api.get('/dashboard/retention'),
+          api.get('/events/user-activity?days=30')
+        ]);
+        retention.value = ret.data.data || {};
+        // Use setTimeout and querySelectorAll to bypass Vue ref issues
+        setTimeout(() => {
+          const containers = document.querySelectorAll('.chart-container');
+          const ad = activity.data.data || {};
+          const dau = ad.dau || [];
+          if (containers[0]) {
+            const chart = echarts.init(containers[0]);
+            chart.setOption({
+              grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+              tooltip: { trigger: 'axis' },
+              xAxis: { type: 'category', data: dau.map(d => d.date?.slice(5)) },
+              yAxis: { type: 'value' },
+              series: [{ name: 'DAU', data: dau.map(d => d.cnt), type: 'line', smooth: true, areaStyle: { opacity: 0.3 }, itemStyle: { color: '#409eff' } }]
+            });
+          }
+        }, 200);
+      } catch (e) { console.error('Retention analysis error:', e); }
+    }
+
+    // Retention Cohort
+    async function loadRetentionCohort() {
+      retentionCohortLoading.value = true;
+      try {
+        const res = await api.get('/events/retention-cohort');
+        retentionCohortData.value = res.data.data || [];
+      } catch (e) {
+        console.error('Retention cohort error:', e);
+        retentionCohortData.value = [];
+      }
+      retentionCohortLoading.value = false;
+    }
+
+    // AI Quality
+    async function loadAiQuality() {
+      try {
+        const [stats, logs, trend] = await Promise.all([
+          api.get('/ai/stats'),
+          api.get('/ai/logs?limit=50'),
+          api.get('/ai/trend?days=7')
+        ]);
+        aiStats.value = stats.data.data || {};
+        aiLogs.value = logs.data.data || [];
+        nextTick(() => {
+          const td = trend.data.data || [];
+          renderChart('aiTrend', chartAiTrend.value, {
+            xAxis: { type: 'category', data: td.map(d => d.date?.slice(5)) },
+            series: [
+              { name: '总调用', data: td.map(d => d.total), type: 'bar', color: '#409eff' },
+              { name: '成功', data: td.map(d => d.success), type: 'line', color: '#67c23a' },
+              { name: '失败', data: td.map(d => d.failed), type: 'line', color: '#f56c6c' }
+            ]
+          });
+        });
+      } catch (e) {}
+    }
+
+    // Hexagrams
+    async function loadHexagrams() {
+      hexagramLoading.value = true;
+      try { const res = await api.get('/hexagrams'); hexagramList.value = res.data.data || []; } catch (e) {}
+      hexagramLoading.value = false;
+    }
+
+    // Corpus
+    async function loadCorpus() {
+      corpusLoading.value = true;
+      try {
+        const res = await api.get('/match-corpus', { params: { page: corpusPage.value, pageSize: 50 } });
+        matchCorpusList.value = res.data.data?.list || [];
+        corpusTotal.value = res.data.data?.total || 0;
+      } catch (e) {}
+      corpusLoading.value = false;
+    }
+
+    // Achievements
+    async function loadAchievements() {
+      try { const res = await api.get('/achievements'); achievementList.value = res.data.data || []; } catch (e) {}
+    }
+
+    // Settings
+    async function loadSettings() {
+      try {
+        const res = await api.get('/system/status');
+        const d = res.data.data || {};
+        systemInfo.miniappVersion = d.miniappVersion;
+        systemInfo.maintenanceMode = !!d.maintenanceMode;
+        systemInfo.forceUpdate = !!d.forceUpdate;
+        systemInfo.updateMessage = d.updateMessage || '';
+      } catch (e) {}
+    }
+    async function toggleMaintenance() {
+      try { await api.post('/settings/config', { key: 'maintenanceMode', value: systemInfo.maintenanceMode }); } catch (e) {}
+    }
+    async function toggleForceUpdate() {
+      try { await api.post('/settings/config', { key: 'forceUpdate', value: systemInfo.forceUpdate }); } catch (e) {}
+    }
+    async function saveUpdateMessage() {
+      try { await api.post('/settings/config', { key: 'updateMessage', value: systemInfo.updateMessage }); ElementPlus.ElMessage.success('已保存'); } catch (e) {}
+    }
+    // 手动数据库备份
+    async function handleDbBackup() {
+      try {
+        dbBackupLoading.value = true;
+        const res = await api.post('/settings/db-backup');
+        ElementPlus.ElMessage.success(res.data.message || '备份成功');
+      } catch (e) {
+        ElementPlus.ElMessage.error(e.response?.data?.message || '备份失败');
+      }
+      dbBackupLoading.value = false;
+    }
+    // 修改密码
+    async function handleChangePassword() {
+      if (!passwordForm.newPassword) {
+        ElementPlus.ElMessage.warning('新密码不能为空');
+        return;
+      }
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        ElementPlus.ElMessage.warning('两次输入的新密码不一致');
+        return;
+      }
+      try {
+        changePasswordLoading.value = true;
+        const res = await api.put('/settings/change-password', { oldPassword: passwordForm.oldPassword, newPassword: passwordForm.newPassword });
+        ElementPlus.ElMessage.success(res.data.message || '密码修改成功');
+        passwordForm.oldPassword = '';
+        passwordForm.newPassword = '';
+        passwordForm.confirmPassword = '';
+      } catch (e) {
+        ElementPlus.ElMessage.error(e.response?.data?.message || '修改失败');
+      }
+      changePasswordLoading.value = false;
+    }
+    // 清除缓存
+    async function handleClearCache() {
+      try {
+        clearCacheLoading.value = true;
+        const res = await api.post('/settings/clear-cache');
+        ElementPlus.ElMessage.success(res.data.message || '缓存清除成功');
+      } catch (e) {
+        ElementPlus.ElMessage.error(e.response?.data?.message || '清除失败');
+      }
+      clearCacheLoading.value = false;
+    }
+
+    // Logs
+    async function loadLogs() {
+      logLoading.value = true;
+      try {
+        const res = await api.get('/settings/logs', { params: { page: logPage.value, pageSize: 50 } });
+        adminLogs.value = res.data.data?.list || [];
+        logTotal.value = res.data.data?.total || 0;
+      } catch (e) {}
+      logLoading.value = false;
+    }
+
+    // Health
+    async function checkHealth() {
+      try {
+        const res = await api.get('/settings/health');
+        const d = res.data.data || {};
+        healthStatus.api = true;
+        healthStatus.db = d.db?.status === 'active' || d.db === 'connected';
+        healthStatus.redis = d.redis === 'connected';
+        // Format uptime from seconds to human-readable
+        const uptimeSec = Math.floor(d.uptime || 0);
+        const days = Math.floor(uptimeSec / 86400);
+        const hours = Math.floor((uptimeSec % 86400) / 3600);
+        const mins = Math.floor((uptimeSec % 3600) / 60);
+        healthStatus.uptime = days > 0 ? `${days}天${hours}小时${mins}分` : hours > 0 ? `${hours}小时${mins}分` : `${mins}分`;
+      } catch (e) { healthStatus.api = false; }
+      // Load error logs
+      try {
+        const res = await api.get('/system/error-log?page=1&pageSize=50');
+        errorLogs.value = res.data.data?.lines || [];
+      } catch (e) {}
+    }
+    async function reloadService(name) {
+      try {
+        await ElementPlus.ElMessageBox.confirm(`确认重启 ${name}？`, '提示');
+        reloading.value = true;
+        await api.post('/system/restart-service', { serviceName: name });
+        ElementPlus.ElMessage.success('重启成功');
+        reloading.value = false;
+      } catch (e) { reloading.value = false; }
+    }
+    // 测试DeepSeek连接
+    async function handleTestDeepSeek() {
+      testDeepSeekResult.value = null;
+      testDeepSeekLoading.value = true;
+      try {
+        const start = Date.now();
+        const res = await api.post('/system/test-deepseek');
+        const latency = Date.now() - start;
+        testDeepSeekResult.value = {
+          success: true,
+          latency: latency,
+          message: res.data.message || res.data.data?.message || 'AI服务连接正常'
+        };
+      } catch (e) {
+        testDeepSeekResult.value = {
+          success: false,
+          latency: 0,
+          message: e.response?.data?.message || 'AI服务连接失败'
+        };
+      }
+      testDeepSeekLoading.value = false;
+    }
+
+    // Chart rendering helper
+    function renderChart(key, el, option) {
+      if (!el) return;
+      if (chartInstances[key]) chartInstances[key].dispose();
+      const chart = echarts.init(el);
+      const baseOption = {
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        tooltip: { trigger: 'axis', ...option.tooltip },
+        ...option
+      };
+      if (option.series?.[0]?.type === 'pie' || option.series?.[0]?.type === 'funnel') {
+        baseOption.tooltip = { trigger: 'item', ...option.tooltip };
+      }
+      chart.setOption(baseOption);
+      chartInstances[key] = chart;
+    }
+
+    // ========== Letter feature (v1.3) - 易缘传书管理 ==========
+    // 数据统计（兼匹配池概览，共用 /letter-stats 接口）
+    async function loadLetterStats() {
+      letterStatsLoading.value = true;
+      try {
+        const res = await api.get('/letter-stats');
+        letterStats.value = res.data.data || { overview: null, trend7d: [], guaDistribution: [] };
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载易缘统计失败: ' + (e.response?.data?.message || e.message));
+      }
+      letterStatsLoading.value = false;
+    }
+
+    // 虚拟用户列表
+    async function loadVirtualUsers(page) {
+      if (page) virtualUsers.page = page;
+      virtualUsersLoading.value = true;
+      try {
+        const res = await api.get('/virtual-users/enhanced', {
+          params: {
+            page: virtualUsers.page,
+            pageSize: virtualUsers.pageSize,
+            keyword: virtualUsers.keyword,
+            gender: virtualUsers.gender,
+            unreadOnly: virtualUsers.unreadOnly ? 1 : undefined
+          }
+        });
+        const d = res.data.data || {};
+        virtualUsers.list = d.list || [];
+        virtualUsers.total = d.total || 0;
+        virtualUsers.totalUnread = d.totalUnread || 0;
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载虚拟用户失败: ' + (e.response?.data?.message || e.message));
+      }
+      virtualUsersLoading.value = false;
+    }
+
+    // 虚拟用户行高亮：有未读来信的行标红
+    function virtualUserRowClass({ row }) {
+      if (row && row.unread_letter_count > 0) return 'warning-row';
+      return '';
+    }
+
+    // 全局回信开关配置
+    async function loadReplyConfig() {
+      replyConfigLoading.value = true;
+      try {
+        const res = await api.get('/virtual-users/reply-config');
+        globalReplyEnabled.value = !!(res.data.data && res.data.data.globalReplyEnabled);
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载回信配置失败: ' + (e.response?.data?.message || e.message));
+      }
+      replyConfigLoading.value = false;
+    }
+
+    // 全局回信开关切换
+    async function onGlobalReplyToggle(val) {
+      try {
+        await api.put('/virtual-users/reply-config', { enabled: val });
+        ElementPlus.ElMessage.success(`全局回信已${val ? '开启' : '关闭'}`);
+      } catch (e) {
+        globalReplyEnabled.value = !val; // 回滚 UI
+        ElementPlus.ElMessage.error('修改失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    // 单用户回信开关切换
+    async function onUserReplyToggle(openid, val) {
+      try {
+        await api.put(`/virtual-users/${openid}/reply-toggle`, { enabled: val });
+        ElementPlus.ElMessage.success(`回信已${val ? '开启' : '关闭'}`);
+      } catch (e) {
+        // 回滚 UI
+        const u = virtualUsers.list.find(x => x.openid === openid);
+        if (u) u.letter_reply_enabled = val ? 0 : 1;
+        ElementPlus.ElMessage.error('修改失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    // 打开代回信弹窗
+    function openReplyDialog(row) {
+      replyDialogUser.value = row;
+      replyForm.receiverOpenid = '';
+      replyForm.content = '';
+      replyMatches.value = [];
+      replyDialogVisible.value = true;
+      // 自动加载匹配好友列表
+      loadReplyMatches();
+    }
+
+    // 加载代回信可选好友列表（已匹配且未拉黑）
+    async function loadReplyMatches() {
+      if (!replyDialogUser.value) return;
+      replyMatchesLoading.value = true;
+      try {
+        const res = await api.get(`/virtual-users/${replyDialogUser.value.openid}/matches`);
+        if (res.data.success) {
+          replyMatches.value = res.data.data.list || [];
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载匹配好友失败: ' + (e.response?.data?.message || e.message));
+      }
+      replyMatchesLoading.value = false;
+    }
+
+    // 发送代回信
+    async function sendReply() {
+      if (!replyForm.receiverOpenid || !replyForm.receiverOpenid.trim()) {
+        ElementPlus.ElMessage.warning('请填写收信人 openid');
+        return;
+      }
+      if (replyForm.content.length < 10 || replyForm.content.length > 800) {
+        ElementPlus.ElMessage.warning('信件内容 10-800 字');
+        return;
+      }
+      replySending.value = true;
+      try {
+        const senderOpenid = replyDialogUser.value.openid;
+        const res = await api.post(`/virtual-users/${senderOpenid}/reply`, {
+          receiverOpenid: replyForm.receiverOpenid.trim(),
+          content: replyForm.content.trim()
+        });
+        if (res.data.success) {
+          ElementPlus.ElMessage.success('代回信已发出');
+          replyDialogVisible.value = false;
+          loadVirtualUsers(virtualUsers.page); // 刷新发信计数
+        } else {
+          ElementPlus.ElMessage.error(res.data.message || '发送失败');
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('发送失败: ' + (e.response?.data?.message || e.message));
+      }
+      replySending.value = false;
+    }
+
+    // ========== 虚拟用户对话管理 ==========
+    // 打开对话列表
+    async function openThreadsDialog(row) {
+      threadsDialogUser.value = row;
+      threadList.list = [];
+      threadList.total = 0;
+      threadList.page = 1;
+      threadsDialogVisible.value = true;
+      await loadThreads(1);
+    }
+
+    // 加载对话列表
+    async function loadThreads(page) {
+      if (!threadsDialogUser.value) return;
+      if (page) threadList.page = page;
+      threadsLoading.value = true;
+      try {
+        const res = await api.get(`/virtual-users/${threadsDialogUser.value.openid}/threads`, {
+          params: { page: threadList.page, pageSize: threadList.pageSize }
+        });
+        if (res.data.success) {
+          threadList.list = res.data.data.list;
+          threadList.total = res.data.data.total;
+          threadList.totalUnread = res.data.data.totalUnread;
+          // 更新虚拟用户列表中的未读数
+          const idx = virtualUsers.list.findIndex(u => u.openid === threadsDialogUser.value.openid);
+          if (idx >= 0) {
+            virtualUsers.list[idx].unread_letter_count = res.data.data.totalUnread;
+          }
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载失败: ' + (e.response?.data?.message || e.message));
+      }
+      threadsLoading.value = false;
+    }
+
+    // 打开对话详情
+    async function openThreadDetail(row) {
+      threadCurrentFriendOpenid.value = row.other_openid;
+      threadFriendInfo.value = { nickname: row.other_nickname, openid: row.other_openid, is_virtual: row.other_is_virtual };
+      threadLetters.list = [];
+      threadLetters.total = 0;
+      threadLetters.page = 1;
+      threadLetters.hasMore = false;
+      threadLetters.loadingMore = false;
+      threadReplyContent.value = '';
+      threadDetailVisible.value = true;
+      await loadThreadLetters(1);
+      // 标记已读
+      if (row.unread_count > 0) {
+        try {
+          await api.put(`/virtual-users/${threadsDialogUser.value.openid}/thread/${row.other_openid}/read`);
+          // 更新对话列表中的未读数
+          const idx = threadList.list.findIndex(t => t.other_openid === row.other_openid);
+          if (idx >= 0) threadList.list[idx].unread_count = 0;
+          if (threadList.totalUnread > 0) threadList.totalUnread = Math.max(0, threadList.totalUnread - row.unread_count);
+          // 同步更新虚拟用户列表中的未读数（关键：让外层列表角标消失）
+          const vIdx = virtualUsers.list.findIndex(u => u.openid === threadsDialogUser.value.openid);
+          if (vIdx >= 0) {
+            const u = virtualUsers.list[vIdx];
+            const before = u.unread_letter_count || 0;
+            const after = Math.max(0, before - row.unread_count);
+            u.unread_letter_count = after;
+            if (after === 0 && u.received_letter_count !== undefined) {
+              // 没有未读了，行不高亮，但收信数保留
+            }
+            // 更新总未读数
+            if (virtualUsers.totalUnread > 0) {
+              virtualUsers.totalUnread = Math.max(0, virtualUsers.totalUnread - (before - after));
+            }
+          }
+        } catch (e) { /* ignore */ }
+      }
+    }
+
+    // 加载对话信件（append=true 时追加到列表末尾，用于滚动加载更多）
+    async function loadThreadLetters(page, append) {
+      if (!threadsDialogUser.value || !threadCurrentFriendOpenid.value) return;
+      if (page) threadLetters.page = page;
+      if (append) {
+        threadLetters.loadingMore = true;
+      } else {
+        threadLettersLoading.value = true;
+      }
+      try {
+        const res = await api.get(`/virtual-users/${threadsDialogUser.value.openid}/thread/${threadCurrentFriendOpenid.value}`, {
+          params: { page: threadLetters.page, pageSize: threadLetters.pageSize }
+        });
+        if (res.data.success) {
+          if (append) {
+            threadLetters.list = threadLetters.list.concat(res.data.data.list);
+          } else {
+            threadLetters.list = res.data.data.list;
+          }
+          threadLetters.total = res.data.data.total;
+          threadLetters.hasMore = threadLetters.list.length < threadLetters.total;
+          threadMatched.value = res.data.data.matched;
+          if (res.data.data.friendInfo) {
+            threadFriendInfo.value = res.data.data.friendInfo;
+          }
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载失败: ' + (e.response?.data?.message || e.message));
+      }
+      if (append) {
+        threadLetters.loadingMore = false;
+      } else {
+        threadLettersLoading.value = false;
+      }
+    }
+
+    // 滚动加载更多信件
+    function onLetterListScroll(e) {
+      const el = e.target;
+      if (threadLetters.loadingMore || !threadLetters.hasMore) return;
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 50) {
+        loadThreadLetters(threadLetters.page + 1, true);
+      }
+    }
+
+    // 发送对话回信
+    async function sendThreadReply() {
+      if (!threadReplyContent.value || !threadReplyContent.value.trim()) {
+        ElementPlus.ElMessage.warning('请输入回信内容');
+        return;
+      }
+      if (threadReplyContent.value.length > 800) {
+        ElementPlus.ElMessage.warning('信件内容不能超过800字');
+        return;
+      }
+      if (!threadMatched.value) {
+        ElementPlus.ElMessage.warning('双方未匹配，无法回信');
+        return;
+      }
+      threadReplySending.value = true;
+      try {
+        const res = await api.post(
+          `/virtual-users/${threadsDialogUser.value.openid}/thread/${threadCurrentFriendOpenid.value}/reply`,
+          { content: threadReplyContent.value.trim() }
+        );
+        if (res.data.success) {
+          ElementPlus.ElMessage.success('回信已发出');
+          threadReplyContent.value = '';
+          await loadThreadLetters(1);
+          await loadThreads(threadList.page); // 刷新对话列表
+          loadVirtualUsers(virtualUsers.page); // 刷新虚拟用户发信计数
+        } else {
+          ElementPlus.ElMessage.error(res.data.message || '发送失败');
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('发送失败: ' + (e.response?.data?.message || e.message));
+      }
+      threadReplySending.value = false;
+    }
+
+    // 举报列表
+    async function loadLetterReports(page) {
+      if (page) letterReports.page = page;
+      letterReportsLoading.value = true;
+      try {
+        const res = await api.get('/letter-reports', {
+          params: {
+            page: letterReports.page,
+            pageSize: letterReports.pageSize,
+            status: letterReports.status
+          }
+        });
+        const d = res.data.data || {};
+        letterReports.list = d.list || [];
+        letterReports.total = d.total || 0;
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载举报列表失败: ' + (e.response?.data?.message || e.message));
+      }
+      letterReportsLoading.value = false;
+    }
+
+    // 更新举报状态
+    async function updateReportStatus(id, status) {
+      try {
+        const res = await api.put(`/letter-reports/${id}`, { status });
+        if (res.data.success) {
+          ElementPlus.ElMessage.success('举报状态已更新');
+          loadLetterReports(letterReports.page);
+          loadReportStats();
+          loadReportRanking();
+        } else {
+          ElementPlus.ElMessage.error(res.data.message || '更新失败');
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('更新失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    // 举报统计概览
+    async function loadReportStats() {
+      try {
+        const res = await api.get('/letter-reports/stats');
+        if (res.data.success) {
+          reportStats.value = res.data.data;
+          nextTick(() => renderReportReasonChart());
+        }
+      } catch (e) {
+        console.error('loadReportStats error:', e);
+      }
+    }
+
+    // 举报原因分布图
+    function renderReportReasonChart() {
+      const el = chartReportReason.value;
+      if (!el || !reportStats.value.reasonDistribution) return;
+      const data = reportStats.value.reasonDistribution;
+      const chart = echarts.init(el);
+      chart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { bottom: 0 },
+        series: [{
+          type: 'pie',
+          radius: ['40%', '70%'],
+          label: { formatter: '{b}\n{d}%' },
+          data: data.map(d => ({ name: d.reason, value: d.cnt }))
+        }]
+      });
+      chartInstances['reportReason'] = chart;
+    }
+
+    // 被举报用户排行
+    async function loadReportRanking() {
+      reportRankingLoading.value = true;
+      try {
+        const res = await api.get('/letter-reports/ranking', { params: { limit: 20 } });
+        if (res.data.success) {
+          reportRanking.value = (res.data.data.list || []).map((r, i) => ({ ...r, _rank: i + 1 }));
+        }
+      } catch (e) {
+        console.error('loadReportRanking error:', e);
+      }
+      reportRankingLoading.value = false;
+    }
+
+    // 举报详情
+    async function viewReportDetail(id) {
+      try {
+        const res = await api.get(`/letter-reports/${id}/detail`);
+        if (res.data.success) {
+          const d = res.data.data;
+          const statusText = d.status === 'pending' ? '待处理' : (d.status === 'reviewed' ? '已查看' : '已处理');
+          const content = [
+            `举报ID：${d.id}`,
+            `举报原因：${d.reason}`,
+            `状态：${statusText}`,
+            `举报时间：${formatTime(d.created_at)}`,
+            ``,
+            `举报人：${d.reporter_nickname || '未知'} (${d.reporter_openid})`,
+            `被举报人：${d.target_nickname || '未知'} (${d.target_openid})`,
+            `被举报人累计被举报：${d.target_total_reported} 次`,
+            `被举报人状态：${d.target_status === 0 ? '已封禁' : '正常'}`,
+            ``,
+            `信件内容：`,
+            d.letter_content || '(无内容)'
+          ].join('\n');
+          ElementPlus.ElMessageBox.alert(content, '举报详情', { confirmButtonText: '关闭', customClass: 'report-detail-dialog' });
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载举报详情失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    // 封禁用户
+    async function banUser(openid, nickname) {
+      try {
+        await ElementPlus.ElMessageBox.confirm(
+          `确定封禁用户「${nickname || openid}」吗？封禁后该用户将无法登录和使用任何功能。`,
+          '封禁确认',
+          { confirmButtonText: '封禁', cancelButtonText: '取消', type: 'warning' }
+        );
+        const res = await api.put(`/users/${openid}/ban`, { reason: '管理员手动封禁' });
+        if (res.data.success) {
+          ElementPlus.ElMessage.success('用户已封禁');
+          // 刷新当前页面数据
+          loadReportRanking();
+          loadReportStats();
+          if (activeMenu.value === 'users') loadUsers(userPage.value);
+        } else {
+          ElementPlus.ElMessage.error(res.data.message || '封禁失败');
+        }
+      } catch (e) {
+        if (e !== 'cancel' && e?.message !== 'cancel') {
+          ElementPlus.ElMessage.error('封禁失败: ' + (e.response?.data?.message || e.message));
+        }
+      }
+    }
+
+    // 解封用户
+    async function unbanUser(openid) {
+      try {
+        await ElementPlus.ElMessageBox.confirm(
+          `确定解封该用户吗？解封后该用户可正常使用所有功能。`,
+          '解封确认',
+          { confirmButtonText: '解封', cancelButtonText: '取消', type: 'info' }
+        );
+        const res = await api.put(`/users/${openid}/unban`);
+        if (res.data.success) {
+          ElementPlus.ElMessage.success('用户已解封');
+          loadReportRanking();
+          loadReportStats();
+          if (activeMenu.value === 'users') loadUsers(userPage.value);
+        } else {
+          ElementPlus.ElMessage.error(res.data.message || '解封失败');
+        }
+      } catch (e) {
+        if (e !== 'cancel' && e?.message !== 'cancel') {
+          ElementPlus.ElMessage.error('解封失败: ' + (e.response?.data?.message || e.message));
+        }
+      }
+    }
+
+    // 用户详情 - 举报记录
+    async function loadUserDetailReports(openid) {
+      userDetailReportsLoading.value = true;
+      try {
+        const res = await api.get(`/users/${openid}/reports`);
+        if (res.data.success) {
+          userDetailReports.value = res.data.data.list || [];
+        }
+      } catch (e) {
+        console.error('loadUserDetailReports error:', e);
+      }
+      userDetailReportsLoading.value = false;
+    }
+
+    // 用户详情 - 拉黑记录
+    async function loadUserDetailBlocks(openid) {
+      try {
+        const res = await api.get(`/users/${openid}/blocks`);
+        if (res.data.success) {
+          userDetailBlocks.value = res.data.data;
+        }
+      } catch (e) {
+        console.error('loadUserDetailBlocks error:', e);
+      }
+    }
+
+    // 易缘传书漏斗
+    async function loadLetterFunnel() {
+      letterFunnelLoading.value = true;
+      try {
+        const res = await api.get('/letter-funnel', { params: { days: letterFunnelDays.value } });
+        if (res.data.success) {
+          letterFunnelData.value = res.data.data.funnel || [];
+          nextTick(() => renderLetterFunnelChart());
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载漏斗数据失败: ' + (e.response?.data?.message || e.message));
+      }
+      letterFunnelLoading.value = false;
+    }
+
+    function renderLetterFunnelChart() {
+      const el = chartLetterFunnel.value;
+      if (!el || letterFunnelData.value.length === 0) return;
+      const chart = echarts.init(el);
+      const colors = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272'];
+      chart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}<br/>用户数: {c}' },
+        series: [{
+          type: 'funnel',
+          left: '10%',
+          right: '10%',
+          top: 20,
+          bottom: 20,
+          minSize: '20%',
+          label: { show: true, position: 'inside', formatter: '{b}\n{c}' },
+          data: letterFunnelData.value.map((d, i) => ({
+            name: d.label,
+            value: d.count,
+            itemStyle: { color: colors[i % colors.length] }
+          }))
+        }]
+      });
+      chartInstances['letterFunnel'] = chart;
+    }
+
+    // 信件分析
+    async function loadLetterAnalysis() {
+      try {
+        const res = await api.get('/letter-analysis', { params: { days: letterAnalysisDays.value } });
+        if (res.data.success) {
+          letterAnalysis.value = res.data.data;
+          nextTick(() => {
+            renderLetterTrendChart();
+            renderLetterLengthChart();
+            renderLetterHourlyChart();
+          });
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('加载信件分析失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    function renderLetterTrendChart() {
+      const el = chartLetterTrend.value;
+      if (!el || !letterAnalysis.value.trend) return;
+      const data = letterAnalysis.value.trend;
+      const chart = echarts.init(el);
+      chart.setOption({
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: data.map(d => d.date) },
+        yAxis: { type: 'value' },
+        series: [{ name: '信件数', type: 'line', smooth: true, areaStyle: {}, data: data.map(d => d.count), itemStyle: { color: '#ee6666' } }]
+      });
+      chartInstances['letterTrend'] = chart;
+    }
+
+    function renderLetterLengthChart() {
+      const el = chartLetterLength.value;
+      if (!el || !letterAnalysis.value.lengthDistribution) return;
+      const data = letterAnalysis.value.lengthDistribution;
+      const chart = echarts.init(el);
+      chart.setOption({
+        tooltip: { trigger: 'item' },
+        xAxis: { type: 'category', data: data.map(d => d.length_range) },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: data.map(d => d.cnt), itemStyle: { color: '#fac858' } }]
+      });
+      chartInstances['letterLength'] = chart;
+    }
+
+    function renderLetterHourlyChart() {
+      const el = chartLetterHourly.value;
+      if (!el || !letterAnalysis.value.hourlyDistribution) return;
+      const data = letterAnalysis.value.hourlyDistribution;
+      const hours = Array.from({ length: 24 }, (_, i) => i + '时');
+      const counts = Array.from({ length: 24 }, () => 0);
+      data.forEach(d => { if (d.hour >= 0 && d.hour < 24) counts[d.hour] = d.cnt; });
+      const chart = echarts.init(el);
+      chart.setOption({
+        tooltip: { trigger: 'axis' },
+        xAxis: { type: 'category', data: hours },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: counts, itemStyle: { color: '#91cc75' } }]
+      });
+      chartInstances['letterHourly'] = chart;
+    }
+
+    // 批量开关虚拟用户回信
+    async function batchToggleVirtualReply(enabled) {
+      if (selectedUsers.value.length === 0) {
+        ElementPlus.ElMessage.warning('请先勾选虚拟用户');
+        return;
+      }
+      try {
+        const res = await api.put('/virtual-users/batch-reply-toggle', { openids: selectedUsers.value, enabled });
+        if (res.data.success) {
+          ElementPlus.ElMessage.success(res.data.data.message);
+          loadVirtualUsers(virtualUsers.page);
+        }
+      } catch (e) {
+        ElementPlus.ElMessage.error('批量操作失败: ' + (e.response?.data?.message || e.message));
+      }
+    }
+
+    // Init
+    onMounted(() => {
+      if (token.value) loadOverview();
+      window.addEventListener('resize', () => {
+        Object.values(chartInstances).forEach(c => c?.resize());
+      });
+    });
+
+    return {
+      token, adminUser, loginForm, loginLoading, activeMenu, pageTitle,
+      sidebarCollapsed,
+      handleLogin, handleLogout, handleMenuSelect, formatTime, stepLabel,
+      parseRate, retentionRateColor,
+      // Overview
+      overview, kpi, retention, orderStats, matchStats, shareStats, userStats, revenueData, alerts, recentActivity,
+      overviewLoading, dashboardAggregate,
+      topActiveUsers, topActiveLoading,
+      // Users
+      userList, userTotal, userPage, userSearch, userPlanFilter, userLoading,
+      userTypeFilter, userSortField, userSortOrder, userExportLoading,
+      selectedUsers, batchPlanType, batchUpdateLoading,
+      userDetailVisible, userDetail,
+      userDetailTab, userDetailOpenid,
+      userDetailRecords, userDetailRecordsLoading, userDetailRecordsTotal, userDetailRecordsPage,
+      userDetailMatches, userDetailMatchesLoading, userDetailMatchesTotal, userDetailMatchesPage,
+      userDetailLogs, userDetailLogsLoading, userDetailLogsTotal, userDetailLogsPage,
+      loadUsers, handleUserSearch, handleUserSearchClear, handleUserFilterChange, handleUserSortChange,
+      exportUsersCSV, handleUserSelectionChange, handleBatchUpdatePlan,
+      viewUser, handleUserDetailTabChange,
+      loadUserDetailRecords, loadUserDetailMatches, loadUserDetailLogs,
+      resetQuota,
+      // Orders
+      orderList, orderTotal, orderPage, orderStatusFilter, orderProductFilter, orderLoading,
+      updateOrderStatus,
+      // Deletions
+      pendingDeletions, deletionLoading, confirmDeleteUser, cancelDeletion,
+      // Funnel
+      funnelData,
+      // Retention Cohort
+      retentionCohortData, retentionCohortLoading, loadRetentionCohort,
+      // Hexagrams
+      hexagramList, hexagramLoading,
+      // Corpus
+      matchCorpusList, corpusLoading, corpusTotal, corpusPage, loadCorpus,
+      // Achievements
+      achievementList,
+      // AI
+      aiStats, aiLogs,
+      // Logs
+      adminLogs, logTotal, logPage, logLoading,
+      // System
+      systemInfo, healthStatus, errorLogs, reloading,
+      toggleMaintenance, toggleForceUpdate, saveUpdateMessage,
+      handleDbBackup, passwordForm, changePasswordLoading, handleChangePassword,
+      handleClearCache, clearCacheLoading,
+      checkHealth, reloadService,
+      testDeepSeekLoading, testDeepSeekResult, handleTestDeepSeek,
+      // Chart refs
+      chartUserTrend, chartTuiyanTrend, chartGuaDist, chartPlanDist, chartHourly,
+      chartFunnel, chartTuiyanTrend30, chartQuestionType,
+      chartMatchScore, chartMatchRel, chartMatchTrend,
+      chartShareType, chartShareFunnel,
+      chartRevenueTrend, chartProductAnalysis, chartOrderStatus,
+      chartDauTrend, chartAiTrend,
+      chartReportReason, chartLetterFunnel, chartLetterTrend, chartLetterLength, chartLetterHourly,
+      // Letter feature (v1.3) - 易缘传书管理
+      letterStats, letterStatsLoading, loadLetterStats,
+      virtualUsers, virtualUsersLoading, loadVirtualUsers, virtualUserRowClass,
+      globalReplyEnabled, replyConfigLoading, loadReplyConfig,
+      onGlobalReplyToggle, onUserReplyToggle,
+      replyDialogVisible, replyDialogUser, replyForm, replySending,
+      replyMatches, replyMatchesLoading, loadReplyMatches,
+      openReplyDialog, sendReply,
+      // 虚拟用户对话管理
+      threadsDialogVisible, threadsDialogUser, threadsLoading,
+      threadList, openThreadsDialog, loadThreads,
+      threadDetailVisible, threadDetailTitle, threadLettersLoading, threadLetters,
+      threadFriendInfo, threadMatched, threadReplyContent, threadReplySending,
+      openThreadDetail, loadThreadLetters, sendThreadReply, onLetterListScroll,
+      letterReports, letterReportsLoading, loadLetterReports, updateReportStatus,
+      // v2.1 举报管理增强
+      reportStats, loadReportStats,
+      reportRanking, reportRankingLoading, loadReportRanking,
+      viewReportDetail,
+      banUser, unbanUser,
+      // v2.1 用户详情增强
+      userDetailReports, userDetailReportsLoading, loadUserDetailReports,
+      userDetailBlocks, loadUserDetailBlocks,
+      // v2.1 易缘漏斗
+      letterFunnelData, letterFunnelDays, letterFunnelLoading, loadLetterFunnel,
+      // v2.1 信件分析
+      letterAnalysis, letterAnalysisDays, loadLetterAnalysis,
+      // v2.1 批量虚拟用户操作
+      batchToggleVirtualReply
+    };
+  }
+});
+
+// Register all Element Plus icons
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component);
+}
+
+app.use(ElementPlus);
+document.getElementById('app').innerHTML = '';
+app.mount('#app');
+</script>
+</body>
+</html>

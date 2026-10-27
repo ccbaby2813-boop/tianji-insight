@@ -1,0 +1,214 @@
+<!-- sub/learn/native-gua/index.wxml - 易经人格详情页 v3.0 -->
+<!-- 视觉方向：黑金典藏卡牌 · 立体浮雕 · 分享欲优先 -->
+<!-- v1.5 彻底修复手机端滑动失效：去掉 scroll-view，改用 page 原生滚动（最可靠方案） -->
+<view class="page-container page-native-gua theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <view class="gua-detail" wx:if="{{gua.id}}">
+
+    <!-- 顶部背景光晕（营造神圣感） -->
+    <view class="hero-glow aura-{{gua.wuxingClass || 'jin'}}"></view>
+
+    <!-- 人格典藏卡 -->
+    <view class="personality-card animate-card-reveal">
+      <!-- 卡牌外框：多层金线浮雕 -->
+      <view class="card-frame card-frame-outer"></view>
+      <view class="card-frame card-frame-inner"></view>
+      <view class="card-corner card-corner-tl"></view>
+      <view class="card-corner card-corner-tr"></view>
+      <view class="card-corner card-corner-bl"></view>
+      <view class="card-corner card-corner-br"></view>
+
+      <!-- 左上角：五行标记（更突出、更立体） -->
+      <view class="wuxing-mark wuxing-{{gua.wuxingClass || 'jin'}}">
+        <text class="wuxing-mark-text">{{gua.wuxing || '金'}}</text>
+        <view class="wuxing-mark-shadow"></view>
+      </view>
+
+      <!-- 右上角：稀有度 -->
+      <view class="rarity-badge" wx:if="{{gua.xi_you_du}}">
+        <text class="rarity-badge-text">{{gua.xi_you_du}}</text>
+      </view>
+
+      <!-- 卡牌内容 -->
+      <view class="card-content">
+        <!-- 用户导语 -->
+        <view class="card-owner" wx:if="{{nickname}}">
+          <text class="card-owner-text">{{ownerLabel}}</text>
+        </view>
+
+        <!-- 卦符光晕 -->
+        <view class="symbol-stage">
+          <view class="symbol-ring symbol-ring-1"></view>
+          <view class="symbol-ring symbol-ring-2"></view>
+          <view class="symbol-ring symbol-ring-3"></view>
+          <text class="gua-symbol font-display">{{gua.symbol}}</text>
+        </view>
+
+        <!-- 卦名 -->
+        <text class="gua-name font-display">{{gua.full_name}}</text>
+        <text class="gua-short-name" wx:if="{{gua.name && gua.name !== gua.full_name}}">{{gua.name}}</text>
+
+        <!-- 社交标签 -->
+        <view class="gua-tag-row" wx:if="{{gua.social_tag}}">
+          <text class="gua-tag">{{gua.social_tag}}</text>
+        </view>
+
+        <!-- 一句话判词 -->
+        <view class="yi-ju-hua-wrap" wx:if="{{gua.yi_ju_hua}}">
+          <text class="yi-ju-hua">{{gua.yi_ju_hua}}</text>
+        </view>
+      </view>
+
+      <!-- 卡牌底部装饰纹 -->
+      <view class="card-ornament" aria-hidden="true">
+        <view class="ornament-line"></view>
+        <icon-guo name="taiji" size="20" color="rgba(200,165,91,0.35)" />
+        <view class="ornament-line"></view>
+      </view>
+    </view>
+
+    <!-- 分享诱饵区：让这张卡值得被分享 -->
+    <view class="share-bait animate-fade-in-up delay-3">
+      <view class="share-bait-inner">
+        <text class="share-bait-title">{{t.guaGenerateCard}}</text>
+        <text class="share-bait-desc">{{t.guaMatchDesc}}</text>
+        <button wx:if="{{isMpWeixin}}" class="share-bait-btn" open-type="share" hover-class="share-bait-btn-hover">
+          <text>{{t.guaMatchCta}}</text>
+        </button>
+        <button wx:else class="share-bait-btn" bindtap="onShareTap" hover-class="share-bait-btn-hover">
+          <text>{{t.guaMatchCta}}</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 极细金线分隔 -->
+    <view class="line-gold-thin animate-draw-gold-line delay-4"></view>
+
+    <!-- 核心信息：去卡片化， poem-block 错落 -->
+    <view class="gua-info">
+      <!-- 概述 -->
+      <view class="poem-block" wx:if="{{gua.description}}">
+        <text class="info-label">{{t.guaPersonalityPortrait}}</text>
+        <text class="info-text">{{gua.description}}</text>
+      </view>
+
+      <!-- 自嘲标签 -->
+      <view class="poem-block" wx:if="{{gua.zi_chao_biao_qian}}">
+        <text class="info-label">{{t.guaSelfMockTag}}</text>
+        <view class="info-text tag-highlight">
+          <icon-guo name="mask" size="24" color="rgba(200,165,91,0.9)" />
+          <text>{{gua.zi_chao_biao_qian}}</text>
+        </view>
+      </view>
+
+      <!-- 历史人物 -->
+      <view class="poem-block" wx:if="{{viewerGender === 'male' && gua.li_shi_ren_wu && gua.li_shi_ren_wu.male && gua.li_shi_ren_wu.male.length}}">
+        <text class="info-label">{{t.guaRoleModel}}</text>
+        <view class="tag-row seal-row">
+          <view class="seal-tag" wx:for="{{gua.li_shi_ren_wu.male}}" wx:key="*this">{{item}}</view>
+        </view>
+      </view>
+      <view class="poem-block" wx:elif="{{viewerGender === 'female' && gua.li_shi_ren_wu && gua.li_shi_ren_wu.female && gua.li_shi_ren_wu.female.length}}">
+        <text class="info-label">{{t.guaRoleModel}}</text>
+        <view class="tag-row seal-row">
+          <view class="seal-tag" wx:for="{{gua.li_shi_ren_wu.female}}" wx:key="*this">{{item}}</view>
+        </view>
+      </view>
+      <block wx:elif="{{!viewerGender && gua.li_shi_ren_wu}}">
+        <view class="poem-block" wx:if="{{gua.li_shi_ren_wu.male && gua.li_shi_ren_wu.male.length}}">
+          <text class="info-label">{{t.guaRoleModelMale}}</text>
+          <view class="tag-row seal-row">
+            <view class="seal-tag" wx:for="{{gua.li_shi_ren_wu.male}}" wx:key="*this">{{item}}</view>
+          </view>
+        </view>
+        <view class="poem-block" wx:if="{{gua.li_shi_ren_wu.female && gua.li_shi_ren_wu.female.length}}">
+          <text class="info-label">{{t.guaRoleModelFemale}}</text>
+          <view class="tag-row seal-row">
+            <view class="seal-tag" wx:for="{{gua.li_shi_ren_wu.female}}" wx:key="*this">{{item}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 极细金线分隔 -->
+    <view class="line-gold-thin"></view>
+
+    <!-- 折叠区：原文 -->
+    <view class="collapse-section" wx:if="{{gua.judgment || gua.image}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="classic">
+        <text class="collapse-header-title">{{t.guaOriginal}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.classic ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.classic ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <view class="classic-block" wx:if="{{gua.judgment}}">
+            <text class="classic-label font-title">{{t.labelJudgment}}</text>
+            <text class="classic-text font-quote">{{gua.judgment}}</text>
+          </view>
+          <view class="classic-block" wx:if="{{gua.image}}">
+            <text class="classic-label font-title">{{t.labelImage}}</text>
+            <text class="classic-text font-quote">{{gua.image}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 折叠区：人格内核 -->
+    <view class="collapse-section" wx:if="{{gua.renGe}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="renge">
+        <text class="collapse-header-title">{{t.guaPersonalityCore}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.renge ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.renge ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <text class="jiedu-text font-body">{{gua.renGe}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 折叠区：情感模式 -->
+    <view class="collapse-section" wx:if="{{gua.emotionMode}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="emotion">
+        <text class="collapse-header-title">{{t.guaEmotionMode}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.emotion ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.emotion ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <text class="jiedu-text font-body">{{gua.emotionMode}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 折叠区：成长指引 -->
+    <view class="collapse-section" wx:if="{{gua.growthAdvice}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="growth">
+        <text class="collapse-header-title">{{t.guaGrowthGuide}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.growth ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.growth ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <view class="growth-block" wx:if="{{gua.growthAdvice.talent}}">
+            <text class="growth-sub-label">{{t.guaTalent}}</text>
+            <text class="info-text">{{gua.growthAdvice.talent}}</text>
+          </view>
+          <view class="growth-block" wx:if="{{gua.growthAdvice.blindspot}}">
+            <text class="growth-sub-label">{{t.guaBlindSpot}}</text>
+            <text class="info-text">{{gua.growthAdvice.blindspot}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="gua-actions">
+      <button wx:if="{{isMpWeixin}}" aria-label="分享给朋友" class="btn btn-primary" open-type="share">{{t.guaShareFriend}}</button>
+      <button wx:else aria-label="分享给朋友" class="btn btn-primary" bindtap="onShareTap">{{t.guaShareFriend}}</button>
+      <button aria-label="关闭" class="btn btn-light" bindtap="goBack">{{t.guaClose}}</button>
+    </view>
+
+    <!-- 底部合规声明 -->
+    <bottom-declaration />
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:else><text>{{t.guaLoading}}</text></view>
+</view>

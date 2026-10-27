@@ -1,0 +1,536 @@
+/* sub/learn/achievement/index.wxss - 成就页：星座连线环 + CSS星冠 + badge-shimmer
+ * Visual Thesis: 星河之上的星冠加冕，徽章名号金光流转
+ * 改造要点：保留星座连线/星冠/badge-shimmer；徽章弹出与所有 spring 缓动用 var(--ease-spring)；颜色用 var(--xxx)
+ */
+
+.page-achievement {
+  width: 100%;
+  min-height: 100vh;
+  /* 墨韵黑底 + 极淡金光晕（Editorial Swiss 单色） */
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(200, 165, 91, 0.04), transparent 70%),
+    #0A0A1A;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx 80rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========== 背景星空 ========== */
+.starfield {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  width: 4rpx; height: 4rpx;
+  border-radius: 50%;
+  background: #fff;
+  animation: star-twinkle 3s ease-in-out infinite;
+}
+.s1  { top: 8%;  left: 12%; animation-delay: 0s; }
+.s2  { top: 12%; left: 78%; animation-delay: 0.4s; width: 3rpx; height: 3rpx; }
+.s3  { top: 18%; left: 35%; animation-delay: 0.8s; }
+.s4  { top: 22%; left: 88%; animation-delay: 1.2s; width: 5rpx; height: 5rpx; }
+.s5  { top: 28%; left: 18%; animation-delay: 1.6s; width: 3rpx; height: 3rpx; }
+.s6  { top: 32%; left: 62%; animation-delay: 0.3s; }
+.s7  { top: 38%; left: 8%;  animation-delay: 0.7s; width: 3rpx; height: 3rpx; }
+.s8  { top: 42%; left: 92%; animation-delay: 1.1s; }
+.s9  { top: 48%; left: 45%; animation-delay: 1.5s; width: 3rpx; height: 3rpx; }
+.s10 { top: 52%; left: 72%; animation-delay: 0.2s; }
+.s11 { top: 56%; left: 22%; animation-delay: 0.6s; width: 3rpx; height: 3rpx; }
+.s12 { top: 60%; left: 55%; animation-delay: 1.0s; }
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.9; }
+}
+
+/* ========== 星座连线环 ========== */
+.constellation-ring {
+  position: relative;
+  width: 280rpx; height: 280rpx;
+  margin-bottom: -40rpx;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s var(--ease-spring);
+}
+.constellation-ring.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 环线 */
+.ring-line {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 260rpx; height: 260rpx;
+  margin: -130rpx 0 0 -130rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--accent-gold-border);
+  box-shadow:
+    0 0 40rpx rgba(200, 165, 91, 0.08),
+    inset 0 0 40rpx rgba(200, 165, 91, 0.05);
+  animation: ring-rotate 30s linear infinite, ring-breathe 4s ease-in-out infinite;
+}
+@keyframes ring-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 8个星座节点（均匀分布在一个圆上） */
+.ring-node {
+  position: absolute;
+  width: 14rpx; height: 14rpx;
+  border-radius: 50%;
+  background: var(--gold-pure);
+  box-shadow:
+    0 0 16rpx rgba(200, 165, 91, 0.6),
+    0 0 32rpx rgba(200, 165, 91, 0.25);
+  top: 50%; left: 50%;
+  animation: node-pulse 2s ease-in-out infinite;
+}
+.n0 { transform: translate(-7rpx, -137rpx);   animation-delay: 0s; }
+.n1 { transform: translate(90rpx, -104rpx);   animation-delay: 0.15s; }
+.n2 { transform: translate(127rpx, 3rpx);     animation-delay: 0.3s; }
+.n3 { transform: translate(90rpx, 110rpx);    animation-delay: 0.45s; }
+.n4 { transform: translate(-7rpx, 130rpx);    animation-delay: 0.6s; }
+.n5 { transform: translate(-104rpx, 110rpx);  animation-delay: 0.75s; }
+.n6 { transform: translate(-141rpx, 3rpx);    animation-delay: 0.9s; }
+.n7 { transform: translate(-104rpx, -104rpx); animation-delay: 1.05s; }
+
+@keyframes node-pulse {
+  0%, 100% {
+    box-shadow: 0 0 16rpx rgba(200, 165, 91, 0.6), 0 0 32rpx rgba(200, 165, 91, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 24rpx rgba(200, 165, 91, 0.9), 0 0 48rpx rgba(200, 165, 91, 0.4);
+  }
+}
+
+/* ========== CSS星冠 ========== */
+.crown-container {
+  position: relative;
+  width: 200rpx; height: 180rpx;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-40rpx);
+  transition: all 0.8s var(--ease-spring) 0.3s;
+}
+.crown-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 光晕 */
+.crown-glow {
+  position: absolute;
+  border-radius: 50%;
+}
+.crown-glow.outer {
+  width: 200rpx; height: 200rpx;
+  top: 10rpx;
+  background: radial-gradient(circle,
+    rgba(200, 165, 91, 0.18) 0%,
+    rgba(200, 165, 91, 0.06) 50%,
+    transparent 70%);
+  animation: crown-glow-pulse 2.5s ease-in-out infinite;
+}
+.crown-glow.inner {
+  width: 130rpx; height: 130rpx;
+  top: 45rpx;
+  background: radial-gradient(circle,
+    rgba(200, 165, 91, 0.25) 0%,
+    transparent 60%);
+  animation: crown-glow-pulse 2.5s ease-in-out infinite 0.5s;
+}
+@keyframes crown-glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.2); opacity: 1; }
+}
+
+/* 五角星 — 旋转入场用 var(--ease-spring) */
+.crown-star {
+  position: relative;
+  width: 100rpx; height: 100rpx;
+  z-index: 1;
+  margin-top: 10rpx;
+  animation: star-spin-in 1.2s var(--ease-spring);
+}
+@keyframes star-spin-in {
+  0%   { transform: rotate(-180deg) scale(0); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/* 五角星的5个尖角（用旋转正方形+clip-path） */
+.star-point {
+  position: absolute;
+  width: 100%; height: 100%;
+}
+.star-point::before {
+  content: '';
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 18rpx solid transparent;
+  border-right: 18rpx solid transparent;
+  border-bottom: 50rpx solid var(--gold-pure);
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 8rpx rgba(200, 165, 91, 0.5));
+}
+.star-point.t  { transform: rotate(0deg); }
+.star-point.tr { transform: rotate(72deg); }
+.star-point.br { transform: rotate(144deg); }
+.star-point.bl { transform: rotate(216deg); }
+.star-point.tl { transform: rotate(288deg); }
+
+/* 星核 */
+.star-core {
+  position: absolute;
+  width: 24rpx; height: 24rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 165, 91, 0.95), var(--gold-pure));
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 20rpx rgba(200, 165, 91, 0.7),
+    0 0 40rpx rgba(200, 165, 91, 0.3);
+}
+
+/* 星冠底座 */
+.crown-base {
+  width: 130rpx; height: 28rpx;
+  background: linear-gradient(180deg,
+    rgba(200, 165, 91, 0.8),
+    rgba(160, 130, 70, 0.9));
+  border-radius: 0 0 20rpx 20rpx;
+  margin-top: -4rpx;
+  box-shadow: 0 4rpx 20rpx rgba(200, 165, 91, 0.35);
+  position: relative;
+}
+.crown-base::before,
+.crown-base::after {
+  content: '';
+  position: absolute;
+  bottom: 6rpx;
+  width: 10rpx; height: 10rpx;
+  border-radius: 50%;
+  background: rgba(200, 165, 91, 0.8);
+  box-shadow: 0 0 10rpx rgba(200, 165, 91, 0.5);
+}
+.crown-base::before { left: 16rpx; }
+.crown-base::after  { right: 16rpx; }
+
+/* ========== 标题区 — 1rpx 金线分隔（crown 与 title 之间） ========== */
+.title-main {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: var(--gold-pure);
+  text-align: center;
+  margin-top: 48rpx;
+  margin-bottom: 6rpx;
+  padding-top: 32rpx;
+  border-top: 1rpx solid rgba(200, 165, 91, 0.2);
+  text-shadow: 0 0 24rpx rgba(200, 165, 91, 0.35);
+  letter-spacing: 8rpx;
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.6s var(--ease-out-expo) 0.2s;
+}
+.title-main.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title-desc {
+  font-size: 26rpx;
+  color: var(--accent-gold-hover);
+  text-align: center;
+  margin-bottom: 36rpx;
+  letter-spacing: 2rpx;
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.6s var(--ease-out-expo) 0.4s;
+}
+.title-desc.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========== 描述 — 去卡片化，1rpx 金线上下分隔 ========== */
+.desc-section {
+  width: 100%;
+  padding: 32rpx 0;
+  margin-bottom: 36rpx;
+  border-top: 1rpx solid rgba(200, 165, 91, 0.2);
+  border-bottom: 1rpx solid rgba(200, 165, 91, 0.2);
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.6s var(--ease-out-expo) 0.3s;
+}
+.desc-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.desc-text {
+  font-size: 25rpx;
+  color: var(--text-primary);
+  line-height: 1.85;
+  display: block;
+}
+.desc-sub {
+  margin-top: 20rpx;
+  color: var(--accent-gold-hover);
+  font-size: 24rpx;
+  text-align: center;
+}
+
+/* ========== 称号徽章 — badge-shimmer ========== */
+.title-badge {
+  text-align: center;
+  margin-bottom: 52rpx;
+  opacity: 0;
+  transform: translateY(20rpx);
+  /* 徽章弹出用 var(--ease-spring) */
+  transition: all 0.6s var(--ease-spring) 0.5s;
+}
+.title-badge.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.badge-label {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 10rpx;
+  letter-spacing: 6rpx;
+}
+
+/* 徽章名号 — 保留 badge-shimmer 金光流转 */
+.badge-name {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: var(--gold-pure);
+  text-shadow: 0 0 28rpx rgba(200, 165, 91, 0.35);
+  letter-spacing: 12rpx;
+  display: block;
+  animation: badge-shimmer 3s ease-in-out infinite;
+}
+@keyframes badge-shimmer {
+  0%, 100% {
+    text-shadow: 0 0 28rpx rgba(200, 165, 91, 0.35);
+  }
+  50% {
+    text-shadow:
+      0 0 48rpx rgba(200, 165, 91, 0.6),
+      0 0 80rpx rgba(200, 165, 91, 0.2);
+  }
+}
+.badge-order {
+  font-size: 22rpx;
+  color: var(--accent-gold-hover);
+  display: block;
+  margin-top: 14rpx;
+}
+
+/* ========== 按钮 — 1rpx 金线分隔（badge 与 btn 之间） ========== */
+.btn-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-top: 16rpx;
+  padding-top: 32rpx;
+  border-top: 1rpx solid rgba(200, 165, 91, 0.2);
+  opacity: 0;
+  transform: translateY(20rpx);
+  transition: all 0.6s var(--ease-out-expo) 0.7s;
+}
+.btn-row.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn {
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  transition: all 0.25s var(--ease-out-expo);
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-hover));
+  color: var(--text-inverse);
+  border: none;
+  letter-spacing: 4rpx;
+  box-shadow: var(--shadow-gold);
+}
+.btn-gold::after { border: none; }
+.btn-outline {
+  border: 2rpx solid var(--accent-gold-border);
+  color: var(--accent-gold-hover);
+  background: transparent;
+  letter-spacing: 4rpx;
+}
+.btn:active,
+.btn-gold:active {
+  opacity: 0.8;
+  transform: scale(0.97);
+}
+
+/* ========================================
+ * v2.0 视觉升级：流星 + 金色粒子 + 卷轴边框 + Co-Star纯黑画布
+ * ======================================== */
+
+/* 星座连线呼吸闪烁 */
+@keyframes ring-breathe {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 40rpx rgba(200,165,91,0.08), inset 0 0 40rpx rgba(200,165,91,0.05); }
+  50%      { opacity: 1;   box-shadow: 0 0 60rpx rgba(200,165,91,0.2),  inset 0 0 60rpx rgba(200,165,91,0.1); }
+}
+
+/* ========== 流星划过 ========== */
+.meteor {
+  position: absolute;
+  width: 2rpx;
+  height: 2rpx;
+  background: var(--gold-pure, #C8A55B);
+  border-radius: 50%;
+  box-shadow: 0 0 6rpx var(--gold-pure, #C8A55B);
+  opacity: 0;
+}
+.meteor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, var(--gold-pure, #C8A55B), transparent);
+  transform-origin: left center;
+  transform: rotate(-45deg);
+}
+.meteor.m1 {
+  top: 15%;
+  left: -10%;
+  animation: meteor-sweep 4s ease-in 1s infinite;
+}
+.meteor.m2 {
+  top: 35%;
+  left: -10%;
+  animation: meteor-sweep 5s ease-in 3s infinite;
+}
+@keyframes meteor-sweep {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translate(800rpx, 800rpx); opacity: 0; }
+}
+
+/* ========== 成就数字金色粒子上升 ========== */
+.badge-order-wrap {
+  position: relative;
+  display: block;
+}
+
+.achievement-number {
+  display: inline-block;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--gold-pure, #C8A55B);
+  text-shadow: 0 0 12rpx rgba(200,165,91,0.5);
+  margin: 0 4rpx;
+}
+
+.particle {
+  position: absolute;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 50%;
+  background: var(--gold-pure, #C8A55B);
+  box-shadow: 0 0 8rpx rgba(200,165,91,0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+.particle.p1 {
+  left: 30%;
+  bottom: 0;
+  animation: particle-rise 2.5s ease-out 0s infinite;
+}
+.particle.p2 {
+  left: 50%;
+  bottom: 0;
+  animation: particle-rise 2.5s ease-out 0.8s infinite;
+}
+.particle.p3 {
+  left: 70%;
+  bottom: 0;
+  animation: particle-rise 2.5s ease-out 1.6s infinite;
+}
+@keyframes particle-rise {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(-60rpx) scale(0.3); opacity: 0; }
+}
+
+/* ========== 分享按钮卷轴边框 + 印章 ========== */
+.btn-scroll-share {
+  position: relative;
+  border: 2rpx solid var(--gold-pure, #C8A55B) !important;
+  background: transparent !important;
+  overflow: hidden;
+}
+.btn-scroll-share::before,
+.btn-scroll-share::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 12rpx;
+  height: 60%;
+  background: linear-gradient(180deg, rgba(200,165,91,0.3), rgba(200,165,91,0.1), rgba(200,165,91,0.3));
+  border-radius: 4rpx;
+  transform: translateY(-50%);
+}
+.btn-scroll-share::before { left: 8rpx; }
+.btn-scroll-share::after  { right: 8rpx; }
+
+.btn-share-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  position: relative;
+  z-index: 1;
+}
+
+/* L0展示字 fallback */
+.font-display {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", serif;
+  font-weight: 800;
+  letter-spacing: 8rpx;
+}
+
+/* 标题适配展示字 */
+.title-main.font-display {
+  font-size: 52rpx;
+  letter-spacing: 8rpx;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .btn-gold { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 28rpx; line-height: 1.3; }
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .title-main { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }
+.lang-en .badge-name { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .badge-label { letter-spacing: 1rpx; text-indent: 1rpx; line-height: 1.3; }

@@ -1,0 +1,76 @@
+<!-- sub/profile/notifications/index.wxml - 消息中心 -->
+<view class="page-container page-notifications theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top:{{statusBarHeight}}px">
+    <view class="navbar-left" bindtap="goBack">
+      <icon-guo name="chevron-left" size="36" color="#1A1B1C" />
+    </view>
+    <view class="navbar-title">
+      <text class="navbar-title-text font-title">{{t.title}}</text>
+    </view>
+    <view class="navbar-right" bindtap="onMarkAllRead" wx:if="{{unreadCount > 0}}">
+      <text class="navbar-action-text">{{t.markAllRead}}</text>
+    </view>
+    <view class="navbar-right" wx:else>
+      <text class="navbar-action-text navbar-action-disabled">{{t.markAllRead}}</text>
+    </view>
+  </view>
+
+  <!-- 通知列表 -->
+  <scroll-view class="notifications-content" scroll-y wx:if="{{list.length > 0}}" style="padding-top:{{statusBarHeight + 44}}px"
+    enable-refresher refresher-enabled refresher-triggered="{{refreshing}}" bindrefresherrefresh="onScrollRefresh" bindscrolltolower="onScrollLoadMore" lower-threshold="60">
+    <view class="notification-list">
+      <view
+        class="notification-item {{item.is_read ? 'is-read' : 'is-unread'}}"
+        wx:for="{{list}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onNotificationTap"
+      >
+        <!-- 未读红点 -->
+        <view class="unread-dot" wx:if="{{!item.is_read}}"></view>
+
+        <!-- 图标 -->
+        <view class="notification-icon">
+          <icon-guo
+            name="{{item.type === 'match_reply' ? 'peach-heart' : (item.type === 'letter_received' ? 'mail' : (item.type === 'jieqi_reminder' ? 'leaf' : 'info'))}}"
+            size="32"
+            color="{{item.type === 'match_reply' ? '#C8A55B' : (item.type === 'letter_received' ? '#6B8E9F' : (item.type === 'jieqi_reminder' ? '#7BA05B' : '#999'))}}"
+          />
+        </view>
+
+        <!-- 内容 -->
+        <view class="notification-body">
+          <view class="notification-header">
+            <text class="notification-title">{{item.title}}</text>
+            <text class="notification-time">{{item.created_at}}</text>
+          </view>
+          <text class="notification-content">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMore}}">
+      <text class="load-more-text">{{loading ? (t.loading || '加载中...') : (t.loadMore || '上拉加载更多')}}</text>
+    </view>
+    <view class="load-more" wx:else>
+      <text class="load-more-text load-more-end">{{t.noMore || '没有更多了'}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{list.length === 0 && !loading}}" style="padding-top:{{statusBarHeight + 44}}px">
+    <icon-guo name="mail" size="80" color="#D0D0D8" />
+    <text class="empty-title">{{t.emptyTitle}}</text>
+    <text class="empty-desc">{{t.emptyDesc}}</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading && list.length === 0}}" style="padding-top:{{statusBarHeight + 44}}px">
+    <view class="skeleton skeleton-title"></view>
+    <view class="skeleton skeleton-card"></view>
+    <view class="skeleton skeleton-card"></view>
+    <view class="skeleton skeleton-card"></view>
+  </view>
+</view>

@@ -1,0 +1,122 @@
+/* components/protocol-viewer/protocol-viewer.wxss - v2.0 视觉升级
+ * Visual Thesis: 毛玻璃蒙层 + 卷轴边框 + scaleIn 入场 + 金色印章感
+ */
+
+/* ===== 蒙层：毛玻璃模糊 ===== */
+.protocol-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12rpx);
+  -webkit-backdrop-filter: blur(12rpx);
+}
+
+/* ===== 弹窗主体：卷轴边框 + scaleIn 入场 ===== */
+.protocol-popup {
+  position: relative;
+  width: 85%;
+  max-height: 70vh;
+  background: linear-gradient(180deg, var(--bg-elevated), var(--bg-card));
+  border-radius: 0;
+  border-top: 1rpx solid var(--gold-pure);
+  border-bottom: 1rpx solid var(--gold-pure);
+  border-left: 1rpx solid var(--accent-gold-border);
+  border-right: 1rpx solid var(--accent-gold-border);
+  overflow: hidden;
+  animation: scaleIn 0.35s var(--ease-out-expo) both;
+  box-shadow: var(--shadow-gold);
+}
+
+/* 卷轴顶部金点装饰 */
+.protocol-popup::before {
+  content: '';
+  position: absolute;
+  top: -5rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.6);
+  z-index: 2;
+}
+
+/* 卷轴底部金点装饰 */
+.protocol-popup::after {
+  content: '';
+  position: absolute;
+  bottom: -5rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.6);
+  z-index: 2;
+}
+
+/* ===== 头部 ===== */
+.protocol-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid var(--border-subtle);
+}
+
+.protocol-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: var(--accent-gold);
+  letter-spacing: 6rpx;
+  text-shadow: 0 0 12rpx rgba(212, 165, 116, 0.25);
+}
+
+/* 关闭按钮：active 态 scale(0.97) */
+.protocol-close {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 36rpx;
+  transition: all 0.2s var(--ease-out-quart);
+  border-radius: 50%;
+}
+
+.protocol-close:active {
+  opacity: 0.6;
+  transform: scale(0.97);
+  color: var(--accent-gold);
+  background: var(--accent-gold-subtle);
+}
+
+/* ===== 内容区 ===== */
+.protocol-content {
+  max-height: 50vh;
+  padding: 32rpx;
+}
+
+.protocol-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  line-height: 2.0;
+  letter-spacing: 2rpx;
+  font-family: 'STSong', 'SimSun', 'KaiTi', serif;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ===== 底部 ===== */
+.protocol-footer {
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid var(--border-subtle);
+}

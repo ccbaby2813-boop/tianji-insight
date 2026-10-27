@@ -1,0 +1,68 @@
+<view class="page-achievement theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 背景星空 -->
+  <view class="starfield">
+    <view class="star s1"></view><view class="star s2"></view><view class="star s3"></view>
+    <view class="star s4"></view><view class="star s5"></view><view class="star s6"></view>
+    <view class="star s7"></view><view class="star s8"></view><view class="star s9"></view>
+    <view class="star s10"></view><view class="star s11"></view><view class="star s12"></view>
+    <view class="meteor m1"></view>
+    <view class="meteor m2"></view>
+  </view>
+
+  <!-- 星座连线环（象征人脉网络） -->
+  <view class="constellation-ring {{animPhase >= 1 ? 'visible' : ''}}">
+    <view class="ring-line"></view>
+    <view class="ring-node n0"></view><view class="ring-node n1"></view>
+    <view class="ring-node n2"></view><view class="ring-node n3"></view>
+    <view class="ring-node n4"></view><view class="ring-node n5"></view>
+    <view class="ring-node n6"></view><view class="ring-node n7"></view>
+  </view>
+
+  <!-- CSS星冠（替代🏆奖杯） -->
+  <view class="crown-container {{animPhase >= 1 ? 'visible' : ''}}">
+    <view class="crown-glow outer"></view>
+    <view class="crown-glow inner"></view>
+    <view class="crown-star">
+      <view class="star-point t"></view>
+      <view class="star-point tr"></view>
+      <view class="star-point br"></view>
+      <view class="star-point bl"></view>
+      <view class="star-point tl"></view>
+      <view class="star-core"></view>
+    </view>
+    <view class="crown-base"></view>
+  </view>
+
+  <!-- 主标题 -->
+  <text class="title-main font-display {{animPhase >= 2 ? 'visible' : ''}}">{{t.achTitle}}</text>
+  <text class="title-desc {{animPhase >= 2 ? 'visible' : ''}}">{{t.achDesc}}</text>
+
+  <!-- 描述 -->
+  <view class="desc-section {{animPhase >= 3 ? 'visible' : ''}}">
+    <text class="desc-text">{{t.achBody1}}</text>
+    <text class="desc-text desc-sub">{{t.achBody2}}</text>
+  </view>
+
+  <!-- 称号徽章 -->
+  <view class="title-badge {{animPhase >= 4 ? 'visible' : ''}}">
+    <text class="badge-label">{{t.achBadgeUnlock}}</text>
+    <text class="badge-name">{{t.achBadgeName}}</text>
+    <view class="badge-order-wrap" wx:if="{{completionOrder}}">
+      <view class="particle p1"></view>
+      <view class="particle p2"></view>
+      <view class="particle p3"></view>
+      <text class="badge-order">{{achOrderText}}</text>
+    </view>
+  </view>
+
+  <!-- 按钮 -->
+  <view class="btn-row {{animPhase >= 5 ? 'visible' : ''}}">
+    <button class="btn btn-gold btn-scroll-share" open-type="share">
+      <view class="btn-share-inner">
+        <icon-guo name="seal" size="32" color="#C8A55B" />
+        <text>{{t.achShare}}</text>
+      </view>
+    </button>
+    <view class="btn btn-outline" bindtap="goBack">{{t.achBack}}</view>
+  </view>
+</view>

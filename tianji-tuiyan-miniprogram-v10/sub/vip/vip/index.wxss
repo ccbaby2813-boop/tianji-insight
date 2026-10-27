@@ -1,0 +1,827 @@
+/* sub/vip/vip/index.wxss - VIP会员页：纯黑画布·金箔礼盒
+ * Visual Thesis: 纯黑#000000画布承载金箔礼盒，buy-btn金光流转，权益列表对勾金线点睛
+ * 改造要点：使用 .theme-ink 纯黑底色 + --gold-pure 克制纯金 + 金边光晕呼吸 + 卷轴边框
+ */
+
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-base);
+  overflow-x: hidden;
+}
+
+/* .theme-ink 已在 app.wxss 定义：纯黑#000000 + 极淡水墨纹理 */
+
+.vip-content {
+  height: 100vh;
+  padding: 0 32rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+/* ========================================
+ * 合规横幅 — 极致克制：仅左侧金线 + 金色文字
+ * ======================================== */
+.compliance-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 24rpx 32rpx;
+  margin: 24rpx 0 32rpx;
+  background: transparent;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s var(--ease-out-expo) both;
+}
+
+/* 左侧金色立线 — 极细 1rpx，纯净 */
+.compliance-banner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2rpx;
+  background: linear-gradient(180deg, var(--gold-pure), var(--gold-pure-dim));
+}
+
+.compliance-text {
+  font-size: 24rpx;
+  color: var(--gold-pure);
+  font-weight: 400;
+  letter-spacing: 2rpx;
+  opacity: 0.85;
+}
+
+/* ========================================
+ * 头部 — L0 展示字 + VIP态金边光晕呼吸
+ * ======================================== */
+.vip-header {
+  text-align: center;
+  padding: 64rpx 0 48rpx;
+  animation: fadeInUp 0.7s var(--ease-out-expo) 0.1s both;
+  position: relative;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+/* VIP状态卡金边光晕呼吸动效 */
+.vip-header-active {
+  position: relative;
+}
+
+.vip-header-active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480rpx;
+  height: 240rpx;
+  background: radial-gradient(ellipse, rgba(200, 165, 91, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+  animation: vipGoldBreathe 3.2s ease-in-out infinite;
+  z-index: 0;
+}
+
+.vip-header-active::after {
+  content: '';
+  position: absolute;
+  top: 24rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--gold-pure), transparent);
+  z-index: 1;
+}
+
+@keyframes vipGoldBreathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.vip-title {
+  font-size: 56rpx;
+  color: var(--gold-pure);
+  display: block;
+  word-break: break-word;
+  letter-spacing: 12rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.vip-sub {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 16rpx;
+  word-break: break-word;
+  letter-spacing: 4rpx;
+  position: relative;
+  z-index: 2;
+}
+
+/* ========================================
+ * 套餐卡片 — 金箔礼盒 · 选中态金边
+ * ======================================== */
+.plan-cards {
+  display: flex;
+  gap: 32rpx;
+  margin-bottom: 32rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.2s both;
+}
+
+.plan-card {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border-radius: 0;
+  padding: 48rpx 24rpx;
+  text-align: center;
+  border: none;
+  border-left: 1rpx solid var(--gold-pure-dim);
+  position: relative;
+  transition: all 0.3s var(--ease-out-expo);
+  overflow: hidden;
+}
+
+/* 选中态：金色左线 + 极淡金底 */
+.plan-card.active {
+  border: none;
+  border-left: 1rpx solid var(--gold-pure);
+  background: rgba(200, 165, 91, 0.04);
+}
+
+/* 顶部金线（选中态） */
+.plan-card.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--gold-pure), transparent);
+}
+
+.plan-card:active {
+  transform: scale(0.97);
+}
+
+/* 推荐印章角标 — 朱文印风格（参考 .seal-mark） */
+.seal-recommend {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  width: 64rpx;
+  height: 64rpx;
+  border: 2rpx solid var(--gold-pure);
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  font-family: "LXGWWenKaiMedium", "STKaiti", serif;
+  letter-spacing: 0;
+  background: rgba(200, 165, 91, 0.08);
+  z-index: 3;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.plan-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+  word-break: break-word;
+  letter-spacing: 2rpx;
+}
+
+.plan-price {
+  font-size: 44rpx;
+  color: var(--gold-pure);
+  display: block;
+  margin: 20rpx 0;
+  font-weight: 700;
+}
+
+.plan-desc {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: block;
+  word-break: break-word;
+  letter-spacing: 1rpx;
+}
+
+/* ========================================
+ * 购买按钮 — 金光流转
+ * ======================================== */
+.buy-btn {
+  background: var(--gold-pure);
+  color: var(--bg-ink);
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  margin: 32rpx 0;
+  height: 100rpx;
+  border: none;
+  letter-spacing: 8rpx;
+  box-shadow:
+    0 8rpx 32rpx rgba(200, 165, 91, 0.35),
+    0 0 24rpx rgba(200, 165, 91, 0.2),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+/* ::before 光效流转 */
+.buy-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.6s var(--ease-out-expo);
+}
+
+.buy-btn:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 4rpx 16rpx rgba(200, 165, 91, 0.5),
+    0 0 24rpx rgba(200, 165, 91, 0.3);
+}
+
+.buy-btn:active::before {
+  left: 100%;
+}
+
+/* ========================================
+ * 特权列表 — 对勾 SVG 图标点睛
+ * ======================================== */
+.privileges {
+  background: transparent;
+  border-radius: 0;
+  padding: 32rpx 0 32rpx 24rpx;
+  margin-bottom: 48rpx;
+  border: none;
+  border-left: 1rpx solid var(--gold-pure-dim);
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.3s both;
+}
+
+.priv-title {
+  font-size: 32rpx;
+  color: var(--gold-pure);
+  display: block;
+  margin-bottom: 28rpx;
+  font-weight: 700;
+  letter-spacing: 6rpx;
+}
+
+.priv-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 4rpx 0;
+}
+
+.priv-item:last-child {
+  margin-bottom: 0;
+}
+
+.priv-item-text {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  line-height: 1.6;
+  letter-spacing: 1rpx;
+}
+
+/* ========================================
+ * 超级推演入口 — active 态金光晕
+ * ======================================== */
+.secret-entry {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(145deg, #E8B4B8 0%, #D4A5A8 25%, #C89696 50%, #B88080 75%, #A87070 100%);
+  border-radius: 24rpx;
+  padding: 32rpx 40rpx;
+  margin-bottom: 32rpx;
+  border: none;
+  box-shadow: 
+    0 8rpx 24rpx rgba(184, 128, 128, 0.4),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s var(--ease-out-expo);
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.4s both;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 金属光泽高光 */
+.secret-entry::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.secret-entry.active {
+  background: linear-gradient(145deg, #F0C8CC 0%, #E8B4B8 25%, #D4A5A8 50%, #C89696 75%, #B88080 100%);
+  box-shadow: 
+    0 12rpx 32rpx rgba(184, 128, 128, 0.5),
+    0 0 40rpx rgba(232, 180, 184, 0.3),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.1);
+}
+
+.secret-entry.active:active {
+  transform: scale(0.98);
+  box-shadow: 
+    0 4rpx 16rpx rgba(184, 128, 128, 0.3),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.15);
+}
+
+.secret-entry.used {
+  background: linear-gradient(145deg, #8B7B7B 0%, #7A6B6B 25%, #6B5C5C 50%, #5C4D4D 75%, #4D3E3E 100%);
+  box-shadow: 
+    0 4rpx 16rpx rgba(77, 62, 62, 0.3),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}
+
+.secret-entry.locked {
+  background: linear-gradient(145deg, #8B7B7B 0%, #7A6B6B 25%, #6B5C5C 50%, #5C4D4D 75%, #4D3E3E 100%);
+  box-shadow: 
+    0 4rpx 16rpx rgba(77, 62, 62, 0.3),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2rpx 0 rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+}
+
+.secret-info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.secret-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #FFF5F5;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+  display: block;
+  margin-bottom: 8rpx;
+  letter-spacing: 2rpx;
+}
+
+.secret-desc {
+  font-size: 24rpx;
+  color: rgba(255, 245, 245, 0.85);
+  text-shadow: 0 2rpx 2rpx rgba(0, 0, 0, 0.15);
+  display: block;
+  letter-spacing: 1rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.secret-note {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  letter-spacing: 0.5rpx;
+  line-height: 1.4;
+  margin-top: 4rpx;
+  opacity: 0.7;
+}
+
+/* ========================================
+ * 深度解读介绍卡片
+ * ======================================== */
+.deep-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 40rpx;
+  background: rgba(200, 165, 91, 0.04);
+  border: 1rpx solid rgba(200, 165, 91, 0.15);
+  border-radius: 20rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.2s both;
+}
+
+.deep-intro-icon {
+  flex-shrink: 0;
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(200, 165, 91, 0.08);
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.2);
+}
+
+.deep-intro-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.deep-intro-title {
+  font-size: 28rpx;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 12rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+}
+
+.deep-intro-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  letter-spacing: 0.5rpx;
+}
+
+/* ========================================
+ * 续费按钮
+ * ======================================== */
+.manage-btn {
+  background: var(--gold-pure);
+  color: var(--bg-ink);
+  font-size: 30rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  margin: 24rpx 0;
+  height: 96rpx;
+  border: none;
+  letter-spacing: 6rpx;
+  box-shadow:
+    0 6rpx 24rpx rgba(200, 165, 91, 0.3),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.manage-btn:active {
+  transform: scale(0.97);
+}
+
+/* ========================================
+ * 底部
+ * ======================================== */
+.vip-footer {
+  text-align: center;
+  padding: 24rpx 0 calc(24rpx + env(safe-area-inset-bottom));
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  line-height: 1.5;
+  letter-spacing: 1rpx;
+}
+
+.secret-divider {
+  text-align: center;
+  padding: 16rpx 0;
+  margin-bottom: 24rpx;
+  position: relative;
+}
+
+.secret-divider-text {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  letter-spacing: 6rpx;
+  position: relative;
+  display: inline-block;
+  padding: 0 24rpx;
+  background: var(--bg-ink);
+}
+
+.secret-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--gold-pure-dim), transparent);
+  z-index: 0;
+}
+
+.secret-divider-text {
+  z-index: 1;
+}
+
+/* 入场动画使用全局 @keyframes fadeInUp（定义于 app.wxss） */
+
+/* ========================================
+ * 手机号绑定弹窗 — 纯黑画布·卷轴边框装饰
+ * ======================================== */
+.bind-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+  animation: fadeIn 0.25s var(--ease-out-expo) both;
+}
+
+.bind-dialog {
+  width: 100%;
+  max-width: 620rpx;
+  background: var(--bg-elevated);
+  border-radius: 0;
+  border: none;
+  border-left: 1rpx solid var(--gold-pure-dim);
+  padding: 56rpx 40rpx 32rpx;
+  box-sizing: border-box;
+  box-shadow:
+    0 0 48rpx rgba(200, 165, 91, 0.25),
+    0 16rpx 48rpx rgba(0, 0, 0, 0.6);
+  animation: scaleIn 0.35s var(--ease-out-expo) both;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 卷轴上下端装饰 — 横向金线 + 端点圆点 */
+.scroll-rod {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gold-pure) 8%,
+    var(--gold-pure) 92%,
+    transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scroll-rod::before,
+.scroll-rod::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--gold-pure);
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.6);
+}
+
+.scroll-rod::before { left: 16rpx; }
+.scroll-rod::after { right: 16rpx; }
+
+.scroll-rod-top {
+  top: 32rpx;
+}
+
+.scroll-rod-bottom {
+  bottom: 32rpx;
+}
+
+.bind-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--gold-pure);
+  text-align: center;
+  display: block;
+  letter-spacing: 8rpx;
+  margin-top: 8rpx;
+}
+
+.bind-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  text-align: center;
+  display: block;
+  margin: 16rpx 0 32rpx;
+  line-height: 1.6;
+  letter-spacing: 1rpx;
+}
+
+.bind-field {
+  margin-bottom: 24rpx;
+}
+
+.bind-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg-ink);
+  border: 1rpx solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 0 24rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  letter-spacing: 2rpx;
+}
+
+.bind-placeholder {
+  color: var(--text-muted);
+}
+
+.bind-field-code {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.bind-input-code {
+  flex: 1;
+  min-width: 0;
+}
+
+.send-code-btn {
+  flex-shrink: 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 24rpx;
+  background: rgba(200, 165, 91, 0.08);
+  color: var(--gold-pure);
+  border: 1rpx solid var(--gold-pure);
+  border-radius: var(--radius-md);
+  font-size: 26rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  margin: 0;
+  white-space: nowrap;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.send-code-btn::after {
+  border: none;
+}
+
+.send-code-btn:active {
+  transform: scale(0.96);
+}
+
+.send-code-btn.disabled,
+.send-code-btn[disabled] {
+  opacity: 0.4;
+  color: var(--text-secondary);
+  background: var(--bg-muted);
+  border-color: var(--border-default);
+}
+
+.bind-confirm-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: var(--gold-pure);
+  color: var(--bg-ink);
+  font-size: 32rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: none;
+  letter-spacing: 6rpx;
+  margin: 16rpx 0 8rpx;
+  box-shadow:
+    0 8rpx 32rpx rgba(200, 165, 91, 0.35),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.bind-confirm-btn::after {
+  border: none;
+}
+
+.bind-confirm-btn:active {
+  transform: scale(0.97);
+}
+
+.bind-confirm-btn[disabled] {
+  opacity: 0.5;
+}
+
+.bind-cancel {
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  padding: 16rpx 0 8rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .buy-btn { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 30rpx; line-height: 1.3; }
+.lang-en .bind-confirm-btn {
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 2rpx; text-indent: 2rpx; font-size: 30rpx;
+  line-height: 1.3; height: auto; min-height: 96rpx;
+  padding: 0 20rpx; box-sizing: border-box; white-space: normal;
+}
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .vip-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 36rpx; line-height: 1.25; }
+
+/* ===== EN-i18n 补充：推荐印章/权益/按钮/文案防出框 ===== */
+/* 推荐印章：64rpx 方框放不下 "Recommended"，英文加宽为矩形+缩字号 */
+.lang-en .seal-recommend {
+  width: auto; min-width: 64rpx; height: auto; min-height: 48rpx;
+  padding: 6rpx 12rpx; font-size: 16rpx; line-height: 1.3;
+  letter-spacing: 0; word-break: break-word; text-align: center;
+}
+/* 权益文字：允许换行+占据剩余空间 */
+.lang-en .priv-item-text { flex: 1; min-width: 0; word-break: break-word; line-height: 1.5; }
+.lang-en .priv-title { word-break: break-word; letter-spacing: 2rpx; }
+/* 验证码按钮：nowrap 可能溢出，英文允许换行+缩字号 */
+.lang-en .send-code-btn { white-space: normal; line-height: 1.3; height: auto; min-height: 88rpx; font-size: 22rpx; padding: 8rpx 16rpx; box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: center; }
+/* 合规文案：允许换行 */
+.lang-en .compliance-text, .lang-en .footer-text { word-break: break-word; line-height: 1.5; text-align: center; }
+/* 价格：允许换行 */
+.lang-en .plan-price { word-break: break-word; font-size: 36rpx; }
+.lang-en .plan-name { letter-spacing: 1rpx; font-size: 24rpx; }
+/* 深度解读介绍 */
+.lang-en .deep-intro-title { word-break: break-word; letter-spacing: 1rpx; }
+.lang-en .deep-intro-desc { word-break: break-word; line-height: 1.6; }
+/* 管理/续费按钮 */
+.lang-en .manage-btn { letter-spacing: 2rpx; font-size: 26rpx; line-height: 1.3; height: auto; min-height: 96rpx; padding: 0 20rpx; box-sizing: border-box; white-space: normal; display: flex; align-items: center; justify-content: center; }
+/* 绑定弹窗 */
+.lang-en .bind-title { word-break: break-word; letter-spacing: 2rpx; font-size: 30rpx; }
+.lang-en .bind-desc { word-break: break-word; line-height: 1.5; }
+.lang-en .bind-cancel { word-break: break-word; }
+/* 分隔线文字 */
+.lang-en .secret-divider-text { word-break: break-word; letter-spacing: 2rpx; font-size: 18rpx; }
+/* VIP 副标题 */
+.lang-en .vip-sub { letter-spacing: 1rpx; word-break: break-word; }
+
+/* v3.4.1 M13：一次性买断说明 */
+.purchase-note {
+  padding: 20rpx 28rpx;
+  margin: 24rpx 32rpx 0;
+  background: rgba(200, 165, 91, 0.06);
+  border: 1rpx dashed rgba(200, 165, 91, 0.35);
+  border-radius: 12rpx;
+}
+.purchase-note-text {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  letter-spacing: 1rpx;
+}
+
+/* v3.4.1 M13：恢复购买入口 */
+.restore-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 32rpx 0;
+  padding: 24rpx 28rpx;
+  background: var(--bg-card);
+  border: 1rpx solid var(--border-subtle);
+  border-radius: 16rpx;
+}
+.restore-entry:active {
+  background: var(--bg-elevated);
+}
+.restore-entry-text {
+  font-size: 26rpx;
+  color: var(--text-primary);
+}
+
+/* v3.4 客服入口（华为审核：付费应用需提供客服联系方式） */
+.contact-service {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32rpx 0 8rpx;
+  padding: 28rpx 32rpx;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1rpx solid rgba(200, 165, 91, 0.25);
+  border-radius: 16rpx;
+  box-sizing: border-box;
+}
+.contact-service-text {
+  color: #C8C8D0;
+  font-size: 28rpx;
+  letter-spacing: 1rpx;
+}
+.lang-en .contact-service-text { word-break: break-word; line-height: 1.4; }
+.contact-service-hover { opacity: 0.7; transform: scale(0.99); }

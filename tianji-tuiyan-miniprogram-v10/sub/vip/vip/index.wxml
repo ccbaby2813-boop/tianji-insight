@@ -1,0 +1,105 @@
+<view class="page-container page-vip theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <scroll-view class="vip-content" scroll-y>
+    <!-- 顶部合规提示 -->
+    <view class="compliance-banner">
+      <text class="compliance-text">{{t.compliance}}</text>
+    </view>
+    <!-- 状态卡片 — VIP态启用金边光晕呼吸 -->
+    <view class="vip-header {{isVip ? 'vip-header-active' : ''}}">
+      <text class="vip-title font-display">{{isVip ? t.titleOn : t.titleOff}}</text>
+      <text class="vip-sub" wx:if="{{isVip}}">{{remainDaysText}}</text>
+      <text class="vip-sub" wx:else>{{t.subOff}}</text>
+    </view>
+
+    <view class="plan-cards">
+      <view class="plan-card {{plan==='monthly'?'active':''}}" bindtap="selectPlan" data-plan="monthly">
+        <text class="plan-name">{{t.planMonthly}}</text>
+        <text class="plan-price">{{priceMonthly}}</text>
+      </view>
+      <view class="plan-card {{plan==='yearly'?'active':''}}" bindtap="selectPlan" data-plan="yearly">
+        <!-- 推荐印章角标（朱文印风格） -->
+        <view class="seal-mark seal-recommend animate-seal-stamp">{{t.recommend}}</view>
+        <text class="plan-name">{{t.planYearly}}</text>
+        <text class="plan-price">{{priceYearly}}</text>
+      </view>
+    </view>
+
+    <!-- 非VIP：购买按钮 -->
+    <button aria-label="{{t.buyNow}}" wx:if="{{!isVip}}" class="buy-btn" bindtap="buyVip">{{t.buyNow}}</button>
+
+    <!-- VIP已开通：管理按钮 -->
+    <button aria-label="{{t.renew}}" wx:if="{{isVip}}" class="manage-btn" bindtap="buyVip">{{t.renew}}</button>
+
+    <!-- 深度解读介绍（始终显示） -->
+    <view class="secret-divider" wx:if="{{!isVip}}"><text class="secret-divider-text">{{t.dividerText}}</text></view>
+    <view class="deep-intro">
+      <view class="deep-intro-icon">
+        <icon-guo name="scroll" size="40" color="#C8A55B" />
+      </view>
+      <view class="deep-intro-content">
+        <text class="deep-intro-title font-title">{{t.deepTitle}}</text>
+        <text class="deep-intro-desc">{{t.deepDesc}}</text>
+      </view>
+    </view>
+
+    <view class="privileges">
+      <text class="priv-title font-title">{{t.privTitle}}</text>
+      <view class="priv-item">
+        <icon-guo name="check" size="24" color="#C8A55B" />
+        <text class="priv-item-text">{{t.priv1}}</text>
+      </view>
+      <view class="priv-item">
+        <icon-guo name="check" size="24" color="#C8A55B" />
+        <text class="priv-item-text">{{t.priv2}}</text>
+      </view>
+      <view class="priv-item">
+        <icon-guo name="check" size="24" color="#C8A55B" />
+        <text class="priv-item-text">{{t.priv3}}</text>
+      </view>
+      <view class="priv-item">
+        <icon-guo name="check" size="24" color="#C8A55B" />
+        <text class="priv-item-text">{{t.priv4}}</text>
+      </view>
+    </view>
+
+    <!-- v3.4 客服入口（华为审核：付费应用需提供客服联系方式；原在"我的"页，按方案B移至购买页） -->
+    <view class="contact-service" hover-class="contact-service-hover" hover-stay-time="120" bindtap="contactService">
+      <text class="contact-service-text font-title">{{t.contactService}}</text>
+      <icon-guo name="chevron-right" size="28" color="#A0A0B0" />
+    </view>
+  </scroll-view>
+  <view class="vip-footer">
+    <text class="footer-text">{{t.copyright}}</text>
+  </view>
+
+  <!-- 手机号绑定弹窗（购买VIP前触发） — 卷轴边框装饰 -->
+  <view class="bind-mask" wx:if="{{showBindDialog}}" bindtap="closeBindDialog" catchtouchmove="noop">
+    <view class="bind-dialog" catchtap="noop">
+      <!-- 卷轴上下端装饰 -->
+      <view class="scroll-rod scroll-rod-top"></view>
+      <view class="scroll-rod scroll-rod-bottom"></view>
+      <view class="bind-title font-title">{{t.bindTitle}}</view>
+      <view class="bind-desc">{{t.bindDesc}}</view>
+
+      <view class="bind-field">
+        <input class="bind-input" type="number" maxlength="11" placeholder="{{t.bindPhonePlaceholder}}"
+               placeholder-class="bind-placeholder" value="{{bindPhone}}" bindinput="onBindPhoneInput" />
+      </view>
+
+      <view class="bind-field bind-field-code">
+        <input class="bind-input bind-input-code" type="number" maxlength="6" placeholder="{{t.bindCodePlaceholder}}"
+               placeholder-class="bind-placeholder" value="{{bindCode}}" bindinput="onBindCodeInput" />
+        <button class="send-code-btn {{countdown>0?'disabled':''}}" bindtap="sendBindCode"
+                disabled="{{countdown>0||sendingCode}}">
+          {{countdown>0 ? countdown+'s' : t.sendCode}}
+        </button>
+      </view>
+
+      <button class="bind-confirm-btn" bindtap="confirmBind" disabled="{{binding}}" loading="{{binding}}">
+        {{binding ? t.binding : t.bindConfirm}}
+      </button>
+
+      <view class="bind-cancel" bindtap="closeBindDialog">{{t.bindCancel}}</view>
+    </view>
+  </view>
+</view>

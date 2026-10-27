@@ -1,0 +1,103 @@
+<!-- pages/profile/index.wxml - 建档页 v2.2
+  三端统一：与修改档案页/我的页同款黑金极简风格（菜单式表单行 + 细金线 + 左对齐标题区）
+-->
+<view class="page-container page-profile theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <scroll-view class="profile-content" scroll-y>
+
+    <!-- 顶部标题区：左对齐 + 细金线 + 合规提示 -->
+    <view class="page-header">
+      <text class="page-title font-display">{{t.title}}</text>
+      <view class="title-underline"></view>
+      <text class="page-subtitle font-quote">{{t.disclaimer}}</text>
+    </view>
+
+    <!-- 表单主体 -->
+    <view class="form-list">
+
+      <!-- 昵称 -->
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.nicknameLabel}}</text>
+          <text class="form-counter font-quote">{{nickname.length}}/10</text>
+        </view>
+        <input class="form-input" aria-label="{{t.nicknamePlaceholder}}" placeholder="{{t.nicknamePlaceholder}}" placeholder-class="form-placeholder" value="{{nickname}}" maxlength="10" bindinput="onInput" data-key="nickname" />
+      </view>
+
+      <!-- 出生日期 -->
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.birthLabel}}</text>
+          <text class="form-hint-inline font-quote">{{t.birthHint}}</text>
+        </view>
+        <picker mode="date" value="{{birthDate}}" start="1900-01-01" end="{{maxDate}}" bindchange="onBirthDateChange">
+          <view class="picker-display {{birthDate?'':'placeholder'}}">
+            <text class="picker-text font-title">{{birthDate || t.birthPlaceholder}}</text>
+            <view class="picker-arrow">
+              <icon-guo name="chevron-down" size="22" color="#C8A55B" />
+            </view>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 出生时间段 -->
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.shichenLabel}}</text>
+        </view>
+        <picker range="{{shichenOptions}}" value="{{shichenIndex}}" bindchange="onShichen">
+          <view class="picker-display {{shichenLabel?'':'placeholder'}}">
+            <text class="picker-text font-title">{{shichenLabel || t.shichenPlaceholder}}</text>
+            <view class="picker-arrow">
+              <icon-guo name="chevron-down" size="22" color="#C8A55B" />
+            </view>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 性别 -->
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.genderLabel}}</text>
+        </view>
+        <view class="gender-group">
+          <view class="gender-option {{gender==='male'?'active':''}}" bindtap="onGender" data-val="male">
+            <text class="gender-text font-title">{{t.male}}</text>
+          </view>
+          <view class="gender-option {{gender==='female'?'active':''}}" bindtap="onGender" data-val="female">
+            <text class="gender-text font-title">{{t.female}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 协议勾选 -->
+      <view class="form-item agreement-item">
+        <checkbox-group bindchange="onAgreement">
+          <label class="agreement-label">
+            <checkbox value="agreed" checked="{{agreed}}" />
+            <text class="agreement-text font-quote">{{t.agreePrefix}}</text>
+            <text class="agreement-link" catchtap="showAgreement">{{t.agreementLink}}</text>
+            <text class="agreement-text font-quote">{{t.agreeAnd}}</text>
+            <text class="agreement-link" catchtap="showPrivacy">{{t.privacyLink}}</text>
+          </label>
+        </checkbox-group>
+      </view>
+
+    </view>
+
+    <!-- 提交区：极简金线按钮 -->
+    <view class="form-submit-area">
+      <button aria-label="{{t.submit}}" class="submit-btn" bindtap="onSubmit" disabled="{{!canSubmit || isSubmitting}}">
+        <text class="submit-text font-title">{{isSubmitting ? t.submitting : t.submit}}</text>
+      </button>
+      <text class="submit-hint" wx:if="{{!agreed}}">{{t.submitHint}}</text>
+
+      <!-- 游客登录入口 -->
+      <view class="login-entry-wrap">
+        <view class="login-entry-btn" bindtap="goLogin">
+          <text class="login-entry-text font-title">{{t.loginEntry}}</text>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "bottom-declaration": "/components/bottom-declaration/bottom-declaration",
+    "jieqi-bar": "/components/jieqi-bar/jieqi-bar",
+    "icon-guo": "/components/icon-guo/icon-guo"
+  },
+  "navigationBarTitleText": "天機推演",
+  "navigationStyle": "custom"
+}

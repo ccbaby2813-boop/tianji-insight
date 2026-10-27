@@ -1,0 +1,50 @@
+# 依赖与构建产物
+node_modules/
+miniprogram_npm/
+unpackage/
+dist/
+build/
+*.tsbuildinfo
+
+# 环境与密钥（严禁提交）
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+secrets/
+**/secrets/
+**/*service-account*.json
+**/google-services.json
+**/agconnect-services.json
+
+# 安装包与二进制
+*.apk
+*.aab
+*.ipa
+*.so
+*.dll
+*.exe
+*.dmg
+
+# 日志与临时文件
+*.log
+*.bak
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+__pycache__/
+.venv/
+venv/
+
+# 设计/截图等大体积材料
+_shots/
+页面截图/
+页面设计稿合集/
+backup/
+backups/

@@ -1,0 +1,4 @@
+<!-- components/bottom-declaration/bottom-declaration.wxml -->
+<view class="footer-disclaimer">
+  <text>{{t}}</text>
+</view>

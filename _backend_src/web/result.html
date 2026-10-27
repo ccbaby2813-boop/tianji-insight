@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>推演结果 · 天机推演</title>
+<style>
+  /* ===== 颜色变量（照 APP theme-ink） ===== */
+  :root {
+    --bg-ink: #0A0A1A;
+    --bg-ink-elevated: #14142B;
+    --text-primary: #E8E8F0;
+    --text-secondary: #A0A0B0;
+    --text-muted: #6A6A7A;
+    --text-faint: rgba(232,232,240,0.35);
+    --text-inverse: #0A0A1A;
+    --gold-pure: #C8A55B;
+    --accent-gold: #C8A55B;
+    --accent-gold-border: rgba(200,165,91,0.25);
+    --accent-gold-subtle: rgba(200,165,91,0.06);
+    --border-subtle: rgba(232,232,240,0.04);
+    --ease-out-expo: cubic-bezier(0.16,1,0.3,1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body {
+    background: var(--bg-ink);
+    background-image: linear-gradient(135deg, rgba(200,165,91,0.03) 0%, transparent 50%, rgba(200,165,91,0.02) 100%);
+    color: var(--text-primary);
+    font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { width:100%; max-width:460px; margin:0 auto; padding-bottom:100px; position:relative; overflow-x:hidden; }
+
+  /* ===== 分享查看提示 ===== */
+  .shared-notice {
+    background: linear-gradient(90deg, transparent, rgba(200,165,91,0.06), transparent);
+    padding:12px 16px; text-align:center; font-size:12px; color:var(--accent-gold);
+    letter-spacing:0.5px; opacity:0.8;
+  }
+
+  /* ===== 首屏仪式感区域 ===== */
+  .hero-section { text-align:center; padding:40px 16px 24px; position:relative; overflow:hidden; }
+  .hero-section::before {
+    content:''; position:absolute; top:0; left:50%; width:300px; height:300px; margin-left:-150px;
+    background: radial-gradient(circle, rgba(200,165,91,0.08) 0%, transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+  .hero-title, .hero-symbol, .hero-gua-info { position:relative; z-index:1; }
+  .hero-title { text-align:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--accent-gold-border); }
+  .hero-title-text { font-size:13px; color:var(--accent-gold); letter-spacing:3px; font-weight:300; word-break:break-word; opacity:0.6; }
+
+  /* 卦符（超大，视觉锚点） */
+  .hero-symbol {
+    font-size:110px; line-height:1; color:var(--gold-pure); display:block; margin:12px 0;
+    text-shadow: 0 0 20px rgba(200,165,91,0.5), 0 0 40px rgba(200,165,91,0.25), 0 0 60px rgba(200,165,91,0.1);
+    font-family: serif;
+  }
+
+  /* 卦名 + 卦格 */
+  .hero-gua-info { margin-top:10px; }
+  .hero-gua-name { font-size:30px; color:var(--text-primary); display:block; letter-spacing:6px; word-break:break-word; font-weight:500; }
+  .hero-gua-ge { font-size:13px; color:var(--text-muted); display:block; margin-top:8px; letter-spacing:4px; word-break:break-word; opacity:0.7; }
+
+  /* ===== 金线分隔 ===== */
+  .divider-gold {
+    width:60px; height:1px; background:linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    margin:16px auto; border-radius:1px;
+  }
+
+  /* ===== 判词 ===== */
+  .verdict-section { padding:0 20px; text-align:center; position:relative; }
+  .verdict-section::before, .verdict-section::after {
+    content:''; position:absolute; top:20%; bottom:20%; width:1px;
+    background:linear-gradient(180deg, transparent, var(--accent-gold-border), transparent); opacity:0.4;
+  }
+  .verdict-section::before { left:8px; }
+  .verdict-section::after { right:8px; }
+  .verdict-text { font-size:17px; color:var(--text-primary); line-height:1.8; letter-spacing:1px; word-break:break-word; }
+
+  /* ===== 历史对标金句 ===== */
+  .quote-section {
+    padding:16px 20px; margin:8px 16px; text-align:center; position:relative;
+    background:linear-gradient(135deg, rgba(200,165,91,0.06), rgba(200,165,91,0.02));
+    border-radius:4px;
+  }
+  .quote-section::before {
+    content:'\201C'; position:absolute; top:-5px; left:10px; font-size:40px; color:var(--accent-gold);
+    opacity:0.12; font-family:Georgia,serif; line-height:1;
+  }
+  .quote-text { font-size:15px; color:var(--gold-pure); line-height:1.8; letter-spacing:1px; word-break:break-word; opacity:0.9; }
+
+  /* ===== 自嘲标签 ===== */
+  .tag-section { display:flex; align-items:center; justify-content:flex-end; gap:4px; margin:12px 16px; padding:4px 10px; }
+  .tag-icon { width:14px; height:14px; opacity:0.9; }
+  .tag-text { font-size:12px; color:var(--gold-pure); word-break:break-word; }
+
+  /* ===== 折叠区 ===== */
+  .collapse-section { margin:0 16px; }
+  .collapse-header {
+    margin:0; padding:16px 0; border-bottom:1px solid var(--border-subtle);
+    display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  }
+  .collapse-header-title { position:relative; display:inline-block; font-size:14px; color:var(--text-secondary); letter-spacing:2px; }
+  .collapse-header-title::before {
+    content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent-gold);
+    box-shadow:0 0 4px rgba(200,165,91,0.5); margin-right:6px; vertical-align:middle; position:relative; top:-1px;
+  }
+  .collapse-arrow { font-size:12px; color:#A0A0B0; transition:transform 0.3s var(--ease-out-expo); }
+  .collapse-section.open .collapse-arrow { transform:rotate(180deg); }
+  .collapse-body { display:none; }
+  .collapse-section.open .collapse-body { display:block; }
+  .collapse-body-inner { padding:16px 0; }
+
+  /* 解读正文 */
+  .jiedu-text { font-size:15px; color:var(--text-secondary); line-height:2; letter-spacing:0.5px; word-break:break-word; opacity:0.9; text-align:justify; }
+
+  /* ===== 奇门遁甲 ===== */
+  .qimen-group { margin-bottom:14px; }
+  .qimen-group:last-child { margin-bottom:0; }
+  .qimen-group-em {
+    padding:10px 10px 12px; background:linear-gradient(135deg, rgba(200,165,91,0.08) 0%, rgba(200,165,91,0.03) 100%);
+    border:1px solid rgba(200,165,91,0.25); border-radius:4px; margin-left:-4px; margin-right:-4px;
+  }
+  .qimen-group-title { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--gold-pure); letter-spacing:2px; margin-bottom:8px; opacity:0.9; font-weight:500; }
+  .qimen-group-dot { width:4px; height:4px; border-radius:50%; background:var(--gold-pure); box-shadow:0 0 4px rgba(200,165,91,0.6); }
+  .qimen-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .qimen-cell {
+    padding:8px 9px; background:rgba(255,255,255,0.03); border:1px solid rgba(200,165,91,0.12);
+    border-radius:3px; display:flex; flex-direction:column; gap:3px;
+  }
+  .qimen-cell-star, .qimen-cell-door, .qimen-cell-shen { position:relative; padding-left:11px; }
+  .qimen-cell-star::before, .qimen-cell-door::before, .qimen-cell-shen::before {
+    content:''; position:absolute; left:0; top:6px; bottom:6px; width:2px; border-radius:1px;
+  }
+  .qimen-cell-star::before { background:linear-gradient(180deg, #E8C57A, #C8A55B); }
+  .qimen-cell-door::before { background:linear-gradient(180deg, #C8A55B, #8B7340); }
+  .qimen-cell-shen::before { background:linear-gradient(180deg, rgba(200,165,91,0.6), rgba(139,115,64,0.3)); }
+  .qimen-cell-head { display:flex; align-items:center; justify-content:space-between; gap:4px; margin-bottom:1px; }
+  .qimen-cell-label { font-size:10px; color:var(--gold-pure); letter-spacing:1.5px; opacity:0.85; font-weight:500; }
+  .qimen-luck-badge { font-size:9px; padding:1px 5px; border-radius:999px; border:1px solid; letter-spacing:0.5px; line-height:1.4; }
+  .qimen-luck-daji, .qimen-luck-ji, .qimen-luck-ciji { color:#7A9A5D; border-color:rgba(90,122,61,0.5); background:rgba(90,122,61,0.1); }
+  .qimen-luck-xiong, .qimen-luck-daxiong, .qimen-luck-xiaoxiong { color:#B05A47; border-color:rgba(176,67,47,0.5); background:rgba(176,67,47,0.1); }
+  .qimen-luck-ping, .qimen-luck-zhongping { color:#8B7340; border-color:rgba(139,115,64,0.5); background:rgba(139,115,64,0.1); }
+  .qimen-cell-value { font-size:15px; color:var(--text-primary); line-height:1.4; letter-spacing:1px; font-weight:500; }
+  .qimen-cell-sub { font-size:11px; color:var(--text-faint); line-height:1.5; letter-spacing:0.5px; opacity:0.8; }
+
+  /* 五行生克 */
+  .qimen-relation-row { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+  .qimen-relation-side { display:flex; flex-direction:column; align-items:center; gap:3px; flex-shrink:0; }
+  .qimen-relation-label { font-size:9px; color:var(--gold-pure); letter-spacing:1px; opacity:0.7; }
+  .qimen-relation-value {
+    font-size:20px; font-weight:800; width:36px; height:36px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; border:1px solid;
+  }
+  .wuxing-jin { color:#C8A55B; border-color:rgba(200,165,91,0.6); background:rgba(200,165,91,0.1); }
+  .wuxing-mu { color:#7A9A5D; border-color:rgba(90,122,61,0.6); background:rgba(90,122,61,0.1); }
+  .wuxing-shui { color:#5A7FA8; border-color:rgba(58,95,140,0.6); background:rgba(58,95,140,0.1); }
+  .wuxing-huo { color:#B05A47; border-color:rgba(176,67,47,0.6); background:rgba(176,67,47,0.1); }
+  .wuxing-tu { color:#C8A55B; border-color:rgba(139,107,74,0.6); background:rgba(139,107,74,0.1); }
+  .qimen-relation-arrow { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; min-width:0; }
+  .qimen-relation-op { font-size:14px; color:var(--gold-pure); font-weight:600; letter-spacing:1px; }
+  .qimen-relation-desc { font-size:10px; color:var(--text-faint); text-align:center; line-height:1.4; opacity:0.8; }
+
+  /* ===== 宜忌 ===== */
+  .yiji-grid { display:flex; flex-direction:column; gap:20px; }
+  .yi-block, .ji-block { width:100%; min-width:0; }
+  .yi-title, .ji-title {
+    font-size:16px; font-weight:600; letter-spacing:2px; display:flex; align-items:center; gap:10px; margin-bottom:10px;
+  }
+  .yi-title::after, .ji-title::after { content:''; flex:1; height:1px; }
+  .yi-title { color:var(--gold-pure); }
+  .yi-title::after { background:linear-gradient(90deg, rgba(200,165,91,0.35), transparent); }
+  .ji-title { color:var(--text-muted); }
+  .ji-title::after { background:linear-gradient(90deg, rgba(160,160,176,0.3), transparent); }
+  .yi-items, .ji-items { display:flex; flex-direction:column; gap:7px; }
+  .yi-item, .ji-item {
+    font-size:13px; padding:6px 10px; letter-spacing:0.5px; width:100%; box-sizing:border-box;
+    word-break:break-word; white-space:normal; text-align:left; line-height:1.5;
+  }
+  .yi-item { background:rgba(200,165,91,0.08); color:var(--gold-pure); border:1px solid rgba(200,165,91,0.2); }
+  .ji-item { background:rgba(232,232,240,0.04); color:var(--text-muted); border:1px solid rgba(232,232,240,0.08); }
+
+  /* ===== 加载/错误状态 ===== */
+  .loading-state, .error-state {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:60vh; padding:40px 16px; color:var(--text-muted); font-size:14px; text-align:center;
+  }
+  .skeleton-gua-symbol {
+    width:100px; height:100px; margin:0 auto 16px; border-radius:50%;
+    background:linear-gradient(135deg, rgba(200,165,91,0.08), rgba(200,165,91,0.02));
+    border:1px dashed rgba(200,165,91,0.2); animation:skeletonPulse 2s ease-in-out infinite;
+  }
+  .skeleton-line { height:12px; margin:8px auto; background:linear-gradient(90deg, rgba(232,232,240,0.06), rgba(232,232,240,0.02)); animation:skeletonPulse 2s ease-in-out infinite; border-radius:2px; }
+  @keyframes skeletonPulse { 0%,100%{opacity:0.4;} 50%{opacity:0.8;} }
+
+  /* ===== 底部操作栏 ===== */
+  .bottom-actions {
+    position:fixed; bottom:0; left:0; right:0; display:flex; gap:12px; padding:12px 16px;
+    padding-bottom:calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, rgba(10,10,26,0.98), rgba(10,10,26,0.9));
+    backdrop-filter:blur(10px); z-index:10; border-top:1px solid rgba(200,165,91,0.3);
+  }
+  .bottom-actions .btn {
+    flex:1; min-width:0; height:48px; border-radius:0; font-size:15px; display:flex; align-items:center;
+    justify-content:center; border:none; letter-spacing:2px; transition:all 0.2s var(--ease-out-expo); cursor:pointer;
+  }
+  .bottom-actions .btn-light { background:transparent; border:1px solid var(--accent-gold-border); color:var(--accent-gold); }
+  .bottom-actions .btn-light:active { background:var(--accent-gold-subtle); transform:scale(0.97); }
+  .bottom-actions .btn-gold {
+    background:var(--gold-pure); color:var(--text-inverse); font-weight:700;
+    box-shadow:0 2px 8px rgba(200,165,91,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .bottom-actions .btn-gold:active { transform:scale(0.97); box-shadow:0 1px 4px rgba(200,165,91,0.4); }
+
+  /* 微信引导遮罩 */
+  .wechat-mask { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:99; }
+  .wechat-tip { width:86%; max-width:380px; background:var(--bg-ink-elevated); border-radius:12px; padding:24px 20px; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.3); border:1px solid rgba(200,165,91,0.2); }
+  .wechat-tip-title { font-size:16px; font-weight:600; color:var(--text-primary); margin-bottom:12px; }
+  .wechat-tip-body { font-size:13px; line-height:1.8; color:var(--text-secondary); margin-bottom:16px; }
+  .wechat-tip-body b { color:var(--accent-gold); }
+  .wechat-tip .btn { height:40px; font-size:13px; width:100%; }
+
+  .dl-hint { font-size:11px; color:#B05A47; margin-top:8px; display:none; line-height:1.5; text-align:center; width:100%; }
+
+  @media (max-width:360px) {
+    .hero-symbol { font-size:90px; }
+    .hero-gua-name { font-size:24px; letter-spacing:4px; }
+    .verdict-text { font-size:15px; }
+  }
+</style>
+</head>
+<body>
+<!-- 微信环境顶部引导条 -->
+<div id="wechatTopBar" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1a1a2e,#16213e);color:#E8E8F0;padding:12px 16px;font-size:13px;line-height:1.5;box-shadow:0 2px 12px rgba(0,0,0,0.3);border-bottom:1px solid rgba(200,165,91,0.3);">
+  <div style="display:flex;align-items:flex-start;gap:8px;">
+    <span style="color:#C8A55B;font-size:16px;flex-shrink:0;">⤴</span>
+    <div>
+      <div style="font-weight:600;color:#C8A55B;margin-bottom:2px;">微信内无法直接打开 App</div>
+      <div style="color:#A0A0B0;">请点右上角「···」→「在浏览器打开」，将自动唤起天机推演 App 查看完整推演结果</div>
+    </div>
+  </div>
+</div>
+<div class="page" id="pageMain" style="padding-top:0;">
+  <!-- 加载中 -->
+  <div class="loading-state" id="loadingState">
+    <div class="skeleton-gua-symbol"></div>
+    <div class="skeleton-line" style="width:60%"></div>
+    <div class="skeleton-line" style="width:40%"></div>
+  </div>
+
+  <!-- 错误 -->
+  <div class="error-state" id="errorState" style="display:none">
+    <div id="errorText">这份推演链接已失效或不存在，请让分享方重新生成。</div>
+  </div>
+
+  <!-- 主内容 -->
+  <div id="mainContent" style="display:none">
+    <!-- 分享查看提示 -->
+    <div class="shared-notice" id="sharedNotice"></div>
+
+    <!-- 首屏仪式感区域 -->
+    <div class="hero-section">
+      <div class="hero-title">
+        <span class="hero-title-text" id="heroTitleText"></span>
+      </div>
+      <div class="hero-symbol" id="heroSymbol">䷀</div>
+      <div class="hero-gua-info">
+        <span class="hero-gua-name" id="heroGuaName"></span>
+        <span class="hero-gua-ge" id="heroGuaGe"></span>
+      </div>
+    </div>
+
+    <div class="divider-gold"></div>
+
+    <!-- 判词 -->
+    <div class="verdict-section" id="verdictSection" style="display:none">
+      <span class="verdict-text" id="verdictText"></span>
+    </div>
+
+    <!-- 历史对标金句 -->
+    <div class="quote-section" id="quoteSection" style="display:none">
+      <span class="quote-text" id="quoteText"></span>
+    </div>
+
+    <!-- 自嘲标签 -->
+    <div class="tag-section" id="tagSection" style="display:none">
+      <svg class="tag-icon" viewBox="0 0 24 24" fill="none" stroke="#C8A55B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="tag-text" id="tagText"></span>
+    </div>
+
+    <div class="divider-gold"></div>
+
+    <!-- 折叠：时空变量（奇门遁甲） -->
+    <div class="collapse-section" id="qimenSection" style="display:none">
+      <div class="collapse-header" onclick="toggleCollapse('qimenSection')">
+        <span class="collapse-header-title">时空变量</span>
+        <span class="collapse-arrow">▼</span>
+      </div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner" id="qimenBody"></div>
+      </div>
+    </div>
+
+    <!-- 折叠：详细解读 -->
+    <div class="collapse-section" id="jieduSection" style="display:none">
+      <div class="collapse-header" onclick="toggleCollapse('jieduSection')">
+        <span class="collapse-header-title">详细解读</span>
+        <span class="collapse-arrow">▼</span>
+      </div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <span class="jiedu-text" id="jieduText"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 折叠：宜忌 -->
+    <div class="collapse-section" id="yijiSection" style="display:none">
+      <div class="collapse-header" onclick="toggleCollapse('yijiSection')">
+        <span class="collapse-header-title">宜 · 忌</span>
+        <span class="collapse-arrow">▼</span>
+      </div>
+      <div class="collapse-body">
+        <div class="collapse-body-inner">
+          <div class="yiji-grid">
+            <div class="yi-block" id="yiBlock" style="display:none">
+              <div class="yi-title">宜</div>
+              <div class="yi-items" id="yiItems"></div>
+            </div>
+            <div class="ji-block" id="jiBlock" style="display:none">
+              <div class="ji-title">忌</div>
+              <div class="ji-items" id="jiItems"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部操作栏 -->
+  <div class="bottom-actions" id="bottomActions" style="display:none">
+    <button class="btn btn-gold" onclick="openApp()">打开 App</button>
+    <button class="btn btn-light" onclick="downloadApp()">下载 App</button>
+    <div class="dl-hint" id="dlHint">仍未唤醒应用，若已安装请再次点击"打开 App"；否则请先下载安装。</div>
+  </div>
+
+  <!-- 微信引导遮罩 -->
+  <div class="wechat-mask" id="wechatMask" style="display:none">
+    <div class="wechat-tip">
+      <div class="wechat-tip-title">微信内无法直接打开 App</div>
+      <div class="wechat-tip-body">请点右上角「···」选择<b>「在浏览器打开」</b>，将自动唤起天机推演 App 查看推演结果；或点击下方按钮复制链接，粘贴到手机浏览器打开。</div>
+      <button class="btn btn-light" onclick="copyLink()">复制链接用浏览器打开</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var sid = '', rid = '';
+(function(){
+  var m = location.search.match(/[?&]sid=([^&]*)/); if(m) sid = decodeURIComponent(m[1]);
+  var m2 = location.search.match(/[?&]rid=([^&]*)/); if(m2) rid = decodeURIComponent(m2[1]);
+  var langM = location.search.match(/[?&]lang=([^&]+)/);
+  if(langM && langM[1].toLowerCase()==='en') { document.documentElement.lang='en'; }
+})();
+
+function isWeChat() { return /MicroMessenger/i.test(navigator.userAgent); }
+function toggleCollapse(id) { document.getElementById(id).classList.toggle('open'); }
+
+function showError(msg) {
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('errorState').style.display='flex';
+  if(msg) document.getElementById('errorText').textContent=msg;
+}
+
+function renderResult(data) {
+  var record = data.record || {};
+  var rd = record.result_data || {};
+  var isEn = document.documentElement.lang === 'en';
+
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('mainContent').style.display='block';
+  document.getElementById('bottomActions').style.display='flex';
+
+  // 非微信环境自动唤起 App
+  autoOpenApp();
+  // 微信环境：数据渲染后弹全屏引导
+  maybeShowWechatGuide();
+
+  // 分享查看提示
+  var notice = (data.sharerNickname || 'TA') + (isEn ? "'s reading" : '的推演结果');
+  document.getElementById('sharedNotice').textContent = notice;
+
+  // 首屏
+  document.getElementById('heroTitleText').textContent = isEn ? 'I CHING DIVINATION' : '易 经 推 演';
+  document.getElementById('heroSymbol').textContent = rd.symbol || record.symbol || '䷀';
+  document.getElementById('heroGuaName').textContent = rd.gua_name || record.gua_name || '--';
+  document.getElementById('heroGuaGe').textContent = rd.gua_ge || record.gua_ge || '';
+  if(!(rd.gua_ge || record.gua_ge)) document.getElementById('heroGuaGe').style.display='none';
+
+  // 判词
+  if(rd.panCi) {
+    document.getElementById('verdictSection').style.display='block';
+    document.getElementById('verdictText').textContent = rd.panCi;
+  }
+
+  // 历史对标
+  if(rd.liShiDuiBiao) {
+    document.getElementById('quoteSection').style.display='block';
+    document.getElementById('quoteText').textContent = rd.liShiDuiBiao;
+  }
+
+  // 自嘲标签
+  if(rd.ziChaoTag) {
+    document.getElementById('tagSection').style.display='flex';
+    document.getElementById('tagText').textContent = rd.ziChaoTag;
+  }
+
+  // 奇门遁甲
+  if(rd.qimenSnapshot) {
+    document.getElementById('qimenSection').style.display='block';
+    renderQimen(rd.qimenSnapshot);
+  }
+
+  // 详细解读
+  if(rd.jieDu) {
+    document.getElementById('jieduSection').style.display='block';
+    document.getElementById('jieduText').textContent = rd.jieDu;
+  }
+
+  // 宜忌
+  var hasYi = rd.yiList && rd.yiList.length>0;
+  var hasJi = rd.jiList && rd.jiList.length>0;
+  if(hasYi || hasJi) {
+    document.getElementById('yijiSection').style.display='block';
+    if(hasYi) {
+      document.getElementById('yiBlock').style.display='block';
+      document.getElementById('yiItems').innerHTML = rd.yiList.map(function(i){return '<div class="yi-item">'+i+'</div>';}).join('');
+    }
+    if(hasJi) {
+      document.getElementById('jiBlock').style.display='block';
+      document.getElementById('jiItems').innerHTML = rd.jiList.map(function(i){return '<div class="ji-item">'+i+'</div>';}).join('');
+    }
+  }
+}
+
+function renderQimen(q) {
+  var html = '';
+  // 时空坐标
+  if(q.tuiyanTime || q.jieQi || q.qimenJuName || q.xunShouDesc) {
+    html += '<div class="qimen-group"><div class="qimen-group-title"><div class="qimen-group-dot"></div><span>时空坐标</span></div><div class="qimen-grid">';
+    if(q.tuiyanTime) html += '<div class="qimen-cell"><span class="qimen-cell-label">四柱</span><span class="qimen-cell-value">'+q.tuiyanTime+'</span></div>';
+    if(q.jieQi) html += '<div class="qimen-cell"><span class="qimen-cell-label">节气</span><span class="qimen-cell-value">'+q.jieQi+'</span></div>';
+    if(q.qimenJuName) html += '<div class="qimen-cell"><span class="qimen-cell-label">奇门局</span><span class="qimen-cell-value">'+q.qimenJuName+'</span>'+(q.qimenJuDesc?'<span class="qimen-cell-sub">'+q.qimenJuDesc+'</span>':'')+'</div>';
+    if(q.xunShouDesc) html += '<div class="qimen-cell"><span class="qimen-cell-label">旬首</span><span class="qimen-cell-value">'+q.xunShouDesc+'</span></div>';
+    html += '</div></div>';
+  }
+  // 九星八门
+  if(q.zhiFuStarName || q.zhiShiMenName) {
+    html += '<div class="qimen-group"><div class="qimen-group-title"><div class="qimen-group-dot"></div><span>九星·八门</span></div><div class="qimen-grid">';
+    if(q.zhiFuStarName) {
+      html += '<div class="qimen-cell qimen-cell-star"><div class="qimen-cell-head"><span class="qimen-cell-label">值符星</span>'+(q.zhiFuStarLuck?'<span class="qimen-luck-badge qimen-luck-'+(q.zhiFuStarLuckClass||'ping')+'">'+q.zhiFuStarLuck+'</span>':'')+'</div>';
+      html += '<span class="qimen-cell-value">'+q.zhiFuStarName+'</span>';
+      if(q.zhiFuGongInText) html += '<span class="qimen-cell-sub">'+q.zhiFuGongInText+'</span>';
+      if(q.zhiFuGongBestText) html += '<span class="qimen-cell-sub">'+q.zhiFuGongBestText+'</span>';
+      html += '</div>';
+    }
+    if(q.zhiShiMenName) {
+      html += '<div class="qimen-cell qimen-cell-door"><div class="qimen-cell-head"><span class="qimen-cell-label">值使门</span>'+(q.zhiShiMenLuck?'<span class="qimen-luck-badge qimen-luck-'+(q.zhiShiMenLuckClass||'ping')+'">'+q.zhiShiMenLuck+'</span>':'')+'</div>';
+      html += '<span class="qimen-cell-value">'+q.zhiShiMenName+'</span>';
+      if(q.zhiShiGongInText) html += '<span class="qimen-cell-sub">'+q.zhiShiGongInText+'</span>';
+      if(q.zhiShiGongBestText) html += '<span class="qimen-cell-sub">'+q.zhiShiGongBestText+'</span>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+  // 五行生克
+  if(q.wuxingRelation) {
+    html += '<div class="qimen-group qimen-group-em"><div class="qimen-group-title"><div class="qimen-group-dot qimen-group-dot-em"></div><span>五行生克</span></div>';
+    html += '<div class="qimen-relation-row">';
+    html += '<div class="qimen-relation-side"><span class="qimen-relation-label">日主</span><span class="qimen-relation-value wuxing-'+(q.wuxingAClass||'tu')+'">'+(q.wuxingA||'')+'</span></div>';
+    html += '<div class="qimen-relation-arrow"><span class="qimen-relation-op">'+q.wuxingRelation+'</span>'+(q.wuxingRelationDesc?'<span class="qimen-relation-desc">'+q.wuxingRelationDesc+'</span>':'')+'</div>';
+    html += '<div class="qimen-relation-side"><span class="qimen-relation-label">时干</span><span class="qimen-relation-value wuxing-'+(q.wuxingBClass||'tu')+'">'+(q.wuxingB||'')+'</span></div>';
+    html += '</div></div>';
+  }
+  // 八神启示
+  if(q.riGanShenName || q.zhiFuGongName) {
+    html += '<div class="qimen-group"><div class="qimen-group-title"><div class="qimen-group-dot"></div><span>八神启示</span></div><div class="qimen-grid">';
+    if(q.riGanShenName) {
+      html += '<div class="qimen-cell qimen-cell-shen"><div class="qimen-cell-head"><span class="qimen-cell-label">日干神</span>'+(q.riGanShenJiXiong?'<span class="qimen-luck-badge qimen-luck-'+(q.riGanShenJiXiongClass||'ping')+'">'+q.riGanShenJiXiong+'</span>':'')+'</div>';
+      html += '<span class="qimen-cell-value">'+q.riGanShenName+'</span>';
+      if(q.riGanShenRole) html += '<span class="qimen-cell-sub">'+q.riGanShenRole+'</span>';
+      html += '</div>';
+    }
+    if(q.zhiFuGongName) {
+      html += '<div class="qimen-cell qimen-cell-shen"><div class="qimen-cell-head"><span class="qimen-cell-label">值符宫</span></div>';
+      html += '<span class="qimen-cell-value">'+(q.zhiFuPalaceText||q.zhiFuGongName)+'</span>';
+      if(q.zhiFuGongDesc) html += '<span class="qimen-cell-sub">'+q.zhiFuGongDesc+'</span>';
+      if(q.zhiFuGongBestText) html += '<span class="qimen-cell-sub">'+q.zhiFuGongBestText+'</span>';
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+  document.getElementById('qimenBody').innerHTML = html;
+}
+
+function openApp(auto) {
+  if(isWeChat()) {
+    if(!auto) document.getElementById('wechatMask').style.display='flex';
+    return;
+  }
+  var schemeUrl = 'tianji://result?sid=' + sid + '&rid=' + rid;
+  var startTime = Date.now();
+  var timer = setTimeout(function(){
+    if(Date.now()-startTime < 2500) document.getElementById('dlHint').style.display='block';
+  }, 2000);
+  window.addEventListener('pagehide', function(){ clearTimeout(timer); }, {once:true});
+  window.location.href = schemeUrl;
+}
+
+// 页面加载后自动唤起（非微信环境）
+function autoOpenApp() {
+  if(!isWeChat() && sid && rid) {
+    setTimeout(function(){ openApp(true); }, 800);
+  }
+}
+
+// 微信环境检测：页面加载即显示顶部引导条，数据加载后弹全屏引导
+(function(){
+  if(isWeChat()) {
+    document.getElementById('wechatTopBar').style.display = 'block';
+    document.getElementById('pageMain').style.paddingTop = '70px';
+  }
+})();
+
+// 微信环境：数据渲染后自动弹出全屏引导遮罩
+function maybeShowWechatGuide() {
+  if(isWeChat()) {
+    setTimeout(function(){ document.getElementById('wechatMask').style.display='flex'; }, 600);
+  }
+}
+
+function downloadApp() { window.location.href='https://claw-book.cn'; }
+
+function copyLink() {
+  var url = location.href;
+  if(navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(function(){ alert('链接已复制'); }).catch(function(){ fallbackCopy(url); });
+  } else { fallbackCopy(url); }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); alert('链接已复制'); } catch(e) { alert('复制失败'); }
+  document.body.removeChild(ta);
+}
+
+async function loadShare() {
+  if(!sid) { showError(); return; }
+  try {
+    var resp = await fetch('/tianji/api/share/resolve/' + sid);
+    var json = await resp.json();
+    if(json.success && json.data && json.data.type === 'result') {
+      renderResult(json.data);
+    } else {
+      showError();
+    }
+  } catch(e) {
+    console.error('loadShare error:', e);
+    showError();
+  }
+}
+
+loadShare();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "关于我们",
+  "navigationBarBackgroundColor": "#0A0A1A",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "icon-guo": "/components/icon-guo/icon-guo"
+  }
+}

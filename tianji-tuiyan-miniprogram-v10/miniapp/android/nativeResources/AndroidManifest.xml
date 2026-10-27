@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 移除广告 ID 权限（本应用不做广告，符合 6048248 政策） -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+
+    <application>
+        <!-- 微信 OpenSDK 回调 Activity -->
+        <activity
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="${applicationId}"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 覆盖屏幕方向限制：支持大屏/折叠屏自由旋转 -->
+        <activity
+            android:name="com.tencent.luggage.wxa.standalone_open_runtime.ui.patched.PatchedWxaScanCodeActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.standalone_open_runtime.container.WxaContainerToFrontProxyActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.SaaA.app.SaaAContainerActivity0"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.SaaA.app.SaaAContainerActivity1"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.SaaA.app.SaaAContainerActivity2"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.SaaA.app.SaaAContainerActivity3"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+        <activity
+            android:name="com.tencent.luggage.wxa.SaaA.app.SaaAContainerActivity4"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation" />
+    </application>
+</manifest>

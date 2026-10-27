@@ -1,0 +1,217 @@
+/* ===== 法律页·隐私政策（深色古卷·v2.0 视觉升级） =====
+ * Visual Thesis: 古卷徐展，卷轴边框装饰，L2 标题字 + L4 点缀字
+ * 设计锚点：每段条款如卷轴一节，金色印章感标题，诗意排版
+ */
+
+/* ===== 页面容器 ===== */
+.page-container {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  padding: 32rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ===== 头部（fadeInUp入场 + 卷轴边框） ===== */
+.legal-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 56rpx;
+  padding: 40rpx 24rpx;
+  border-top: 1rpx solid var(--gold-pure-dim);
+  border-bottom: 1rpx solid var(--gold-pure-dim);
+  animation: fadeInUp 0.6s var(--ease-out-expo) both;
+}
+
+/* 卷轴顶部金点装饰 */
+.legal-header::before {
+  content: '';
+  position: absolute;
+  top: -5rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.6);
+}
+
+/* 卷轴底部金点装饰 */
+.legal-header::after {
+  content: '';
+  position: absolute;
+  bottom: -5rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.6);
+}
+
+/* 金色标题：L2 标题字 + 宽字距 + 金色光晕 */
+.legal-title {
+  font-size: 48rpx;
+  color: var(--accent-gold);
+  font-weight: 800;
+  display: block;
+  text-align: center;
+  margin-bottom: 12rpx;
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+  text-shadow: 0 0 24rpx rgba(200, 165, 91, 0.35),
+               0 0 48rpx rgba(200, 165, 91, 0.15);
+}
+
+/* 标题下金线 */
+.legal-title::after {
+  content: '';
+  display: block;
+  width: 64rpx;
+  height: 1rpx;
+  background: var(--gold-pure);
+  margin: 24rpx auto 0;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.4);
+}
+
+.legal-subtitle {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  display: block;
+  text-align: center;
+  letter-spacing: 4rpx;
+  margin-top: 16rpx;
+}
+
+/* ===== 条款区块（卷轴节段 + 错落延迟入场） ===== */
+.legal-section {
+  position: relative;
+  background: transparent;
+  border-radius: 0;
+  padding: 48rpx 32rpx;
+  margin-bottom: 32rpx;
+  overflow-x: hidden;
+  border: none;
+  border-left: 1rpx solid var(--gold-pure-dim);
+  animation: fadeInUp 0.5s var(--ease-out-expo) both;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+/* 非交互条款块：移除按压高亮（v3.4.1，避免误导读取反馈） */
+
+/* nth-child 错落延迟：0.1s / 0.15s / 0.2s ... */
+.legal-section:nth-child(2) { animation-delay: 0.1s; }
+.legal-section:nth-child(3) { animation-delay: 0.15s; }
+.legal-section:nth-child(4) { animation-delay: 0.2s; }
+.legal-section:nth-child(5) { animation-delay: 0.25s; }
+.legal-section:nth-child(6) { animation-delay: 0.3s; }
+.legal-section:nth-child(7) { animation-delay: 0.35s; }
+.legal-section:nth-child(8) { animation-delay: 0.4s; }
+.legal-section:nth-child(9) { animation-delay: 0.45s; }
+
+.section-header {
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+/* L2 标题字：条款标题 */
+.legal-h {
+  font-size: 32rpx;
+  color: var(--accent-gold);
+  display: block;
+  font-weight: 800;
+  word-break: break-word;
+  letter-spacing: 6rpx;
+}
+
+/* 条款标题前的小金点 */
+.section-header::before {
+  content: '';
+  width: 6rpx;
+  height: 6rpx;
+  background: var(--gold-pure);
+  border-radius: 50%;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.6);
+  flex-shrink: 0;
+}
+
+/* 条款段落间距（v3.4.1 修复：正文段落连成一片） */
+.legal-para {
+  margin-bottom: 16rpx;
+}
+.legal-para:last-child {
+  margin-bottom: 0;
+}
+
+/* L4 点缀字：条款正文（使用 STSong/SimSun 系统字体） */
+.legal-t {
+  font-size: 26rpx;
+  line-height: 2.0;
+  display: block;
+  color: var(--text-secondary);
+  word-break: break-word;
+  letter-spacing: 2rpx;
+  font-family: 'STSong', 'SimSun', 'KaiTi', serif;
+}
+
+/* ===== 返回按钮（盖章仪式感 + 金色边框） ===== */
+.btn-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 48rpx 0 32rpx;
+  height: 96rpx;
+  background: transparent;
+  border: 1rpx solid var(--accent-gold-border);
+  border-radius: 0;
+  color: var(--accent-gold);
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 8rpx;
+  text-indent: 8rpx;
+  transition: all 0.3s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-back::after {
+  border: none;
+}
+
+.btn-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200, 165, 91, 0.15), transparent);
+  transition: left 0.6s var(--ease-out-expo);
+}
+
+.btn-back:active {
+  background: var(--accent-gold-muted);
+  transform: scale(0.97);
+  border-color: var(--gold-pure);
+  box-shadow: 0 0 24rpx rgba(200, 165, 91, 0.2);
+}
+
+.btn-back:active::before {
+  left: 100%;
+}
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .legal-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 32rpx; line-height: 1.25; }
+
+/* ===== EN-i18n body fix ===== */
+.lang-en .legal-t { line-height: 1.7; letter-spacing: 0; }
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .legal-h { letter-spacing: 2rpx; text-indent: 2rpx; line-height: 1.3; }
+.lang-en .btn-back { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 26rpx; line-height: 1.3; }

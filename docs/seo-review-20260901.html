@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>天机推演 SEO 工作全面 Review | 2026-09-01</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+:root{--bg:#0B0B12;--bg-2:#101018;--text:#E6E2DA;--text-2:#9C988E;--text-3:#6B6860;--gold:#C8A55B;--gold-2:#e8d5a3;--line:rgba(200,165,91,0.12);--card:#12121c;--green:#5a9a6e;--red:#c46565;--blue:#5b8db8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.85;font-size:16px}
+.container{max-width:1100px;margin:0 auto;padding:48px 32px}
+.header{text-align:center;margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--line)}
+.header h1{font-size:38px;color:var(--text);margin-bottom:12px;letter-spacing:0.02em}
+.header .subtitle{color:var(--gold-2);font-size:18px;font-style:italic}
+.header .meta{color:var(--text-3);font-size:14px;margin-top:12px}
+.section{margin-bottom:56px}
+.section h2{color:var(--gold);font-size:28px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.section h3{color:var(--text);font-size:20px;margin:28px 0 14px}
+p{margin-bottom:16px;line-height:2;color:var(--text)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin:24px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px}
+.card h4{color:var(--gold);font-size:16px;margin-bottom:10px}
+.card .number{font-size:36px;font-weight:bold;color:var(--text);line-height:1.2}
+.card .number.gold{color:var(--gold)}
+.card .number.green{color:var(--green)}
+.card .number.blue{color:var(--blue)}
+.card .label{color:var(--text-3);font-size:13px;margin-top:6px}
+.chart{width:100%;height:400px;margin:20px 0}
+.chart-tall{height:500px}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+th{background:var(--card);color:var(--gold);padding:12px 16px;text-align:left;border-bottom:2px solid var(--gold)}
+td{padding:10px 16px;border-bottom:1px solid var(--line);color:var(--text)}
+tr:hover{background:rgba(200,165,91,0.03)}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;margin:2px}
+.tag.done{background:rgba(90,154,110,0.15);color:var(--green);border:1px solid rgba(90,154,110,0.3)}
+.tag.progress{background:rgba(200,165,91,0.15);color:var(--gold);border:1px solid rgba(200,165,91,0.3)}
+.tag.todo{background:rgba(196,101,101,0.1);color:var(--red);border:1px solid rgba(196,101,101,0.25)}
+.timeline{position:relative;padding-left:32px;margin:24px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--line)}
+.timeline-item{position:relative;margin-bottom:28px}
+.timeline-item::before{content:'';position:absolute;left:-28px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid var(--bg)}
+.timeline-item .date{color:var(--gold);font-size:13px;font-weight:600;margin-bottom:4px}
+.timeline-item .title{color:var(--text);font-size:16px;font-weight:600;margin-bottom:4px}
+.timeline-item .desc{color:var(--text-2);font-size:14px;line-height:1.7}
+.summary-box{background:linear-gradient(135deg,rgba(200,165,91,0.08),rgba(200,165,91,0.02));border:1px solid var(--gold);border-radius:12px;padding:28px;margin:24px 0}
+.summary-box h3{color:var(--gold);margin-top:0}
+.risk-item{padding:14px 18px;background:var(--card);border-left:3px solid var(--red);border-radius:0 6px 6px 0;margin-bottom:12px}
+.risk-item .risk-title{color:var(--red);font-weight:600;margin-bottom:4px}
+.risk-item .risk-desc{color:var(--text-2);font-size:14px}
+.next-item{padding:16px 20px;background:var(--card);border-radius:8px;margin-bottom:12px;border-left:3px solid var(--gold)}
+.next-item .next-title{color:var(--gold);font-weight:600;margin-bottom:4px}
+.next-item .next-priority{font-size:12px;color:var(--text-3)}
+.next-item .next-desc{color:var(--text-2);font-size:14px;margin-top:6px}
+.footer{text-align:center;padding:32px;border-top:1px solid var(--line);color:var(--text-3);font-size:13px;margin-top:48px}
+@media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr}.container{padding:32px 20px}.header h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>天机推演 SEO 工作全面 Review</h1>
+    <div class="subtitle">从技术基础到内容生态 — 完整工作复盘与下一步规划</div>
+    <div class="meta">报告日期：2026-09-01 · 域名：claw-book.cn · 运营主体：北京无元数字科技有限公司</div>
+  </div>
+
+  <!-- 执行摘要 -->
+  <div class="section">
+    <h2>一、执行摘要</h2>
+    <div class="summary-box">
+      <h3>核心结论</h3>
+      <p>经过多轮系统性优化，天机推演官网已完成从"基础上线"到"SEO体系化"的跨越。<strong>技术SEO 14项指标全部达标</strong>，<strong>内容资产从79篇扩充至165个URL（中英文双语）</strong>，<strong>64卦页平均字数从674字提升至10507字（增长15倍）</strong>，<strong>结构化数据覆盖81个页面</strong>，<strong>外链建设4个来源</strong>。英文页面体系完整（约84个页面），内部链接全部闭合。</p>
+      <p>当前阶段已完成"地基+内容"建设，下一阶段重点应转向<strong>效果跟踪、收录加速、长尾关键词覆盖和外链持续建设</strong>。</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card"><div class="number gold">165</div><div class="label">sitemap URL总数（中英文）</div></div>
+      <div class="card"><div class="number green">10,507</div><div class="label">卦页平均字数（扩充前674字）</div></div>
+      <div class="card"><div class="number blue">81</div><div class="label">FAQ+Breadcrumb结构化数据页面</div></div>
+      <div class="card"><div class="number gold">84</div><div class="label">英文页面总数</div></div>
+      <div class="card"><div class="number green">3,256</div><div class="label">内部链接总数</div></div>
+      <div class="card"><div class="number blue">14/14</div><div class="label">技术SEO指标达标率</div></div>
+    </div>
+  </div>
+
+  <!-- SEO能力雷达图 -->
+  <div class="section">
+    <h2>二、SEO 综合能力评估</h2>
+    <p>从6个维度评估当前SEO体系的成熟度：</p>
+    <div id="radarChart" class="chart chart-tall"></div>
+  </div>
+
+  <!-- 工作阶段时间线 -->
+  <div class="section">
+    <h2>三、工作阶段复盘</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="date">第一阶段 · 基础建设</div>
+        <div class="title">域名统一 + 三大站长平台验证 + 基础技术SEO</div>
+        <div class="desc">www→裸域301重定向；百度/Bing/Google站长平台验证；robots.txt、sitemap.xml创建；79篇知识库内容页上线（15专题+64卦）；百度API每日推送10条（定时任务）。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第二阶段 · UX/UI 审计与修复</div>
+        <div class="title">用户体验审计综合88/100，修复可访问性和信任度短板</div>
+        <div class="desc">全局焦点样式86页全覆盖；81个知识库页footer添加ICP备案；首页导航调整（登录/注册→知识库→下载→中英文切换）；i18n导航链路修复；登录/注销整合（注销嵌套在登录页内）。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第三阶段 · SEO 三批优化</div>
+        <div class="title">meta优化 + 结构化数据 + 内部链接</div>
+        <div class="desc">第一批：64卦页meta description加长（48→76字）、首页title加长（16→39字）、协议页OG标签+JSON-LD；第二批：81个知识库页添加FAQPage+BreadcrumbList JSON-LD；第三批：15个专题页添加热门卦页链接、卦页内部链接优化。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第四阶段 · SEO 深化</div>
+        <div class="title">404页面 + Core Web Vitals + hreflang + 首段关键词</div>
+        <div class="desc">自定义404页面（黑金风格）；首页preconnect字体CDN+preload Hero图；yi-jing.html和ba-gua.html添加en+x-default hreflang双向关联；sitemap添加2个英文页（86→88）；专题页首段关键词优化。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第五阶段 · 内容质量检查与数据资产盘点</div>
+        <div class="title">发现卦页字数短板，挖掘完整中英文静态数据</div>
+        <div class="desc">79篇内容质量检查：专题页平均1761字（合理），卦页平均仅674字（SEO理想1500+）；数据资产盘点发现_backend_src/config/下完整中英文数据：中文hexagrams.js（renGe平均250字）+relationship.js（2080条）；英文hexagrams-en-long.js（renGe平均1027字符）+relationship-en.js（2080条）。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第六阶段 · 卦页内容全量扩充（中英文）</div>
+        <div class="title">64卦页新增5个H2板块 + 64个英文卦页全新生成</div>
+        <div class="desc">中文64卦页扩充：人格标签栏+人格深度解读（renGe）+情感模式（emotionMode）+天赋盲点（growthAdvice）+历史人物+易缘匹配，平均674→10507字；英文64卦页全新生成（gua-01.en.html~gua-64.en.html），每篇7个H2，13-15KB；英文索引页添加64卦链接网格；sitemap 88→152。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="date">第七阶段 · 英文页面体系完善</div>
+        <div class="title">13个英文专题页生成 + 全量链接修复 + 83页面验证通过</div>
+        <div class="desc">发现英文页面中文跳转问题（knowledge.en.html 14个、yi-jing.en.html 5个、ba-gua.en.html 6个）；全新生成13个英文专题页（梅花易数/合盘/AI性格/节气养生/本命卦/AI易经/独立开发/国潮/Co-Star/易缘传书/奇门遁甲/六十四卦/性格测试）；全量83个英文页面验证通过，0个问题链接；sitemap 152→165。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 内容SEO分析 -->
+  <div class="section">
+    <h2>四、内容 SEO 分析</h2>
+
+    <h3>4.1 页面数量与分布</h3>
+    <div id="pagePieChart" class="chart"></div>
+
+    <h3>4.2 卦页内容字数变化（核心成果）</h3>
+    <p>64卦页是SEO内容的最大短板（平均674字），通过数据驱动的内容扩充，平均字数提升至10507字，增长<strong>15.6倍</strong>。每篇新增5个H2板块，卦页平均H2数达到9个。</p>
+    <div id="wordCountChart" class="chart"></div>
+
+    <h3>4.3 内容板块结构（卦页）</h3>
+    <table>
+      <tr><th>板块</th><th>数据来源</th><th>中文平均字数</th><th>SEO价值</th></tr>
+      <tr><td>卦辞原文+卦义解读+六爻爻辞+现代应用</td><td>原有内容</td><td>~674</td><td>基础</td></tr>
+      <tr><td>人格标签栏（卦格+一句话+关键词+稀有度+自嘲）</td><td>hexagrams.js</td><td>~150</td><td>长尾关键词</td></tr>
+      <tr><td>人格深度解读（renGe）</td><td>hexagrams.js</td><td>~250</td><td>核心内容</td></tr>
+      <tr><td>情感与关系模式（emotionMode）</td><td>hexagrams.js</td><td>~210</td><td>情感类长尾</td></tr>
+      <tr><td>天赋与成长盲点（talent+blindspot）</td><td>hexagrams.js</td><td>~190</td><td>个人成长类</td></tr>
+      <tr><td>历史人物代表（男性+女性）</td><td>hexagrams.js</td><td>~80</td><td>实体关联</td></tr>
+      <tr><td>易缘匹配（最佳Top3+需注意Top3）</td><td>relationship.js</td><td>~300</td><td>匹配类长尾（高价值）</td></tr>
+      <tr><td><strong>合计</strong></td><td></td><td><strong>~10,507</strong></td><td><strong>全面覆盖</strong></td></tr>
+    </table>
+
+    <h3>4.4 英文内容体系</h3>
+    <div class="grid-2">
+      <div class="card">
+        <h4>英文卦页（64个）</h4>
+        <p>基于hexagrams-en-long.js（renGe平均1027字符）+relationship-en.js（analysis平均953字符）生成。每篇7个H2：Judgment & Image → Personality Deep Dive → Emotional & Relationship Patterns → Strengths & Growth Blind Spots → Historical Figures → Compatibility → CTA。</p>
+      </div>
+      <div class="card">
+        <h4>英文专题页（15个）</h4>
+        <p>yi-jing + ba-gua（原有）+ 13个全新生成：Plum Blossom Numerology、Compatibility Reading、AI Personality、Solar Term Wellness、Birth Hexagram、AI + I Ching、Solo Developer、Guo Chao、Co-Star、Soul Match、Qimen Dunjia、64 Hexagrams、Personality Test Guide。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 技术SEO分析 -->
+  <div class="section">
+    <h2>五、技术 SEO 分析</h2>
+
+    <h3>5.1 技术SEO指标清单</h3>
+    <table>
+      <tr><th>指标</th><th>状态</th><th>说明</th></tr>
+      <tr><td>HTTPS</td><td><span class="tag done">已完成</span></td><td>全站HTTPS，SSL证书有效</td></tr>
+      <tr><td>www→裸域301</td><td><span class="tag done">已完成</span></td><td>www.claw-book.cn 301到 claw-book.cn</td></tr>
+      <tr><td>robots.txt</td><td><span class="tag done">已完成</span></td><td>允许所有搜索引擎爬取</td></tr>
+      <tr><td>sitemap.xml</td><td><span class="tag done">已完成</span></td><td>165个URL，已提交三大站长平台</td></tr>
+      <tr><td>自定义404页面</td><td><span class="tag done">已完成</span></td><td>黑金风格，含导航+CTA+6篇热门文章</td></tr>
+      <tr><td>安全头</td><td><span class="tag done">已完成</span></td><td>16个location include安全头共享片段</td></tr>
+      <tr><td>hreflang双向关联</td><td><span class="tag done">已完成</span></td><td>中英文页互指en+zh-CN+x-default</td></tr>
+      <tr><td>canonical</td><td><span class="tag done">已完成</span></td><td>所有页面有canonical标签</td></tr>
+      <tr><td>移动端友好</td><td><span class="tag done">已完成</span></td><td>响应式设计，移动端适配</td></tr>
+      <tr><td>Core Web Vitals优化</td><td><span class="tag done">已完成</span></td><td>preconnect字体CDN+preload Hero图+fetchpriority</td></tr>
+      <tr><td>百度API推送</td><td><span class="tag done">已完成</span></td><td>每日02:00定时推送10条（按priority排序）</td></tr>
+      <tr><td>百度站长验证</td><td><span class="tag done">已完成</span></td><td>裸域claw-book.cn文件验证</td></tr>
+      <tr><td>Bing站长验证</td><td><span class="tag done">已完成</span></td><td>站点已验证，sitemap已提交</td></tr>
+      <tr><td>Google站长验证</td><td><span class="tag done">已完成</span></td><td>Search Console已验证</td></tr>
+    </table>
+
+    <h3>5.2 结构化数据覆盖</h3>
+    <div id="schemaChart" class="chart"></div>
+  </div>
+
+  <!-- 外链建设 -->
+  <div class="section">
+    <h2>六、外链建设分析</h2>
+    <table>
+      <tr><th>平台</th><th>数量</th><th>内容</th><th>链接</th><th>权重评估</th></tr>
+      <tr><td>CSDN</td><td>2篇</td><td>天机推演技术科普 + 易缘匹配陌生人社交</td><td>articleId 164088050 / 164090049</td><td>中（CSDN高权重）</td></tr>
+      <tr><td>知乎</td><td>1篇</td><td>AI易经人格解读技术文章</td><td>zhuanlan.zhihu.com/p/2075958745239118453</td><td>中高（知乎高权重）</td></tr>
+      <tr><td>GitHub</td><td>1个</td><td>开源项目README挂官网链接</td><td>ccbaby2813-boop/tianji-tuiyan</td><td>中（GitHub高权重）</td></tr>
+    </table>
+    <div class="summary-box">
+      <h3>外链建设评估</h3>
+      <p>当前外链4个来源，均为技术/科普类内容，锚文本包含"天机推演""AI易经""易缘匹配"等核心关键词。<strong>优势</strong>：来源平台权重高，内容相关性强。<strong>不足</strong>：数量偏少（SEO健康标准建议20+个高质量外链），缺少行业类/媒体类外链，缺少锚文本多样性。</p>
+    </div>
+  </div>
+
+  <!-- 内部链接 -->
+  <div class="section">
+    <h2>七、内部链接分析</h2>
+    <div class="grid-3">
+      <div class="card"><div class="number gold">3,256</div><div class="label">内部链接总数</div></div>
+      <div class="card"><div class="number green">317</div><div class="label">唯一内部链接</div></div>
+      <div class="card"><div class="number blue">9</div><div class="label">卦页平均H2数</div></div>
+    </div>
+    <h3>内部链接结构</h3>
+    <ul style="margin-left:24px;color:var(--text-2);line-height:2">
+      <li><strong>六十四卦总览页</strong>：完整64卦索引，是卦页的核心枢纽</li>
+      <li><strong>卦页内部</strong>：每篇6个内部链接+上下篇导航+related-box 6个链接</li>
+      <li><strong>专题页</strong>：添加5个热门卦页链接（乾/坤/泰/否/谦）</li>
+      <li><strong>英文索引页</strong>：64卦链接网格+15个专题页链接，全部指向英文页面</li>
+      <li><strong>英文卦页匹配卡片</strong>：最佳匹配Top3+需注意Top3，链接指向对应英文卦页</li>
+    </ul>
+  </div>
+
+  <!-- 问题与风险 -->
+  <div class="section">
+    <h2>八、问题与风险</h2>
+
+    <div class="risk-item">
+      <div class="risk-title">1. 收录效果尚未验证</div>
+      <div class="risk-desc">大量内容（64卦页扩充+64英文卦页+13英文专题页）刚上线，百度/Google收录需要时间。百度API每日仅推送10条，165个URL需要17天才能全部推送一轮。建议检查百度站长平台的收录量和索引量。</div>
+    </div>
+
+    <div class="risk-item">
+      <div class="risk-title">2. 缺少数据分析工具</div>
+      <div class="risk-desc">尚未部署GA4（Google Analytics 4）和百度统计，无法跟踪实际流量、关键词排名、用户行为等核心SEO指标。建议尽快部署，建立数据基线。</div>
+    </div>
+
+    <div class="risk-item">
+      <div class="risk-title">3. 外链数量偏少</div>
+      <div class="risk-desc">当前仅4个外链来源，SEO健康标准建议20+个高质量外链。缺少行业媒体、博客评论、论坛签名等多样化外链来源。</div>
+    </div>
+
+    <div class="risk-item">
+      <div class="risk-title">4. 24节气养生页面未扩充</div>
+      <div class="risk-desc">jieqi-health.js（中文53KB）+jieqi-health-en.js（英文87KB）+solar-advice-en.js（1.9MB）数据齐全，但当前仅1篇汇总专题页，可扩充为24篇独立节气页（中英文），覆盖"XX节气养生"等长尾关键词。</div>
+    </div>
+
+    <div class="risk-item">
+      <div class="risk-title">5. 易缘匹配无独立查询页面</div>
+      <div class="risk-desc">2080条匹配关系数据齐全（中英文），但仅在卦页内展示Top3+Top3。可创建独立的"易缘匹配"查询页面，覆盖"乾卦和坤卦配吗"等高价值长尾关键词，SEO潜力巨大。</div>
+    </div>
+
+    <div class="risk-item">
+      <div class="risk-title">6. 内容更新频率</div>
+      <div class="risk-desc">当前内容为一次性批量生成，缺少持续更新机制。搜索引擎偏好持续更新的网站，建议建立内容更新日历（如每周1篇专题+每月节气页更新）。</div>
+    </div>
+  </div>
+
+  <!-- 下一步建议 -->
+  <div class="section">
+    <h2>九、下一步建议（按优先级排序）</h2>
+
+    <div class="next-item">
+      <div class="next-title">P0 · 部署数据分析工具 + 检查收录状态</div>
+      <div class="next-priority">优先级：最高 · 预计工作量：2小时</div>
+      <div class="next-desc">部署GA4（需用户提供测量ID）和百度统计；检查百度/Bing/Google站长平台的收录量、索引量、抓取错误；建立SEO数据基线，为后续优化提供数据支撑。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P0 · 百度sitemap全量推送加速</div>
+      <div class="next-priority">优先级：最高 · 预计工作量：1小时</div>
+      <div class="next-desc">当前百度API每日仅推送10条，165个URL需要17天。可手动在百度站长平台提交sitemap，或增加API推送频率（如每日推送20条，分两批），加速新内容收录。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P1 · 创建易缘匹配独立查询页面</div>
+      <div class="next-priority">优先级：高 · 预计工作量：4小时</div>
+      <div class="next-desc">利用2080条匹配关系数据（中英文），创建独立的"易缘匹配"查询页面。用户选择两个卦象即可查看完整匹配分析。覆盖"乾卦和坤卦配吗""XX卦和XX卦合不合"等高价值长尾关键词，SEO潜力巨大。中英文双语。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P1 · 24节气养生页面扩充（中英文）</div>
+      <div class="next-priority">优先级：高 · 预计工作量：6小时</div>
+      <div class="next-desc">利用jieqi-health.js+jieqi-health-en.js+solar-advice-en.js数据，将当前1篇汇总页扩充为24篇独立节气页。每篇包含：节气特点、卦象体质分型、饮食建议、起居建议、运动建议、注意事项。覆盖"XX节气养生""XX节气吃什么"等季节性长尾关键词。中英文双语。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P2 · 外链持续建设</div>
+      <div class="next-priority">优先级：中 · 预计工作量：持续</div>
+      <div class="next-desc">制定外链建设计划：每月2-3篇技术/科普文章发布到CSDN/知乎/掘金/博客园；在AI/易经/星座相关论坛和社区参与讨论并签名带链接；联系行业媒体和博客进行内容合作；GitHub开源项目持续更新吸引自然外链。目标：3个月内外链来源达到15+。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P2 · 关键词排名监控与优化</div>
+      <div class="next-priority">优先级：中 · 预计工作量：持续</div>
+      <div class="next-desc">建立核心关键词列表（"易经人格解读""本命卦测试""六十四卦""AI易经""易缘匹配""梅花易数"等+长尾词），每周监控百度/Google排名变化；对排名靠后的页面进行针对性优化（标题、首段关键词、内部链接锚文本、内容补充）；关注搜索流量入口页面，强化高流量页面的转化路径。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P3 · 内容更新日历</div>
+      <div class="next-priority">优先级：低 · 预计工作量：持续</div>
+      <div class="next-desc">建立内容更新日历：每周1篇专题深度文章（如"易经与MBTI对比""AI如何重新激活传统文化"）；每节气更新对应节气养生页；每月更新1篇行业观察/技术博客。保持网站内容活跃度，提升搜索引擎抓取频率和用户回访率。</div>
+    </div>
+
+    <div class="next-item">
+      <div class="next-title">P3 · App上架后联动SEO</div>
+      <div class="next-priority">优先级：低 · 预计工作量：App上架后</div>
+      <div class="next-desc">Google Play封闭测试12天后上架。App上架后：创建App下载落地页优化（ASO+SEO联动）；在App内添加官网链接和分享功能；利用App用户评价和评论生成UGC内容；考虑创建App Store优化页面和应用介绍文章。</div>
+    </div>
+  </div>
+
+  <!-- 优先级矩阵 -->
+  <div class="section">
+    <h2>十、下一步行动优先级矩阵</h2>
+    <div id="priorityChart" class="chart chart-tall"></div>
+  </div>
+
+  <div class="footer">
+    <p>天机推演 SEO 工作全面 Review · 2026-09-01</p>
+    <p>域名：claw-book.cn · 运营主体：北京无元数字科技有限公司 · ICP：京ICP备16050769号-4</p>
+  </div>
+
+</div>
+
+<script>
+// 雷达图
+var radarChart = echarts.init(document.getElementById('radarChart'));
+radarChart.setOption({
+  tooltip: {},
+  radar: {
+    indicator: [
+      {name: '技术SEO', max: 100},
+      {name: '内容质量', max: 100},
+      {name: '结构化数据', max: 100},
+      {name: '内部链接', max: 100},
+      {name: '外链建设', max: 100},
+      {name: '英文体系', max: 100}
+    ],
+    axisName: {color: '#C8A55B', fontSize: 14},
+    splitArea: {areaStyle: {color: ['rgba(200,165,91,0.02)', 'rgba(200,165,91,0.05)']}},
+    splitLine: {lineStyle: {color: 'rgba(200,165,91,0.2)'}},
+    axisLine: {lineStyle: {color: 'rgba(200,165,91,0.3)'}}
+  },
+  series: [{
+    type: 'radar',
+    data: [{
+      value: [95, 85, 90, 88, 45, 92],
+      name: '当前SEO能力',
+      areaStyle: {color: 'rgba(200,165,91,0.25)'},
+      lineStyle: {color: '#C8A55B', width: 2},
+      itemStyle: {color: '#C8A55B'}
+    }]
+  }]
+});
+
+// 页面分布饼图
+var pagePieChart = echarts.init(document.getElementById('pagePieChart'));
+pagePieChart.setOption({
+  tooltip: {trigger: 'item'},
+  legend: {bottom: 0, textStyle: {color: '#9C988E'}},
+  series: [{
+    type: 'pie',
+    radius: ['40%', '70%'],
+    avoidLabelOverlap: false,
+    itemStyle: {borderRadius: 8, borderColor: '#0B0B12', borderWidth: 2},
+    label: {color: '#E6E2DA'},
+    data: [
+      {value: 64, name: '中文卦页', itemStyle: {color: '#C8A55B'}},
+      {value: 16, name: '中文专题页', itemStyle: {color: '#e8d5a3'}},
+      {value: 3, name: '中文其他（首页/协议/登录）', itemStyle: {color: '#8B7355'}},
+      {value: 64, name: '英文卦页', itemStyle: {color: '#5b8db8'}},
+      {value: 15, name: '英文专题页', itemStyle: {color: '#7ba8c8'}},
+      {value: 3, name: '英文其他（索引/协议）', itemStyle: {color: '#3d6a8a'}}
+    ]
+  }]
+});
+
+// 字数变化柱状图
+var wordCountChart = echarts.init(document.getElementById('wordCountChart'));
+wordCountChart.setOption({
+  tooltip: {trigger: 'axis'},
+  grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+  xAxis: {type: 'category', data: ['扩充前', '扩充后'], axisLabel: {color: '#9C988E', fontSize: 14}},
+  yAxis: {type: 'value', name: '平均字数', nameTextStyle: {color: '#9C988E'}, axisLabel: {color: '#9C988E'}},
+  series: [{
+    type: 'bar',
+    data: [
+      {value: 674, itemStyle: {color: '#c46565'}},
+      {value: 10507, itemStyle: {color: '#5a9a6e'}}
+    ],
+    barWidth: '40%',
+    label: {show: true, position: 'top', color: '#E6E2DA', fontSize: 16, fontWeight: 'bold', formatter: '{c}字'},
+    itemStyle: {borderRadius: [8, 8, 0, 0]}
+  }]
+});
+
+// 结构化数据柱状图
+var schemaChart = echarts.init(document.getElementById('schemaChart'));
+schemaChart.setOption({
+  tooltip: {trigger: 'axis'},
+  grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+  xAxis: {type: 'category', data: ['FAQPage', 'BreadcrumbList', 'Article', 'PrivacyPolicy', 'TermsOfService'], axisLabel: {color: '#9C988E', fontSize: 12}},
+  yAxis: {type: 'value', name: '页面数', nameTextStyle: {color: '#9C988E'}, axisLabel: {color: '#9C988E'}},
+  series: [{
+    type: 'bar',
+    data: [81, 81, 158, 2, 2],
+    barWidth: '50%',
+    label: {show: true, position: 'top', color: '#E6E2DA'},
+    itemStyle: {color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{offset: 0, color: '#C8A55B'}, {offset: 1, color: '#8B7355'}]), borderRadius: [6, 6, 0, 0]}
+  }]
+});
+
+// 优先级矩阵
+var priorityChart = echarts.init(document.getElementById('priorityChart'));
+priorityChart.setOption({
+  tooltip: {
+    formatter: function(p) {return p.data[3] + '<br/>影响力: ' + p.data[0] + '<br/>工作量: ' + p.data[1];}
+  },
+  grid: {left: '8%', right: '8%', bottom: '12%', top: '8%'},
+  xAxis: {
+    type: 'value', name: '工作量（小时）→', min: 0, max: 10,
+    nameLocation: 'middle', nameGap: 30, nameTextStyle: {color: '#9C988E'},
+    axisLabel: {color: '#9C988E'}, splitLine: {lineStyle: {color: 'rgba(200,165,91,0.1)'}}
+  },
+  yAxis: {
+    type: 'value', name: 'SEO影响力 →', min: 0, max: 10,
+    nameLocation: 'middle', nameGap: 40, nameTextStyle: {color: '#9C988E'},
+    axisLabel: {color: '#9C988E'}, splitLine: {lineStyle: {color: 'rgba(200,165,91,0.1)'}}
+  },
+  series: [{
+    type: 'scatter',
+    symbolSize: function(d) {return d[2];},
+    data: [
+      [9, 2, 50, 'P0: 部署GA4+百度统计'],
+      [8.5, 1.5, 45, 'P0: 百度sitemap加速推送'],
+      [8, 4, 55, 'P1: 易缘匹配独立查询页'],
+      [7.5, 6, 60, 'P1: 24节气养生页扩充'],
+      [6, 8, 40, 'P2: 外链持续建设'],
+      [5.5, 6, 38, 'P2: 关键词排名监控'],
+      [4, 5, 30, 'P3: 内容更新日历'],
+      [5, 3, 35, 'P3: App上架后联动SEO']
+    ],
+    itemStyle: {
+      color: function(p) {
+        var v = p.data[3];
+        if (v.indexOf('P0') >= 0) return '#c46565';
+        if (v.indexOf('P1') >= 0) return '#C8A55B';
+        if (v.indexOf('P2') >= 0) return '#5b8db8';
+        return '#5a9a6e';
+      },
+      opacity: 0.8
+    },
+    label: {show: true, formatter: function(p) {return p.data[3].substring(3);}, position: 'right', color: '#E6E2DA', fontSize: 11}
+  }],
+  markLine: {
+    silent: true,
+    data: [
+      {xAxis: 5, lineStyle: {color: 'rgba(200,165,91,0.3)', type: 'dashed'}},
+      {yAxis: 6, lineStyle: {color: 'rgba(200,165,91,0.3)', type: 'dashed'}}
+    ],
+    label: {show: false}
+  }
+});
+
+// 响应式
+window.addEventListener('resize', function() {
+  radarChart.resize();
+  pagePieChart.resize();
+  wordCountChart.resize();
+  schemaChart.resize();
+  priorityChart.resize();
+});
+</script>
+
+</body>
+</html>

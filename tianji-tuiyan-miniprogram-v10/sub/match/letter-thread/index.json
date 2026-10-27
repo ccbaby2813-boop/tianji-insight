@@ -1,0 +1,1 @@
+{ "usingComponents": { "icon-guo": "/components/icon-guo/icon-guo", "letter-tab-bar": "/components/letter-tab-bar/index" }, "navigationStyle": "custom", "navigationBarTitleText": "信件往来" }

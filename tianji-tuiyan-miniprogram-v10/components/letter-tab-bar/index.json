@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "icon-guo": "/components/icon-guo/icon-guo"
+  }
+}

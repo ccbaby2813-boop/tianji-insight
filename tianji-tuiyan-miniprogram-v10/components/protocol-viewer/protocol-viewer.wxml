@@ -1,0 +1,15 @@
+<!-- components/protocol-viewer/protocol-viewer.wxml -->
+<view class="protocol-overlay" wx:if="{{visible}}" bindtap="onMaskTap">
+  <view class="protocol-popup" catchtap="stop" catchtouchmove="{{true}}">
+    <view class="protocol-header">
+      <text class="protocol-title">{{title}}</text>
+      <view class="protocol-close" bindtap="onClose">×</view>
+    </view>
+    <scroll-view class="protocol-content" scroll-y>
+      <text class="protocol-text" decode="{{true}}">{{content}}</text>
+    </scroll-view>
+    <view class="protocol-footer">
+      <button aria-label="{{t.known}}" class="btn btn-gold" bindtap="onClose">{{t.known}}</button>
+    </view>
+  </view>
+</view>

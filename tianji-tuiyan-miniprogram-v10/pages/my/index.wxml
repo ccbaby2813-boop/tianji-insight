@@ -1,0 +1,268 @@
+<!-- pages/my/index.wxml - 我的页面 -->
+<!-- v5.0 重新设计：Editorial Swiss + Type-as-hero
+     卦象区 flex 居中修复错位；易缘匹配"姻缘一线牵"暧昧设计；金线分隔去卡片化 -->
+<view class="page-container page-my theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar" style="padding-top:{{statusBarHeight}}px">
+    <view class="navbar-title">
+      <text class="navbar-title-text font-title">{{t.navbar}}</text>
+      <view class="navbar-ornament">
+        <view class="ornament-line"></view>
+        <icon-guo name="diamond" size="24" color="#C8A55B" />
+        <view class="ornament-line"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 — 骨架屏 -->
+  <view class="loading-state" wx:if="{{pageState === 'loading'}}">
+    <view class="skeleton skeleton-title" style="margin-top:96rpx"></view>
+    <view class="skeleton skeleton-card"></view>
+    <view class="skeleton skeleton-block" style="width:80%"></view>
+    <view class="skeleton skeleton-block" style="width:60%"></view>
+  </view>
+
+  <!-- v2.3.5 修正：游客可浏览"我的"页内容，不再显示建档引导阻塞页 -->
+
+  <!-- 加载失败 -->
+  <view class="empty-state" wx:if="{{pageState === 'error'}}">
+    <text>{{errorMsg || t.loadFail}}</text>
+    <button aria-label="{{t.retry}}" class="btn btn-gold retry-btn" bindtap="loadProfile">{{t.retry}}</button>
+  </view>
+
+  <!-- 正常内容 -->
+  <scroll-view class="my-content" scroll-y wx:if="{{pageState === 'loaded'}}" style="padding-top:{{statusBarHeight + 44 + 16}}px">
+
+    <!-- 易缘匹配入口（桃心·姻缘一线牵）
+         特色模块：桃心图案背景 + 光晕呼吸 + 圆形桃心图标 + 诗意副标题 + 引导 -->
+    <view class="yiyuan-feature" bindtap="goToLetterMatch">
+      <!-- 背景层：大桃心图案（半透明） -->
+      <view class="yiyuan-bg-pattern" aria-hidden="true">
+        <icon-guo name="peach-heart" size="320" color="rgba(200,165,91,0.06)" />
+      </view>
+
+      <!-- 径向光晕呼吸层 -->
+      <view class="yiyuan-glow" aria-hidden="true"></view>
+
+      <!-- 未读信件 badge（右上角悬浮） -->
+      <view class="yiyuan-badge-float" wx:if="{{unreadLetterCount > 0}}">
+        <text class="badge-float-text">{{unreadLetterCount > 99 ? '99+' : unreadLetterCount}}</text>
+      </view>
+
+      <!-- 内容层：圆形桃心图标 + 标题 + 诗意副标题 + 引导 -->
+      <view class="yiyuan-content">
+        <view class="yiyuan-icon-circle">
+          <icon-guo name="peach-heart" size="48" color="#C8A55B" />
+        </view>
+        <text class="yiyuan-feature-title font-display">{{t.matchTitle}}</text>
+        <text class="yiyuan-poem font-quote">{{unreadLetterCount > 0 ? t.matchPoemUnread : t.matchPoemIdle}}</text>
+        <view class="yiyuan-cta">
+          <text class="yiyuan-cta-text">{{unreadLetterCount > 0 ? t.matchCtaUnread : t.matchCtaIdle}}</text>
+          <icon-guo name="chevron-right" size="28" color="#C8A55B" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 称号展示区 -->
+    <view class="title-section" wx:if="{{hasCollectionTitle}}">
+      <text class="title-label">{{t.titleUnlocked}}</text>
+      <text class="title-name">{{collectionTitle}}</text>
+    </view>
+
+    <!-- 极细金线分隔（有称号时才显示） -->
+    <view class="line-gold-thin" wx:if="{{hasCollectionTitle}}"></view>
+
+    <!-- 签到（v18.2：印章签到模块——印章装饰线 + 签章按钮 + 诗意引导，衔接易缘区与菜单） -->
+    <view class="signature-module">
+      <!-- 印章装饰线（章节起笔） -->
+      <view class="signature-ornament" aria-hidden="true">
+        <view class="ornament-line"></view>
+        <view class="signature-ornament-dot"></view>
+        <view class="signature-ornament-seal">
+          <icon-guo name="seal" size="22" color="{{todayCheckedIn ? '#6B6B7A' : '#C8A55B'}}" />
+        </view>
+        <view class="signature-ornament-dot"></view>
+        <view class="ornament-line"></view>
+      </view>
+
+      <!-- 签到按钮：印章签章式 -->
+      <view class="points-actions">
+        <view class="points-action {{todayCheckedIn ? 'is-done' : ''}}" bindtap="onCheckin">
+          <icon-guo name="seal" size="30" color="{{todayCheckedIn ? '#6B6B7A' : '#C8A55B'}}" />
+          <text class="points-action-text">{{todayCheckedIn ? t.checkedToday : t.checkinBtn}}</text>
+          <text class="points-action-sub" wx:if="{{todayCheckedIn && checkinStreak > 0}}">{{streakText}}</text>
+        </view>
+      </view>
+
+      <!-- v18.3：移除诗意引导文案，签到区仅保留"印章装饰线 + 签章按钮"两段，间距重新平衡 -->
+    </view>
+    <!-- v18.2 模块自带章节装饰线与下留白，不再额外加金线避免双重分隔 -->
+    <!-- 菜单区 -->
+    <!-- 专属人格（第一行，点击进入人格详情页） -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="goToNativeGua">
+        <text class="menu-label">{{t.menuArchetype}}</text>
+        <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+      </view>
+    </view>
+
+    <!-- 易学知识库 -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="goToLearn">
+        <text class="menu-label">{{t.menuLibrary}}</text>
+        <view class="menu-right-section">
+          <view class="new-card-badge" wx:if="{{newCardCount > 0}}">
+            <text class="badge-text">{{newCardCount}}</text>
+          </view>
+          <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 额度信息区（v17.0：免费普通推演消费积分，VIP 恢复每日20次次数制） -->
+    <view class="menu-section">
+      <view class="menu-item quota-item" bindtap="goToVip">
+        <text class="menu-label">{{profile.planType === 'free' ? t.planFree : t.planVip}}</text>
+        <view class="menu-right-section">
+          <text class="quota-value" wx:if="{{profile.planType === 'free'}}">{{points}} {{t.pointsSuffix}}</text>
+          <text class="quota-value" wx:else>{{points}} {{t.pointsSuffix}} · {{t.vipQuota}}</text>
+          <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 修改档案 -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="goToEditProfile">
+        <text class="menu-label">{{t.menuEditProfile}}</text>
+        <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+      </view>
+    </view>
+
+    <!-- 语言设置 -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="onLanguageTap">
+        <text class="menu-label">{{t.menuLanguage}}</text>
+        <view class="menu-value-with-arrow">
+          <text class="menu-value">{{lang === 'en' ? t.langEnglish : t.langChinese}}</text>
+          <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 关于我们 -->
+    <view class="menu-section">
+      <view class="menu-item" bindtap="goToAbout">
+        <text class="menu-label">{{t.menuAbout}}</text>
+        <icon-guo name="chevron-right" size="32" color="#A0A0B0" />
+      </view>
+    </view>
+
+    <!-- 登录/退出登录按钮区 -->
+    <view class="login-section" wx:if="{{!isLoggedIn}}">
+      <view class="login-buttons">
+        <button class="login-btn wechat-btn" bindtap="goWechatLogin" wx:if="{{isApp}}">
+          <text class="login-btn-text">{{t.wechatLogin}}</text>
+        </button>
+        <button class="login-btn email-btn" bindtap="goEmailLogin">
+          <text class="login-btn-text">{{t.emailLogin}}</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 已登录时显示退出登录 -->
+    <view class="logout-section" wx:if="{{isLoggedIn}}">
+      <button class="logout-btn" bindtap="handleLogout">
+        <text class="logout-btn-text">{{t.logout}}</text>
+      </button>
+      <button class="logout-btn delete-account-btn" bindtap="handleDeleteAccount">
+        <text class="logout-btn-text delete-account-text">{{t.deleteAccount}}</text>
+      </button>
+    </view>
+
+  </scroll-view>
+
+  <!-- 语言选择浮层 -->
+  <view class="lang-mask" wx:if="{{showLanguagePicker}}" bindtap="closeLanguagePicker"></view>
+  <view class="lang-sheet {{showLanguagePicker ? 'show' : ''}}">
+    <view class="lang-sheet-handle"></view>
+    <view class="lang-sheet-title font-title">{{t.langSheetTitle}}</view>
+    <view class="lang-option {{lang === 'zh' ? 'selected' : ''}}" bindtap="selectLanguage" data-lang="zh">
+      <text class="lang-option-name">🇨🇳 {{t.langChinese}}</text>
+      <text class="lang-option-desc">{{t.langChineseDesc}}</text>
+      <view class="lang-check" wx:if="{{lang === 'zh'}}">
+        <icon-guo name="check" size="36" color="#C8A55B" />
+      </view>
+    </view>
+    <view class="lang-option {{lang === 'en' ? 'selected' : ''}}" bindtap="selectLanguage" data-lang="en">
+      <text class="lang-option-name">🇺🇸 {{t.langEnglish}}</text>
+      <text class="lang-option-desc">{{t.langEnglishDesc}}</text>
+      <view class="lang-check" wx:if="{{lang === 'en'}}">
+        <icon-guo name="check" size="36" color="#C8A55B" />
+      </view>
+    </view>
+    <view class="lang-sheet-cancel" bindtap="closeLanguagePicker">{{t.langSheetCancel}}</view>
+  </view>
+
+  <!-- v17.1 每日签到弹窗（墨韵黑金 · 7日连签轨道 + 免费/VIP 权益） -->
+  <view class="checkin-mask" wx:if="{{showCheckinModal}}" bindtap="closeCheckinModal">
+    <view class="checkin-sheet" catchtap="noop">
+      <!-- 顶部关闭 -->
+      <view class="checkin-close" aria-label="关闭" bindtap="closeCheckinModal">
+        <icon-guo name="close" size="32" color="#6B6B7A" />
+      </view>
+
+      <!-- 标题 -->
+      <view class="checkin-head">
+        <text class="checkin-title font-title">{{t.checkinModalTitle}}</text>
+        <view class="checkin-ornament">
+          <view class="ornament-line"></view>
+          <icon-guo name="seal" size="22" color="#C8A55B" />
+          <view class="ornament-line"></view>
+        </view>
+        <text class="checkin-status font-quote">{{checkinStatusText}}</text>
+      </view>
+
+      <!-- 7日连签轨道 -->
+      <view class="checkin-track">
+        <view
+          class="checkin-cell {{item.checked ? 'is-checked' : ''}} {{item.isToday ? 'is-today' : ''}} {{item.isBonus ? 'is-bonus' : ''}}"
+          wx:for="{{checkinDays}}" wx:key="label">
+          <text class="cell-label">{{item.label}}</text>
+          <view class="cell-node">
+            <icon-guo wx:if="{{item.checked}}" name="seal" size="26" color="#C8A55B" />
+            <text class="cell-dot" wx:else></text>
+          </view>
+          <text class="cell-bonus" wx:if="{{item.isBonus}}">{{t.bonusCell}}</text>
+          <text class="cell-today" wx:if="{{item.isToday && !item.isBonus}}">{{t.todayCell}}</text>
+          <text class="cell-near" wx:if="{{item.isBonus && item.checked}}">{{t.bonusDone}}</text>
+        </view>
+      </view>
+
+      <!-- 状态说明 -->
+      <view class="checkin-progress font-quote">
+        <text wx:if="{{checkinToBonus === 0}}">{{t.progressDone}}</text>
+        <text wx:elif="{{checkinToBonus > 0}}">{{progressLeftText}}</text>
+      </view>
+
+      <!-- 身份 & 权益 -->
+      <view class="checkin-level">
+        <view class="checkin-level-row">
+          <text class="checkin-level-tag font-quote">{{checkinLevelTitle}}</text>
+          <text class="checkin-level-sub font-quote">{{checkinLevelSub}}</text>
+        </view>
+        <view class="checkin-rights font-quote">
+          <text class="checkin-rights-title">{{checkinRightsTitle}}</text>
+          <text class="checkin-rights-note">{{t.rightsNote}}</text>
+        </view>
+      </view>
+
+      <!-- 主操作 -->
+      <button
+        class="checkin-submit {{todayCheckedIn ? 'is-done' : ''}} {{lang === 'en' ? 'is-en' : ''}}"
+        catchtap="submitCheckinModal">
+        <text>{{todayCheckedIn ? t.submitTomorrow : t.submitToday}}</text>
+      </button>
+    </view>
+  </view>
+</view>

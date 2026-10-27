@@ -1,0 +1,1018 @@
+/* sub/learn/learn/index.wxss - 学习中心：塔罗牌3D浮动 + 星光闪烁 + 进度条光斑
+ * Visual Thesis: 学习如星河塔罗铺展智慧，每张卡牌都是星河中浮现的灵魂
+ * 改造要点：颜色全部 var(--xxx)；保留 3D 浮动/星光/进度条光斑/卡牌闪烁；hover/active 态用 var(--accent-gold-subtle)
+ */
+
+/* ===== 页面通用 ===== */
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-base);
+}
+
+/* ===== Tab ===== */
+.tab-bar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-base);
+  border-bottom: 1rpx solid var(--border-subtle);
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border-bottom: 3rpx solid transparent;
+  transition: all 0.3s var(--ease-out-expo);
+  position: relative;
+}
+.tab-item.active {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+  text-shadow: 0 0 12rpx rgba(200, 165, 91, 0.20);
+}
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3rpx;
+  left: 25%;
+  width: 50%;
+  height: 3rpx;
+  background: var(--accent-gold);
+  filter: blur(6rpx);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.tab-item:active { opacity: 0.7; }
+
+/* ===== Tab 新卡通知角标 — 金色脉冲（Editorial Swiss 单色点缀） ===== */
+.tab-badge {
+  position: absolute;
+  top: 8rpx;
+  right: 18%;
+  min-width: 28rpx;
+  height: 28rpx;
+  padding: 0 6rpx;
+  background: var(--gold-pure);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12rpx rgba(200, 165, 91, 0.55);
+  animation: badgePopIn 0.3s var(--ease-spring), tabBadgeGoldPulse 2.4s ease-in-out infinite;
+  z-index: 11;
+}
+@keyframes tabBadgeGoldPulse {
+  0%, 100% { box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.35); }
+  50%      { box-shadow: 0 0 18rpx rgba(200, 165, 91, 0.75); }
+}
+.tab-badge-text {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #0A0A1A;
+  line-height: 1;
+}
+
+/* ===== 收集进度条 — 去卡片化，1rpx 金线分隔 ===== */
+.collection-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 48rpx;
+  margin: 0 48rpx;
+  border-top: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-bottom: 1rpx solid rgba(200, 165, 91, 0.3);
+}
+.collection-bar.completed {
+  border-top-color: var(--gold-pure);
+  border-bottom-color: var(--gold-pure);
+  animation: barPulse 2.5s ease-in-out infinite;
+}
+@keyframes barPulse {
+  0%, 100% { box-shadow: 0 0 30rpx rgba(200, 165, 91, 0.20); }
+  50%      { box-shadow: 0 0 48rpx rgba(200, 165, 91, 0.45); }
+}
+.collection-progress-track {
+  width: 100%;
+  height: 8rpx;
+  background: var(--accent-gold-subtle);
+  border-radius: 4rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+  position: relative;
+}
+.collection-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-gold), var(--gold-pure));
+  border-radius: 4rpx;
+  transition: width 0.5s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+/* 进度条光斑扫过 */
+.collection-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -12rpx;
+  width: 24rpx;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #FFFFFF59 40%,
+    #FFFFFF99 50%,
+    #FFFFFF59 60%,
+    transparent 100%);
+  border-radius: 2rpx;
+  animation: progressShine 2s ease-in-out infinite;
+}
+@keyframes progressShine {
+  0%   { opacity: 0; transform: translateX(-20rpx); }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(20rpx); }
+}
+.collection-info { text-align: center; }
+.collection-count {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--accent-gold-hover);
+  transition: transform 0.3s var(--ease-spring);
+}
+.collection-count.bounce { transform: scale(1.35); }
+.count-total {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.collection-sub {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 4rpx;
+}
+.collection-bar.completed .collection-count { color: var(--gold-pure); }
+.collection-bar.completed .collection-sub { color: var(--accent-gold); }
+/* 集满后进度条全宽光晕 */
+.collection-bar.completed .collection-progress-fill::after {
+  width: 100%;
+  right: 0;
+  background: linear-gradient(90deg,
+    rgba(200, 165, 91, 0) 0%,
+    rgba(200, 165, 91, 0.15) 50%,
+    rgba(200, 165, 91, 0) 100%);
+  animation: completionGlow 2s ease-in-out infinite;
+}
+@keyframes completionGlow {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.8; }
+}
+.collection-bar:active { transform: scale(0.98); transition: transform 0.15s var(--ease-out-expo); }
+.welcome-btn:active { transform: scale(0.95); opacity: 0.85; }
+
+/* ===== 背景氛围 — 仅极淡金光晕，单色铁律 ===== */
+.grid-atmosphere {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 30%, rgba(200, 165, 91, 0.04) 0%, transparent 70%);
+}
+.grid-stars {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.grid-stars::after {
+  content: '';
+  position: absolute;
+  width: 4rpx; height: 4rpx; top: 0; left: 0;
+  border-radius: 50%; background: transparent;
+  box-shadow:
+    32rpx  48rpx  0 0 rgba(200, 165, 91, 0.28),
+    128rpx 92rpx  0 0 rgba(200, 165, 91, 0.14),
+    240rpx 36rpx  0 0 rgba(200, 165, 91,0.18),
+    360rpx 140rpx 0 0 rgba(200, 165, 91, 0.10),
+    480rpx 60rpx  0 0 rgba(200, 165, 91,0.22),
+    80rpx  200rpx 0 0 rgba(200, 165, 91, 0.12),
+    200rpx 280rpx 0 0 rgba(200, 165, 91, 0.16),
+    340rpx 220rpx 0 0 rgba(200, 165, 91,0.08),
+    450rpx 300rpx 0 0 rgba(200, 165, 91, 0.13),
+    560rpx 180rpx 0 0 rgba(200, 165, 91, 0.10),
+    100rpx 400rpx 0 0 rgba(200, 165, 91,0.18),
+    300rpx 480rpx 0 0 rgba(200, 165, 91, 0.08),
+    500rpx 420rpx 0 0 rgba(200, 165, 91, 0.14),
+    60rpx  560rpx 0 0 rgba(200, 165, 91,0.11),
+    180rpx 620rpx 0 0 rgba(200, 165, 91, 0.09),
+    380rpx 540rpx 0 0 rgba(200, 165, 91, 0.16),
+    520rpx 680rpx 0 0 rgba(200, 165, 91,0.08),
+    620rpx 480rpx 0 0 rgba(200, 165, 91, 0.13),
+    40rpx  720rpx 0 0 rgba(200, 165, 91, 0.10),
+    250rpx 780rpx 0 0 rgba(200, 165, 91,0.11),
+    420rpx 850rpx 0 0 rgba(200, 165, 91, 0.08),
+    580rpx 900rpx 0 0 rgba(200, 165, 91, 0.14),
+    150rpx 960rpx 0 0 rgba(200, 165, 91,0.10),
+    350rpx 1020rpx 0 0 rgba(200, 165, 91, 0.11),
+    480rpx 1100rpx 0 0 rgba(200, 165, 91, 0.08),
+    70rpx  1180rpx 0 0 rgba(200, 165, 91,0.13),
+    280rpx 1240rpx 0 0 rgba(200, 165, 91, 0.10),
+    440rpx 1320rpx 0 0 rgba(200, 165, 91, 0.16),
+    600rpx 1400rpx 0 0 rgba(200, 165, 91,0.08),
+    120rpx 1500rpx 0 0 rgba(200, 165, 91, 0.11),
+    320rpx 1580rpx 0 0 rgba(200, 165, 91, 0.08),
+    50rpx  1660rpx 0 0 rgba(200, 165, 91,0.13),
+    400rpx 1720rpx 0 0 rgba(200, 165, 91, 0.10),
+    540rpx 1800rpx 0 0 rgba(200, 165, 91, 0.08),
+    90rpx  1900rpx 0 0 rgba(200, 165, 91,0.14),
+    260rpx 1980rpx 0 0 rgba(200, 165, 91, 0.10),
+    500rpx 2050rpx 0 0 rgba(200, 165, 91, 0.15),
+    160rpx 2140rpx 0 0 rgba(200, 165, 91,0.08),
+    370rpx 2220rpx 0 0 rgba(200, 165, 91, 0.11),
+    580rpx 2300rpx 0 0 rgba(200, 165, 91, 0.10),
+    220rpx 2400rpx 0 0 rgba(200, 165, 91,0.13);
+  opacity: 0.6;
+  animation: starTwinkle 4s ease-in-out infinite alternate;
+}
+@keyframes starTwinkle {
+  0%   { opacity: 0.3; }
+  50%  { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+
+/* ===== 塔罗牌网格 — Editorial Swiss 3列大留白 ===== */
+.gua-grid {
+  position: relative;
+  height: calc(100vh - 140rpx);
+  padding: 48rpx;
+  box-sizing: border-box;
+}
+.gua-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32rpx;
+  position: relative;
+  z-index: 1;
+  perspective: 800rpx;
+}
+
+/* 卡牌组之间金线分隔（每3个一组，编辑式分章） */
+.gua-grid-inner::after {
+  content: '';
+  display: block;
+  grid-column: 1 / -1;
+  height: 1rpx;
+  margin-top: 16rpx;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.3) 50%,
+    transparent 100%);
+}
+
+/* 卡牌浮动容器 — 3D 漂浮 */
+.card-float-wrapper {
+  animation: cardFloat 4s ease-in-out infinite;
+}
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50%      { transform: translateY(-5rpx) rotateX(2deg); }
+}
+/* 浮动画列波浪延迟 */
+.card-float-wrapper:nth-child(3n+1) { animation-delay: 0s; }
+.card-float-wrapper:nth-child(3n+2) { animation-delay: 0.7s; }
+.card-float-wrapper:nth-child(3n+3) { animation-delay: 1.4s; }
+
+/* ===== 塔罗牌 — v3.0 黑金实体卡牌：金属拉丝 + 浮雕厚重 + 3D立体 ===== */
+.tarot-card {
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10rpx;
+  transition: all 0.25s var(--ease-out-expo);
+  /* 多层金属拉丝背景：横向细纹 + 对角高光 + 深黑金底 */
+  background:
+    /* 对角高光 */
+    linear-gradient(135deg,
+      rgba(255, 232, 168, 0.05) 0%,
+      transparent 30%,
+      transparent 60%,
+      rgba(200, 165, 91, 0.04) 80%,
+      transparent 100%),
+    /* 横向拉丝细纹 */
+    repeating-linear-gradient(0deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 2px),
+    /* 主体黑金渐变 */
+    linear-gradient(145deg,
+      #1A1A24 0%,
+      #0F0F18 50%,
+      #0A0A12 100%);
+  box-shadow:
+    /* 厚重投影：3D 立体感 */
+    0 8rpx 20rpx rgba(0, 0, 0, 0.55),
+    0 4rpx 10rpx rgba(0, 0, 0, 0.4),
+    0 2rpx 4rpx rgba(0, 0, 0, 0.3),
+    /* 内边缘高光：模拟金属边框反光（浮雕感） */
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.18),
+    inset 0 -1rpx 0 rgba(0, 0, 0, 0.6),
+    inset 1rpx 0 0 rgba(200, 165, 91, 0.1),
+    inset -1rpx 0 0 rgba(200, 165, 91, 0.1);
+}
+
+/* 已收集：黑金实体卡 + 烫金双线边框 */
+.tarot-card.lit {
+  border: 2rpx solid;
+  border-image: linear-gradient(135deg,
+    #C8A55B 0%,
+    #FFE8A8 25%,
+    #8B7340 50%,
+    #FFE8A8 75%,
+    #C8A55B 100%) 1;
+  animation: cardEnter 0.4s var(--ease-out-expo) both;
+}
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(20rpx) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-float-wrapper:nth-child(3n+1) .tarot-card.lit { animation-delay: 0s; }
+.card-float-wrapper:nth-child(3n+2) .tarot-card.lit { animation-delay: 0.04s; }
+.card-float-wrapper:nth-child(3n+3) .tarot-card.lit { animation-delay: 0.08s; }
+
+/* active 态 — 浮起 + 金光晕扩散 */
+.tarot-card.lit:active {
+  transform: scale(0.96) translateY(-2rpx);
+  box-shadow:
+    0 12rpx 28rpx rgba(0, 0, 0, 0.65),
+    0 6rpx 14rpx rgba(0, 0, 0, 0.5),
+    0 0 24rpx rgba(200, 165, 91, 0.3),
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.25),
+    inset 0 -1rpx 0 rgba(0, 0, 0, 0.6);
+}
+.tarot-card.lit:active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(200, 165, 91, 0.06);
+  pointer-events: none;
+  z-index: 4;
+  animation: pressFlash 0.2s var(--ease-out-expo);
+}
+@keyframes pressFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+/* 未收集：暗影卡 — 黑金底 + 极淡金线呼吸 */
+.tarot-card.shadow {
+  border: 1rpx solid rgba(200, 165, 91, 0.12);
+  animation: shadowBreathe 3.5s ease-in-out infinite;
+}
+@keyframes shadowBreathe {
+  0%, 100% { border-color: rgba(200, 165, 91, 0.12); }
+  50%      { border-color: rgba(200, 165, 91, 0.22); }
+}
+.tarot-card.shadow:active {
+  transform: scale(0.96);
+  border-color: rgba(200, 165, 91, 0.3);
+}
+.tarot-card.shadow:active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(200, 165, 91, 0.04);
+  pointer-events: none;
+  z-index: 4;
+  animation: pressFlash 0.2s var(--ease-out-expo);
+}
+
+/* 卡牌内边框 — 烫金双线（外粗+内细）模拟浮雕边框 */
+.card-border {
+  position: absolute;
+  top: 6rpx; left: 6rpx; right: 6rpx; bottom: 6rpx;
+  border: 1rpx solid rgba(255, 232, 168, 0.2);
+  border-radius: 6rpx;
+  pointer-events: none;
+  z-index: 1;
+}
+.tarot-card.lit .card-border {
+  border-color: rgba(255, 232, 168, 0.3);
+  animation: livingGlow 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+@keyframes livingGlow {
+  0%, 100% { border-color: rgba(255, 232, 168, 0.25); opacity: 0.7; }
+  50%      { border-color: rgba(255, 232, 168, 0.5); opacity: 1; }
+}
+
+/* 金色光扫动画 — 金属反光 */
+.card-shimmer {
+  position: absolute;
+  top: 0; left: -150%;
+  width: 200%; height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    transparent 25%,
+    rgba(255, 232, 168, 0.06) 35%,
+    rgba(255, 232, 168, 0.22) 40%,
+    rgba(255, 232, 168, 0.30) 50%,
+    rgba(255, 232, 168, 0.22) 60%,
+    rgba(255, 232, 168, 0.06) 65%,
+    transparent 75%,
+    transparent 100%);
+  animation: shimmer-sweep 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes shimmer-sweep {
+  0%   { left: -150%; }
+  50%  { left: 50%; }
+  100% { left: 150%; }
+}
+
+/* 人格符号 — 烫金浮雕字 */
+.tarot-symbol {
+  font-size: 50rpx;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s var(--ease-out-expo);
+}
+.tarot-card.lit .tarot-symbol {
+  color: transparent;
+  background: linear-gradient(135deg,
+    #C8A55B 0%,
+    #FFE8A8 30%,
+    #8B7340 60%,
+    #FFE8A8 90%,
+    #C8A55B 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.6))
+          drop-shadow(0 0 12rpx rgba(255, 232, 168, 0.3));
+}
+.tarot-card.shadow .tarot-symbol {
+  color: var(--text-muted);
+  animation: shadowSymbolPulse 4s ease-in-out infinite;
+}
+@keyframes shadowSymbolPulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.7; }
+}
+
+/* 人格名称 */
+.tarot-name {
+  font-size: 22rpx;
+  margin-top: 8rpx;
+  position: relative;
+  z-index: 2;
+  letter-spacing: 2rpx;
+}
+.tarot-card.lit .tarot-name {
+  color: var(--text-primary);
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.6);
+}
+.tarot-card.shadow .tarot-name { color: var(--text-muted); opacity: 0.5; }
+
+/* 人格特质 */
+.tarot-tag {
+  font-size: 20rpx;
+  margin-top: 6rpx;
+  padding: 3rpx 10rpx;
+  background: rgba(200, 165, 91, 0.08);
+  border: 1rpx solid rgba(200, 165, 91, 0.2);
+  border-radius: 4rpx;
+  position: relative;
+  z-index: 2;
+  letter-spacing: 1rpx;
+}
+.tarot-card.lit .tarot-tag { color: rgba(200, 165, 91, 0.85); }
+.tarot-card.shadow .tarot-tag { color: var(--text-muted); opacity: 0.5; }
+
+/* 锁角标 */
+.lock-badge {
+  position: absolute;
+  top: 10rpx; right: 10rpx;
+  z-index: 5;
+  width: 20rpx; height: 16rpx;
+  opacity: 0.55;
+  animation: lockPulse 3s ease-in-out infinite;
+}
+.lock-badge::before {
+  content: '';
+  position: absolute;
+  top: -7rpx; left: 3rpx;
+  width: 14rpx; height: 10rpx;
+  border: 2rpx solid var(--accent-gold);
+  border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+}
+.lock-badge::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 20rpx; height: 14rpx;
+  border: 2rpx solid var(--accent-gold);
+  border-radius: 4rpx;
+  background: radial-gradient(circle at 50% 65%, rgba(200, 165, 91, 0.25) 2rpx, transparent 2rpx);
+  box-sizing: border-box;
+}
+@keyframes lockPulse {
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50%      { opacity: 0.75; transform: translateY(1rpx); }
+}
+
+/* ===== 弹窗 ===== */
+.welcome-popup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.welcome-mask {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+.welcome-content {
+  position: relative;
+  width: 80%;
+  max-width: 560rpx;
+  background: var(--bg-elevated);
+  padding: 48rpx 36rpx;
+  text-align: center;
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  animation: welc-fadeInUp 0.4s var(--ease-out-expo);
+}
+@keyframes welc-fadeInUp {
+  from { opacity: 0; transform: translateY(40rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.welcome-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 16rpx;
+}
+.welcome-desc {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 12rpx;
+  white-space: pre-line;
+}
+.welcome-hint {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 32rpx;
+}
+.welcome-btn {
+  display: inline-block;
+  padding: 14rpx 56rpx;
+  background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
+  border-radius: var(--radius-full);
+  color: var(--text-inverse);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* 奇门盘 */
+.qimen-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 24rpx 0;
+  flex: 1;
+  min-height: 0;
+}
+.compass-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.compass-nebula {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  background: transparent;
+  box-shadow:
+    0 0 60rpx rgba(200, 165, 91, 0.12),
+    0 0 120rpx rgba(200, 165, 91, 0.08),
+    0 0 200rpx rgba(200, 165, 91, 0.04);
+}
+
+/* 卦详情弹窗 */
+.gua-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gua-modal-mask {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+/* v1.5 修复弹窗手机端滑动失效：modal-content 改为 scroll-view，去掉 overflow-y:auto，height 改为明确高度 */
+.modal-content {
+  position: relative;
+  width: 88%;
+  max-width: 600rpx;
+  height: 75vh;
+  background: var(--bg-elevated);
+  padding: 36rpx;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  animation: guaPopIn 0.35s var(--ease-out-expo);
+}
+@keyframes guaPopIn {
+  from { opacity: 0; transform: translateY(30rpx) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.ring-modal-content { height: 80vh; }
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+/* L1 灵魂字：弹窗卦符号 */
+.modal-symbol {
+  font-size: 80rpx;
+  color: var(--accent-gold);
+}
+/* L2 标题字：弹窗标题 */
+.modal-title {
+  font-size: 36rpx;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+.modal-close {
+  font-size: 32rpx;
+  color: var(--text-secondary);
+  width: 88rpx; height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* L1 灵魂字：弹窗卦名 */
+.modal-name {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 24rpx;
+  word-break: break-word;
+}
+.modal-block { margin-bottom: 24rpx; }
+/* L2 标题字：弹窗标签 */
+.modal-label {
+  font-size: 24rpx;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 8rpx;
+  letter-spacing: 4rpx;
+}
+/* L3/L4 正文字：弹窗内容 */
+.modal-text {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.8;
+  display: block;
+  word-break: break-word;
+}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+.history-tag {
+  padding: 6rpx 16rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+ * v2.0 视觉升级：翻转动效 + 卷轴展开 + Co-Star纯黑画布
+ * ======================================== */
+
+/* 卷轴展开过渡动效（Tab切换时内容从中间向两侧展开） */
+.scroll-unroll {
+  animation: scrollUnroll 0.4s var(--ease-out-expo);
+  transform-origin: center center;
+}
+@keyframes scrollUnroll {
+  from { transform: scaleX(0.05); opacity: 0.2; }
+  to   { transform: scaleX(1);    opacity: 1; }
+}
+
+/* 卡牌3D翻转入场动效（点击跳转功能保留，此处仅入场视觉） */
+.tarot-card.flip-card.lit {
+  animation: flipCardEnter 0.5s var(--ease-out-expo) both;
+}
+.tarot-card.flip-card.shadow {
+  animation: shadowBreathe 3.5s ease-in-out infinite, flipCardEnter 0.5s var(--ease-out-expo) both;
+}
+@keyframes flipCardEnter {
+  from { transform: rotateY(90deg); opacity: 0; }
+  to   { transform: rotateY(0deg);  opacity: 1; }
+}
+
+/* 未收集卡牌的灵光占位（icon-guo sparkle） */
+.tarot-symbol-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+  position: relative;
+  z-index: 2;
+  opacity: 0.5;
+  animation: placeholderPulse 3s ease-in-out infinite;
+}
+@keyframes placeholderPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.95); }
+  50%      { opacity: 0.65; transform: scale(1.05); }
+}
+
+/* L0展示字 fallback（确保卦象符号使用展示字体） */
+.font-display {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", serif;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+/* 卦象符号适配展示字（保持原字号） */
+.tarot-card .tarot-symbol.font-display {
+  font-size: 46rpx;
+  letter-spacing: 0;
+}
+
+/* 收集进度条金色渐变优化（使用 --gold-pure 单色） */
+.collection-progress-fill {
+  background: linear-gradient(90deg, var(--gold-pure, #C8A55B), var(--gold-pure, #C8A55B));
+}
+
+/* ========================================
+ * v2.0 卡牌稀有度边框 — 五行单色金不同透明度
+ * 金0.9 / 木0.7 / 水0.5 / 火0.6 / 土0.8
+ * ======================================== */
+
+/* ========================================
+ * v3.0 五行角标（左上角）— 立体浮雕突起：金属质感 + 多层投影
+ * 视觉：仿佛镶嵌在卡牌表面上的金属徽章，凸出于卡片表面
+ * ======================================== */
+
+.rarity-badge {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  z-index: 5;
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+  font-weight: 800;
+  font-family: "STKaiti", "KaiTi", serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 1rpx;
+  /* 立体浮雕：多层投影 + 内高光 + 内深影 */
+  background: linear-gradient(145deg,
+    #2A2A38 0%,
+    #1A1A24 50%,
+    #0F0F18 100%);
+  box-shadow:
+    /* 外投影：模拟从卡面凸起 */
+    0 3rpx 6rpx rgba(0, 0, 0, 0.6),
+    0 2rpx 4rpx rgba(0, 0, 0, 0.5),
+    0 1rpx 2rpx rgba(0, 0, 0, 0.4),
+    /* 顶部高光：模拟金属上沿反光 */
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.4),
+    /* 底部深影：模拟金属下沿阴影 */
+    inset 0 -1rpx 0 rgba(0, 0, 0, 0.7),
+    /* 左右边缘高光 */
+    inset 1rpx 0 0 rgba(255, 232, 168, 0.15),
+    inset -1rpx 0 0 rgba(0, 0, 0, 0.4);
+  /* 立体感：略微凸出 */
+  transform: translateZ(2rpx);
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+/* 按压时凹陷效果（模拟物理按下） */
+.tarot-card:active .rarity-badge {
+  transform: translateZ(0) translateY(1rpx);
+  box-shadow:
+    0 1rpx 2rpx rgba(0, 0, 0, 0.5),
+    inset 0 1rpx 0 rgba(255, 232, 168, 0.25),
+    inset 0 -1rpx 0 rgba(0, 0, 0, 0.7),
+    inset 1rpx 0 0 rgba(0, 0, 0, 0.3),
+    inset -1rpx 0 0 rgba(0, 0, 0, 0.4);
+}
+
+/* 五行变体：金为烫金渐变，其余为单色金不同透明度（带金属浮雕字阴影） */
+
+.rarity-badge-jin {
+  /* 烫金渐变字：靠多层 text-shadow 模拟金属反光 */
+  color: #C8A55B;
+  text-shadow:
+    0 1rpx 0 #C8A55B,
+    0 2rpx 0 #8B7340,
+    0 3rpx 2rpx rgba(0, 0, 0, 0.6),
+    0 0 8rpx rgba(255, 232, 168, 0.4);
+}
+
+.rarity-badge-mu {
+  color: rgba(255, 232, 168, 0.75);
+  text-shadow:
+    0 1rpx 1rpx rgba(0, 0, 0, 0.6),
+    0 0 4rpx rgba(200, 165, 91, 0.2);
+}
+.rarity-badge-shui {
+  color: rgba(255, 232, 168, 0.55);
+  text-shadow:
+    0 1rpx 1rpx rgba(0, 0, 0, 0.6),
+    0 0 4rpx rgba(200, 165, 91, 0.15);
+}
+.rarity-badge-huo {
+  color: rgba(255, 232, 168, 0.65);
+  text-shadow:
+    0 1rpx 1rpx rgba(0, 0, 0, 0.6),
+    0 0 4rpx rgba(200, 165, 91, 0.18);
+}
+.rarity-badge-tu {
+  color: rgba(255, 232, 168, 0.85);
+  text-shadow:
+    0 1rpx 1rpx rgba(0, 0, 0, 0.6),
+    0 0 4rpx rgba(200, 165, 91, 0.22);
+}
+
+/* 已收集卡牌按五行稀有度调整边框色（单色金不同透明度） */
+.tarot-card.lit.rarity-jin {
+  border-color: rgba(200, 165, 91, 0.9);
+}
+.tarot-card.lit.rarity-mu {
+  border-color: rgba(200, 165, 91, 0.7);
+}
+.tarot-card.lit.rarity-shui {
+  border-color: rgba(200, 165, 91, 0.5);
+}
+.tarot-card.lit.rarity-huo {
+  border-color: rgba(200, 165, 91, 0.6);
+}
+.tarot-card.lit.rarity-tu {
+  border-color: rgba(200, 165, 91, 0.8);
+}
+
+/* 已收集卦符号按五行透明度光晕（单色金） */
+.tarot-card.lit.rarity-jin .tarot-symbol {
+  text-shadow: 0 0 16rpx rgba(200, 165, 91, 0.35), 0 0 32rpx rgba(200, 165, 91, 0.15);
+}
+.tarot-card.lit.rarity-mu .tarot-symbol {
+  text-shadow: 0 0 16rpx rgba(200, 165, 91, 0.27), 0 0 32rpx rgba(200, 165, 91, 0.12);
+}
+.tarot-card.lit.rarity-shui .tarot-symbol {
+  text-shadow: 0 0 16rpx rgba(200, 165, 91, 0.20), 0 0 32rpx rgba(200, 165, 91, 0.08);
+}
+.tarot-card.lit.rarity-huo .tarot-symbol {
+  text-shadow: 0 0 16rpx rgba(200, 165, 91, 0.23), 0 0 32rpx rgba(200, 165, 91, 0.10);
+}
+.tarot-card.lit.rarity-tu .tarot-symbol {
+  text-shadow: 0 0 16rpx rgba(200, 165, 91, 0.30), 0 0 32rpx rgba(200, 165, 91, 0.13);
+}
+
+/* ========================================
+ * v2.0 罗盘交互引导浮层
+ * ======================================== */
+.compass-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 40rpx;
+  background: rgba(10, 10, 26, 0.85);
+  border: 1rpx solid rgba(200, 165, 91, 0.45);
+  backdrop-filter: blur(12rpx);
+  animation: guideFadeIn 0.4s var(--ease-out-expo);
+}
+
+@keyframes guideFadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%) scale(0.92); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.compass-guide-arrow {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 165, 91, 0.5), transparent);
+  margin-bottom: 16rpx;
+  animation: arrowPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.6; }
+  50%      { transform: scale(1.2); opacity: 1; }
+}
+
+.compass-guide-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.guide-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #C8A55B;
+  font-family: "STKaiti", "KaiTi", serif;
+  letter-spacing: 4rpx;
+  margin-bottom: 12rpx;
+}
+
+.guide-desc {
+  font-size: 24rpx;
+  color: #FFF8F3BF;
+  line-height: 1.6;
+  text-align: center;
+  font-family: "Noto Serif SC", "STSong", serif;
+  white-space: pre-line;
+  letter-spacing: 1rpx;
+}
+
+.compass-guide-close {
+  padding: 12rpx 48rpx;
+  background: linear-gradient(135deg, #C8A55B, #B8941F);
+  color: #FFF8F3;
+  font-size: 26rpx;
+  font-weight: 600;
+  border-radius: 999rpx;
+  letter-spacing: 2rpx;
+  font-family: "Noto Serif SC", "STSong", serif;
+}
+
+.compass-guide-close:active {
+  opacity: 0.85;
+  transform: scale(0.96);
+}
+
+
+/* ===== EN-i18n 知识库全页面英文适配 ===== */
+/* 稀有度徽章：36rpx 高放不下英文五行/稀有度单词，加宽+缩字号 */
+.lang-en .rarity-badge {
+  width: auto; min-width: 36rpx; height: auto; min-height: 32rpx;
+  padding: 4rpx 10rpx; font-size: 16rpx; line-height: 1.3;
+  letter-spacing: 0; word-break: break-word; text-align: center;
+}
+/* 卡片卦名/标签 */
+.lang-en .tarot-name { word-break: break-word; font-size: 22rpx; letter-spacing: 0.5rpx; }
+.lang-en .tarot-tag { word-break: break-word; font-size: 16rpx; letter-spacing: 0; }
+/* 欢迎区 */
+.lang-en .welcome-title { word-break: break-word; font-size: 32rpx; letter-spacing: 1rpx; }
+.lang-en .welcome-desc { word-break: break-word; line-height: 1.6; font-size: 24rpx; }
+.lang-en .welcome-hint { word-break: break-word; line-height: 1.5; }
+/* tab 标签 */
+.lang-en .tab-item { word-break: break-word; font-size: 22rpx; letter-spacing: 0.5rpx; padding: 20rpx 4rpx; }
+/* 收藏计数 */
+.lang-en .collection-count { word-break: break-word; }
+.lang-en .collection-sub { word-break: break-word; line-height: 1.4; }
+/* 弹窗 */
+.lang-en .modal-title { word-break: break-word; font-size: 30rpx; letter-spacing: 1rpx; }
+.lang-en .modal-name { word-break: break-word; font-size: 36rpx; letter-spacing: 1rpx; }
+.lang-en .modal-label { word-break: break-word; letter-spacing: 1rpx; font-size: 22rpx; }
+.lang-en .modal-text { word-break: break-word; line-height: 1.6; }
+/* 引导 */
+.lang-en .guide-title { word-break: break-word; font-size: 28rpx; }
+.lang-en .guide-desc { word-break: break-word; line-height: 1.6; font-size: 22rpx; }
+/* 历史标签 */
+.lang-en .history-tag { word-break: break-word; font-size: 18rpx; padding: 4rpx 12rpx; }
+/* 关闭按钮 */
+.lang-en .compass-guide-close { font-size: 22rpx; letter-spacing: 1rpx; padding: 12rpx 36rpx; word-break: break-word; }

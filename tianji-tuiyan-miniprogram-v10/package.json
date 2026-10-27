@@ -1,0 +1,12 @@
+{
+  "name": "tianji-tuiyan-miniprogram",
+  "version": "1.0.0",
+  "description": "天机推演微信小程序",
+  "private": true,
+  "devDependencies": {
+    "miniprogram-ci": "^2.1.31"
+  },
+  "dependencies": {
+    "@tencentcloud/donut-push": "^9.0.1"
+  }
+}

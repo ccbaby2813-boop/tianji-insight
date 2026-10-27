@@ -1,0 +1,1 @@
+<image class="icon-guo" src="{{iconSrc}}" mode="aspectFit" style="width:{{size}}rpx; height:{{size}}rpx;" wx:if="{{iconSrc}}" />

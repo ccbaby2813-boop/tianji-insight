@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0B0C">
+<title id="page-title">天机推演 · 本命卦人格测试｜易经 64 卦认识自己</title>
+<meta name="description" id="page-desc" content="输入出生时间，用易经 64 卦算出你的本命卦——64 型人格画像、性格关键词、情感模式与成长建议。东方智慧，认识自己。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230B0B0C' stroke='%23C9962E' stroke-width='2'/%3E%3Cpath d='M32 6 A26 26 0 0 1 32 58 A13 13 0 0 0 32 32 A13 13 0 0 1 32 6' fill='%23C9962E'/%3E%3Ccircle cx='32' cy='19' r='4' fill='%230B0B0C'/%3E%3Ccircle cx='32' cy='45' r='4' fill='%23C9962E'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --bg:#0B0B0C; --bg2:#121214; --card:#17171A; --card2:#1D1D21;
+  --gold:#C9962E; --gold2:#E3C879; --gold3:#8A6A1F;
+  --ink:#F2EDE3; --ink2:#B9B4A8; --muted:#7C7A73; --line:#26262B;
+  --serif:"Noto Serif SC",serif; --sans:"Noto Sans SC",-apple-system,"PingFang SC",sans-serif;
+  --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;overflow-x:hidden}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+input,select{font-family:inherit;color:inherit}
+.hidden{display:none!important}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(201,150,46,.35)}50%{box-shadow:0 0 0 10px rgba(201,150,46,0)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ===== 顶栏 ===== */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:50;height:56px;
+  padding:0 16px;padding-top:var(--safe-top);
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(rgba(11,11,12,.92),rgba(11,11,12,.75));
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+.brand .logo{width:30px;height:30px;flex:none}
+.brand .bt{font-family:var(--serif);font-weight:700;font-size:16px;letter-spacing:2px}
+.brand .bt small{display:block;font-family:var(--sans);font-weight:400;font-size:9px;letter-spacing:3px;color:var(--gold2);line-height:1}
+header .nav-cta{font-size:13px;color:var(--gold2);border:1px solid var(--gold3);border-radius:999px;padding:6px 14px;transition:.2s}
+header .nav-cta:active{background:rgba(201,150,46,.15)}
+header .nav-link{font-size:13px;color:var(--ink2);text-decoration:none;letter-spacing:1px;margin-right:4px;transition:.2s}
+header .nav-link:active{color:var(--gold2)}
+
+/* ===== 通用区块 ===== */
+main{max-width:560px;margin:0 auto;padding:0 20px 40px;min-height:100vh}
+.view{display:none;padding-top:calc(88px + var(--safe-top))}
+.view.active{display:block;animation:fade .3s ease}
+.sec-title{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.sec-sub{font-size:14px;color:var(--muted);margin-bottom:26px}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold2);text-transform:uppercase;margin-bottom:10px}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:15px 20px;border-radius:12px;font-size:16px;font-weight:500;letter-spacing:2px;
+  transition:transform .12s,box-shadow .2s,opacity .2s;
+}
+.btn:active{transform:scale(.98)}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold) 60%,var(--gold3));color:#171204;font-weight:700;animation:pulseGlow 2.6s infinite}
+.btn-ghost{border:1px solid var(--gold3);color:var(--gold2);background:rgba(201,150,46,.05)}
+.btn-dark{background:var(--card2);color:var(--ink2);border:1px solid var(--line)}
+.btn-row{display:flex;gap:12px}
+.btn-row .btn{flex:1}
+
+/* ===== 首页 Hero ===== */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 0 8px}
+.taiji-wrap{position:relative;width:168px;height:168px;margin-bottom:22px}
+.taiji{width:100%;height:100%}
+.taiji-rings{position:absolute;inset:0;border:1px solid rgba(201,150,46,.25);border-radius:50%}
+.taiji-rings.r2{inset:-10px;border-color:rgba(201,150,46,.12);border-style:dashed}
+.hero h1{font-family:var(--serif);font-size:34px;font-weight:900;letter-spacing:8px;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--gold2)}
+.hero .en{font-size:11px;letter-spacing:5px;color:var(--muted);margin-bottom:22px}
+.hero .lead{font-family:var(--serif);font-size:15px;color:var(--ink2);letter-spacing:1px;margin-bottom:6px}
+.hero .sub{font-size:14px;color:var(--muted);margin-bottom:34px;line-height:1.8}
+.hero .actions{width:100%;display:flex;flex-direction:column;gap:12px}
+.hero .mini{font-size:13px;color:var(--muted);margin-top:22px;letter-spacing:1px}
+.hero .mini b{color:var(--gold2);font-weight:500}
+
+/* ===== 输入页 ===== */
+.field{margin-bottom:22px}
+.field label{display:block;font-size:13px;color:var(--ink2);margin-bottom:10px;letter-spacing:1px}
+.field label .req{color:var(--gold2)}
+.input-box{
+  width:100%;padding:13px 14px;border-radius:10px;background:var(--card);
+  border:1px solid var(--line);font-size:16px;outline:none;transition:border .2s;
+  color-scheme:dark;
+}
+.input-box:focus{border-color:var(--gold3)}
+.shichen{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.shichen button{padding:10px 4px;border-radius:8px;background:var(--card);border:1px solid var(--line);font-size:13px;color:var(--ink2);transition:.15s}
+.shichen button small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.shichen button.on{background:rgba(201,150,46,.14);border-color:var(--gold);color:var(--gold2)}
+.shichen button.on small{color:var(--gold3)}
+.sex{display:flex;gap:8px}
+.sex button{flex:1;padding:11px;border-radius:8px;background:var(--card);border:1px solid var(--line);font-size:14px;color:var(--ink2)}
+.sex button.on{background:rgba(201,150,46,.14);border-color:var(--gold);color:var(--gold2)}
+.note{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.7}
+
+/* ===== 结果页 ===== */
+.result-head{text-align:center;padding:10px 0 6px;animation:rise .5s ease both}
+.gua-symbol{font-size:88px;line-height:1;color:var(--gold2);display:inline-block;animation:floatY 4s ease-in-out infinite;text-shadow:0 0 40px rgba(201,150,46,.3)}
+.result-head .gua-name{font-family:var(--serif);font-size:30px;font-weight:900;letter-spacing:6px;margin-top:8px}
+.result-head .gua-meta{font-size:14px;color:var(--muted);margin-top:8px;letter-spacing:1px}
+.result-head .gua-meta b{color:var(--gold2);font-weight:500}
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.tag{font-size:12px;padding:6px 14px;border-radius:999px;background:rgba(201,150,46,.1);border:1px solid rgba(201,150,46,.3);color:var(--gold2);letter-spacing:1px}
+.tag.plain{background:var(--card);border-color:var(--line);color:var(--ink2)}
+.yiju{
+  margin:22px 0;padding:18px;border-radius:12px;text-align:center;
+  background:linear-gradient(135deg,rgba(201,150,46,.1),rgba(201,150,46,.02));
+  border:1px solid rgba(201,150,46,.25);font-family:var(--serif);font-size:16px;color:var(--gold2);letter-spacing:1px;
+}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.card h3{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--gold2);letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3::before{content:"";width:3px;height:14px;background:var(--gold);border-radius:2px}
+.card p{font-size:14px;color:var(--ink2);text-align:justify}
+.card .kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.card .kw span{font-size:12px;color:var(--ink2);background:var(--card2);border:1px solid var(--line);padding:4px 10px;border-radius:6px}
+.collapse{border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden;background:var(--card)}
+.collapse summary{list-style:none;display:flex;align-items:center;justify-content:space-between;padding:16px 18px;font-size:14px;color:var(--ink2);cursor:pointer}
+.collapse summary::after{content:"+";font-size:20px;color:var(--gold2);transition:.2s}
+.collapse[open] summary::after{transform:rotate(45deg)}
+.collapse .body{padding:0 18px 18px;font-size:14px;color:var(--ink2);text-align:justify}
+.collapse .body b{color:var(--gold2);font-weight:600}
+.history{display:flex;gap:8px;flex-wrap:wrap}
+.history span{font-size:13px;color:var(--ink);background:var(--card2);border:1px solid var(--line);padding:8px 14px;border-radius:8px}
+.advice-box{display:grid;gap:10px;margin-bottom:14px}
+.advice{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.advice .t{font-size:12px;letter-spacing:3px;color:var(--gold2);margin-bottom:8px}
+.advice p{font-size:14px;color:var(--ink2);text-align:justify}
+
+/* ===== 合盘结果 ===== */
+.he-pair{display:flex;gap:12px;align-items:stretch;margin-bottom:20px}
+.he-pair .p{flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 8px}
+.he-pair .p .sym{font-size:44px;color:var(--gold2);line-height:1}
+.he-pair .p .nm{font-family:var(--serif);font-size:15px;font-weight:700;margin-top:8px;letter-spacing:2px}
+.he-pair .p .tg{font-size:12px;color:var(--muted);margin-top:4px}
+.he-pair .vs{display:flex;align-items:center;font-family:var(--serif);color:var(--gold2);font-size:18px;letter-spacing:2px}
+.he-name{text-align:center;font-family:var(--serif);font-size:24px;font-weight:900;color:var(--gold2);letter-spacing:4px;margin-bottom:4px}
+.he-liner{text-align:center;font-size:14px;color:var(--ink2);margin-bottom:20px}
+.rs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.rs .box{border-radius:12px;padding:14px}
+.rs .rs-t{font-size:12px;letter-spacing:2px;margin-bottom:8px}
+.rs .box li{list-style:none;font-size:13px;line-height:1.9;padding-left:2px}
+.rs .ok{background:rgba(47,125,91,.1);border:1px solid rgba(47,125,91,.3)}
+.rs .ok .rs-t{color:#7BC8A4}
+.rs .ok li{color:#9AD1B8}
+.rs .ng{background:rgba(160,74,58,.1);border:1px solid rgba(160,74,58,.3)}
+.rs .ng .rs-t{color:#D79B8D}
+.rs .ng li{color:#DDB4AA}
+.advice-gold{background:linear-gradient(135deg,rgba(201,150,46,.12),rgba(201,150,46,.03));border:1px solid rgba(201,150,46,.3);border-radius:12px;padding:16px;margin-top:14px}
+.advice-gold h4{font-size:12px;letter-spacing:3px;color:var(--gold2);margin-bottom:8px}
+.advice-gold p{font-size:14px;color:var(--ink2);text-align:justify}
+
+/* ===== 海报层 ===== */
+#poster-layer{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.85);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
+#poster-layer.show{display:flex;animation:fade .25s ease}
+#poster-layer canvas{max-width:100%;max-height:70vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#poster-layer .p-actions{display:flex;gap:12px;margin-top:18px;width:100%;max-width:340px}
+#poster-layer .hint{font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:1px}
+#poster-layer .close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;background:var(--card2);color:var(--ink2);font-size:16px;display:flex;align-items:center;justify-content:center}
+
+/* ===== Toast / 加载 ===== */
+#toast{position:fixed;left:50%;bottom:calc(40px + var(--safe-bottom));transform:translateX(-50%);z-index:200;background:var(--card2);color:var(--ink);font-size:13px;padding:10px 18px;border-radius:999px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.25s;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+.loading{text-align:center;padding:40px 0;color:var(--muted);font-size:13px;letter-spacing:2px}
+
+/* ===== 底部 ===== */
+footer{border-top:1px solid var(--line);padding:26px 20px calc(34px + var(--safe-bottom));text-align:center;background:var(--bg2)}
+footer .store-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gold3);color:var(--gold2);border-radius:10px;padding:10px 20px;font-size:13px;margin-bottom:16px;letter-spacing:1px;text-decoration:none}
+footer .disc{font-size:12px;color:var(--muted);line-height:1.8;max-width:420px;margin:0 auto}
+footer .copy{font-size:11px;color:#55534E;margin-top:10px;letter-spacing:2px}
+@media (min-width:560px){
+  main{box-shadow:0 0 60px rgba(0,0,0,.4)}
+}
+@media (prefers-reduced-motion:reduce){
+  .taiji,.gua-symbol{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" data-nav="home" href="#/">
+    <svg class="logo" viewBox="0 0 200 200" aria-hidden="true"><g fill="#C9962E"><rect x="24" y="40" width="70" height="14" rx="3"/><rect x="106" y="40" width="70" height="14" rx="3"/><rect x="24" y="64" width="152" height="14" rx="3"/><rect x="24" y="88" width="70" height="14" rx="3"/><rect x="106" y="88" width="70" height="14" rx="3"/><rect x="24" y="112" width="152" height="14" rx="3"/><rect x="24" y="136" width="70" height="14" rx="3"/><rect x="106" y="136" width="70" height="14" rx="3"/><rect x="24" y="160" width="152" height="14" rx="3"/></g></svg>
+    <span class="bt">天机推演<small>I Ching Insight</small></span>
+  </a>
+  <a class="nav-link" href="https://claw-book.cn/" target="_blank" rel="noopener" data-i18n="nav_home">官网</a>
+  <button class="nav-cta" data-nav="he-input" data-i18n="nav_he">测合盘</button>
+  <button class="nav-link" id="btn-lang" style="margin-left:10px">EN</button>
+</header>
+
+<main>
+  <!-- ===== 首页 ===== -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <div class="taiji-wrap">
+        <div class="taiji-rings"></div>
+        <div class="taiji-rings r2"></div>
+        <svg class="taiji" viewBox="0 0 200 200" aria-hidden="true"><g fill="#C9962E"><rect x="24" y="40" width="70" height="14" rx="3"/><rect x="106" y="40" width="70" height="14" rx="3"/><rect x="24" y="64" width="152" height="14" rx="3"/><rect x="24" y="88" width="70" height="14" rx="3"/><rect x="106" y="88" width="70" height="14" rx="3"/><rect x="24" y="112" width="152" height="14" rx="3"/><rect x="24" y="136" width="70" height="14" rx="3"/><rect x="106" y="136" width="70" height="14" rx="3"/><rect x="24" y="160" width="152" height="14" rx="3"/></g></svg>
+      </div>
+      <h1 id="hero-h1">天机<em>推演</em></h1>
+      <div class="en">I Ching Insight</div>
+      <p class="lead" data-i18n="lead">64 卦 · 64 型人格</p>
+      <p class="sub" data-i18n="sub">输入出生时间，算出你的本命卦——<br>像 MBTI 一样认识自己，却来自三千年的东方智慧。<br>还可以和 TA 测一测「易缘合盘」。</p>
+      <div class="actions">
+        <button class="btn btn-gold" data-nav="input" data-i18n="btn_gua">测我的本命卦</button>
+        <button class="btn btn-ghost" data-nav="he-input" data-i18n="btn_he">测情侣合盘</button>
+      </div>
+      <p class="mini" data-i18n="mini">已有 <b>4096 种</b>配对关系 · <b>2080 条</b>合盘解读 · 纯算法生成</p>
+    </div>
+  </section>
+
+  <!-- ===== 单人输入 ===== -->
+  <section class="view" id="view-input">
+    <div class="eyebrow">STEP 01</div>
+    <h2 class="sec-title" data-i18n="in_title">输入你的出生信息</h2>
+    <p class="sec-sub" data-i18n="in_sub">使用阳历生日 · 基于梅花易数算法</p>
+
+    <div class="field">
+      <label data-i18n="in_date">出生日期 <span class="req">*</span></label>
+      <input class="input-box" type="date" id="in-date" max="">
+    </div>
+    <div class="field">
+      <label data-i18n="in_sc">出生时辰 <span class="req">*</span> <span style="color:var(--muted);font-size:11px" data-i18n="sc_help">（不确定可选「未知」，默认午时）</span></label>
+      <div class="shichen" id="in-shichen"></div>
+    </div>
+    <div class="field">
+      <label data-i18n="sex_label">性别 <span style="color:var(--muted);font-size:11px" data-i18n="sex_help">（用于匹配历史人物，可跳过）</span></label>
+      <div class="sex" id="in-sex">
+        <button data-v="m" data-i18n="sex_m">男</button>
+        <button data-v="f" data-i18n="sex_f">女</button>
+        <button data-v="" data-i18n="sex_skip">跳过</button>
+      </div>
+    </div>
+    <button class="btn btn-gold" id="btn-calc" style="margin-top:8px" data-i18n="btn_calc">开始推演</button>
+    <p class="note" data-i18n="note_input">本测试基于《周易》卦理与人格心理学模型生成，内容仅供文化参考与娱乐，不构成任何决策建议。</p>
+  </section>
+
+  <!-- ===== 单人结果 ===== -->
+  <section class="view" id="view-result">
+    <div id="result-box"></div>
+    <div class="btn-row" style="margin-top:6px">
+      <button class="btn btn-dark" data-nav="input" data-i18n="btn_retest">重新测试</button>
+      <button class="btn btn-ghost" id="btn-poster" data-i18n="btn_poster">生成海报</button>
+    </div>
+    <button class="btn btn-gold" data-nav="he-input" style="margin-top:12px" data-i18n="btn_he_from_result">和 TA 测合盘 →</button>
+  </section>
+
+  <!-- ===== 合盘输入 ===== -->
+  <section class="view" id="view-he-input">
+    <div class="eyebrow">STEP 02</div>
+    <h2 class="sec-title" data-i18n="he_title">输入两个人的出生信息</h2>
+    <p class="sec-sub" data-i18n="he_sub">易缘合盘 · 4096 组配对关系</p>
+    <div class="field">
+      <label data-i18n="he_ta_date"><b style="color:var(--gold2)">TA</b> · 出生日期</label>
+      <input class="input-box" type="date" id="he-a-date" max="">
+    </div>
+    <div class="field">
+      <label data-i18n="he_ta_sc"><b style="color:var(--gold2)">TA</b> · 出生时辰</label>
+      <div class="shichen" id="he-a-shichen"></div>
+    </div>
+    <div class="he-divider" style="display:flex;align-items:center;gap:12px;margin:26px 0;color:var(--muted);font-size:11px;letter-spacing:3px">
+      <span style="flex:1;height:1px;background:var(--line)"></span><span data-i18n="he_and">与</span><span style="flex:1;height:1px;background:var(--line)"></span>
+    </div>
+    <div class="field">
+      <label data-i18n="he_me_date"><b style="color:var(--gold2)">我</b> · 出生日期</label>
+      <input class="input-box" type="date" id="he-b-date" max="">
+    </div>
+    <div class="field">
+      <label data-i18n="he_me_sc"><b style="color:var(--gold2)">我</b> · 出生时辰</label>
+      <div class="shichen" id="he-b-shichen"></div>
+    </div>
+    <button class="btn btn-gold" id="btn-he-calc" style="margin-top:8px" data-i18n="btn_he_calc">查看我们的匹配</button>
+    <p class="note" data-i18n="he_note">合盘解读基于双方本命卦的五行生克与卦象关系，用于了解彼此的相处模式，仅供娱乐参考。</p>
+  </section>
+
+  <!-- ===== 合盘结果 ===== -->
+  <section class="view" id="view-he-result">
+    <div id="he-result-box"></div>
+    <div class="btn-row" style="margin-top:6px">
+      <button class="btn btn-dark" data-nav="he-input" data-i18n="btn_re_he">重新合盘</button>
+      <button class="btn btn-ghost" id="btn-he-poster" data-i18n="btn_he_poster">生成合盘海报</button>
+    </div>
+    <button class="btn btn-gold" data-nav="input" style="margin-top:12px" data-i18n="btn_my_gua">先测我自己的本命卦 →</button>
+  </section>
+
+  <div class="loading hidden" id="loading" data-i18n="loading">数据加载中…</div>
+</main>
+
+<footer>
+  <a class="store-btn" href="https://claw-book.cn/" target="_blank" rel="noopener">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L20 6 V12 C20 16.5 16.5 20.5 12 22 C7.5 20.5 4 16.5 4 12 V6 Z"/></svg>
+    <span data-i18n="footer_store">了解更多 · 下载 App</span>
+  </a>
+  <p class="disc" data-i18n="footer_disc">天机推演（I Ching Insight）是融合《周易》卦理与人格心理学的文化应用。本页测试结果由算法生成，仅供娱乐与文化参考，不构成医疗、心理或人生决策建议。</p>
+  <p class="copy" data-i18n="footer_copy">© 2026 I Ching Insight · 天机推演</p>
+</footer>
+
+<div id="poster-layer">
+  <button class="close" id="poster-close">×</button>
+  <canvas id="poster-canvas" width="750" height="1120"></canvas>
+  <div class="p-actions">
+    <button class="btn btn-gold" id="poster-save" data-i18n="poster_save">保存海报</button>
+    <button class="btn btn-ghost" id="poster-share" data-i18n="poster_share">分享</button>
+  </div>
+  <p class="hint" data-i18n="poster_hint">长按海报可保存到相册 · 分享给朋友一起测</p>
+</div>
+<div id="toast"></div>
+
+<script src="lunar.js"></script>
+<script>
+/* ===== 国际化 ===== */
+var I18N = {
+  zh:{
+    nav_home:"官网", nav_he:"测合盘",
+    lead:"64 卦 · 64 型人格",
+    sub:"输入出生时间，算出你的本命卦——<br>像 MBTI 一样认识自己，却来自三千年的东方智慧。<br>还可以和 TA 测一测「易缘合盘」。",
+    btn_gua:"测我的本命卦", btn_he:"测情侣合盘",
+    mini:"已有 <b>4096 种</b>配对关系 · <b>2080 条</b>合盘解读 · 纯算法生成",
+    in_title:"输入你的出生信息", in_sub:"使用阳历生日 · 基于梅花易数算法",
+    in_date:"出生日期 <span class=\"req\">*</span>",
+    in_sc:"出生时辰 <span class=\"req\">*</span> <span style=\"color:var(--muted);font-size:11px\">（不确定可选「未知」，默认午时）</span>",
+    sex_label:"性别 <span style=\"color:var(--muted);font-size:11px\">（用于匹配历史人物，可跳过）</span>",
+    sex_m:"男", sex_f:"女", sex_skip:"跳过",
+    btn_calc:"开始推演",
+    note_input:"本测试基于《周易》卦理与人格心理学模型生成，内容仅供文化参考与娱乐，不构成任何决策建议。",
+    btn_retest:"重新测试", btn_poster:"生成海报", btn_he_from_result:"和 TA 测合盘 →",
+    he_title:"输入两个人的出生信息", he_sub:"易缘合盘 · 4096 组配对关系",
+    he_ta_date:"<b style=\"color:var(--gold2)\">TA</b> · 出生日期",
+    he_ta_sc:"<b style=\"color:var(--gold2)\">TA</b> · 出生时辰",
+    he_and:"与",
+    he_me_date:"<b style=\"color:var(--gold2)\">我</b> · 出生日期",
+    he_me_sc:"<b style=\"color:var(--gold2)\">我</b> · 出生时辰",
+    btn_he_calc:"查看我们的匹配",
+    he_note:"合盘解读基于双方本命卦的五行生克与卦象关系，用于了解彼此的相处模式，仅供娱乐参考。",
+    btn_re_he:"重新合盘", btn_he_poster:"生成合盘海报", btn_my_gua:"先测我自己的本命卦 →",
+    loading:"数据加载中…",
+    footer_store:"了解更多 · 下载 App",
+    footer_disc:"天机推演（I Ching Insight）是融合《周易》卦理与人格心理学的文化应用。本页测试结果由算法生成，仅供娱乐与文化参考，不构成医疗、心理或人生决策建议。",
+    footer_copy:"© 2026 I Ching Insight · 天机推演",
+    poster_save:"保存海报", poster_share:"分享",
+    poster_hint:"长按海报可保存到相册 · 分享给朋友一起测",
+    /* 动态渲染 */
+    meta_rarity:"稀有度", meta_element:"五行",
+    moving_line:"动爻第 ", moving_line2:" 爻",
+    card_renGe:"人格画像", card_kw:"关键特质", card_emotion:"感情模式",
+    card_judgment:"卦辞原文", j_ci:"卦辞", x_ci:"象辞",
+    adv_talent:"天赋", adv_blindspot:"盲点", card_fig:"同卦历史人物",
+    q_l:"「", q_r:"」",
+    he_vs:"合",
+    he_rs_res:"共鸣", he_rs_conf:"需要磨合",
+    he_card_analysis:"关系解读", he_advice:"相处建议",
+    he_none:"这一对卦象的组合较为特殊，暂无标准解读。不妨先看看彼此的独立人格画像。",
+    poster_gua_title:"我的本命卦", poster_he_title:"易缘合盘",
+    poster_bottom1:"输入出生时间 · 认识另一个自己",
+    poster_brand2:"天机推演 · 64 卦人格 · 易缘合盘",
+    share_title:"天机推演 · 我的本命卦",
+    share_text:"输入出生时间，测测你的易经本命卦 → claw-book.cn",
+    toast_load_gua:"数据加载失败，请检查网络", toast_load_rel:"合盘数据加载失败",
+    toast_date:"请选择出生日期", toast_dates:"请填写两个人的出生日期",
+    toast_fail:"推演失败，请重试", toast_saved:"海报已保存",
+    toast_copied:"链接已复制", toast_save_hint:"请长按海报保存后分享",
+    title:"天机推演 · 本命卦人格测试｜易经 64 卦认识自己",
+    desc:"输入出生时间，用易经 64 卦算出你的本命卦——64 型人格画像、性格关键词、情感模式与成长建议。东方智慧，认识自己。",
+    h1:"天机<em>推演</em>",
+    sc:["子时","丑时","寅时","卯时","辰时","巳时","午时","未时","申时","酉时","戌时","亥时"]
+  },
+  en:{
+    nav_home:"Site", nav_he:"Match Test",
+    lead:"64 Hexagrams · 64 Personalities",
+    sub:"Enter your birth time to reveal your personal hexagram —<br>know yourself like MBTI, through 3,000 years of Eastern wisdom.<br>Then check your compatibility with someone special.",
+    btn_gua:"Reveal My Hexagram", btn_he:"Check Compatibility",
+    mini:"<b>4,096</b> pairings · <b>2,080</b> interpretations · pure algorithm",
+    in_title:"Enter Your Birth Details", in_sub:"Solar calendar date · Plum Blossom Numerology",
+    in_date:"Birth date <span class=\"req\">*</span>",
+    in_sc:"Birth hour <span class=\"req\">*</span> <span style=\"color:var(--muted);font-size:11px\">(not sure? leave as default Wu hour)</span>",
+    sex_label:"Gender <span style=\"color:var(--muted);font-size:11px\">(for historical figures, optional)</span>",
+    sex_m:"Male", sex_f:"Female", sex_skip:"Skip",
+    btn_calc:"Reveal",
+    note_input:"Based on I Ching hexagram logic and personality psychology; generated for cultural reference and entertainment only.",
+    btn_retest:"Test Again", btn_poster:"Poster", btn_he_from_result:"Check compatibility with someone →",
+    he_title:"Enter Both Birth Details", he_sub:"Compatibility · 4,096 pairings",
+    he_ta_date:"<b style=\"color:var(--gold2)\">TA</b> · Birth date",
+    he_ta_sc:"<b style=\"color:var(--gold2)\">TA</b> · Birth hour",
+    he_and:"&",
+    he_me_date:"<b style=\"color:var(--gold2)\">Me</b> · Birth date",
+    he_me_sc:"<b style=\"color:var(--gold2)\">Me</b> · Birth hour",
+    btn_he_calc:"See Our Match",
+    he_note:"Readings are based on the five-element interaction of both hexagrams, for entertainment only.",
+    btn_re_he:"Try Another Pair", btn_he_poster:"Poster", btn_my_gua:"Reveal my own hexagram first →",
+    loading:"Loading…",
+    footer_store:"Learn More · Get the App",
+    footer_disc:"I Ching Insight combines I Ching wisdom with personality psychology. Results are algorithm-generated for cultural and entertainment purposes only — not medical, psychological or life advice.",
+    footer_copy:"© 2026 I Ching Insight",
+    poster_save:"Save Poster", poster_share:"Share",
+    poster_hint:"Long-press the poster to save · share with friends",
+    meta_rarity:"Rarity", meta_element:"Element",
+    moving_line:"Moving line ", moving_line2:"",
+    card_renGe:"Personality Portrait", card_kw:"Key Traits", card_emotion:"Emotional Pattern",
+    card_judgment:"Original Text", j_ci:"Judgment", x_ci:"Image",
+    adv_talent:"Gift", adv_blindspot:"Blind Spot", card_fig:"Historical Figures of This Hexagram",
+    q_l:"“", q_r:"”",
+    he_vs:"×",
+    he_rs_res:"Resonance", he_rs_conf:"Needs Work",
+    he_card_analysis:"Relationship Reading", he_advice:"Advice",
+    he_none:"This pairing is unique — no standard reading available. Check each person's individual profile instead.",
+    poster_gua_title:"My Personal Hexagram", poster_he_title:"Compatibility",
+    poster_bottom1:"Enter your birth time · Discover another you",
+    poster_brand2:"64 Hexagram Personalities · Compatibility",
+    share_title:"I Ching Insight · My Personal Hexagram",
+    share_text:"Enter your birth time and reveal your I Ching hexagram → claw-book.cn",
+    toast_load_gua:"Failed to load data. Check your connection.", toast_load_rel:"Failed to load compatibility data.",
+    toast_date:"Please select your birth date.", toast_dates:"Please fill in both birth dates.",
+    toast_fail:"Calculation failed. Please try again.", toast_saved:"Poster saved.",
+    toast_copied:"Link copied.", toast_save_hint:"Long-press the poster to save, then share.",
+    title:"I Ching Insight · Personal Hexagram Test | Know Yourself Through the I Ching",
+    desc:"Enter your birth time to reveal your personal I Ching hexagram — personality portrait, key traits, emotional patterns and growth advice. Eastern wisdom to know yourself.",
+    h1:"Tianji<em>Insight</em>",
+    sc:["Zi","Chou","Yin","Mao","Chen","Si","Wu","Wei","Shen","You","Xu","Hai"]
+  }
+};
+var LANG = (localStorage.getItem("tj_h5_lang") || "zh") === "en" ? "en" : "zh";
+function T(key){return (I18N[LANG] && I18N[LANG][key] != null) ? I18N[LANG][key] : (I18N.zh[key] != null ? I18N.zh[key] : key)}
+function applyI18n(){
+  document.querySelectorAll("[data-i18n]").forEach(function(el){
+    var k = el.getAttribute("data-i18n");
+    if(k === "h1"){return}
+    el.innerHTML = T(k);
+  });
+  $("hero-h1").innerHTML = T("h1");
+  document.title = T("title");
+  var d = document.querySelector("meta[name=description]");
+  if(d) d.setAttribute("content", T("desc"));
+  $("btn-lang").textContent = LANG === "zh" ? "EN" : "中";
+  /* 时辰按钮重建 */
+  [["in-shichen", "in"], ["he-a-shichen", "heA"], ["he-b-shichen", "heB"]].forEach(function(pair){
+    var el = $(pair[0]);
+    if(el && el._render) el._render();
+  });
+}
+function switchLang(){
+  LANG = LANG === "zh" ? "en" : "zh";
+  localStorage.setItem("tj_h5_lang", LANG);
+  var cur = null, v = document.querySelectorAll(".view");
+  for(var i=0;i<v.length;i++){if(v[i].classList.contains("active")){cur=v[i].id.replace("view-","");break}}
+  state.guaData = null; state.relData = null; REL_LOADED = false;
+  $("loading").classList.add("hidden");
+  loadGuaData(function(){
+    applyI18n();
+    if(cur === "result" && state.date){
+      var p = state.date.split("-");
+      var g = calcGua(parseInt(p[0],10), parseInt(p[1],10), parseInt(p[2],10), state.shichen);
+      if(g.gua){g.sex = state.sex; state.myGua = g; renderResult(g); showView("result"); return}
+    }
+    if(cur === "he-result" && state.heA.date && state.heB.date){
+      loadRelData(function(){
+        var pa = state.heA.date.split("-"), pb = state.heB.date.split("-");
+        var ga = calcGua(parseInt(pa[0],10), parseInt(pa[1],10), parseInt(pa[2],10), state.heA.shichen);
+        var gb = calcGua(parseInt(pb[0],10), parseInt(pb[1],10), parseInt(pb[2],10), state.heB.shichen);
+        if(ga.gua && gb.gua){
+          var rel = findRel(ga.id, gb.id);
+          state.heGuaA = ga; state.heGuaB = gb; state.rel = rel;
+          renderHeResult(ga, gb, rel); showView("he-result"); return;
+        }
+      });
+    }
+    showView(cur === "he-input" ? "home" : (cur || "home"));
+  });
+}
+$("btn-lang").addEventListener("click", switchLang);
+
+/* ===== 常量与状态 ===== */
+var BAGUA = {1:"乾",2:"兑",3:"离",4:"震",5:"巽",6:"坎",7:"艮",8:"坤"};
+var SHICHEN = [
+  ["子时","23:00-01:00"],["丑时","01:00-03:00"],["寅时","03:00-05:00"],["卯时","05:00-07:00"],
+  ["辰时","07:00-09:00"],["巳时","09:00-11:00"],["午时","11:00-13:00"],["未时","13:00-15:00"],
+  ["申时","15:00-17:00"],["酉时","17:00-19:00"],["戌时","19:00-21:00"],["亥时","21:00-23:00"]
+];
+var state = {
+  guaData: null, relData: null,
+  date: "", shichen: 7, sex: "",
+  heA: {date:"", shichen:7}, heB: {date:"", shichen:7},
+  myGua: null, heGuaA: null, heGuaB: null, rel: null
+};
+var REL_LOADED = false;
+
+/* ===== 工具 ===== */
+function $(id){return document.getElementById(id)}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("show")},2200)}
+function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function mod8(n){var r=n%8;return r===0?8:r}
+function dizhi(y){return (y-4)%12+1}
+
+/* ===== 农历转换 + 本命卦（复刻后端算法） ===== */
+function calcGua(y,m,d,sc){
+  var solar=Solar.fromYmd(y,m,d);
+  var lunar=solar.getLunar();
+  var ly=lunar.getYear(), lm=Math.abs(lunar.getMonth()), ld=lunar.getDay();
+  var dz=dizhi(ly);
+  var up=mod8(dz+lm+ld);
+  var lo=mod8(dz+lm+ld+sc);
+  var full=state.guaData.table[up-1][lo-1];
+  var id=state.guaData.nameToId[full];
+  var g=null;
+  for(var i=0;i<state.guaData.gua.length;i++){if(state.guaData.gua[i].id===id){g=state.guaData.gua[i];break}}
+  var sum=dz+lm+ld+sc, ya=sum%6===0?6:sum%6;
+  return {id:id,full_name:full,upper:BAGUA[up],lower:BAGUA[lo],movingYao:ya,gua:g};
+}
+
+/* ===== 时辰选择器 ===== */
+function buildShichen(elId, key, holder){
+  var el=$(elId);
+  function render(){
+    var html="";
+    var names=I18N[LANG].sc;
+    for(var i=0;i<12;i++){
+      html+='<button data-v="'+(i+1)+'"'+(i+1===holder[0]?' class="on"':'')+'>'+names[i]+'<small>'+SHICHEN[i][1]+'</small></button>';
+    }
+    el.innerHTML=html;
+  }
+  render();
+  if(!el._bound){
+    el._bound=true;
+    el.addEventListener("click",function(e){
+      var b=e.target.closest("button"); if(!b)return;
+      var v=parseInt(b.getAttribute("data-v"),10);
+      holder[0]=v;
+      var btns=el.querySelectorAll("button");
+      for(var j=0;j<btns.length;j++)btns[j].classList.remove("on");
+      b.classList.add("on");
+    });
+  }
+  el._render=render;
+}
+
+/* ===== 数据加载 ===== */
+function dataFiles(){
+  return LANG==="en"
+    ? {gua:"gua-data-en.json", rel:"relationship-data-en.json"}
+    : {gua:"gua-data.json", rel:"relationship-data.json"};
+}
+function loadGuaData(cb){
+  if(state.guaData){cb();return}
+  fetch(dataFiles().gua).then(function(r){return r.json()}).then(function(d){
+    state.guaData=d;
+    var today=new Date().toISOString().slice(0,10);
+    $("in-date").max=today; $("he-a-date").max=today; $("he-b-date").max=today;
+    cb();
+  }).catch(function(){toast(T("toast_load_gua"))});
+}
+function loadRelData(cb){
+  if(REL_LOADED){cb();return}
+  $("loading").classList.remove("hidden");
+  fetch(dataFiles().rel).then(function(r){return r.json()}).then(function(d){
+    state.relData=d; REL_LOADED=true; $("loading").classList.add("hidden"); cb();
+  }).catch(function(){$("loading").classList.add("hidden");toast(T("toast_load_rel"))});
+}
+function findRel(idA,idB){
+  var k=Math.min(idA,idB)+"-"+Math.max(idA,idB);
+  for(var i=0;i<state.relData.length;i++){if(state.relData[i].key===k)return state.relData[i]}
+  return null;
+}
+
+/* ===== 视图路由 ===== */
+function showView(name){
+  var v=document.querySelectorAll(".view");
+  for(var i=0;i<v.length;i++)v[i].classList.remove("active");
+  $("view-"+name).classList.add("active");
+  window.scrollTo(0,0);
+}
+document.addEventListener("click",function(e){
+  var n=e.target.closest("[data-nav]");
+  if(n){var nav=n.getAttribute("data-nav");
+    if(nav==="he-input"){loadRelData(function(){showView("he-input")})}
+    else showView(nav);
+  }
+});
+
+/* ===== 路由初始化：空 hash 默认首页，支持 #/input、#/he-input 深链 ===== */
+function initRoute(){
+  var h=(location.hash||"").replace(/^#\//,"");
+  var map={"":"home",home:"home",input:"input",he:"he-input","he-input":"he-input",result:"result","he-result":"he-result"};
+  var target=map[h]||"home";
+  if(target==="he-input"){loadRelData(function(){showView("he-input")})}
+  else showView(target);
+}
+initRoute();
+window.addEventListener("hashchange",initRoute);
+
+/* ===== 单人流程 ===== */
+$("in-date").addEventListener("change",function(){state.date=this.value});
+(function(){
+  var holder=[7];
+  buildShichen("in-shichen","in",holder);
+  state.shichen=7;
+  var el=$("in-shichen");
+  el.addEventListener("click",function(){state.shichen=holder[0]});
+})();
+(function(){
+  var sexEl=$("in-sex"), cur="";
+  sexEl.addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b)return;
+    cur=b.getAttribute("data-v");
+    var bs=sexEl.querySelectorAll("button");
+    for(var j=0;j<bs.length;j++)bs[j].classList.remove("on");
+    b.classList.add("on");
+    state.sex=cur;
+  });
+})();
+$("btn-calc").addEventListener("click",function(){
+  if(!state.date){toast(T("toast_date"));return}
+  var p=state.date.split("-");
+  loadGuaData(function(){
+    var g=calcGua(parseInt(p[0],10),parseInt(p[1],10),parseInt(p[2],10),state.shichen);
+    if(!g.gua){toast(T("toast_fail"));return}
+    g.sex=state.sex;
+    state.myGua=g;
+    renderResult(g);
+    showView("result");
+  });
+});
+
+function renderResult(g){
+  var gua=g.gua, figs="";
+  var fig=g.sex==="f"?gua.li_shi_ren_wu.female:(g.sex==="m"?gua.li_shi_ren_wu.male:null);
+  if(fig&&fig.length){figs='<div class="card"><h3>'+T("card_fig")+'</h3><div class="history">'+fig.map(function(x){return "<span>"+esc(x)+"</span>"}).join("")+"</div></div>"}
+  var adv=gua.growthAdvice?"<div class='advice-box'>"+
+    (gua.growthAdvice.talent?"<div class='advice'><div class='t'>"+T("adv_talent")+"</div><p>"+esc(gua.growthAdvice.talent)+"</p></div>":"")+
+    (gua.growthAdvice.blindspot?"<div class='advice'><div class='t'>"+T("adv_blindspot")+"</div><p>"+esc(gua.growthAdvice.blindspot)+"</p></div>":"")+
+    "</div>":"";
+  $("result-box").innerHTML=
+    '<div class="result-head">'+
+      '<span class="gua-symbol">'+gua.symbol+'</span>'+
+      '<div class="gua-name">'+esc(gua.full_name)+'</div>'+
+      '<div class="gua-meta">'+esc(gua.gua_ge)+' · '+T("meta_rarity")+' <b>'+esc(gua.xi_you_du)+'</b> · '+T("meta_element")+' <b>'+esc(gua.wuxing)+'</b></div>'+
+      '<div class="tag-row"><span class="tag">'+esc(gua.social_tag)+'</span><span class="tag plain">'+esc(gua.zi_chao_biao_qian)+'</span></div>'+
+      '<div class="tag-row"><span class="tag plain">'+T("moving_line")+g.movingYao+T("moving_line2")+'</span></div>'+
+    '</div>'+
+    '<div class="yiju">'+T("q_l")+esc(gua.yi_ju_hua)+T("q_r")+'</div>'+
+    '<div class="card"><h3>'+T("card_renGe")+'</h3><p>'+esc(gua.renGe)+'</p></div>'+
+    '<div class="card"><h3>'+T("card_kw")+'</h3><div class="kw">'+gua.guan_jian_ci.split("·").map(function(x){return "<span>"+esc(x.trim())+"</span>"}).join("")+'</div></div>'+
+    '<details class="collapse"><summary>'+T("card_emotion")+'</summary><div class="body">'+esc(gua.emotionMode)+'</div></details>'+
+    '<details class="collapse"><summary>'+T("card_judgment")+'</summary><div class="body"><b>'+T("j_ci")+'</b> '+esc(gua.judgment)+'<br><br><b>'+T("x_ci")+'</b> '+esc(gua.image)+'</div></details>'+
+    adv+figs;
+}
+
+/* ===== 合盘流程 ===== */
+(function(){
+  var hA=[7], hB=[7];
+  buildShichen("he-a-shichen","heA",hA);
+  buildShichen("he-b-shichen","heB",hB);
+  $("he-a-date").addEventListener("change",function(){state.heA.date=this.value});
+  $("he-b-date").addEventListener("change",function(){state.heB.date=this.value});
+  $("he-a-shichen").addEventListener("click",function(){state.heA.shichen=hA[0]});
+  $("he-b-shichen").addEventListener("click",function(){state.heB.shichen=hB[0]});
+  $("btn-he-calc").addEventListener("click",function(){
+    if(!state.heA.date||!state.heB.date){toast(T("toast_dates"));return}
+    loadGuaData(function(){
+      loadRelData(function(){
+        var pa=state.heA.date.split("-"), pb=state.heB.date.split("-");
+        var ga=calcGua(parseInt(pa[0],10),parseInt(pa[1],10),parseInt(pa[2],10),state.heA.shichen);
+        var gb=calcGua(parseInt(pb[0],10),parseInt(pb[1],10),parseInt(pb[2],10),state.heB.shichen);
+        if(!ga.gua||!gb.gua){toast(T("toast_fail"));return}
+        var rel=findRel(ga.id,gb.id);
+        state.heGuaA=ga; state.heGuaB=gb; state.rel=rel;
+        renderHeResult(ga,gb,rel);
+        showView("he-result");
+      });
+    });
+  });
+})();
+
+function renderHeResult(ga,gb,rel){
+  var rs="";
+  if(rel){
+    rs='<div class="he-name">'+esc(rel.relationship_name)+'</div>'+
+       '<div class="he-liner">'+esc(rel.one_liner)+'</div>'+
+       '<div class="rs">'+
+         '<div class="box ok"><div class="rs-t">'+T("he_rs_res")+'</div><ul>'+rel.resonance.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+"</ul></div>"+
+         '<div class="box ng"><div class="rs-t">'+T("he_rs_conf")+'</div><ul>'+rel.conflict.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+"</ul></div>"+
+       '</div>'+
+       '<div class="card"><h3>'+T("he_card_analysis")+'</h3><p>'+esc(rel.analysis)+'</p></div>'+
+       '<div class="advice-gold"><h4>'+T("he_advice")+'</h4><p>'+esc(rel.advice)+'</p></div>';
+  }else{
+    rs='<div class="card"><h3>'+T("he_card_analysis")+'</h3><p>'+T("he_none")+'</p></div>';
+  }
+  $("he-result-box").innerHTML=
+    '<div class="he-pair">'+
+      '<div class="p"><div class="sym">'+ga.gua.symbol+'</div><div class="nm">'+esc(ga.gua.full_name)+'</div><div class="tg">'+esc(ga.gua.social_tag)+'</div></div>'+
+      '<div class="vs">'+T("he_vs")+'</div>'+
+      '<div class="p"><div class="sym">'+gb.gua.symbol+'</div><div class="nm">'+esc(gb.gua.full_name)+'</div><div class="tg">'+esc(gb.gua.social_tag)+'</div></div>'+
+    '</div>'+
+    rs;
+}
+
+/* ===== 海报 ===== */
+function drawLogo(ctx,cx,cy,size){
+  /* 六爻品牌 logo：上坎下离（断连断/连断连），按 200x200 视口等比 */
+  var h=size*14/200, step=size*24/200, w=size*152/200, seg=size*70/200, gap=size*12/200;
+  var patt=[0,1,0,1,0,1]; /* 0=断 1=连，从上到下 */
+  ctx.fillStyle="#C9962E";
+  for(var i=0;i<6;i++){
+    var y=cy-size*120/200+i*step;
+    if(patt[i]===1){
+      ctx.fillRect(cx-w/2,y,w,h);
+    }else{
+      ctx.fillRect(cx-w/2,y,seg,h);
+      ctx.fillRect(cx-w/2+seg+gap,y,seg,h);
+    }
+  }
+}
+function drawPoster(kind){
+  var c=$("poster-canvas"), ctx=c.getContext("2d");
+  var W=c.width, H=c.height;
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#0D0D0F"); g.addColorStop(.55,"#141416"); g.addColorStop(1,"#0B0B0C");
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="rgba(201,150,46,.5)"; ctx.lineWidth=2;
+  ctx.strokeRect(28,28,W-56,H-56);
+  ctx.strokeStyle="rgba(201,150,46,.18)"; ctx.lineWidth=1;
+  ctx.strokeRect(38,38,W-76,H-76);
+
+  ctx.textAlign="center";
+  drawLogo(ctx,W/2,54,64);
+  ctx.fillStyle="#E3C879";
+  ctx.font="500 26px 'Noto Sans SC',sans-serif";
+  ctx.fillText("I Ching Insight"+(LANG==="zh"?" · 天机推演":""),W/2,110);
+
+  var data, sym, nm, tags, yiju;
+  if(kind==="gua"&&state.myGua){
+    var gua=state.myGua.gua;
+    sym=gua.symbol; nm=gua.full_name; yiju=gua.yi_ju_hua;
+    tags=[gua.gua_ge,T("meta_rarity")+" "+gua.xi_you_du,T("meta_element")+" "+gua.wuxing,gua.social_tag];
+    ctx.fillStyle="#F2EDE3"; ctx.font="600 22px 'Noto Sans SC',sans-serif";
+    ctx.fillText(T("poster_gua_title"),W/2,178);
+  }else if(state.heGuaA&&state.heGuaB){
+    sym=state.heGuaA.gua.symbol+" "+T("he_vs")+" "+state.heGuaB.gua.symbol;
+    nm=state.rel?state.rel.relationship_name:T("poster_he_title");
+    yiju=state.rel?state.rel.one_liner:"";
+    tags=[state.heGuaA.gua.full_name,state.heGuaB.gua.full_name];
+    ctx.fillStyle="#F2EDE3"; ctx.font="600 22px 'Noto Sans SC',sans-serif";
+    ctx.fillText(T("poster_he_title"),W/2,178);
+  }else{return}
+
+  ctx.fillStyle="#C9962E";
+  ctx.font="900 150px 'Noto Serif SC',serif";
+  var sw=ctx.measureText(sym).width;
+  var fs=Math.min(150, 560/sw*150);
+  ctx.font="900 "+Math.round(fs)+"px 'Noto Serif SC',serif";
+  ctx.fillText(sym,W/2,360);
+
+  ctx.fillStyle="#F2EDE3";
+  ctx.font="900 52px 'Noto Serif SC',serif";
+  ctx.fillText(nm,W/2,470);
+
+  var ty=540;
+  for(var i=0;i<tags.length;i++){
+    var tw=ctx.measureText(tags[i]).width+44;
+    ctx.fillStyle="rgba(201,150,46,.10)";
+    ctx.beginPath();
+    ctx.roundRect(W/2-tw/2,ty-24,tw,40,20);
+    ctx.fill();
+    ctx.strokeStyle="rgba(201,150,46,.45)"; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle="#E3C879"; ctx.font="400 20px 'Noto Sans SC',sans-serif";
+    ctx.fillText(tags[i],W/2,ty+5);
+    ty+=54;
+  }
+  if(yiju){
+    ctx.fillStyle="#B9B4A8"; ctx.font="400 22px 'Noto Serif SC',serif";
+    ctx.fillText(T("q_l")+yiju+T("q_r"),W/2,ty+24);
+  }
+
+  ctx.fillStyle="rgba(242,237,227,.5)"; ctx.font="400 18px 'Noto Sans SC',sans-serif";
+  ctx.fillText(T("poster_bottom1"),W/2,H-150);
+  ctx.fillStyle="#C9962E"; ctx.font="500 24px 'Noto Sans SC',sans-serif";
+  ctx.fillText("claw-book.cn",W/2,H-104);
+  ctx.fillStyle="rgba(124,122,115,.8)"; ctx.font="400 15px 'Noto Sans SC',sans-serif";
+  ctx.fillText(T("poster_brand2"),W/2,H-70);
+}
+function openPoster(kind){
+  drawPoster(kind);
+  $("poster-layer").classList.add("show");
+}
+$("btn-poster").addEventListener("click",function(){openPoster("gua")});
+$("btn-he-poster").addEventListener("click",function(){openPoster("he")});
+$("poster-close").addEventListener("click",function(){$("poster-layer").classList.remove("show")});
+$("poster-save").addEventListener("click",function(){
+  var c=$("poster-canvas");
+  c.toBlob(function(blob){
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="tianji-hexagram-poster.png";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},400);
+    toast(T("toast_saved"));
+  },"image/png");
+});
+$("poster-share").addEventListener("click",function(){
+  var c=$("poster-canvas");
+  c.toBlob(function(blob){
+    var f=new File([blob],"tianji-hexagram-poster.png",{type:"image/png"});
+    var shareData={files:[f],title:T("share_title"),text:T("share_text")};
+    if(navigator.canShare&&navigator.canShare(shareData)){
+      navigator.share(shareData).catch(function(){});
+    }else{
+      var url="https://claw-book.cn/h5/"+(LANG==="en"?"?lang=en":"");
+      if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){toast(T("toast_copied"))})}
+      else toast(T("toast_save_hint"));
+    }
+  },"image/png");
+});
+
+/* ===== 启动 ===== */
+(function(){
+  var q = location.search.match(/[?&]lang=(zh|en)/);
+  if(q){ LANG = q[1]; localStorage.setItem("tj_h5_lang", LANG); }
+  applyI18n();
+  loadGuaData(function(){});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!-- pages/index/index.wxml - 首页：罗盘动画 + 问题输入 + 推演按钮 -->
+<view class="page-container page-index {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 自定义导航栏（留出状态栏高度） -->
+  <view class="custom-navbar" style="padding-top:{{statusBarHeight}}px"></view>
+
+  <!-- 节气养生条（右侧竖向拉杆，top:200rpx） -->
+  <jieqi-bar id="jieqiBar" guaGe="{{guaGe}}" hasProfile="{{hasProfile}}" bind:share="onJieqiShare" />
+
+  <!-- 顶部合规声明（上方明显处） -->
+  <view class="disclaimer-banner" style="top: calc({{statusBarHeight}}px + 150rpx)">
+    <text class="disclaimer-text">{{t.disclaimer}}</text>
+  </view>
+
+  <!-- v18.19 背景视频（双端统一渲染）
+       根因结论（官方文档核实）：
+       1. Donut App 端 video 同层渲染依赖 Xweb 扩展SDK（project.miniapp.json 已开 xweb: true），
+          官方说明：xweb 内核"首次启动需要异步下载，加载完成后下次冷启动才生效"。
+          全新安装/卸载重装后内核未就绪时，video 会退化为原生组件（层级最高，覆盖所有组件）——
+          这就是 8.17/8.18 APK 首页组件被视频盖住的原因，与前端代码无关。
+       2. 修复：用官方 bindrendererror 监听同层渲染失败 → 卸载 video 降级为静态海报，
+          内核就绪后（下次冷启动）视频自动恢复。
+       注意：video 必须保持自闭合标签，内嵌 cover-view 会导致小程序端退出同层渲染 -->
+  <video
+    class="bg-video"
+    src="{{mediaBase}}/tianji-compass-bg.mp4"
+    wx:if="{{showVideo && !bgVideoFailed}}"
+    autoplay
+    loop
+    muted
+    show-center-play-btn="{{false}}"
+    controls="{{false}}"
+    object-fit="cover"
+    poster="{{mediaBase}}/poster-compass.jpg"
+    binderror="onVideoError"
+    bindrendererror="onVideoRenderError"
+  />
+
+  <!-- 背景海报：视频下方兜底底图（视频加载中/同层渲染失败时透出） -->
+  <image
+    class="bg-poster"
+    src="/assets/images/poster-compass.jpg"
+    mode="scaleToFill"
+    wx:if="{{showVideo}}"
+  />
+
+  <!-- 低端设备降级：仅显示海报（不渲染视频） -->
+  <image
+    class="bg-poster"
+    src="/assets/images/poster-compass.jpg"
+    mode="scaleToFill"
+    wx:if="{{!showVideo}}"
+  />
+
+  <!-- 暗色遮罩 -->
+  <view class="overlay-mask"></view>
+
+  <!-- 主内容区（输入框+推演按钮），双端统一的普通 view 结构 -->
+  <view class="index-content" wx:if="{{!isDivining}}">
+    <!-- 问题输入（宽度66%，居中） -->
+    <view class="input-section">
+      <input
+        class="question-input"
+        placeholder="{{t.questionPlaceholder}}"
+        value="{{question}}"
+        maxlength="200"
+        bindinput="onQuestionInput"
+        bindfocus="onInputFocus"
+        bindblur="onInputBlur"
+        show-confirm-bar="{{false}}"
+      />
+    </view>
+
+    <!-- 推演按钮（翻牌大钮，宽度66%，居中） -->
+    <view class="action-section">
+      <view class="flip-panel {{flipping ? 'flipping' : ''}}">
+        <view wx:if="{{divineMode === 'normal'}}"
+              class="panel-face panel-front"
+              bindtap="onTapDivine"
+              aria-label="{{t.classicBtn}}">
+          <view class="panel-front-content">
+            <text class="panel-title font-soul">{{t.classicBtn}}</text>
+          </view>
+        </view>
+        <view wx:else
+              class="panel-face panel-back panel-back-{{vipDecodeStatus}}"
+              bindtap="onTapVipDivine"
+              aria-label="{{t.deepBtn}}">
+          <view class="panel-back-content">
+            <icon-guo wx:if="{{vipDecodeStatus === 'available'}}" name="key" size="28" color="#0A0A1A" />
+            <icon-guo wx:else name="lock" size="28" color="#0A0A1A" />
+            <text class="panel-title font-soul">{{t.deepBtn}}</text>
+            <text wx:if="{{vipDecodeStatus === 'available'}}" class="panel-sub-text">{{vipRemainingText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 玉璧旋钮（独立机关，紧贴底部 tab 条中间）
+       古玉璧造型，旋转触发推演按钮翻牌 -->
+  <view class="jade-device-wrap" wx:if="{{!isDivining}}">
+    <view class="jade-ring-device" bindtap="onFlipDivineMode" aria-label="旋转玉璧切换推演模式">
+      <view class="jade-ring-glow {{divineMode === 'vip' ? 'dim' : ''}}"></view>
+      <view class="jade-ring-wrap {{divineMode === 'vip' ? 'rotated' : ''}}">
+        <view class="jade-ring-outer">
+          <view class="jade-ring-pattern"></view>
+          <view class="jade-ring-inner"></view>
+          <view class="jade-ring-center"></view>
+          <view class="jade-mark jade-mark-top"></view>
+          <view class="jade-mark jade-mark-right"></view>
+          <view class="jade-mark jade-mark-bottom"></view>
+          <view class="jade-mark jade-mark-left"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 等待动画全屏覆盖层（动画与 API 并行） -->
+  <view class="divine-overlay" wx:if="{{isDivining}}" catchtouchmove="{{true}}">
+    <!-- 视频（计算中时隐藏） -->
+    <!-- v16.14 修复：推演等待动画是全屏覆盖层，不受 showVideo 控制 -->
+    <video
+      id="waitVideo"
+      src="{{waitVideoSrc}}"
+      wx:if="{{!showComputing}}"
+      autoplay
+      show-center-play-btn="{{false}}"
+      controls="{{false}}"
+      object-fit="cover"
+      poster="{{mediaBase}}/tianji-click-wait-poster.jpg"
+      style="width:100%;height:100%;"
+      bindended="onWaitVideoEnded"
+      bindplay="onWaitVideoPlay"
+      binderror="onWaitVideoError"
+    />
+
+    <!-- 视频加载前的旋转spinner -->
+    <view class="wait-spinner" wx:if="{{showWaitSpinner}}">
+
+      <view class="spinner-ring"></view>
+      <text class="spinner-text font-title">{{t.divining}}</text>
+    </view>
+
+    <!-- 视频播完后的"计算中"等待页 -->
+    <view class="computing-overlay" wx:if="{{showComputing}}">
+      <view class="computing-icon">
+        <icon-guo name="taiji" size="64" color="#D4A574" />
+      </view>
+      <view class="computing-text-row">
+        <text class="computing-text font-title">{{t.computing}}</text>
+        <view class="computing-dots">
+          <text class="cdot c1">.</text>
+          <text class="cdot c2">.</text>
+          <text class="cdot c3">.</text>
+        </view>
+      </view>
+      <text class="computing-hint">{{t.computingHint}}</text>
+    </view>
+  </view>
+
+  <!-- v4.1 VIP深度解读覆盖层（原secret页内嵌首页：卦炉等待 + 结果折叠 + 错误重试） -->
+  <view class="vip-divine-overlay" wx:if="{{vipState}}" catchtouchmove="{{true}}">
+    <!-- 加载态：卦炉注入动效 -->
+    <view class="secret-loading" wx:if="{{vipState === 'loading'}}">
+      <!-- 中心光晕 -->
+      <view class="furnace-glow"></view>
+      <!-- 火焰粒子上升效果 -->
+      <view class="flame-particles">
+        <view class="flame-particle p1"></view>
+        <view class="flame-particle p2"></view>
+        <view class="flame-particle p3"></view>
+        <view class="flame-particle p4"></view>
+        <view class="flame-particle p5"></view>
+        <view class="flame-particle p6"></view>
+      </view>
+      <!-- 24个变量从四方向中心飘入（光晕拖尾） -->
+      <view class="var-item var-{{item.dir}}" wx:for="{{vipVariables}}" wx:key="name"
+            style="left: {{item.left}}; top: {{item.top}}; animation-delay: {{item.delay}}">
+        <text>{{item.name}}</text>
+      </view>
+      <!-- 中心卦炉 -->
+      <view class="furnace-center">
+        <view class="furnace-ring ring-1"></view>
+        <view class="furnace-ring ring-2"></view>
+        <view class="furnace-ring ring-3"></view>
+        <text class="furnace-char">易</text>
+      </view>
+      <!-- 底部文案 -->
+      <view class="loading-bottom">
+        <view class="loading-text-row">
+          <text class="loading-text">{{t.vipLoading}}</text>
+          <view class="loading-dots">
+            <text class="dot d1">.</text>
+            <text class="dot d2">.</text>
+            <text class="dot d3">.</text>
+          </view>
+        </view>
+        <text class="loading-sub">{{t.vipLoadingSub}}</text>
+      </view>
+    </view>
+
+    <!-- 结果态：卷轴展开动效 + 6段折叠 -->
+    <scroll-view class="secret-result scroll-unroll" scroll-y wx:if="{{vipState === 'result'}}">
+      <!-- 首屏：仪式感标题区 -->
+      <view class="vip-hero">
+        <text class="vip-hero-title font-display">{{t.deepTitle}}</text>
+        <view class="vip-hero-divider">
+          <view class="vip-hero-line"></view>
+          <icon-guo name="taiji" size="20" color="rgba(200,165,91,0.5)" />
+          <view class="vip-hero-line"></view>
+        </view>
+        <view class="vip-user-info" wx:if="{{vipNickname}}">
+          <text class="vip-user-name">{{vipNickname}}</text>
+          <text class="vip-user-label">{{t.chartReading}}</text>
+        </view>
+      </view>
+
+      <!-- 问题展示（引用风格） -->
+      <view class="vip-question" wx:if="{{vipShareQuestion}}">
+        <text class="vip-question-mark">「</text>
+        <text class="vip-question-text font-title">{{vipShareQuestion}}</text>
+        <text class="vip-question-mark">」</text>
+      </view>
+
+      <!-- 金线分隔 -->
+      <view class="divider-gold"></view>
+
+      <!-- 折叠区：6段分节，默认折叠，点击展开 -->
+      <view class="vip-sections">
+        <view class="vip-section" wx:for="{{vipSections}}" wx:key="title" wx:for-index="idx">
+          <view class="vip-section-header" bindtap="toggleVipSection" data-idx="{{idx}}">
+            <view class="vip-section-number">{{idx + 1 < 10 ? '0' : ''}}{{idx + 1}}</view>
+            <text class="vip-section-title">{{item.title}}</text>
+            <icon-guo class="vip-section-arrow {{item.visible ? 'expanded' : ''}}" name="chevron-down" size="28" color="#A0A0B0" />
+          </view>
+          <view class="vip-section-body {{item.visible ? 'expanded' : ''}}">
+            <view class="vip-section-inner">
+              <text class="vip-section-content font-body">{{item.content}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 底部合规声明 -->
+      <view class="vip-footer">
+        <text class="vip-footer-text">{{t.disclaimer}}</text>
+      </view>
+
+      <!-- 底部操作栏 -->
+      <view class="vip-actions">
+        <button wx:if="{{isMpWeixin}}" class="vip-action-btn vip-action-share" open-type="share">{{t.shareReading}}</button>
+        <button wx:else class="vip-action-btn vip-action-share" bindtap="onShareTap">{{t.shareReading}}</button>
+        <button class="vip-action-btn vip-action-back" bindtap="onVipClose">{{t.back}}</button>
+      </view>
+    </scroll-view>
+
+    <!-- 错误态 -->
+    <view class="secret-error" wx:if="{{vipState === 'error'}}">
+      <icon-guo name="sparkle" size="64" color="#E74C3C" />
+      <text class="error-text">{{vipErrorMsg}}</text>
+      <button class="retry-btn" bindtap="onVipRetry">{{t.reDivine}}</button>
+      <button class="vip-error-back" bindtap="onVipClose">{{t.backHome}}</button>
+    </view>
+  </view>
+
+  <!-- 漂浮提示气泡（逐秒浮现，点击输入框刷新） -->
+  <view class="bubble-field" wx:if="{{showSuggestions && suggestions.length > 0}}">
+    <view class="bubble" wx:for="{{suggestions}}" wx:key="text"
+          style="top:{{item.top}}; left:{{item.left}}; animation-delay:{{item.delay}}; animation-duration:{{item.duration}}s"
+          bindtap="onTapSuggestion" data-text="{{item.text}}">
+      <text>{{item.text}}</text>
+    </view>
+  </view>
+</view>

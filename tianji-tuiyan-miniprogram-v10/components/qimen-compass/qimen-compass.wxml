@@ -1,0 +1,92 @@
+<!-- 奇门遁甲罗盘 - 真3D版 v5.0 -->
+<!-- DOM顺序：外环→内环→中心（从低到高优先级，避免3D hit-testing bug） -->
+<view class="compass-wrapper {{isEn ? 'lang-en' : ''}}" style="width:{{size}}rpx;height:{{size}}rpx;">
+  <!-- 微星层 -->
+  <view class="starfield">
+    <view wx:for="{{starDots}}" wx:key="index" class="star-dot" style="left:{{item.x}}rpx;top:{{item.y}}rpx;"></view>
+  </view>
+
+  <!-- 3D旋转容器 -->
+  <view class="compass-rotator">
+
+    <!-- 环6·二十四节气 · layer-z6 · 最外环，DOM最先 = 优先级最低 -->
+    <view class="ring-3d-layer layer-z6">
+      <view class="ring ring-6 ring-spin-reverse-ultra-slow" data-ring="jieqi">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{jieqiItems}}" wx:key="name" bindtap="onItemTap" data-ring="jieqi" data-name="{{item.name}}">
+            <text class="ring-mark mark-dark mark-small">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 环5·九宫八卦 · layer-z5 -->
+    <view class="ring-3d-layer layer-z5">
+      <view class="ring ring-5 ring-spin-ultra-slow" data-ring="jiugong">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{baguaItems}}" wx:key="name" bindtap="onItemTap" data-ring="jiugong" data-name="{{item.name}}">
+            <text class="ring-mark mark-amber">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 环4·三奇六仪 · layer-z4 -->
+    <view class="ring-3d-layer layer-z4">
+      <view class="ring ring-4 ring-spin-reverse-slow" data-ring="sanqiliuyi">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{sanqiItems}}" wx:key="name" bindtap="onItemTap" data-ring="sanqiliuyi" data-name="{{item.name}}">
+            <text class="ring-mark mark-copper">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 环3·八神 · layer-z3 -->
+    <view class="ring-3d-layer layer-z3">
+      <view class="ring ring-3 ring-spin-slow" data-ring="bashen">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{bashenItems}}" wx:key="name" bindtap="onItemTap" data-ring="bashen" data-name="{{item.name}}">
+            <text class="ring-mark mark-bronze">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 环2·八门 · layer-z2 -->
+    <view class="ring-3d-layer layer-z2">
+      <view class="ring ring-2 ring-spin-reverse" data-ring="bamen">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{bamenItems}}" wx:key="name" bindtap="onItemTap" data-ring="bamen" data-name="{{item.name}}">
+            <text class="ring-mark mark-warm">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 环1·九星 · layer-z1 -->
+    <view class="ring-3d-layer layer-z1">
+      <view class="ring ring-1 ring-spin-fast" data-ring="jiuxing">
+        <view class="ring-items">
+          <view class="ring-item" style="{{item.style}}" wx:for="{{jiuxingItems}}" wx:key="name" bindtap="onItemTap" data-ring="jiuxing" data-name="{{item.name}}">
+            <text class="ring-mark mark-bright">{{item.displayName || item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 中心能量核心 · layer-z0 · DOM最后 = 优先级最高 -->
+    <view class="ring-3d-layer layer-z0">
+      <view class="center-core" bindtap="onRingTap" data-ring="taichi">
+        <view class="core-glow"></view>
+        <view class="core-taichi">
+          <view class="taichi-yin"></view>
+          <view class="taichi-yang"></view>
+          <view class="taichi-eye-gold"></view>
+          <view class="taichi-eye-dark"></view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>

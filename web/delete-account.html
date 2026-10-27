@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta property="og:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>天机推演 · 注销账号 · Delete Account</title>
+  <meta name="description" content="注销并删除您的天机推演账号与个人数据。Delete your I Ching Insight account and personal data." />
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: #0A0E1A;
+      color: #E8E8F0;
+      line-height: 1.8;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 30px; color: #C8A55B; text-align: center; margin-bottom: 6px; letter-spacing: 0.12em; }
+    .update-date { text-align: center; color: #A0A0B0; font-size: 13px; margin-bottom: 30px; }
+    .lang-toggle { text-align: right; margin-bottom: 12px; }
+    .lang-toggle a { color: #C8A55B; font-size: 13px; cursor: pointer; text-decoration: none; margin-left: 12px; }
+    .card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(200, 165, 91, 0.25);
+      border-radius: 8px;
+      padding: 32px 30px;
+    }
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-size: 14px; color: #C8A55B; margin-bottom: 8px; letter-spacing: 0.08em; }
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #0E1220;
+      border: 1px solid rgba(160, 160, 176, 0.3);
+      border-radius: 6px;
+      color: #E8E8F0;
+      font-size: 15px;
+      outline: none;
+    }
+    .field input:focus { border-color: #C8A55B; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #C8A55B;
+      border-radius: 6px;
+      background: transparent;
+      color: #C8A55B;
+      font-size: 15px;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .btn:hover { background: #C8A55B; color: #0A0E1A; }
+    .btn-gold { background: #C8A55B; color: #0A0E1A; }
+    .btn-gold:hover { background: #d4b36c; }
+    .btn-danger { border-color: #d06060; color: #d08080; }
+    .btn-danger:hover { background: #d06060; color: #0A0E1A; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .status { text-align: center; margin-top: 14px; font-size: 14px; min-height: 22px; }
+    .status.ok { color: #7fc98a; }
+    .status.err { color: #e08a8a; }
+    .tip { font-size: 13px; color: #A0A0B0; margin-top: 18px; text-align: center; }
+    .hidden { display: none; }
+    .links { display: flex; justify-content: center; gap: 28px; margin-top: 16px; }
+    .links a { color: #C8A55B; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .danger-note {
+      margin-top: 26px;
+      padding: 16px;
+      border: 1px dashed rgba(208, 96, 96, 0.5);
+      border-radius: 6px;
+      color: #d0a0a0;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+    .user-mail { text-align: center; color: #E8E8F0; font-size: 15px; margin-bottom: 10px; }
+    .notice { text-align: center; color: #7fc98a; font-size: 14px; margin-bottom: 12px; }
+  
+    /* 顶部导航 */
+    .top-nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; background: rgba(10,14,26,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(200,165,91,0.2); }
+    .nav-brand { color: #C8A55B; font-size: 16px; letter-spacing: 0.15em; text-decoration: none; font-weight: 600; }
+    .top-nav .nav-links { display: flex; gap: 24px; }
+    .top-nav .nav-links a { color: #A0A0B0; font-size: 14px; text-decoration: none; letter-spacing: 0.05em; }
+    .top-nav .nav-links a:hover { color: #C8A55B; }
+    @media(max-width:640px) { .top-nav { padding: 12px 16px; } .top-nav .nav-links { gap: 16px; } }
+
+
+/* UX修复：键盘焦点可见性 WCAG 2.4.7 */
+a:focus, button:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+</style>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?bc2eeb3274de3884460e0368816fdd39";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNDSJZPLG6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NNDSJZPLG6');
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://claw-book.cn/"},{"@type":"ListItem","position":2,"name":"天机推演 · 登录/注册 · Sign in / Register"}]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://claw-book.cn/#organization","name":"天机推演","alternateName":"I Ching Insight","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png"},"description":"天机推演将5000年易经智慧与AI技术结合，提供64卦解读、AI星座、人格分析与灵魂匹配服务。","sameAs":["https://x.com/ccbaby2813","https://www.instagram.com/ccbaby2813/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","availableLanguage":["Chinese","English"]}}</script>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://claw-book.cn/images/og-default.jpg"/>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="https://claw-book.cn/" class="nav-brand">天机推演</a>
+    <div class="nav-links">
+      <a href="https://claw-book.cn/">首页</a>
+      <a href="https://claw-book.cn/yi-jing.html">知识库</a>
+      <a href="https://claw-book.cn/#download">下载</a>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="lang-toggle">
+      <a href="#" onclick="setLang('zh')">中文</a>
+      <a href="#" onclick="setLang('en')">English</a>
+    </div>
+    <h1 data-i18n="title">天机推演</h1>
+    <div class="update-date" data-i18n="subtitle">登录 · 注册 / Sign in · Register</div>
+
+    <!-- 未登录：登录表单 -->
+    <div class="card" id="loginCard">
+      <div class="field">
+        <label data-i18n="emailLabel">邮箱地址</label>
+        <input type="email" id="loginEmail" autocomplete="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label data-i18n="pwdLabel">密码</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <button class="btn" id="loginBtn" onclick="doLogin()" data-i18n="loginBtn">登录</button>
+      <div class="status" id="status"></div>
+      <div class="links">
+        <a data-i18n="goRegister" onclick="showView('register')">注册账号</a>
+        <a data-i18n="forgotPwd" onclick="showView('forgot')">忘记密码</a>
+      </div>
+    </div>
+
+    <!-- 注册表单 -->
+    <div class="card hidden" id="registerCard">
+      <div class="field">
+        <label data-i18n="emailLabel">邮箱地址</label>
+        <input type="email" id="regEmail" autocomplete="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label data-i18n="codeLabel">邮箱验证码</label>
+        <input type="text" id="regCode" inputmode="numeric" maxlength="6" style="letter-spacing:0.3em;" />
+        <button class="btn" id="regSend" onclick="sendRegCode(this)" data-i18n="sendCode" style="margin-top:10px;padding:10px;">获取验证码</button>
+      </div>
+      <div class="field">
+        <label data-i18n="newPwdLabel">设置密码</label>
+        <input type="password" id="regPassword" autocomplete="new-password" placeholder="至少 6 位" />
+      </div>
+      <button class="btn btn-gold" id="regBtn" onclick="doRegister()" data-i18n="regBtn">注册并登录</button>
+      <div class="status" id="regStatus"></div>
+      <div class="links">
+        <a data-i18n="backLogin" onclick="showView('login')">返回登录</a>
+      </div>
+    </div>
+
+    <!-- 忘记密码表单 -->
+    <div class="card hidden" id="forgotCard">
+      <div class="field">
+        <label data-i18n="emailLabel">邮箱地址</label>
+        <input type="email" id="ftEmail" autocomplete="email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label data-i18n="codeLabel">邮箱验证码</label>
+        <input type="text" id="ftCode" inputmode="numeric" maxlength="6" style="letter-spacing:0.3em;" />
+        <button class="btn" id="ftSend" onclick="sendFotCode(this)" data-i18n="sendCode" style="margin-top:10px;padding:10px;">获取验证码</button>
+      </div>
+      <div class="field">
+        <label data-i18n="newPwdLabel">新密码</label>
+        <input type="password" id="ftPassword" autocomplete="new-password" placeholder="至少 6 位" />
+      </div>
+      <button class="btn" id="ftBtn" onclick="doResetPwd()" data-i18n="resetBtn">重置密码</button>
+      <div class="status" id="ftStatus"></div>
+      <div class="links">
+        <a data-i18n="backLogin" onclick="showView('login')">返回登录</a>
+      </div>
+    </div>
+
+    <!-- 已登录：账户中心 -->
+    <div class="card hidden" id="accountCard">
+      <div class="user-mail" id="welcome"></div>
+      <div class="notice" id="memberNotice"></div>
+      <div class="notice" id="upgradeNotice">
+        <span data-i18n="upgradeTip">需要开通会员？</span>
+        <a href="/" data-i18n="goUpgrade">前往首页开通会员（H5 支付）</a>
+      </div>
+      <div class="actions">
+        <button class="btn" id="refreshBtn" onclick="refreshVip()" data-i18n="refreshBtn">刷新会员状态</button>
+        <button class="btn btn-danger" id="deleteLinkBtn" onclick="showDelete()" data-i18n="delBtn">注销账户</button>
+      </div>
+    </div>
+
+    <!-- 注销确认 -->
+    <div class="card hidden" id="deleteCard">
+      <div class="danger-note" data-i18n="dangerNote">
+        注销账户后，你的所有数据（推演记录、收藏、信件、匹配记录、会员订阅等）将被永久清空，且无法恢复。请确认是否继续？
+      </div>
+      <div class="field" style="margin-top:24px;">
+        <label data-i18n="confirmEmailLabel">请输入邮箱确认</label>
+        <input type="email" id="confirmEmail" />
+      </div>
+      <button class="btn btn-danger" id="deleteBtn" onclick="doDelete()" data-i18n="confirmDel">确认注销账户</button>
+      <div class="status" id="delStatus"></div>
+      <div class="links">
+        <a data-i18n="backAccount" onclick="showView('account')">返回账户中心</a>
+      </div>
+    </div>
+
+    <div class="tip"></div>
+  </div>
+
+  <script>
+    const API = location.origin + '/tianji';
+    let token = '';
+    let openid = '';
+    let email = '';
+
+    const I18N = {
+      zh: {
+        title: '天机推演', subtitle: '登录 · 注册',
+        emailLabel: '邮箱地址', pwdLabel: '密码', codeLabel: '邮箱验证码',
+        sendCode: '获取验证码', newPwdLabel: '设置密码',
+        loginBtn: '登录', regBtn: '注册并登录', resetBtn: '重置密码',
+        goRegister: '注册账号', forgotPwd: '忘记密码', backLogin: '返回登录',
+        errEmail: '请输入正确邮箱', errPwd: '请输入密码',
+        errCode: '请输入6位验证码', errNewPwd: '密码至少6位',
+        statusLogging: '正在登录…', statusReg: '正在注册…', statusReset: '正在重置…',
+        statusLogged: '登录成功', regOk: '注册成功，已自动登录',
+        acctWelcome: '已登录：',
+        msgNotLogin: '请先登录',
+        upgradeTip: '需要开通会员？', goUpgrade: '前往首页开通会员（H5 支付）',
+        refreshBtn: '刷新会员状态', delBtn: '注销账户',
+        vipFresh: '会员状态已刷新', freeUser: '当前为免费用户', vipUser: '当前为已开通会员',
+        delHeading: '注销账户',
+        dangerNote: '注销账户后，你的所有数据（推演记录、收藏、信件、匹配记录、会员订阅等）将被永久清空，且无法恢复。请确认是否继续？',
+        confirmEmailLabel: '请输入邮箱确认', confirmDel: '确认注销账户',
+        deleting: '正在注销…', deleted: '账户已注销，所有数据已清空',
+        delWrongEmail: '输入的邮箱与登录邮箱不一致', delNeedConfirm: '未登录，请先登录',
+        backAccount: '返回账户中心', err: '请求失败'
+      },
+      en: {
+        title: 'TianJi Divination', subtitle: 'Sign in · Register',
+        emailLabel: 'Email address', pwdLabel: 'Password', codeLabel: 'Email code',
+        sendCode: 'Send code', newPwdLabel: 'Set password',
+        loginBtn: 'Sign in', regBtn: 'Register & sign in', resetBtn: 'Reset password',
+        goRegister: 'Create account', forgotPwd: 'Forgot password', backLogin: 'Back to sign in',
+        errEmail: 'Please enter a valid email', errPwd: 'Please enter your password',
+        errCode: 'Enter the 6-digit code', errNewPwd: 'Password must be at least 6 characters',
+        statusLogging: 'Signing in…', statusReg: 'Registering…', statusReset: 'Resetting…',
+        statusLogged: 'Signed in', regOk: 'Registered, signed in automatically',
+        acctWelcome: 'Signed in: ',
+        msgNotLogin: 'Please sign in first',
+        upgradeTip: 'Need membership?', goUpgrade: 'Get membership on the home page (H5 pay)',
+        refreshBtn: 'Refresh membership', delBtn: 'Delete account',
+        vipFresh: 'Membership refreshed', freeUser: 'Current: free user', vipUser: 'Current: active member',
+        delHeading: 'Delete account',
+        dangerNote: 'After deleting your account, all of your data (divination records, collections, letters, match records, membership subscriptions, etc.) will be permanently erased and cannot be recovered. Do you want to continue?',
+        confirmEmailLabel: 'Enter the same email to confirm', confirmDel: 'Confirm delete account',
+        deleting: 'Deleting…', deleted: 'Account deleted. All data erased.',
+        delWrongEmail: 'The email entered does not match the signed-in email', delNeedConfirm: 'Not signed in, please sign in first',
+        backAccount: 'Back to account center', err: 'Request failed'
+      }
+    };
+    const LANG_KEY = 'tj_web_lang';
+    const TOKEN_KEY = 'tj_web_token';
+
+    function current() {
+      const qs = new URLSearchParams(location.search).get('lang');
+      if (qs === 'en') return 'en';
+      if (qs === 'zh') return 'zh';
+      return ((localStorage.getItem(LANG_KEY) || 'zh') === 'en') ? 'en' : 'zh';
+    }
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+      const t = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t[el.dataset.i18n] || el.textContent;
+      });
+    }
+    function setLang(lang) { applyLang(lang); }
+    applyLang(current());
+
+    async function apiPost(path, body, useAuth) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (useAuth && token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(API + path, { method: 'POST', headers, body: JSON.stringify(body || {}) });
+      let data = null;
+      try { data = await res.json(); } catch (e) {}
+      if (!res.ok && (!data || !data.success)) {
+        const err = new Error((data && data.message) || ('Err ' + res.status));
+        err.code = data && data.code; throw err;
+      }
+      return data || {};
+    }
+    async function apiGet(path, useAuth) {
+      const headers = {};
+      if (useAuth && token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(API + path, { method: 'GET', headers });
+      let data = null;
+      try { data = await res.json(); } catch (e) {}
+      if (!res.ok && (!data || !data.success)) {
+        const err = new Error((data && data.message) || ('Err ' + res.status));
+        err.code = data && data.code; throw err;
+      }
+      return data || {};
+    }
+    function statusMsg(el, msg, ok) { el.textContent = msg; el.className = 'status ' + (ok ? 'ok' : 'err'); }
+    function setLoading(btn, loading) { btn.disabled = loading; }
+    function val(id) { return (document.getElementById(id).value || '').trim(); }
+
+    function showView(view) {
+      const t = I18N[current()];
+      ['loginCard','registerCard','forgotCard','accountCard','deleteCard'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(view + 'Card').classList.remove('hidden');
+      if (view === 'account') {
+        document.getElementById('welcome').textContent = t.acctWelcome + email;
+        refreshVip();
+      }
+    }
+
+    // ===== 登录 =====
+    async function doLogin() {
+      const t = I18N[current()];
+      email = val('loginEmail').toLowerCase();
+      const pwd = document.getElementById('loginPassword').value;
+      const stEl = document.getElementById('status');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return statusMsg(stEl, t.errEmail, false);
+      if (!pwd) return statusMsg(stEl, t.errPwd, false);
+      const btn = document.getElementById('loginBtn');
+      setLoading(btn, true); statusMsg(stEl, t.statusLogging, true);
+      try {
+        const res = await apiPost('/api/auth/email-login', { email, password: pwd });
+        afterLogin(res.data);
+      } catch (e) {
+        statusMsg(stEl, e.message || t.err, false);
+      } finally { setLoading(btn, false); }
+    }
+
+    function afterLogin(data) {
+      const t = I18N[current()];
+      token = data.token;
+      openid = data.openid || '';
+      localStorage.setItem(TOKEN_KEY, token);
+      document.getElementById('status').textContent = '';
+      document.getElementById('confirmEmail').value = email;
+      showView('account');
+    }
+
+    // ===== 注册 =====
+    async function sendRegCode(btn) {
+      email = val('regEmail').toLowerCase();
+      const t = I18N[current()];
+      const stEl = document.getElementById('regStatus');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return statusMsg(stEl, t.errEmail, false);
+      setLoading(btn, true);
+      try {
+        await apiPost('/api/auth/email-send-code', { email, purpose: 'register' });
+        statusMsg(stEl, I18N.zh ? (current()==='zh'?'验证码已发送':'Code sent') : 'Code sent', true);
+        startCountdown(btn);
+      } catch (e) { statusMsg(stEl, e.message || t.err, false); }
+      finally { setLoading(btn, false); }
+    }
+    function startCountdown(btn) {
+      let n = 60;
+      const orig = btn.textContent;
+      btn.disabled = true;
+      const timer = setInterval(() => {
+        n--;
+        if (n <= 0) { clearInterval(timer); btn.disabled = false; btn.textContent = orig; }
+        else btn.textContent = n + 's';
+      }, 1000);
+    }
+    function sendFotCode(btn) {
+      email = val('ftEmail').toLowerCase();
+      const t = I18N[current()];
+      const stEl = document.getElementById('ftStatus');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return statusMsg(stEl, t.errEmail, false);
+      setLoading(btn, true);
+      apiPost('/api/auth/email-send-code', { email, purpose: 'reset' })
+        .then(() => { statusMsg(stEl, current()==='zh'?'验证码已发送':'Code sent', true); startCountdown(btn); })
+        .catch(e => statusMsg(stEl, e.message || t.err, false))
+        .finally(() => setLoading(btn, false));
+    }
+
+    async function doRegister() {
+      const t = I18N[current()];
+      email = val('regEmail').toLowerCase();
+      const code = val('regCode');
+      const pwd = document.getElementById('regPassword').value;
+      const stEl = document.getElementById('regStatus');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return statusMsg(stEl, t.errEmail, false);
+      if (!/^\d{6}$/.test(code)) return statusMsg(stEl, t.errCode, false);
+      if (String(pwd).length < 6) return statusMsg(stEl, t.errNewPwd, false);
+      const btn = document.getElementById('regBtn');
+      setLoading(btn, true); statusMsg(stEl, t.statusReg, true);
+      try {
+        const res = await apiPost('/api/auth/email-register', { email, code, password: pwd });
+        if (res.data && res.data.token) {
+          token = res.data.token; openid = res.data.openid || '';
+          localStorage.setItem(TOKEN_KEY, token);
+          document.getElementById('confirmEmail').value = email;
+          showView('account');
+        } else { statusMsg(stEl, t.err, false); }
+      } catch (e) {
+        // MERGE_CONFIRM: 邮箱已绑定微信账号，需带 confirmMerge 重试
+        if (e.code === 'MERGE_CONFIRM') {
+          try {
+            const res2 = await apiPost('/api/auth/email-register', { email, code, password: pwd, confirmMerge: true });
+            token = res2.data.token; openid = res2.data.openid || '';
+            localStorage.setItem(TOKEN_KEY, token);
+            document.getElementById('confirmEmail').value = email;
+            showView('account');
+          } catch (e2) { statusMsg(stEl, e2.message || t.err, false); }
+        } else statusMsg(stEl, e.message || t.err, false);
+      } finally { setLoading(btn, false); }
+    }
+
+    // ===== 忘记密码 =====
+    async function doResetPwd() {
+      const t = I18N[current()];
+      email = val('ftEmail').toLowerCase();
+      const code = val('ftCode');
+      const newPwd = document.getElementById('ftPassword').value;
+      const stEl = document.getElementById('ftStatus');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return statusMsg(stEl, t.errEmail, false);
+      if (!/^\d{6}$/.test(code)) return statusMsg(stEl, t.errCode, false);
+      if (String(newPwd).length < 6) return statusMsg(stEl, t.errNewPwd, false);
+      const btn = document.getElementById('ftBtn');
+      setLoading(btn, true); statusMsg(stEl, t.statusReset, true);
+      try {
+        const res = await apiPost('/api/auth/email-reset-password', { email, code, newPassword: newPwd });
+        statusMsg(stEl, current()==='zh'?'密码已重置，请用新密码登录':'Password reset, please sign in again', true);
+        showView('login');
+        document.getElementById('loginEmail').value = email;
+      } catch (e) { statusMsg(stEl, e.message || t.err, false); }
+      finally { setLoading(btn, false); }
+    }
+
+    // ===== 会员状态 =====
+    async function refreshVip() {
+      const t = I18N[current()];
+      const nn = document.getElementById('memberNotice');
+      if (!token || !openid) { nn.textContent = t.msgNotLogin; return; }
+      try {
+        const res = await apiGet('/api/payment/vip-info/' + encodeURIComponent(openid), true);
+        // vip-info 返回 plan_type（monthly/yearly=VIP，free=免费）；is_vip 字段后端不存在
+        const pt = res.data && res.data.plan_type;
+        const vip = pt === 'monthly' || pt === 'yearly';
+        nn.textContent = vip ? t.vipUser : t.freeUser;
+      } catch (e) {
+        nn.textContent = t.msgNotLogin;
+      }
+    }
+
+    // ===== 注销 =====
+    function showDelete() {
+      const t = I18N[current()];
+      document.getElementById('deleteCard').classList.remove('hidden');
+      document.getElementById('accountCard').classList.add('hidden');
+      document.getElementById('delStatus').textContent = '';
+      document.getElementById('confirmEmail').value = email;
+    }
+    async function doDelete() {
+      const t = I18N[current()];
+      const confirmEmail = val('confirmEmail').toLowerCase();
+      const stEl = document.getElementById('delStatus');
+      const btn = document.getElementById('deleteBtn');
+      if (!token || !openid) { statusMsg(stEl, t.delNeedConfirm, false); return; }
+      if (confirmEmail !== email) { statusMsg(stEl, t.delWrongEmail, false); return; }
+      setLoading(btn, true); statusMsg(stEl, t.deleting, true);
+      try {
+        await apiPost('/api/user/profile/' + encodeURIComponent(openid) + '/request-delete', {}, true);
+        statusMsg(stEl, t.deleted, true);
+        btn.disabled = true;
+        token = ''; openid = ''; email = '';
+        localStorage.removeItem(TOKEN_KEY);
+      } catch (e) {
+        statusMsg(stEl, e.message || t.err, false);
+        setLoading(btn, false);
+      }
+    }
+
+    // ===== 初始化 =====
+    // 登录态需 email-login 响应才持有 openid；直接用接口换取最稳妥，故本站始终从登录进入
+    (function init() {
+      localStorage.removeItem(TOKEN_KEY);
+      showView('login');
+    })();
+  </script>
+</body>
+</html>

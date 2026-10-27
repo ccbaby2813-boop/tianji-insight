@@ -1,0 +1,25 @@
+<view class="letter-tab-bar theme-ink">
+  <!-- Tab 1: 易缘 -->
+  <view class="tab-item {{active === 'match' ? 'active' : ''}}" bindtap="onTapMatch">
+    <view class="tab-icon">
+      <icon-guo name="lotus" size="40" color="#C8A55B" />
+    </view>
+    <text class="tab-label font-title">{{t.tabMatch}}</text>
+  </view>
+
+  <!-- Tab 2: 传书 -->
+  <view class="tab-item {{active === 'friends' ? 'active' : ''}}" bindtap="onTapFriends">
+    <view class="tab-icon">
+      <icon-guo name="envelope" size="40" color="#C8A55B" />
+    </view>
+    <text class="tab-label font-title">{{t.tabFriends}}</text>
+  </view>
+
+  <!-- Tab 3: 返回 -->
+  <view class="tab-item" bindtap="onTapBack">
+    <view class="tab-icon">
+      <icon-guo name="chevron-left" size="40" color="#C8A55B" />
+    </view>
+    <text class="tab-label font-title">{{t.tabBack}}</text>
+  </view>
+</view>

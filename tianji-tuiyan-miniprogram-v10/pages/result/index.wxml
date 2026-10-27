@@ -1,0 +1,266 @@
+<!-- pages/result/index.wxml - 推演结果页 v3.0
+  * 视觉重构：仪式感首屏 + 核心可见 + 情绪峰值分享 + 折叠详读
+  * 布局节奏：卦符（超大）→ 判词（大字）→ 金句/标签（中）→ 分享触发 → 折叠区（技术/长文）
+  -->
+<view class="page-container page-result theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 离屏 Canvas 分享海报生成器 -->
+  <share-poster
+    id="sharePoster"
+    gua-symbol="{{record.symbol || ''}}"
+    gua-name="{{record.gua_name || ''}}"
+    gua-ge="{{record.gua_ge || ''}}"
+    zi-chao-tag="{{result.ziChaoTag || record.zi_chao_biao_qian || ''}}"
+    li-shi-dui-biao="{{result.liShiDuiBiao || ''}}"
+  />
+
+  <!-- 加载中 — 骨架屏 -->
+  <view class="loading-state" wx:if="{{pageState === 'loading'}}">
+    <view class="skeleton-gua-symbol"></view>
+    <view class="skeleton-gua-name"></view>
+    <view class="skeleton-line" style="width:80%"></view>
+    <view class="skeleton-line" style="width:60%"></view>
+  </view>
+
+  <!-- 错误 -->
+  <view class="error-state" wx:if="{{pageState === 'error'}}">
+    <text>{{errorMsg || t.loadFail}}</text>
+    <button wx:if="{{needLogin}}" class="btn btn-gold retry-btn" bindtap="goToLogin">{{t.goLogin}}</button>
+    <button class="btn btn-light retry-btn" bindtap="retry">{{t.retry}}</button>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{pageState === 'empty'}}">
+    <text>{{t.empty}}</text>
+    <button class="btn btn-gold retry-btn" bindtap="goToIndex">{{t.goDivine}}</button>
+  </view>
+
+  <!-- 正常内容 -->
+  <scroll-view class="result-content" scroll-y wx:if="{{pageState === 'loaded'}}">
+    <!-- 分享查看提示 -->
+    <view class="shared-notice" wx:if="{{isShared}}">
+      <text>{{t.sharedNoticePrefix}}{{sharerNickname}}{{t.sharedNoticeSuffix}}</text>
+    </view>
+
+    <!-- ========== 首屏：仪式感区域 ========== -->
+    <view class="hero-section aura-{{record.wuxingClass || 'jin'}}">
+      <!-- 用户标题 -->
+      <view class="hero-title">
+        <text class="hero-title-text">{{heroTitle}}</text>
+      </view>
+
+      <!-- 卦符（超大，视觉锚点） -->
+      <view class="hero-symbol font-display animate-gold-reveal">{{record.symbol || '䷀'}}</view>
+
+      <!-- 卦名 + 卦格 -->
+      <view class="hero-gua-info">
+        <text class="hero-gua-name font-display">{{record.gua_name || '--'}}</text>
+        <text class="hero-gua-ge font-title" wx:if="{{record.gua_ge}}">{{record.gua_ge}}</text>
+      </view>
+    </view>
+
+    <!-- 金线分隔 -->
+    <view class="divider-gold animate-draw-gold-line"></view>
+
+    <!-- ========== 核心可见区：情绪递进 ========== -->
+    
+    <!-- 判词（大字，核心结论） -->
+    <view class="verdict-section" wx:if="{{result.panCi}}">
+      <text class="verdict-text font-title">{{result.panCi}}</text>
+    </view>
+
+    <!-- 历史对标金句（引用风格） -->
+    <view class="quote-section" wx:if="{{result.liShiDuiBiao}}">
+      <text class="quote-text">「{{result.liShiDuiBiao}}」</text>
+    </view>
+
+    <!-- 自嘲标签（趣味点，情绪峰值） -->
+    <view class="tag-section" wx:if="{{result.ziChaoTag}}">
+      <icon-guo name="mask" size="28" color="rgba(200,165,91,0.9)" />
+      <text class="tag-text">「{{result.ziChaoTag}}」</text>
+    </view>
+
+    <!-- 分享触发点（情绪最高处） -->
+    <view class="share-trigger" wx:if="{{result.ziChaoTag || result.liShiDuiBiao}}">
+      <button class="share-trigger-btn" open-type="share" hover-class="share-trigger-btn-hover">
+        <icon-guo name="share" size="32" color="#D4A574" />
+        <text class="share-trigger-text">
+          {{result.ziChaoTag ? shareTriggerTagText : shareTriggerHistoryText}}
+        </text>
+      </button>
+    </view>
+
+    <!-- 金线分隔 -->
+    <view class="divider-gold"></view>
+
+    <!-- ========== 折叠区：技术细节 + 长文 ========== -->
+
+    <!-- 折叠：时空变量（奇门遁甲注入参数） -->
+    <view class="collapse-section" wx:if="{{qimen}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="classic">
+        <text class="collapse-header-title">{{t.collapseVars}}</text>
+        <icon-guo name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.classic ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <!-- 时空坐标 -->
+          <view class="qimen-group">
+            <view class="qimen-group-title font-title">
+              <view class="qimen-group-dot"></view>
+              <text>{{t.groupCoords}}</text>
+            </view>
+            <view class="qimen-grid">
+              <view class="qimen-cell" wx:if="{{qimen.tuiyanTime}}">
+                <text class="qimen-cell-label">{{t.cellPillars}}</text>
+                <text class="qimen-cell-value font-quote">{{qimen.tuiyanTime}}</text>
+              </view>
+              <view class="qimen-cell" wx:if="{{qimen.jieQi}}">
+                <text class="qimen-cell-label">{{t.cellJieqi}}</text>
+                <text class="qimen-cell-value font-quote">{{qimen.jieQi}}</text>
+              </view>
+              <view class="qimen-cell" wx:if="{{qimen.qimenJuName}}">
+                <text class="qimen-cell-label">{{t.cellJu}}</text>
+                <text class="qimen-cell-value font-quote">{{qimen.qimenJuName}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.qimenJuDesc}}">{{qimen.qimenJuDesc}}</text>
+              </view>
+              <view class="qimen-cell" wx:if="{{qimen.xunShouDesc}}">
+                <text class="qimen-cell-label">{{t.cellXun}}</text>
+                <text class="qimen-cell-value font-quote">{{qimen.xunShouDesc}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 九星·八门 -->
+          <view class="qimen-group" wx:if="{{qimen.zhiFuStarName || qimen.zhiShiMenName}}">
+            <view class="qimen-group-title font-title">
+              <view class="qimen-group-dot"></view>
+              <text>{{t.groupStarGate}}</text>
+            </view>
+            <view class="qimen-grid">
+              <view class="qimen-cell qimen-cell-star" wx:if="{{qimen.zhiFuStarName}}">
+                <view class="qimen-cell-head">
+                  <text class="qimen-cell-label">{{t.cellZhiFuStar}}</text>
+                  <text class="qimen-luck-badge qimen-luck-{{qimen.zhiFuStarLuckClass}}" wx:if="{{qimen.zhiFuStarLuck}}">{{qimen.zhiFuStarLuck}}</text>
+                </view>
+                <text class="qimen-cell-value font-title">{{qimen.zhiFuStarName}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiFuGongInText}}">{{qimen.zhiFuGongInText}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiFuGongBestText}}">{{qimen.zhiFuGongBestText}}</text>
+              </view>
+              <view class="qimen-cell qimen-cell-door" wx:if="{{qimen.zhiShiMenName}}">
+                <view class="qimen-cell-head">
+                  <text class="qimen-cell-label">{{t.cellZhiShiMen}}</text>
+                  <text class="qimen-luck-badge qimen-luck-{{qimen.zhiShiMenLuckClass}}" wx:if="{{qimen.zhiShiMenLuck}}">{{qimen.zhiShiMenLuck}}</text>
+                </view>
+                <text class="qimen-cell-value font-title">{{qimen.zhiShiMenName}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiShiGongInText}}">{{qimen.zhiShiGongInText}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiShiGongBestText}}">{{qimen.zhiShiGongBestText}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 五行生克 -->
+          <view class="qimen-group qimen-group-em" wx:if="{{qimen.wuxingRelation}}">
+            <view class="qimen-group-title font-title">
+              <view class="qimen-group-dot qimen-group-dot-em"></view>
+              <text>{{t.groupWuxing}}</text>
+            </view>
+            <view class="qimen-relation-row">
+              <view class="qimen-relation-side">
+                <text class="qimen-relation-label">{{t.selfLabel}}</text>
+                <text class="qimen-relation-value wuxing-{{qimen.wuxingAClass}}">{{qimen.wuxingA}}</text>
+              </view>
+              <view class="qimen-relation-arrow">
+                <text class="qimen-relation-op">{{qimen.wuxingRelation}}</text>
+                <text class="qimen-relation-desc font-quote" wx:if="{{qimen.wuxingRelationDesc}}">{{qimen.wuxingRelationDesc}}</text>
+              </view>
+              <view class="qimen-relation-side">
+                <text class="qimen-relation-label">{{t.timingLabel}}</text>
+                <text class="qimen-relation-value wuxing-{{qimen.wuxingBClass}}">{{qimen.wuxingB}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 八神启示 -->
+          <view class="qimen-group" wx:if="{{qimen.riGanShenName || qimen.zhiFuGongName}}">
+            <view class="qimen-group-title font-title">
+              <view class="qimen-group-dot"></view>
+              <text>{{t.groupSpirits}}</text>
+            </view>
+            <view class="qimen-grid">
+              <view class="qimen-cell qimen-cell-shen" wx:if="{{qimen.riGanShenName}}">
+                <view class="qimen-cell-head">
+                  <text class="qimen-cell-label">{{t.cellDaySpirit}}</text>
+                  <text class="qimen-luck-badge qimen-luck-{{qimen.riGanShenJiXiongClass}}" wx:if="{{qimen.riGanShenJiXiong}}">{{qimen.riGanShenJiXiong}}</text>
+                </view>
+                <text class="qimen-cell-value font-title">{{qimen.riGanShenName}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.riGanShenRole}}">{{qimen.riGanShenRole}}</text>
+              </view>
+              <view class="qimen-cell qimen-cell-shen" wx:if="{{qimen.zhiFuGongName}}">
+                <view class="qimen-cell-head">
+                  <text class="qimen-cell-label">{{t.cellZhiFuPalace}}</text>
+                </view>
+                <text class="qimen-cell-value font-title">{{qimen.zhiFuPalaceText}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiFuGongDesc}}">{{qimen.zhiFuGongDesc}}</text>
+                <text class="qimen-cell-sub font-quote" wx:if="{{qimen.zhiFuGongBestText}}">{{qimen.zhiFuGongBestText}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 折叠：详细解读 -->
+    <view class="collapse-section" wx:if="{{result.jieDu}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="jiedu">
+        <text class="collapse-header-title">{{t.collapseJiedu}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.jiedu ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.jiedu ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <text class="jiedu-text font-body">{{result.jieDu}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 折叠：宜忌 -->
+    <view class="collapse-section" wx:if="{{(result.yiList && result.yiList.length > 0) || (result.jiList && result.jiList.length > 0)}}">
+      <view class="collapse-header" bindtap="toggleCollapse" data-key="yiji">
+        <text class="collapse-header-title">{{t.collapseYiji}}</text>
+        <icon-guo class="collapse-arrow {{collapseKeys.yiji ? 'expanded' : ''}}" name="chevron-down" size="32" color="#A0A0B0" />
+      </view>
+      <view class="collapse-body {{collapseKeys.yiji ? 'expanded' : ''}}">
+        <view class="collapse-body-inner">
+          <view class="yiji-grid">
+            <view class="yi-block" wx:if="{{result.yiList && result.yiList.length > 0}}">
+              <text class="yi-title">{{t.yi}}</text>
+              <view class="yi-items">
+                <text class="yi-item" wx:for="{{result.yiList}}" wx:key="*this">{{item}}</text>
+              </view>
+            </view>
+            <view class="ji-block" wx:if="{{result.jiList && result.jiList.length > 0}}">
+              <text class="ji-title">{{t.ji}}</text>
+              <view class="ji-items">
+                <text class="ji-item" wx:for="{{result.jiList}}" wx:key="*this">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部合规声明 -->
+    <bottom-declaration />
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-actions">
+      <button wx:if="{{isMpWeixin}}" class="action-btn btn-light" open-type="share">
+        <text>{{t.shareBtn}}</text>
+      </button>
+      <button wx:else class="action-btn btn-light" bindtap="onShareTap">
+        <text>{{t.shareBtn}}</text>
+      </button>
+      <button class="action-btn btn-gold" bindtap="goBack">
+        <text>{{t.closeBtn}}</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,83 @@
+<!-- sub/profile/edit-profile/index.wxml - Edit Profile Page -->
+<view class="page-container page-edit-profile theme-ink {{lang === 'en' ? 'lang-en' : ''}}">
+  <scroll-view class="profile-content" scroll-y>
+
+    <view class="page-header">
+      <text class="page-title font-display">{{t.title}}</text>
+      <view class="title-underline"></view>
+      <text class="page-subtitle font-quote">{{t.disclaimer}}</text>
+    </view>
+
+    <view class="form-list">
+
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.nicknameLabel}}</text>
+          <text class="form-counter font-quote">{{nickname.length}}/10</text>
+        </view>
+        <input class="form-input" aria-label="{{t.nicknameLabel}}" placeholder="{{t.nicknamePlaceholder}}" placeholder-class="form-placeholder" value="{{nickname}}" maxlength="10" bindinput="onInput" data-key="nickname" />
+      </view>
+
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.birthLabel}}</text>
+          <text class="form-hint-inline font-quote">{{t.birthHint}}</text>
+        </view>
+        <picker mode="date" value="{{birthDate}}" start="1900-01-01" end="{{maxDate}}" bindchange="onBirthDateChange">
+          <view class="picker-display {{birthDate?'':'placeholder'}}">
+            <text class="picker-text font-title">{{birthDate || t.birthPlaceholder}}</text>
+            <view class="picker-arrow">
+              <icon-guo name="chevron-down" size="22" color="#C8A55B" />
+            </view>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.shichenLabel}}</text>
+          <text class="form-hint-inline font-quote">{{t.shichenHint}}</text>
+        </view>
+        <picker range="{{shichenOptions}}" value="{{shichenIndex}}" bindchange="onShichen">
+          <view class="picker-display {{shichenLabel?'':'placeholder'}}">
+            <text class="picker-text font-title">{{shichenLabel || t.shichenPlaceholder}}</text>
+            <view class="picker-arrow">
+              <icon-guo name="chevron-down" size="22" color="#C8A55B" />
+            </view>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-item">
+        <view class="form-item-header">
+          <text class="form-label font-title">{{t.genderLabel}}</text>
+        </view>
+        <view class="gender-group">
+          <view class="gender-option {{gender==='male'?'active':''}}" bindtap="onGender" data-val="male">
+            <text class="gender-text font-title">{{t.male}}</text>
+          </view>
+          <view class="gender-option {{gender==='female'?'active':''}}" bindtap="onGender" data-val="female">
+            <text class="gender-text font-title">{{t.female}}</text>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- v3.4 绑定邮箱入口（账号安全，原在"我的"页，按方案B移至档案页） -->
+    <view class="bind-email-entry" bindtap="goToBindEmail">
+      <text class="bind-email-entry-label font-title">{{t.menuBindEmail}}</text>
+      <view class="bind-email-entry-right">
+        <text class="bind-email-entry-value font-quote" wx:if="{{boundEmail}}">{{boundEmail}}</text>
+        <icon-guo name="chevron-right" size="24" color="#C8A55B" />
+      </view>
+    </view>
+
+    <view class="form-submit-area">
+      <button aria-label="{{t.submitting}}" class="submit-btn" bindtap="onSubmit" disabled="{{!canSubmit || isSubmitting}}">
+        <text class="submit-text font-title">{{isSubmitting ? t.submitting : (isFormChanged ? t.saveChanges : t.noChange)}}</text>
+      </button>
+    </view>
+
+  </scroll-view>
+</view>

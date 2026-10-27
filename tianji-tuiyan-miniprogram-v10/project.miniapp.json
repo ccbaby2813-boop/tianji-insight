@@ -1,0 +1,125 @@
+{
+  "miniVersion": "v2",
+  "miniModuleId": "wxa2b41a8a0a8843f5",
+  "name": "天机推演",
+  "version": "3.4.9",
+  "versionCode": 129,
+  "i18nFilePath": "i18n",
+  "mini-ohos": {
+    "sdkVersion": "0.5.1"
+  },
+  "mini-android": {
+    "resourcePath": "miniapp/android/nativeResources",
+    "sdkVersion": "1.7.0",
+    "targetSdkVersion": 36,
+    "minSdkVersion": 26,
+    "toolkitVersion": "0.11.0",
+    "useExtendedSdk": {
+      "media": true,
+      "bluetooth": false,
+      "network": false,
+      "scanner": false,
+      "xweb": true,
+      "open": true,
+      "install": false,
+      "googleplay": true,
+      "skyline": false
+    },
+    "icons": {
+      "hdpi": "miniapp/assets/android_icon_hdpi.png",
+      "xhdpi": "miniapp/assets/android_icon_xhdpi.png",
+      "xxhdpi": "miniapp/assets/android_icon_xxhdpi.png",
+      "xxxhdpi": "miniapp/assets/android_icon_xxxhdpi.png"
+    },
+    "splashscreen": {
+      "hdpi": "miniapp/assets/android_splash_hdpi.png",
+      "xhdpi": "miniapp/assets/android_splash_xhdpi.png",
+      "xxhdpi": "miniapp/assets/android_splash_xxhdpi.png"
+    },
+    "enableVConsole": "closed",
+    "uselessPermissions": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_COARSE_LOCATION",
+      "CAMERA",
+      "RECORD_AUDIO",
+      "READ_PHONE_STATE",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE",
+      "BLUETOOTH",
+      "BLUETOOTH_ADMIN",
+      "AD_ID"
+    ],
+    "privacy": {
+      "enable": true,
+      "template": "miniapp-privacy.json"
+    },
+    "schemes": {
+      "scheme": "tianji"
+    },
+    "androidCertificate": {
+      "storeFilePath": "D:/MyCode/tianji-sign/tianji-release.keystore",
+      "storePassword": "tianji2026",
+      "alias": "tianji",
+      "aliasPassword": "tianji2026"
+    },
+    "officialPlugins": {
+      "imPush": {
+        "enable": true,
+        "version": "9.0.1"
+      }
+    }
+  },
+  "mini-ios": {
+    "sdkVersion": "1.7.0",
+    "toolkitVersion": "0.0.9",
+    "useExtendedSdk": {
+      "WeAppOpenFuns": true,
+      "WeAppNetwork": false,
+      "WeAppBluetooth": false,
+      "WeAppMedia": true,
+      "WeAppLBS": false,
+      "WeAppOthers": false,
+      "WeAppIdaas": true
+    },
+    "enableVConsole": "close",
+    "icons": {
+      "mainIcon120": "miniapp/assets/ios_icon_mainIcon120.png",
+      "mainIcon180": "miniapp/assets/ios_icon_mainIcon180.png",
+      "spotlightIcon80": "miniapp/assets/ios_icon_spotlightIcon80.png",
+      "spotlightIcon120": "miniapp/assets/ios_icon_spotlightIcon120.png",
+      "settingsIcon58": "miniapp/assets/ios_icon_settingsIcon58.png",
+      "settingsIcon87": "miniapp/assets/ios_icon_settingsIcon87.png",
+      "notificationIcon40": "miniapp/assets/ios_icon_notificationIcon40.png",
+      "notificationIcon60": "miniapp/assets/ios_icon_notificationIcon60.png",
+      "appStore1024": "miniapp/assets/ios_icon_appStore1024.png"
+    },
+    "splashScreen": {
+      "customImage": "miniapp/assets/ios_splash.png"
+    },
+    "privacy": {
+      "enable": true,
+      "template": "miniapp-privacy.json"
+    },
+    "enableOpenUrlNavigate": true,
+    "buildCloud": {
+      "useRemote": true
+    },
+    "privateDescriptions": {
+      "NSPhotoLibraryUsageDescription": "当前应用程序需要访问用户的相册，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSCameraUsageDescription": "当前应用程序需要访问用户的相机，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSMicrophoneUsageDescription": "当前应用程序需要访问用户的麦克风，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSLocationWhenInUseUsageDescription": "当前应用程序需要在使用时访问用户的位置，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSLocationAlwaysUsageDescription": "当前应用程序需要始终访问用户的位置，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSLocationAlwaysAndWhenInUseUsageDescription": "当前应用程序需要始终和在使用时访问用户的位置，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSContactsUsageDescription": "当前应用程序需要访问用户的联系人，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSCalendarsUsageDescription": "当前应用程序需要访问用户的日历，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSRemindersUsageDescription": "当前应用程序需要访问用户的提醒事项，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSBluetoothPeripheralUsageDescription": "当前应用程序需要访问用户的蓝牙，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSBluetoothAlwaysUsageDescription": "当前应用程序需要始终访问用户的蓝牙，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSSpeechRecognitionUsageDescription": "当前应用程序需要使用语音识别，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSLocalNetworkUsageDescription": "当前应用程序需要访问本地网络，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSSystemAdministrationUsageDescription": "当前应用程序需要进行系统管理操作，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可」",
+      "NSPhotoLibraryAddUsageDescription": "应用程序在请求访问照片库，如需修改描述请前往「project.miniapp.json - 隐私信息访问许可描述」修改，并且关闭「自动使用默认描述补全默认隐私信息访问许可"
+    }
+  }
+}

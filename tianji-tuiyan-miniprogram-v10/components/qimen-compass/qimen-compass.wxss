@@ -1,0 +1,320 @@
+/* ===== 奇门遁甲罗盘 - v5.1 ===== */
+/* 浮雕金属环 + 中心光源衰减 + z-index 层叠 + 刻印文字 */
+
+/* ===== 主容器：透视空间入口 ===== */
+.compass-wrapper {
+  position: relative;
+  border-radius: 50%;
+  margin: 0 auto;
+  overflow: visible;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255,200,100,0.15) 0%,
+    rgba(255,180,80,0.06) 12%,
+    rgba(255,150,50,0.03) 25%,
+    rgba(255,120,40,0.01) 38%,
+    rgba(10,8,20,0) 50%,
+    #070712 100%
+  );
+  animation: center-breathe 6s ease-in-out infinite;
+}
+
+@keyframes center-breathe {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+/* ===== 微星层 ===== */
+.starfield {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.star-dot {
+  position: absolute;
+  width: 2rpx; height: 2rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+}
+
+/* ===== 3D旋转容器：子元素进入3D空间 ===== */
+.compass-rotator {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 10;
+}
+
+/* ===== 3D深度层：每个层负责Z轴定位 ===== */
+.ring-3d-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+.layer-z0 { z-index: 35; }   /* 中心核心·最顶层 */
+.layer-z1 { z-index: 30; }   /* 九星 */
+.layer-z2 { z-index: 25; }   /* 八门 */
+.layer-z3 { z-index: 20; }   /* 八神 */
+.layer-z4 { z-index: 15; }   /* 三奇六仪 */
+.layer-z5 { z-index: 10; }   /* 九宫八卦 */
+.layer-z6 { z-index: 5;  }   /* 节气·最底层 */
+
+/* ===== 中心：发光能量核心 ===== */
+.center-core {
+  position: absolute;
+  width: 80rpx; height: 80rpx;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.core-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80rpx; height: 80rpx;
+  border-radius: 50%;
+  background-color: rgba(255,200,100,0.6);
+  background: radial-gradient(circle,
+    rgba(255,255,240,0.95) 0%,
+    rgba(255,220,150,0.7) 15%,
+    rgba(255,180,80,0.4) 35%,
+    rgba(255,140,40,0.15) 60%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 20rpx rgba(255,200,100,0.6),
+    0 0 50rpx rgba(255,160,60,0.35),
+    0 0 100rpx rgba(255,120,30,0.15);
+}
+
+/* CSS 太极阴阳鱼（经典上下基圆+左右偏移半圆法） */
+.core-taichi {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64rpx; height: 64rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #C8A96E 49.9%, #1A1A30 50.1%);
+  box-shadow: 0 0 0 2rpx rgba(200,169,110,0.5);
+  z-index: 1;
+  animation: symbol-spin 6s linear infinite;
+}
+/* 阴鱼：左侧暗色半圆，覆盖左上金区形成S曲线上半（33rpx重叠消除S曲线抗锯齿） */
+.taichi-yin {
+  position: absolute;
+  width: 33rpx; height: 33rpx;
+  top: 50%; left: 0;
+  transform: translateY(-50%);
+  background: #1A1A30;
+  border-radius: 50%;
+  z-index: 1;
+}
+/* 阳鱼：右侧金色半圆，覆盖右下暗区形成S曲线下半（33rpx重叠消除S曲线抗锯齿） */
+.taichi-yang {
+  position: absolute;
+  width: 33rpx; height: 33rpx;
+  top: 50%; right: 0;
+  transform: translateY(-50%);
+  background: #C8A96E;
+  border-radius: 50%;
+  z-index: 1;
+}
+/* 阴鱼之阳眼：暗色半圆上的金色眼点（10rpx，1/3鱼头比例） */
+.taichi-eye-gold {
+  position: absolute;
+  width: 10rpx; height: 10rpx;
+  background: #C8A96E;
+  border-radius: 50%;
+  top: 50%; left: 12rpx;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+/* 阳鱼之阴眼：金色半圆上的暗色眼点（10rpx，1/3鱼头比例） */
+.taichi-eye-dark {
+  position: absolute;
+  width: 10rpx; height: 10rpx;
+  background: #1A1A30;
+  border-radius: 50%;
+  top: 50%; right: 12rpx;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+@keyframes symbol-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ===== 能量环 ===== */
+.ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* 环轨 — 浮雕金属圆环（用 ::before 画凸起的环面） */
+.ring::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* 环外光晕 */
+.ring::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ===== 环1·九星 · 亮金 · 最凸出 ===== */
+.ring-1::before {
+  width: 22%; height: 22%;
+  border: 3rpx solid rgba(255,200,120,0.5);
+  box-shadow:
+    0 0 12rpx rgba(0,0,0,0.6),
+    0 2rpx 8rpx rgba(0,0,0,0.4),
+    inset 0 2rpx 4rpx rgba(255,230,180,0.4),
+    inset 0 -2rpx 4rpx rgba(0,0,0,0.55);
+}
+.ring-1::after {
+  width: 26%; height: 26%;
+  box-shadow: 0 0 40rpx rgba(255,200,120,0.08), 0 0 80rpx rgba(255,160,60,0.04);
+}
+
+/* ===== 环2·八门 · 暖金 ===== */
+.ring-2::before {
+  width: 33.5%; height: 33.5%;
+  border: 2.5rpx solid rgba(240,180,100,0.45);
+  box-shadow:
+    0 0 10rpx rgba(0,0,0,0.55),
+    0 2rpx 6rpx rgba(0,0,0,0.4),
+    inset 0 2rpx 3.5rpx rgba(255,220,170,0.35),
+    inset 0 -2rpx 4rpx rgba(0,0,0,0.5);
+}
+.ring-2::after {
+  width: 37.5%; height: 37.5%;
+  box-shadow: 0 0 35rpx rgba(240,180,100,0.07), 0 0 70rpx rgba(240,160,80,0.03);
+}
+
+/* ===== 环3·八神 · 古铜金 ===== */
+.ring-3::before {
+  width: 46.5%; height: 46.5%;
+  border: 2rpx solid rgba(220,160,85,0.4);
+  box-shadow:
+    0 0 8rpx rgba(0,0,0,0.5),
+    0 1.5rpx 5rpx rgba(0,0,0,0.35),
+    inset 0 1.5rpx 3rpx rgba(255,210,160,0.3),
+    inset 0 -1.5rpx 3rpx rgba(0,0,0,0.45);
+}
+.ring-3::after {
+  width: 50.5%; height: 50.5%;
+  box-shadow: 0 0 30rpx rgba(220,160,85,0.06), 0 0 60rpx rgba(200,140,70,0.02);
+}
+
+/* ===== 环4·三奇六仪 · 深铜 ===== */
+.ring-4::before {
+  width: 59.5%; height: 59.5%;
+  border: 1.5rpx solid rgba(200,140,70,0.35);
+  box-shadow:
+    0 0 6rpx rgba(0,0,0,0.45),
+    0 1rpx 4rpx rgba(0,0,0,0.3),
+    inset 0 1rpx 2.5rpx rgba(255,200,150,0.25),
+    inset 0 -1rpx 2.5rpx rgba(0,0,0,0.4);
+}
+.ring-4::after {
+  width: 63%; height: 63%;
+  box-shadow: 0 0 25rpx rgba(200,140,70,0.05), 0 0 50rpx rgba(180,120,60,0.02);
+}
+
+/* ===== 环5·九宫八卦 · 褐金 ===== */
+.ring-5::before {
+  width: 74.5%; height: 74.5%;
+  border: 1.5rpx solid rgba(180,120,60,0.3);
+  box-shadow:
+    0 0 5rpx rgba(0,0,0,0.4),
+    0 1rpx 3rpx rgba(0,0,0,0.25),
+    inset 0 1rpx 2rpx rgba(255,190,140,0.2),
+    inset 0 -1rpx 2rpx rgba(0,0,0,0.35);
+}
+.ring-5::after {
+  width: 78%; height: 78%;
+  box-shadow: 0 0 20rpx rgba(180,120,60,0.04), 0 0 40rpx rgba(160,100,50,0.01);
+}
+
+/* ===== 环6·二十四节气 · 暗铜 · 最远最底 ===== */
+.ring-6::before {
+  width: 89%; height: 89%;
+  border: 1rpx solid rgba(150,100,50,0.25);
+  box-shadow:
+    0 0 3rpx rgba(0,0,0,0.35),
+    0 0.5rpx 2rpx rgba(0,0,0,0.2),
+    inset 0 0.5rpx 1.5rpx rgba(255,180,130,0.15),
+    inset 0 -0.5rpx 1.5rpx rgba(0,0,0,0.3);
+}
+.ring-6::after {
+  width: 92%; height: 92%;
+  box-shadow: 0 0 15rpx rgba(150,100,50,0.03), 0 0 30rpx rgba(120,80,40,0.01);
+}
+
+/* ===== 旋转动画（不变） ===== */
+.ring-spin-fast               { animation: rotate-cw 80s linear infinite; }
+.ring-spin-reverse            { animation: rotate-ccw 110s linear infinite; }
+.ring-spin-slow               { animation: rotate-cw 180s linear infinite; }
+.ring-spin-reverse-slow       { animation: rotate-ccw 250s linear infinite; }
+.ring-spin-ultra-slow         { animation: rotate-cw 380s linear infinite; }
+.ring-spin-reverse-ultra-slow { animation: rotate-ccw 500s linear infinite; }
+
+@keyframes rotate-cw  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rotate-ccw { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+/* ===== 环上条目 ===== */
+.ring-items {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.ring-item {
+  position: absolute;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: auto;
+  z-index: 25;
+}
+
+/* ===== 刻印文字 ===== */
+.ring-mark {
+  font-size: 22rpx;
+  font-weight: 500;
+  white-space: nowrap;
+  text-shadow: 0 1rpx 2rpx rgba(0,0,0,0.5);
+}
+.mark-bright { color: rgba(255,215,150,0.9); }
+.mark-warm   { color: rgba(240,195,130,0.8); }
+.mark-bronze { color: rgba(220,170,110,0.75); }
+.mark-copper { color: rgba(200,150,95,0.7); }
+.mark-amber  { color: rgba(180,130,80,0.65); }
+.mark-dark   { color: rgba(160,110,65,0.6); }
+.mark-small  { font-size: 22rpx; }
+
+/* 英文态：环上标签过长易重叠，缩小字号去字距 */
+.compass-wrapper.lang-en .ring-mark {
+  font-size: 16rpx;
+  letter-spacing: 0;
+}
+.compass-wrapper.lang-en .mark-small {
+  font-size: 13rpx;
+}

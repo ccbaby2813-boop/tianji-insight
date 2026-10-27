@@ -1,0 +1,14 @@
+{
+  "project": {
+    "dependencies": [
+      "com.huawei.agconnect:agcp:1.9.6.300",
+      "com.google.gms:google-services:4.3.15"
+    ]
+  },
+  "app": {
+    "plugins": [
+      "com.huawei.agconnect",
+      "com.google.gms.google-services"
+    ]
+  }
+}

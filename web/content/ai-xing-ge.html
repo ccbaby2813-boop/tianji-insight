@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI 性格分析的技术原理：确定性算法 + 语言模型 | 天机推演</title>
+<meta name="description" content="AI 性格分析产品怎么工作？从卦象推算引擎、AI 文案生成到合盘匹配算法，拆解「确定性前端 + 概率性后端」的通用技术架构。"/>
+<meta name="keywords" content="AI性格分析,技术原理,算法,大模型,产品架构"/>
+<link rel="canonical" href="https://claw-book.cn/ai-xing-ge.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="天机推演"/>
+<meta property="og:title" content="AI 性格分析的技术原理：确定性算法 + 语言模型"/>
+<meta property="og:description" content="AI 性格分析产品怎么工作？从卦象推算引擎、AI 文案生成到合盘匹配算法，拆解「确定性前端 + 概率性后端」的通用技术架构。"/>
+<meta property="og:url" content="https://claw-book.cn/ai-xing-ge.html"/>
+<meta property="og:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+
+<meta property="og:locale" content="zh_CN"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<meta name="theme-color" content="#0a0a0f"/>
+<link rel="alternate" hreflang="zh-CN" href="https://claw-book.cn/ai-xing-ge.html"/>
+<link rel="alternate" hreflang="en" href="https://claw-book.cn/ai-xing-ge.en.html"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"AI 性格分析的技术原理：确定性算法 + 语言模型","description":"AI 性格分析产品怎么工作？从卦象推算引擎、AI 文案生成到合盘匹配算法，拆解「确定性前端 + 概率性后端」的通用技术架构。","url":"https://claw-book.cn/ai-xing-ge.html","inLanguage":"zh-CN","datePublished":"2026-08-01","dateModified":"2026-08-26","mainEntityOfPage":{"@type":"WebPage","@id":"https://claw-book.cn/ai-xing-ge.html"},"image":{"@type":"ImageObject","url":"https://claw-book.cn/images/og-default.jpg","width":1200,"height":630},"author":{"@type":"Organization","@id":"https://claw-book.cn/#organization","name":"天机推演","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png"}},"publisher":{"@type":"Organization","@id":"https://claw-book.cn/#organization","name":"北京无元数字科技有限公司","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png","width":512,"height":512}}}</script>
+<style>
+:root{
+  --bg:#0a0a0f; --bg-soft:#0f0f17; --card:#12121c; --line:#23232f;
+  --gold:#c9a96a; --gold-2:#e8d5a3; --text:#e8e6e1; --muted:#9a968c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Serif SC","Songti SC",serif;line-height:1.9;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+a:hover{color:var(--gold-2)}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(10,10,15,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:600;letter-spacing:2px}
+.brand-logo{height:26px;width:auto;display:block}
+.brand-name{font-size:17px}
+.site-nav{display:flex;gap:22px;font-size:14px;letter-spacing:1px}
+.site-nav a{color:var(--muted)}
+.site-nav a:hover{color:var(--gold)}
+.article-wrap{max-width:820px;margin:0 auto;padding:56px 24px 40px}
+.article-kicker{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--gold);border:1px solid rgba(201,169,106,.4);border-radius:2px;padding:4px 12px;margin-bottom:22px}
+h1{font-size:34px;line-height:1.4;font-weight:600;letter-spacing:1px;margin-bottom:18px}
+@media(min-width:720px){h1{font-size:42px}}
+.article-lead{font-size:17px;color:var(--muted);border-left:3px solid var(--gold);padding-left:18px;margin:22px 0 40px}
+h2{font-size:24px;font-weight:600;margin:46px 0 16px;letter-spacing:1px;position:relative;padding-left:18px}
+h2::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;background:linear-gradient(180deg,var(--gold-2),var(--gold))}
+h3{font-size:18px;font-weight:600;margin:28px 0 10px;color:var(--gold-2)}
+p{margin:0 0 18px;color:#d5d2cb}
+.article-body ul,.article-body ol{margin:0 0 20px;padding-left:24px;color:#d5d2cb}
+.article-body li{margin-bottom:8px}
+.article-body blockquote{border-left:3px solid var(--gold);background:var(--card);padding:14px 20px;margin:22px 0;color:var(--muted);border-radius:0 4px 4px 0}
+.article-body table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+.article-body th{background:var(--card);color:var(--gold);text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+.article-body td{padding:10px 14px;border-bottom:1px solid var(--line);color:#d5d2cb}
+.article-body .gua-card{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px 20px;margin:8px 10px 8px 0;text-align:center}
+.article-body .gua-symbol{font-size:30px;color:var(--gold);display:block;margin-bottom:6px}
+.article-body .gua-name{font-size:14px;color:var(--muted)}
+.related-box{margin-top:60px;padding-top:34px;border-top:1px solid var(--line)}
+.related-box h3{color:var(--text);margin-bottom:14px;font-size:16px}
+.related-links{display:flex;flex-wrap:wrap;gap:10px}
+.related-links a{border:1px solid var(--line);border-radius:4px;padding:8px 16px;font-size:14px;color:var(--muted);background:var(--card)}
+.related-links a:hover{border-color:var(--gold);color:var(--gold)}
+.cta-section{background:linear-gradient(180deg,var(--bg) 0%,#14141f 100%);border-top:1px solid var(--line)}
+.cta-inner{max-width:820px;margin:0 auto;padding:72px 24px;text-align:center}
+.cta-inner h2{font-size:30px;padding-left:0;letter-spacing:2px}
+.cta-inner h2::before{display:none}
+.cta-inner p{color:var(--muted);font-size:15px;margin:18px auto 34px;max-width:560px}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:4px;padding:13px 40px;font-size:15px;letter-spacing:2px;transition:all .25s}
+.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#1a1408;font-weight:600;box-shadow:0 6px 24px rgba(201,169,106,.25)}
+.btn-gold:hover{color:#1a1408;transform:translateY(-1px);box-shadow:0 10px 30px rgba(201,169,106,.4)}
+.btn-ghost{border:1px solid var(--gold);color:var(--gold);background:transparent}
+.btn-ghost:hover{background:rgba(201,169,106,.08)}
+.btn-hint{font-size:13px;color:var(--muted);letter-spacing:1px}
+.site-footer{border-top:1px solid var(--line);background:var(--bg)}
+.footer-inner{max-width:1080px;margin:0 auto;padding:30px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{color:var(--muted)}
+.footer-links a:hover{color:var(--gold)}
+.tai-ornament{display:flex;align-items:center;gap:16px;justify-content:center;color:var(--gold);opacity:.5;font-size:13px;margin:50px 0 0}
+.tai-ornament .line{height:1px;width:90px;background:linear-gradient(90deg,transparent,var(--gold))}
+.tai-ornament .line.r{background:linear-gradient(90deg,var(--gold),transparent)}
+@media(max-width:560px){h1{font-size:30px}.article-wrap{padding:36px 18px 30px}.cta-inner{padding:56px 18px}}
+
+/* === 面包屑 / TOC / 上下篇 === */
+.breadcrumb{max-width:820px;margin:0 auto;padding:18px 24px 0;font-size:13px;color:var(--muted);letter-spacing:1px}
+.breadcrumb a{color:var(--gold);opacity:.8}
+.breadcrumb a:hover{opacity:1}
+.breadcrumb span{margin:0 8px;opacity:.5}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:18px 22px;margin:0 0 32px}
+.toc-title{font-size:12px;letter-spacing:3px;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+.toc-list{columns:2;column-gap:24px}
+.toc-list a{display:block;font-size:14px;color:var(--muted);padding:4px 0;border-bottom:1px dashed rgba(201,169,106,.12);break-inside:avoid}
+.toc-list a:hover{color:var(--gold)}
+.toc-list a::before{content:'· ';color:var(--gold)}
+@media(max-width:640px){.toc-list{columns:1}}
+.pager{display:flex;justify-content:space-between;gap:16px;margin:36px 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.pager a{flex:1;padding:14px 18px;border:1px solid var(--line);border-radius:6px;font-size:14px;color:var(--muted);transition:border-color .25s,color .25s}
+.pager a:hover{border-color:var(--gold);color:var(--gold)}
+.pager .pager-label{display:block;font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:4px;text-transform:uppercase}
+.pager .pager-next{text-align:right}
+.pager-empty{visibility:hidden;border:none!important}
+
+
+/* UX修复：键盘焦点可见性 WCAG 2.4.7 */
+a:focus, button:focus, input:focus, select:focus, textarea:focus, [tabindex]:focus {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold, #c9a96a) !important;
+  outline-offset: 2px !important;
+}
+</style>
+
+  <!-- SEO结构化数据 -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "AI 性格分析的技术原理主要讲什么内容？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2026 年 7 月，AI 巨头 Midjourney 收购了 AI 占星 App Co-Star——这不仅是一条商业新闻，更是对「AI + 传统智慧」技术路线的一次验证。本文从工程角度拆解这类产品的通用技术架构：确定性算法负责准确，语言模型负责表达。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "通用架构：确定性 + 概率性？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "无论 Co-Star 用西方占星，还是天机推演用中国易经，它们的核心架构是同一套："
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "卦象推算引擎：确定性的前端？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "以天机推演为例，卦象推算引擎基于传统农历历法算法，根据出生年月日时计算本命卦。六十四卦的推算规则是固定的数学公式（参照《梅花易数》年月日时起卦法），不涉及 AI，用纯代码实现，部署在服务器上。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "AI 性格分析：概率性的后端？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "卦象对应的原始文言文描述（卦辞、爻辞等）作为 prompt 输入，调用大模型进行「文言文 → 现代性格分析」的翻译。关键的设计点："
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "合盘匹配算法：两个人的分析？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "合盘匹配是这类产品最具传播力的模块。天机推演的合盘算法 = 两卦之间的五行生克关系 + 卦象组合的历史解读 + AI 综合分析。它不是简单的「相合/相冲」二元输出，而是生成多维度的匹配报告（沟通、决策、情绪等维度）。"
+      }
+    }
+  ]
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://claw-book.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "/",
+      "item": "https://claw-book.cn/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "知识库",
+      "item": "https://claw-book.cn/yi-jing.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "/",
+      "item": "https://claw-book.cn/"
+    }
+  ]
+}
+</script>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?bc2eeb3274de3884460e0368816fdd39";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNDSJZPLG6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NNDSJZPLG6');
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://claw-book.cn/"},{"@type":"ListItem","position":2,"name":"知识库","item":"https://claw-book.cn/knowledge.html"},{"@type":"ListItem","position":3,"name":"AI 性格分析的技术原理：确定性算法 + 语言模型"}]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://claw-book.cn/#organization","name":"天机推演","alternateName":"I Ching Insight","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png"},"description":"天机推演将5000年易经智慧与AI技术结合，提供64卦解读、AI星座、人格分析与灵魂匹配服务。","sameAs":["https://x.com/ccbaby2813","https://www.instagram.com/ccbaby2813/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","availableLanguage":["Chinese","English"]}}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"AI 性格分析的技术原理：确定性算法 + 语言模型","description":"AI 性格分析产品怎么工作？从卦象推算引擎、AI 文案生成到合盘匹配算法，拆解「确定性前端 + 概率性后端」的通用技术架构。","step":[{"@type":"HowToStep","name":"通用架构：确定性 + 概率性","text":"第1步：通用架构：确定性 + 概率性"},{"@type":"HowToStep","name":"卦象推算引擎：确定性的前端","text":"第2步：卦象推算引擎：确定性的前端"},{"@type":"HowToStep","name":"AI 性格分析：概率性的后端","text":"第3步：AI 性格分析：概率性的后端"},{"@type":"HowToStep","name":"合盘匹配算法：两个人的分析","text":"第4步：合盘匹配算法：两个人的分析"},{"@type":"HowToStep","name":"工程范式总结：可复制的五种能力","text":"第5步：工程范式总结：可复制的五种能力"},{"@type":"HowToStep","name":"用 AI 解读你的本命卦","text":"第6步：用 AI 解读你的本命卦"}],"totalTime":"PT30M","estimatedCost":{"@type":"MonetaryAmount","currency":"CNY","value":"0"}}</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="https://claw-book.cn/"><img src="https://claw-book.cn/taiji-logo-nav.png" alt="天机推演" class="brand-logo" fetchpriority="high" fetchpriority="high" width="26" height="26"><span class="brand-name">天机推演</span></a>
+    <nav class="site-nav"><a href="/" class="nav-brand">天机推演</a><a href="/#member">登录 / 注册</a><a href="/knowledge.html">知识库</a><a href="/#download">下载</a><a href="/ai-xing-ge.en.html" hreflang="en">EN</a></nav>
+  </div>
+</header>
+<main class="article-wrap">
+  <nav class="breadcrumb"><a href="https://claw-book.cn/">首页</a><span>/</span><a href="https://claw-book.cn/knowledge.html">知识库</a><span>/</span>AI 性格分析的技术原理：确定性算法 + 语言模型</nav>
+  <article>
+    <span class="article-kicker">AI 与传统文化</span>
+    <h1>AI 性格分析的技术原理：确定性算法 + 语言模型</h1>
+    <div class="article-lead">2026 年 7 月，AI 巨头 Midjourney 收购了 AI 占星 App Co-Star——这不仅是一条商业新闻，更是对「AI + 传统智慧」技术路线的一次验证。本文从工程角度拆解这类产品的通用技术架构：确定性算法负责准确，语言模型负责表达。</div>
+  <div class="toc" id="toc"><div class="toc-title">目录</div><div class="toc-list" id="tocList"></div></div>
+    <div class="article-body"><section><h2>通用架构：确定性 + 概率性</h2><p>无论 Co-Star 用西方占星，还是天机推演用中国易经，它们的核心架构是同一套：</p>
+<table><tbody><tr><th>模块</th><th>职责</th><th>特点</th></tr><tr><td>传统算法</td><td>星盘/卦象推算</td><td>确定性，同一输入同一结果</td></tr><tr><td>AI 文案</td><td>生成性格分析文本</td><td>概率性，每次措辞新鲜</td></tr><tr><td>匹配算法</td><td>两人兼容性分析</td><td>图匹配/五行生克</td></tr></tbody></table>
+<p>这种「前 AI + 后 AI」的混合架构是这个品类的技术核心。前半段用传统算法保证准确性和一致性，后半段用大模型保证可读性和个性化。</p></section>
+<section><h2>卦象推算引擎：确定性的前端</h2><p>以天机推演为例，卦象推算引擎基于传统农历历法算法，根据出生年月日时计算本命卦。六十四卦的推算规则是固定的数学公式（参照《梅花易数》年月日时起卦法），不涉及 AI，用纯代码实现，部署在服务器上。</p>
+<p>这部分的关键价值是「信任」：用户测一万次，只要出生时间不变，卦象永远一样。确定性是性格分析产品最基础的信度要求。</p></section>
+<section><h2>AI 性格分析：概率性的后端</h2><p>卦象对应的原始文言文描述（卦辞、爻辞等）作为 prompt 输入，调用大模型进行「文言文 → 现代性格分析」的翻译。关键的设计点：</p>
+<ul><li>Temperature 设置偏低（0.3–0.5），保证输出的一致性；</li><li>System prompt 限定「这是性格分析框架，不是预测」；</li><li>每次生成输出标准化字段：性格特征、优势、劣势、建议。</li></ul>
+<p>这套设计的妙处在于：同一个卦象，大模型每次可以从不同角度解读，用户每次阅读体验是新鲜的，但核心结论框架保持稳定。</p></section>
+<section><h2>合盘匹配算法：两个人的分析</h2><p>合盘匹配是这类产品最具传播力的模块。天机推演的合盘算法 = 两卦之间的五行生克关系 + 卦象组合的历史解读 + AI 综合分析。它不是简单的「相合/相冲」二元输出，而是生成多维度的匹配报告（沟通、决策、情绪等维度）。</p>
+<p>为什么「两个人的分析」比「一个人的分析」更具传播力？因为测完就想分享——把「我是什么卦」发到群里，把「我们合不合」拉朋友一起测。这种社交裂变机制是产品增长的核心引擎。</p></section>
+<section><h2>工程范式总结：可复制的五种能力</h2><p>从这些案例中可以提炼出「AI + 传统智慧」类应用的通用工程范式：</p>
+<ol><li>确定性前端：传统算法负责核心判定，保证一致与可复现；</li><li>概率性后端：大模型负责语言层面的个性化呈现；</li><li>内容管理系统：传统知识的数字化与结构化是核心竞争力；</li><li>社交层：两个人的分析天然比一个人的分析更易传播；</li><li>透明性设计：标注「AI 生成」不是减分项，坦诚反而建立信任。</li></ol>
+<p>对这个赛道而言，技术不是壁垒，对传统智慧的尊重和理解才是。</p></section></div>
+  </article>
+  <div class="related-box">
+    <h3>继续阅读</h3>
+    <div class="related-links"><a href="https://claw-book.cn/ai-yi-jing.html">AI 与易经：大模型如何解读传统文化</a>
+<a href="https://claw-book.cn/co-star.html">Co-Star 收购背后：AI+传统智慧赛道的启示</a>
+<a href="https://claw-book.cn/xing-ge-ce-shi.html">性格测试：不靠做题的易经路线 vs MBTI</a>
+<a href="https://claw-book.cn/du-li-kai-fa.html">独立开发者用 AI 做产品的实践指南</a><a href="https://claw-book.cn/gua-01.html">乾卦·刚健进取</a><a href="https://claw-book.cn/gua-02.html">坤卦·包容承载</a><a href="https://claw-book.cn/gua-11.html">泰卦·通达顺利</a><a href="https://claw-book.cn/gua-12.html">否卦·闭塞困顿</a><a href="https://claw-book.cn/gua-15.html">谦卦·谦逊受益</a></div>
+  </div>
+</main>
+<div class="pager"><a class="pager-prev" href="https://claw-book.cn/ai-yi-jing.html"><span class="pager-label">上一篇</span>AI 与易经：大模型如何解读传统文化</a><a class="pager-next" href="https://claw-book.cn/co-star.html"><span class="pager-label">下一篇</span>Co-Star 收购背后：AI + 传统智慧赛道的启示</a></div>
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>用 AI 解读你的本命卦</h2>
+    <p>下载「天机推演」App，输入出生时间，AI 基于六十四卦与奇门遁甲，为你生成专属性格报告。免费使用，仅供参考。</p>
+    <div class="cta-actions">
+      <a class="btn btn-gold" href="https://claw-book.cn/#download">下载 App</a>
+      <a href="/ai-xing-ge.en.html" hreflang="en">EN</a>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; 2026 天机推演 · 北京无元数字科技有限公司</span>
+    <span class="footer-links"><a href="https://claw-book.cn/agreement.html">服务协议</a><a href="https://claw-book.cn/privacy.html">隐私政策</a><a href="https://claw-book.cn/delete-account.html">账号注销</a><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:var(--muted,#9a968c);text-decoration:none">京ICP备16050769号-4</a></span>
+  </div>
+</footer>
+<script>
+(function(){
+  var h2s=document.querySelectorAll('.article-body h2');
+  var list=document.getElementById('tocList');
+  if(!list||!h2s.length)return;
+  h2s.forEach(function(h,i){
+    var id='sec-'+(i+1);
+    h.id=id;
+    var a=document.createElement('a');
+    a.href='#'+id;
+    a.textContent=h.textContent.trim();
+    list.appendChild(a);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>易经人格解读 · V2.0 精简版</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #1a1a3e 0%, #4a1a6b 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #fff;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: 300;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+    
+    .header p {
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    
+    .gua-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .gua-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .gua-symbol {
+      font-size: 80px;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+    
+    .gua-name {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .gua-quote {
+      font-size: 16px;
+      opacity: 0.8;
+      font-style: italic;
+      margin-top: 10px;
+    }
+    
+    .tags {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: rgba(255, 215, 0, 0.2);
+      border: 1px solid #ffd700;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    
+    .tag.historical {
+      background: rgba(100, 200, 255, 0.2);
+      border-color: #64c8ff;
+    }
+    
+    .keywords {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+    
+    .gua-ci {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    
+    .gua-ci-item {
+      margin-bottom: 8px;
+    }
+    
+    .gua-ci-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .gua-ci-label {
+      display: inline-block;
+      background: rgba(255, 215, 0, 0.3);
+      color: #ffd700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    
+    .layer {
+      margin-bottom: 30px;
+    }
+    
+    .layer-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #ffd700;
+    }
+    
+    .layer-content {
+      line-height: 1.8;
+      font-size: 15px;
+      white-space: pre-line;
+    }
+    
+    .growth-section {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    
+    .growth-item {
+      margin-bottom: 15px;
+    }
+    
+    .growth-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .growth-label {
+      font-weight: bold;
+      color: #ffd700;
+      margin-bottom: 5px;
+    }
+    
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.3), transparent);
+      margin: 40px 0;
+    }
+    
+    @media (max-width: 600px) {
+      .gua-symbol { font-size: 60px; }
+      .gua-name { font-size: 24px; }
+      .gua-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>易经人格解读 V2.0</h1>
+      <p>三层架构 · 精简版</p>
+    </div>
+    
+    <!-- 丰卦 -->
+    <div class="gua-card">
+      <div class="gua-header">
+        <div class="gua-symbol">䷶</div>
+        <div class="gua-name">丰卦 · 丰盛格</div>
+        <div class="gua-quote">「日正当中，万物丰盛」</div>
+        <div class="tags">
+          <div class="tag">🏷️ 完美主义晚期患者</div>
+          <div class="tag historical"> 曹操 · 李世民</div>
+        </div>
+        <div class="keywords">关键词：丰盛 · 果断 · 有魄力 · 追求完美 · 行动力强</div>
+        <div class="gua-ci">
+          <div class="gua-ci-item"><span class="gua-ci-label">卦辞</span>丰：亨，王假之，勿忧，宜日中。</div>
+          <div class="gua-ci-item"><span class="gua-ci-label">象辞</span>雷电皆至，丰。君子以折狱致刑。</div>
+        </div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🎭 核心人格</div>
+        <div class="layer-content">你的内核是一台高功率发动机——不是那种慢慢预热型的，是一点火就全速运转的。丰格之人最大的特征是「要做就做到极致」，你见不得半成品，受不了"差不多就行"。在朋友眼中你是那个"说到做到"的人，不太会画饼，但会默默把事情做完，然后轻描淡写地说一句"搞定了"。代价是你对自己和身边人的标准都太高，有时候别人还没准备好，你已经冲到终点了。</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">❤️ 情感模式</div>
+        <div class="layer-content">你在关系里是"全情投入型"——要么深爱，要么不爱，中间地带对你来说不存在。你表达爱的方式不是甜言蜜语，而是"你需要的时候我都在"。朋友生病你不是说"多喝热水"，而是直接送药上门。你需要的是被真诚地看见和欣赏，而不是敷衍的夸奖。有时候你会觉得累，因为你习惯了当给予者，但偶尔也想被照顾一下。</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🌱 成长建议</div>
+        <div class="growth-section">
+          <div class="growth-item">
+            <div class="growth-label">【你的天赋】</div>
+            <div>你的天赋是"把事做成"——别人还在犹豫时你已经行动了。这种执行力和魄力是稀缺资源，尤其在需要决断的时刻。</div>
+          </div>
+          <div class="growth-item">
+            <div class="growth-label">【你的盲点】</div>
+            <div>你的盲点是"完美主义"——有时候完成比完美更重要。另一个盲点是"标准太高"——你的强势有时会让身边的人感到压力。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <!-- 夬卦 -->
+    <div class="gua-card">
+      <div class="gua-header">
+        <div class="gua-symbol">䷪</div>
+        <div class="gua-name">夬卦 · 刚毅格</div>
+        <div class="gua-quote">「刚决柔断，一往无前」</div>
+        <div class="tags">
+          <div class="tag">🏷️ 选择困难症康复中</div>
+          <div class="tag historical"> 项羽 · 关羽</div>
+        </div>
+        <div class="keywords">关键词：果断 · 刚毅 · 直率 · 有担当 · 不拖泥带水</div>
+        <div class="gua-ci">
+          <div class="gua-ci-item"><span class="gua-ci-label">卦辞</span>夬：扬于王庭，孚号有厉，告自邑，不利即戎，利有攸往。</div>
+          <div class="gua-ci-item"><span class="gua-ci-label">象辞</span>泽上于天，夬。君子以施禄及下，居德则忌。</div>
+        </div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🎭 核心人格</div>
+        <div class="layer-content">你是一把出鞘的剑——锋利、直接、不绕弯子。夬格之人最讨厌模棱两可，喜欢把话说清楚、把事做明白。在团队里你是那个"拍板的人"，当大家犹豫不决时你总能果断做出决定。你不害怕承担责任，反而觉得"总得有人站出来"。但有时候你也会后悔，因为决定太快，没充分考虑别人的感受。事后你会想："我是不是太急了？"</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">❤️ 情感模式</div>
+        <div class="layer-content">你在感情里是"直球选手"——喜欢就直说，不喜欢也不藏着。你不太会玩暧昧，也不太会"欲擒故纵"。你表达爱的方式是"保护型"——为对方遮风挡雨、解决问题，你觉得"爱一个人就是要让对方安心"。你需要的是对方能理解你的直接，不会把你的坦率当成"不在乎"。有时候你会委屈，因为你付出了很多，但对方觉得你"不够温柔"。</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🌱 成长建议</div>
+        <div class="growth-section">
+          <div class="growth-item">
+            <div class="growth-label">【你的天赋】</div>
+            <div>你的天赋是"决断力"——关键时刻能迅速做出决定。这种能力在危机时刻尤其珍贵，是领导者的核心素质。</div>
+          </div>
+          <div class="growth-item">
+            <div class="growth-label">【你的盲点】</div>
+            <div>你的盲点是"过于直接"——有时候"怎么说"比"说什么"更重要。另一个盲点是"缺乏耐心"——不是所有人都能跟上你的节奏。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <!-- 益卦 -->
+    <div class="gua-card">
+      <div class="gua-header">
+        <div class="gua-symbol">䷩</div>
+        <div class="gua-name">益卦 · 利他格</div>
+        <div class="gua-quote">「损上益下，民说无疆」</div>
+        <div class="tags">
+          <div class="tag">🏷️ 利他主义上瘾者</div>
+          <div class="tag historical">👤 范仲淹 · 雷锋</div>
+        </div>
+        <div class="keywords">关键词：利他 · 共情 · 奉献 · 靠谱 · 不计回报</div>
+        <div class="gua-ci">
+          <div class="gua-ci-item"><span class="gua-ci-label">卦辞</span>益：利有攸往，利涉大川。</div>
+          <div class="gua-ci-item"><span class="gua-ci-label">象辞</span>风雷，益。君子以见善则迁，有过则改。</div>
+        </div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🎭 核心人格</div>
+        <div class="layer-content">你天生有一种"见不得别人受苦"的本能。益格之人的内心像一口井，源源不断地给予，而且不计回报——因为"帮助他人"本身就是你的回报。在朋友眼中你是最靠谱的那个人，无论什么时候只要你需要他都在。你不太会拒绝，因为你觉得"能帮就帮"。但有时候你也会觉得累，因为你总是把别人放第一位，忽略了自己的需求。你会想："谁来帮帮我？"</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">❤️ 情感模式</div>
+        <div class="layer-content">你在关系里是"付出型"——你习惯性地为对方着想，甚至在对方向你开口之前。你表达爱的方式是"服务型"——记住对方的喜好，提前准备好对方需要的东西。你需要的是被真诚地珍惜和感谢，而不是被理所当然地接受。有时候你会心寒，因为你付出很多，但有些人只是把你当"工具人"。你学会了筛选，但有时候还是会心软。</div>
+      </div>
+      
+      <div class="layer">
+        <div class="layer-title">🌱 成长建议</div>
+        <div class="growth-section">
+          <div class="growth-item">
+            <div class="growth-label">【你的天赋】</div>
+            <div>你的天赋是"共情力"——你能感受到他人的需求并愿意帮助。这种能力让你成为很好的倾听者和支持者，是团队里的粘合剂。</div>
+          </div>
+          <div class="growth-item">
+            <div class="growth-label">【你的盲点】</div>
+            <div>你的盲点是"不会拒绝"——有时候"不"也是一种爱，对自己和他人的爱。另一个盲点是"忽视自己"——你不能一直给予，也需要补充能量。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</body>
+</html>

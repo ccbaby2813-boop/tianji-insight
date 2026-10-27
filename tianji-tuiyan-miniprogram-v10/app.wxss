@@ -1,0 +1,1051 @@
+/* app.wxss - 天机推演全局设计系统 v2.0
+ * 设计理念：借鉴 shadcn 语义化token + frontend-design 大胆视觉 + frontend-skill 克制构图
+ * Visual Thesis: 深邃夜卷配暖金光晕，信纸米白承笔墨情书——双主题双氛围
+ */
+
+/* ========================================
+ * 设计 Token 系统（语义化变量）
+ * 借鉴 shadcn：--background / --foreground / --primary / --muted / --accent
+ * ======================================== */
+
+page {
+  /* === 深色主题（推演板块默认） === */
+  --bg-base: #0A0A1A;
+  --bg-elevated: #14142B;
+  --bg-muted: rgba(232, 232, 240, 0.03);
+  --bg-card: rgba(20, 20, 43, 0.6);
+
+  --text-primary: #E8E8F0;
+  --text-secondary: #A0A0B0;
+  --text-muted: #6A6A7A;
+  --text-inverse: #0A0A1A;
+
+  /* v3.6 视觉校准：统一纯金 #C8A55B，移除暖铜色 #D4A574 */
+  --accent-gold: #C8A55B;
+  --accent-gold-hover: #D4B570;
+  --accent-gold-muted: rgba(200, 165, 91, 0.15);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.06);
+  --accent-gold-border: rgba(200, 165, 91, 0.25);
+
+  --border-subtle: rgba(232, 232, 240, 0.04);
+  --border-default: rgba(232, 232, 240, 0.08);
+  --border-strong: rgba(200, 165, 91, 0.3);
+
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 28rpx;
+  --radius-full: 999rpx;
+  /* 语义化圆角命名（v2.0 视觉升级） */
+  --radius-card: var(--radius-lg);
+  --radius-button: var(--radius-full);
+  --radius-tag: var(--radius-sm);
+
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.3);
+  /* v3.6 同步金色为 #C8A55B */
+  --shadow-gold: 0 4rpx 16rpx rgba(200, 165, 91, 0.3);
+  --shadow-gold-glow: 0 0 24rpx rgba(200, 165, 91, 0.2);
+  /* v2.0 信纸投影（浅色主题专用） */
+  --shadow-paper: 0 4rpx 20rpx rgba(139, 115, 85, 0.12);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* v2.0 时长 Token */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* v2.0 间距网格（8px 基准） */
+  --space-1: 8rpx;
+  --space-2: 16rpx;
+  --space-3: 24rpx;
+  --space-4: 32rpx;
+  --space-6: 48rpx;
+  --space-8: 64rpx;
+  --space-12: 96rpx;
+
+  /* v3.6 修复：墨韵黑底色统一为 #0A0A1A（原 #000000 纯黑过深） */
+  --bg-ink: #0A0A1A;
+  --bg-ink-elevated: #14142B;
+  /* 水墨纹理（极淡卦象水印，opacity 0.03）— v3.6 同步金色 */
+  --texture-ink: linear-gradient(135deg, rgba(200, 165, 91, 0.03) 0%, transparent 50%, rgba(200, 165, 91, 0.02) 100%);
+
+  /* v2.0 克制纯金（不用渐变，只用纯色） */
+  --gold-pure: #C8A55B;
+  --gold-pure-dim: rgba(200, 165, 91, 0.6);
+
+  /* v2.0 诗集排版行距 */
+  --line-height-poem: 2.0;
+  --line-height-quote: 1.9;
+
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: -apple-system, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* v2.0 墨韵黑主题（推演板块结果页专用）
+ * 使用方法：在 page-container 上加 .theme-ink 类
+ * 替代深蓝底色，纯黑+水墨纹理，让内容浮起
+ */
+.theme-ink {
+  --bg-base: var(--bg-ink);
+  --bg-elevated: var(--bg-ink-elevated);
+  background-color: var(--bg-ink);
+  background-image: var(--texture-ink);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* === 浅色主题（易缘匹配板块） === */
+.theme-light {
+  --bg-base: #FFF8F3;
+  --bg-elevated: #FFFFFF;
+  --bg-muted: rgba(139, 115, 85, 0.05);
+  --bg-card: rgba(255, 255, 255, 0.8);
+
+  --text-primary: #3A2E1F;
+  --text-secondary: #6B5A45;
+  --text-muted: #9B8B75;
+  --text-inverse: #FFF8F3;
+
+  /* v3.6 视觉校准：浅色主题金色也统一为 #C8A55B，与深色主题保持单色一致性 */
+  --accent-gold: #C8A55B;
+  --accent-gold-hover: #D4B570;
+  --accent-gold-muted: rgba(200, 165, 91, 0.15);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.06);
+  --accent-gold-border: rgba(200, 165, 91, 0.25);
+
+  --border-subtle: rgba(139, 115, 85, 0.08);
+  --border-default: rgba(139, 115, 85, 0.15);
+  --border-strong: rgba(200, 165, 91, 0.4);
+}
+
+/* ========================================
+ * 动画库 - 入场 / 微交互 / 呼吸
+ * ======================================== */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes goldReveal {
+  from { opacity: 0; filter: blur(8rpx); transform: scale(1.1); }
+  to   { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes goldFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60rpx); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60rpx); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateY(40rpx) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes badgePopIn {
+  0%   { opacity: 0; transform: scale(0); }
+  60%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes iconShine {
+  0%, 100% { filter: drop-shadow(0 0 4rpx rgba(200, 165, 91, 0.4)); }
+  50%      { filter: drop-shadow(0 0 12rpx rgba(200, 165, 91, 0.8)); }
+}
+
+/* 动画类 */
+.animate-fade-in-up   { animation: fadeInUp 0.6s var(--ease-out-expo) both; }
+.animate-fade-in      { animation: fadeIn 0.5s var(--ease-out-quart) both; }
+.animate-scale-in     { animation: scaleIn 0.5s var(--ease-out-quart) both; }
+.animate-gold-reveal  { animation: goldReveal 0.8s var(--ease-out-expo) both; }
+.animate-breathe      { animation: breathe 3s ease-in-out infinite; }
+.animate-twinkle      { animation: twinkle 2s ease-in-out infinite; }
+.animate-card-slide   { animation: cardSlideIn 0.6s var(--ease-out-expo) both; }
+.animate-badge-pop    { animation: badgePopIn 0.5s var(--ease-spring) both; }
+.animate-icon-shine   { animation: iconShine 2.5s ease-in-out infinite; }
+.animate-slide-right  { animation: slideInRight 0.5s var(--ease-out-expo) both; }
+.animate-slide-left   { animation: slideInLeft 0.5s var(--ease-out-expo) both; }
+
+/* 延迟类（错落入场） */
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.16s; }
+.delay-3 { animation-delay: 0.24s; }
+.delay-4 { animation-delay: 0.32s; }
+.delay-5 { animation-delay: 0.40s; }
+.delay-6 { animation-delay: 0.48s; }
+.delay-7 { animation-delay: 0.56s; }
+.delay-8 { animation-delay: 0.64s; }
+
+/* ========================================
+ * 按钮系统 - 变体系统（借鉴 shadcn variants）
+ * ======================================== */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s var(--ease-out-expo);
+  box-sizing: border-box;
+}
+
+.btn::after { border: none; }
+
+/* 主按钮 - 金色实心 */
+.btn-gold,
+.btn-primary {
+  height: 96rpx;
+  padding: 0 48rpx;
+  background: var(--gold-pure);
+  color: var(--text-inverse);
+  font-size: 32rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  box-shadow:
+    0 4rpx 16rpx rgba(200, 165, 91, 0.3),
+    0 1rpx 3rpx rgba(0, 0, 0, 0.2),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.2);
+  letter-spacing: 2rpx;
+}
+
+.btn-gold::before,
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  transition: left 0.6s var(--ease-out-expo);
+}
+
+.btn-gold:active,
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 2rpx 8rpx rgba(200, 165, 91, 0.4),
+    inset 0 1rpx 2rpx rgba(0, 0, 0, 0.2);
+}
+
+.btn-gold:active::before,
+.btn-primary:active::before { left: 100%; }
+
+.btn-gold[disabled],
+.btn-primary[disabled] {
+  background: rgba(200, 165, 91, 0.12);
+  color: rgba(232, 232, 240, 0.25);
+  box-shadow: none;
+}
+
+/* 次按钮 - 金色描边 */
+.btn-light,
+.btn-outline {
+  height: 96rpx;
+  padding: 0 48rpx;
+  background: transparent;
+  border: 2rpx solid var(--accent-gold-border);
+  color: var(--accent-gold);
+  font-size: 32rpx;
+  border-radius: var(--radius-full);
+  letter-spacing: 2rpx;
+}
+
+.btn-light:active,
+.btn-outline:active {
+  background: var(--accent-gold-subtle);
+  border-color: var(--accent-gold);
+  transform: scale(0.97);
+}
+
+/* 幽灵按钮 */
+.btn-ghost {
+  height: 80rpx;
+  padding: 0 32rpx;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  border-radius: var(--radius-md);
+}
+
+.btn-ghost:active {
+  background: rgba(232, 232, 240, 0.08);
+  color: var(--accent-gold);
+}
+
+/* 危险按钮 */
+.btn-danger,
+.btn-destructive {
+  height: 88rpx;
+  padding: 0 40rpx;
+  background: transparent;
+  border: 2rpx solid rgba(200, 165, 91, 0.35);
+  color: var(--gold-pure);
+  font-size: 28rpx;
+  border-radius: var(--radius-full);
+}
+
+.btn-danger:active,
+.btn-destructive:active {
+  background: rgba(231, 76, 60, 0.08);
+  border-color: rgba(231, 76, 60, 0.6);
+}
+
+/* 小尺寸按钮 */
+.btn-sm { height: 64rpx; padding: 0 28rpx; font-size: 26rpx; }
+.btn-lg { height: 112rpx; padding: 0 56rpx; font-size: 36rpx; }
+
+/* ========================================
+ * 卡片 / 内容块系统
+ * frontend-skill: cards only when the card is the interaction
+ * ======================================== */
+
+.section {
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.section-glow {
+  background: linear-gradient(135deg, var(--accent-gold-subtle), transparent);
+  border-radius: var(--radius-lg);
+  border: 1rpx solid var(--accent-gold-border);
+}
+
+.section-subtle {
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-bottom: 20rpx;
+  letter-spacing: 2rpx;
+}
+
+/* 菜单区块 */
+.menu-section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 24rpx;
+  border: 1rpx solid var(--border-subtle);
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid var(--border-subtle);
+  font-size: 28rpx;
+  color: var(--text-primary);
+  transition: all 0.2s var(--ease-out-quart);
+}
+
+.menu-item:last-child { border-bottom: none; }
+
+.menu-item:active { background: var(--accent-gold-subtle); }
+
+.menu-item .arrow {
+  color: var(--text-muted);
+  font-size: 28rpx;
+  transition: transform 0.2s var(--ease-out-quart);
+}
+
+.menu-item:active .arrow {
+  transform: translateX(8rpx);
+  color: var(--accent-gold);
+}
+
+/* ========================================
+ * 表单系统
+ * ======================================== */
+
+.form-section { margin-bottom: 40rpx; }
+
+.form-input {
+  width: 100%;
+  height: 100rpx;
+  background: var(--bg-muted);
+  border: 2rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-md);
+  padding: 0 32rpx;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  box-sizing: border-box;
+  transition: all 0.2s var(--ease-out-quart);
+}
+
+.form-input:focus {
+  border-color: var(--accent-gold);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 4rpx var(--accent-gold-muted);
+}
+
+.form-input::placeholder { color: var(--text-muted); }
+
+.gender-group {
+  display: flex;
+  gap: 24rpx;
+}
+
+.gender-option {
+  flex: 1;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-muted);
+  border: 2rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-md);
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  transition: all 0.2s var(--ease-out-quart);
+}
+
+.gender-option.active {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background: var(--accent-gold-subtle);
+  box-shadow: 0 0 0 4rpx var(--accent-gold-muted);
+}
+
+/* ========================================
+ * 状态提示
+ * ======================================== */
+
+.loading-state,
+.error-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 64rpx 32rpx;
+  color: var(--text-muted);
+  font-size: 28rpx;
+}
+
+.error-state text { color: #E87D7D; }
+
+.retry-btn { margin-top: 32rpx; min-width: 200rpx; }
+
+/* ========================================
+ * 标签系统（借鉴 shadcn Badge）
+ * ======================================== */
+
+.keyword-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  background: var(--accent-gold-muted);
+  border: 1rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-sm);
+  font-size: 22rpx;
+  color: var(--accent-gold);
+  margin: 8rpx 8rpx 8rpx 0;
+  transition: all 0.2s var(--ease-out-quart);
+}
+
+.keyword-tag:active {
+  background: var(--accent-gold-subtle);
+  transform: scale(0.95);
+}
+
+.history-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  font-size: 22rpx;
+  color: var(--text-muted);
+  margin: 8rpx 8rpx 8rpx 0;
+}
+
+/* ========================================
+ * 分割线（借鉴 shadcn Separator）
+ * ======================================== */
+
+.divider {
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
+  margin: 32rpx 0;
+}
+
+.divider-gold {
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, var(--accent-gold-border), transparent);
+  margin: 40rpx 0;
+}
+
+/* ========================================
+ * 底部合规声明
+ * ======================================== */
+
+.footer-disclaimer {
+  text-align: center;
+  padding: 40rpx 48rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  font-size: 22rpx;
+  color: var(--text-muted);
+  line-height: 2;
+  letter-spacing: 1rpx;
+}
+
+/* ========================================
+ * 骨架屏（借鉴 shadcn Skeleton）
+ * ======================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(20, 20, 43, 0.5) 25%,
+    rgba(40, 40, 60, 0.6) 50%,
+    rgba(20, 20, 43, 0.5) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.theme-light .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(139, 115, 85, 0.08) 25%,
+    rgba(139, 115, 85, 0.15) 50%,
+    rgba(139, 115, 85, 0.08) 75%
+  );
+  background-size: 200% 100%;
+}
+
+.skeleton-block { height: 32rpx; margin-bottom: 16rpx; }
+.skeleton-title { height: 48rpx; width: 60%; margin: 0 auto 32rpx; }
+.skeleton-card { height: 140rpx; border-radius: var(--radius-lg); margin-bottom: 24rpx; }
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
+ * 字体分层系统（L1-L4）
+ * ======================================== */
+
+/* L1 灵魂字：卦名、核心符号 */
+.font-soul {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-weight: 700;
+}
+
+/* L2 标题字：页面标题、卦格名 */
+.font-title {
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-weight: 400;
+}
+
+/* L3 正文字 */
+.font-body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* L4 点缀字：卦辞、象辞引用 */
+.font-quote {
+  font-family: "STSong", "SimSun", "宋体", "Noto Serif CJK SC", serif;
+  font-style: italic;
+}
+
+/* ========================================
+ * 字号层级系统
+ * ======================================== */
+
+.text-display { font-size: 100rpx; line-height: 1.2; }
+.text-h1      { font-size: 48rpx; line-height: 1.3; letter-spacing: 4rpx; }
+.text-h2      { font-size: 36rpx; line-height: 1.4; letter-spacing: 2rpx; }
+.text-h3      { font-size: 32rpx; line-height: 1.5; }
+.text-body    { font-size: 28rpx; line-height: 1.8; }
+.text-caption { font-size: 24rpx; line-height: 1.6; color: var(--text-secondary); }
+.text-mini    { font-size: 22rpx; line-height: 1.5; color: var(--text-muted); }
+
+/* ========================================
+ * 视觉统一规范
+ * ======================================== */
+
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-base);
+}
+
+.page-pad {
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+}
+
+.card-pad { padding: 32rpx; }
+
+/* 金色变体 */
+.color-gold-primary   { color: var(--accent-gold); }
+.color-gold-secondary { color: #C8A96E; }
+.color-gold-muted     { color: rgba(200, 165, 91, 0.6); }
+
+/* 文字颜色 */
+.color-text-primary   { color: var(--text-primary); }
+.color-text-secondary { color: var(--text-secondary); }
+.color-text-muted     { color: var(--text-muted); }
+
+/* iOS 提示 */
+.ios-notice {
+  text-align: center;
+  padding: 28rpx;
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  margin-top: 24rpx;
+  border: 1rpx solid var(--border-subtle);
+}
+
+.ios-text {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* 操作按钮容器 */
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32rpx;
+  margin: 24rpx 0;
+}
+
+/* ========================================
+ * v2.0 视觉升级系统（诗集排版 + L0展示字 + 微动效）
+ * ======================================== */
+
+/* L0 展示字：卦名、焦点时刻（比 L1 灵魂字更粗更大）
+ * 复用 LXGWWenKaiMedium，通过更大的字号和字重制造仪式感
+ */
+.font-display {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-weight: 800;
+  letter-spacing: 8rpx;
+}
+
+/* v2.0 写信字体：复用 L2 标题字（霞鹜文楷 Regular），模拟手写信体验 */
+.font-letter {
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 32rpx;
+  line-height: 2.0;
+  letter-spacing: 2rpx;
+}
+
+/* v19.1 英文态字体：美国网站通行的衬线体（Georgia 系），提升英文可读性；
+   页面根节点加 lang-en 类即生效（中文楷体仅对 CJK 字符回退） */
+.lang-en .font-display,
+.lang-en .font-title,
+.lang-en .font-body,
+.lang-en .font-quote,
+.lang-en .font-soul,
+.lang-en .font-letter {
+  font-family: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
+}
+.lang-en .font-display,
+.lang-en .font-title {
+  letter-spacing: 1rpx;
+}
+
+/* 诗集排版：判词、金句（大字号、宽行距、大留白） */
+.poem-text {
+  font-size: 52rpx;
+  line-height: var(--line-height-poem);
+  letter-spacing: 4rpx;
+  color: var(--gold-pure);
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* 金句横幅：历史对标、引文（左侧金线 + 引号 + 楷书） */
+.quote-banner {
+  position: relative;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  margin: var(--space-6) var(--space-4);
+}
+
+.quote-banner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--space-2);
+  bottom: var(--space-2);
+  width: 4rpx;
+  background: var(--gold-pure);
+}
+
+.quote-banner-text {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 34rpx;
+  line-height: var(--line-height-quote);
+  color: var(--gold-pure);
+  letter-spacing: 2rpx;
+}
+
+/* 印章装饰（右上角朱文印） */
+.seal-mark {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 56rpx;
+  height: 56rpx;
+  border: 2rpx solid rgba(200, 85, 85, 0.6);
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  color: rgba(200, 85, 85, 0.8);
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  letter-spacing: 0;
+}
+
+/* 极细金线分隔（1rpx，不用卡片） */
+.line-gold-thin {
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-pure-dim) 50%, transparent 100%);
+  margin: var(--space-6) var(--space-4);
+}
+
+/* 五行头像渐变类（全局复用：match-pool / my-matches 候选卡 + 好友卡头像）
+ * 暖=火土系，冷=水木系，金=纯金系（首个色值复用 --gold-pure Token）
+ */
+.avatar-gradient-warm {
+  background: linear-gradient(135deg, #C8A55B, #D4B570);
+}
+
+.avatar-gradient-cool {
+  background: linear-gradient(135deg, #8A8A8A, #A0A0B0);
+}
+
+.avatar-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-pure), #E8D4A0);
+}
+
+/* 折叠区标题（统一风格） */
+.collapse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  margin: 0 var(--space-4);
+  border-bottom: 1rpx solid var(--border-subtle);
+}
+
+.collapse-header-title {
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 36rpx;
+  color: var(--text-secondary);
+  letter-spacing: 4rpx;
+}
+
+.collapse-header-arrow {
+  width: 32rpx;
+  height: 32rpx;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.collapse-header-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+/* 折叠区内容（展开时滑出） */
+.collapse-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-slow) var(--ease-out-expo);
+}
+
+.collapse-body.expanded {
+  max-height: 4000rpx;
+}
+
+.collapse-body-inner {
+  padding: var(--space-4);
+  font-size: 30rpx;
+  line-height: var(--line-height-quote);
+  color: var(--text-secondary);
+  letter-spacing: 1rpx;
+}
+
+/* v2.0 宣纸纹理（易缘板块浅色主题专用） */
+.theme-light.paper-texture {
+  background-color: var(--bg-base);
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(139, 115, 85, 0.02) 0%, transparent 40%);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* v2.0 微动效：线条绘制（SVG stroke-dasharray 动画） */
+@keyframes drawLine {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.animate-draw-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 0.8s var(--ease-out-expo) forwards;
+}
+
+/* v2.0 微动效：金线画出（从左到右） */
+@keyframes drawGoldLine {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+.animate-draw-gold-line {
+  animation: drawGoldLine 0.3s var(--ease-out-expo) forwards;
+}
+
+/* v2.0 微动效：印章盖下 */
+@keyframes sealStamp {
+  0%   { opacity: 0; transform: scale(2) rotate(-15deg); }
+  60%  { opacity: 1; transform: scale(0.95) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.animate-seal-stamp {
+  animation: sealStamp 0.2s var(--ease-spring) forwards;
+}
+
+/* v2.0 美术馆展牌感（人格页、卡牌图鉴用） */
+.exhibit-card {
+  background: var(--bg-elevated);
+  border: 1rpx solid var(--border-subtle);
+  padding: var(--space-6) var(--space-4);
+  margin: var(--space-4);
+  position: relative;
+}
+
+.exhibit-card::before {
+  content: '';
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  right: var(--space-2);
+  bottom: var(--space-2);
+  border: 1rpx solid var(--border-subtle);
+  pointer-events: none;
+}
+
+.exhibit-label {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.exhibit-title {
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 48rpx;
+  color: var(--text-primary);
+  letter-spacing: 4rpx;
+  margin-bottom: var(--space-3);
+}
+
+/* v2.0 人物图章卡（人格页历史人物用） */
+.figure-stamp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-2) var(--space-4);
+  background: var(--bg-muted);
+  border-left: 4rpx solid var(--gold-pure);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.figure-stamp-char {
+  width: 64rpx;
+  height: 64rpx;
+  border: 2rpx solid var(--gold-pure);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "LXGWWenKaiMedium", "STXingkai", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 32rpx;
+  color: var(--gold-pure);
+  flex-shrink: 0;
+}
+
+.figure-stamp-info {
+  flex: 1;
+}
+
+.figure-stamp-name {
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  letter-spacing: 2rpx;
+}
+
+.figure-stamp-tag {
+  font-size: 22rpx;
+  color: var(--text-muted);
+  margin-top: 4rpx;
+}
+
+/* v2.0 自嘲标签贴纸（推演结果页用）— v3.6 统一为金色主题 */
+.zichao-sticker {
+  padding: var(--space-1) var(--space-3);
+  background: rgba(200, 165, 91, 0.08);
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 24rpx;
+  color: rgba(200, 165, 91, 0.9);
+  font-family: "LXGWWenKai", "STKaiti", "KaiTi", "楷体", "Noto Serif CJK SC", serif;
+  letter-spacing: 2rpx;
+  transform: rotate(-2deg);
+  margin: var(--space-4) var(--space-4) var(--space-4) auto;
+  width: fit-content;
+  display: flex;
+}
+
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .text-h1 { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }
+.lang-en .poem-text { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 36rpx; line-height: 1.25; }
+.lang-en .exhibit-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }
+
+
+/* ===== EN-i18n 全局通用兜底：所有页面英文长文本防出框 ===== */
+/* 原理：英文单词比中文长，默认不换行可能溢出固定宽度容器。
+   全局给常见文字类加 word-break，页面级更具体的 .lang-en 覆盖优先。 */
+.lang-en text,
+.lang-en .title, .lang-en .name, .lang-en .text, .lang-en .desc,
+.lang-en .label, .lang-en .content, .lang-en .item, .lang-en .line,
+.lang-en .info, .lang-en .detail, .lang-en .quote, .lang-en .tip,
+.lang-en .notice, .lang-en .empty, .lang-en .error, .lang-en .loading,
+.lang-en .subtitle, .lang-en .sub, .lang-en .header, .lang-en .footer,
+.lang-en .status, .lang-en .message, .lang-en .placeholder, .lang-en .hint,
+.lang-en .guide, .lang-en .intro, .lang-en .preface, .lang-en .poem,
+.lang-en .verdict, .lang-en .relation, .lang-en .oneliner, .lang-en .analysis,
+.lang-en .resonance, .lang-en .conflict, .lang-en .advice, .lang-en .summary,
+.lang-en .count, .lang-en .value, .lang-en .price, .lang-en .plan,
+.lang-en .privilege, .lang-en .benefit, .lang-en .feature, .lang-en .tag,
+.lang-en .badge, .lang-en .level, .lang-en .rank, .lang-en .score,
+.lang-en .date, .lang-en .time, .lang-en .duration, .lang-en .remaining,
+.lang-en .sender, .lang-en .receiver, .lang-en .subject, .lang-en .body,
+.lang-en .thread, .lang-en .letter, .lang-en .message-text,
+.lang-en .nickname, .lang-en .signature, .lang-en .bio, .lang-en .about,
+.lang-en .achievement, .lang-en .badge-name, .lang-en .card-title,
+.lang-en .card-desc, .lang-en .card-name, .lang-en .modal-title,
+.lang-en .modal-desc, .lang-en .modal-text, .lang-en .modal-label,
+.lang-en .welcome-title, .lang-en .welcome-desc, .lang-en .tab-item,
+.lang-en .collection-count, .lang-en .rarity-badge, .lang-en .tarot-name,
+.lang-en .tarot-tag, .lang-en .history-tag, .lang-en .guide-title,
+.lang-en .guide-desc, .lang-en .form-label, .lang-en .form-input,
+.lang-en .picker-text, .lang-en .gender-text, .lang-en .agreement-label,
+.lang-en .submit-btn, .lang-en .send-code-btn, .lang-en .bind-btn,
+.lang-en .login-btn, .lang-en .logout-btn, .lang-en .buy-btn,
+.lang-en .manage-btn, .lang-en .action-btn, .lang-en .retry-btn,
+.lang-en .checkin-submit, .lang-en .menu-label, .lang-en .quota-value,
+.lang-en .yiyuan-feature-title, .lang-en .yiyuan-poem, .lang-en .yiyuan-cta-text,
+.lang-en .points-action-text, .lang-en .signature-title, .lang-en .signature-desc,
+.lang-en .title-name, .lang-en .title-label, .lang-en .navbar-title-text,
+.lang-en .gua-name, .lang-en .gua-ge, .lang-en .relation-name,
+.lang-en .relation-oneliner, .lang-en .preface-line, .lang-en .preface-tip,
+.lang-en .nickname-text, .lang-en .fold-title, .lang-en .fold-text,
+.lang-en .level-seal-text, .lang-en .action-btn-text, .lang-en .empty-state,
+.lang-en .compliance-text, .lang-en .footer-text, .lang-en .plan-name,
+.lang-en .plan-price, .lang-en .priv-title, .lang-en .priv-item-text,
+.lang-en .deep-intro-title, .lang-en .deep-intro-desc, .lang-en .secret-divider-text,
+.lang-en .bind-title, .lang-en .bind-desc, .lang-en .bind-cancel,
+.lang-en .vip-title, .lang-en .vip-sub, .lang-en .seal-recommend {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 英文模式下，固定高度按钮允许内容撑开（min-height 替代 height） */
+.lang-en .checkin-submit,
+.lang-en .buy-btn, .lang-en .manage-btn,
+.lang-en .login-btn, .lang-en .logout-btn,
+.lang-en .action-btn, .lang-en .submit-btn,
+.lang-en .bind-btn, .lang-en .bind-confirm-btn,
+.lang-en .send-code-btn {
+  height: auto !important;
+  min-height: 88rpx;
+  line-height: 1.4;
+  white-space: normal;
+  padding-top: 12rpx;
+  padding-bottom: 12rpx;
+  box-sizing: border-box;
+}
+
+/* 英文模式下，大字标题降字号+缩字间距（页面级覆盖优先） */
+.lang-en .relation-name,
+.lang-en .yiyuan-feature-title,
+.lang-en .vip-title,
+.lang-en .navbar-title-text,
+.lang-en .welcome-title,
+.lang-en .modal-name,
+.lang-en .modal-title {
+  letter-spacing: 1rpx;
+  line-height: 1.3;
+}

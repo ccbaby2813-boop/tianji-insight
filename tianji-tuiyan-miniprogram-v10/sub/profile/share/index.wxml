@@ -1,0 +1,39 @@
+<!-- sub/profile/share/index.wxml - 分享选择页（带官方 logo） -->
+<view class="share-page" bindtap="onClose">
+  <!-- 半透明遮罩 -->
+  <view class="share-mask"></view>
+
+  <!-- 底部分享面板 -->
+  <view class="share-panel" catchtap="noop">
+    <!-- 标题 -->
+    <view class="share-header">
+      <text class="share-title">{{isEn ? 'Share to' : '分享到'}}</text>
+      <view class="share-close" bindtap="onClose">
+        <text class="close-icon">×</text>
+      </view>
+    </view>
+
+    <!-- 渠道网格 -->
+    <view class="share-grid">
+      <view
+        class="share-channel"
+        wx:for="{{channels}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="onChannelTap"
+      >
+        <!-- 图标圆形背景 + logo -->
+        <view class="channel-icon" style="background: {{item.color}};">
+          <image src="{{item.logo}}" class="channel-logo" mode="aspectFit" />
+        </view>
+        <!-- 渠道名称 -->
+        <text class="channel-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 取消按钮 -->
+    <view class="share-cancel" bindtap="onClose">
+      <text class="cancel-text">{{isEn ? 'Cancel' : '取消'}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,1180 @@
+/* sub/match/letter-thread/index.wxss - 信件往来：缩略卡片 + 完整信纸浮层
+ * Visual Thesis: 信件缩略卡如信封静卧，点开则信纸scaleIn浮起，毛玻璃遮罩衬出仪式感
+ * 浅色主题：温暖浪漫，与匹配池/写信页风格统一
+ */
+
+/* ========================================
+ * 根容器：启用浅色主题变量（温暖信纸氛围）
+ * ======================================== */
+.page-container,
+.page-container.letter-thread-page {
+  /* 浅色主题变量（覆盖 page 级深色变量） */
+  --bg-base: #FFF8F3;
+  --bg-elevated: #FFFFFF;
+  --bg-warm: #FEF0E5;
+  --bg-warmer: #FFFBF5;
+  --bg-muted: rgba(200, 165, 91, 0.04);
+
+  --text-primary: #3D2B1F;
+  --text-secondary: #5B3A1F;
+  --text-muted: #8B6B5A;
+  --text-faint: #6B5A48;
+  --text-inverse: #FFF8F3;
+
+  --accent-gold: #C8A55B;
+  --accent-gold-deep: #8B7340;
+  --accent-gold-light: #C8A55B;
+  --accent-gold-hover: #C8A55B;
+  --accent-gold-muted: rgba(200, 165, 91, 0.08);
+  --accent-gold-subtle: rgba(200, 165, 91, 0.04);
+  --accent-gold-border: rgba(200, 165, 91, 0.25);
+
+  --border-subtle: rgba(200, 165, 91, 0.08);
+  --border-default: rgba(200, 165, 91, 0.15);
+  --border-strong: rgba(200, 165, 91, 0.3);
+  --border-paper: #F0E4D8;
+  --border-paper-strong: #E8D5C4;
+
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 20rpx;
+  --radius-xl: 28rpx;
+  --radius-full: 999rpx;
+
+  --shadow-sm: 0 2rpx 8rpx rgba(200, 165, 91, 0.06);
+  --shadow-md: 0 4rpx 16rpx rgba(200, 165, 91, 0.1);
+  --shadow-lg: 0 16rpx 48rpx rgba(61, 43, 31, 0.25);
+  --shadow-gold: 0 4rpx 16rpx rgba(200, 165, 91, 0.25);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-base);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+}
+
+/* ========================================
+ * 顶部导航栏
+ * ======================================== */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+  height: 120rpx;
+  background: var(--bg-base);
+  border-bottom: 1rpx solid var(--border-paper);
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+
+.nav-back-icon {
+  font-size: 56rpx;
+  color: var(--text-primary);
+  line-height: 1;
+  font-weight: 300;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.nav-title-text {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-subtitle {
+  font-family: sans-serif;
+  font-size: 22rpx;
+  color: var(--text-faint);
+  line-height: 1.4;
+}
+
+.nav-placeholder {
+  width: 88rpx;
+}
+
+.nav-more {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+
+.nav-more-icon {
+  font-size: 40rpx;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -2rpx;
+}
+
+/* 右侧按钮组（写信 + 更多） */
+.nav-right-group {
+  display: flex;
+  align-items: center;
+}
+.nav-write {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+  border-radius: 50%;
+  background: rgba(200, 165, 91, 0.1);
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+.nav-write:active {
+  opacity: 0.6;
+  background: rgba(200, 165, 91, 0.2);
+}
+
+/* VIP 金色 V 标识 */
+.vip-badge {
+  display: inline-block;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  padding: 0 8rpx;
+  margin-left: 10rpx;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #F0C674, var(--accent-gold));
+  color: var(--text-inverse);
+  font-size: 22rpx;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow:
+    0 2rpx 6rpx rgba(212, 165, 116, 0.4),
+    0 0 0 2rpx rgba(212, 165, 116, 0.15);
+}
+
+/* ========================================
+ * 状态区：加载中 / 错误 / 空
+ * ======================================== */
+.state-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64rpx 48rpx;
+  min-height: 60vh;
+}
+
+.state-text {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 32rpx;
+  line-height: 1.6;
+}
+
+/* 加载三点动画 */
+.loading-dot-wrap {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.loading-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--accent-gold-deep);
+  animation: dotPulse 1.2s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.empty-envelope {
+  margin-bottom: 24rpx;
+}
+
+.envelope-icon {
+  font-size: 120rpx;
+  color: var(--border-paper-strong);
+  line-height: 1;
+}
+
+.retry-btn,
+.empty-write-btn {
+  margin-top: 40rpx;
+  padding: 16rpx 56rpx;
+  border: 1rpx solid var(--accent-gold-deep);
+  border-radius: 32rpx;
+  background: transparent;
+  transition: all 0.2s var(--ease-out-expo);
+}
+
+.retry-btn:active,
+.empty-write-btn:active {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+
+.retry-btn-text,
+.empty-write-btn-text {
+  font-size: 26rpx;
+  color: var(--accent-gold-deep);
+  letter-spacing: 2rpx;
+}
+
+/* ========================================
+ * 信件缩略列表：信封卡片
+ * ======================================== */
+.letter-list {
+  flex: 1;
+  height: 0;
+}
+
+.list-inner {
+  padding: 32rpx 32rpx 32rpx;
+}
+
+/* 缩略卡片：去卡片化，金线分隔 */
+.letter-preview-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: transparent;
+  border: none;
+  border-bottom: 1rpx solid rgba(200, 165, 91, 0.12);
+  border-radius: 0;
+  padding: 24rpx 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: none;
+  box-sizing: border-box;
+  transition: all 0.2s var(--ease-out-expo);
+  animation: cardSlideIn 0.5s var(--ease-out-expo) both;
+}
+
+.letter-preview-card:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+/* 收到的信：金色左边线（强化"来信"仪式感） */
+.preview-received {
+  border-left: 4rpx solid var(--accent-gold-deep);
+  background: transparent;
+}
+
+/* 寄出的信：浅金左边线 */
+.preview-sent {
+  border-left: 4rpx solid var(--accent-gold-light);
+  background: transparent;
+}
+
+/* 信封缩略图标 */
+.preview-envelope {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 12rpx;
+  background: var(--bg-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.4);
+}
+
+.preview-envelope-icon {
+  font-size: 36rpx;
+  color: var(--accent-gold-deep);
+}
+
+/* 缩略内容区 */
+.preview-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 未读红点 */
+.preview-unread-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--gold-pure);
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.5);
+  margin-left: 8rpx;
+  flex-shrink: 0;
+  animation: badgePopIn 0.5s var(--ease-spring) both;
+}
+
+.preview-sender {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 32rpx;
+  color: var(--text-primary);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300rpx;
+}
+
+.preview-date {
+  font-size: 22rpx;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+
+.preview-content {
+  width: 100%;
+}
+
+.preview-content-text {
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 展开箭头 */
+.preview-arrow {
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-arrow-icon {
+  font-size: 36rpx;
+  color: var(--border-paper-strong);
+  font-weight: 300;
+}
+
+.list-bottom-spacer {
+  height: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* ========================================
+ * 完整信纸浮层：scaleIn 入场 + 毛玻璃遮罩
+ * ======================================== */
+.full-letter-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(61, 43, 31, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 顶部留出状态栏安全区，避免关闭按钮被刘海屏遮挡 */
+  padding: calc(48rpx + env(safe-area-inset-top)) 32rpx 48rpx;
+  box-sizing: border-box;
+  backdrop-filter: blur(12rpx);
+}
+
+.full-letter-scroll {
+  position: relative;
+  width: 100%;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+/* 信纸主体：scaleIn 入场（宣纸古卷风，与写信页一致） */
+.full-letter-paper {
+  position: relative;
+  width: 100%;
+  background: #F5EBD8;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 16rpx 48rpx rgba(61, 43, 31, 0.25);
+  animation: scaleIn 0.4s var(--ease-out-expo) both;
+}
+
+/* 装裱外层：双线边框模拟古卷装裱（外粗内细） */
+.paper-mount-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2rpx solid #8B6B4A;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.paper-mount-border::after {
+  content: '';
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  right: 8rpx;
+  bottom: 8rpx;
+  border: 1rpx solid rgba(139, 107, 74, 0.4);
+  border-radius: 2rpx;
+  pointer-events: none;
+}
+
+/* 举报小链接（左下角） */
+.full-letter-report-link {
+  position: relative;
+  z-index: 2;
+  padding: 12rpx 24rpx 20rpx;
+  text-align: left;
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+
+.full-letter-report-link .report-link-text {
+  font-size: 24rpx;
+  color: var(--text-faint);
+  font-family: "Noto Serif SC", "STSong", serif;
+  text-decoration: underline;
+}
+
+/* 收信浮层底部回信按钮（固定在屏幕底部，与写信页 action-bar 一致） */
+.full-letter-reply-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 248, 243, 0.95);
+  border-top: 1rpx solid var(--border-paper-strong);
+  gap: 24rpx;
+  backdrop-filter: blur(20rpx);
+}
+
+.full-letter-reply-bar .report-link {
+  padding: 16rpx 8rpx;
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+
+.full-letter-reply-bar .report-text {
+  font-size: 24rpx;
+  color: var(--text-faint);
+  font-family: sans-serif;
+}
+
+/* 回信按钮：艺术感性风格（与写信页寄信按钮一致） */
+.full-letter-reply-bar .send-btn {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.full-letter-reply-bar .send-btn-line {
+  width: 96rpx;
+  height: 1rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.35) 20%,
+    rgba(200, 165, 91, 0.85) 50%,
+    rgba(200, 165, 91, 0.35) 80%,
+    transparent 100%
+  );
+  transition: width 0.4s var(--ease-out-expo), opacity 0.3s var(--ease-out-expo);
+}
+
+.full-letter-reply-bar .send-btn-text {
+  font-size: 32rpx;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+  font-family: "STKaiti", "KaiTi", serif;
+  position: relative;
+  z-index: 1;
+  text-shadow: none;
+}
+
+/* 信纸纹理背景：横向格子线 + 淡墨晕染（与写信页一致） */
+.paper-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 55rpx,
+      rgba(139, 107, 74, 0.08) 55rpx,
+      rgba(139, 107, 74, 0.08) 56rpx
+    ),
+    radial-gradient(ellipse at 20% 15%, rgba(139, 107, 74, 0.05) 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 60%, rgba(139, 107, 74, 0.04) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 85%, rgba(200, 165, 91, 0.03) 0%, transparent 30%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 四角金线装饰：L形细金线 */
+.paper-corner {
+  position: absolute;
+  width: 48rpx;
+  height: 48rpx;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.paper-corner::before,
+.paper-corner::after {
+  content: '';
+  position: absolute;
+  background: linear-gradient(90deg, rgba(200, 165, 91, 0.6), rgba(200, 165, 91, 0.3));
+}
+
+.paper-corner::before {
+  width: 48rpx;
+  height: 1rpx;
+}
+
+.paper-corner::after {
+  width: 1rpx;
+  height: 48rpx;
+}
+
+.paper-corner-tl { top: 24rpx; left: 24rpx; }
+.paper-corner-tl::before { top: 0; left: 0; }
+.paper-corner-tl::after { top: 0; left: 0; }
+
+.paper-corner-tr { top: 24rpx; right: 24rpx; }
+.paper-corner-tr::before { top: 0; right: 0; }
+.paper-corner-tr::after { top: 0; right: 0; }
+
+.paper-corner-bl { bottom: 24rpx; left: 24rpx; }
+.paper-corner-bl::before { bottom: 0; left: 0; }
+.paper-corner-bl::after { bottom: 0; left: 0; }
+
+.paper-corner-br { bottom: 24rpx; right: 24rpx; }
+.paper-corner-br::before { bottom: 0; right: 0; }
+.paper-corner-br::after { bottom: 0; right: 0; }
+
+/* 抬头双横线分隔 */
+.paper-header-divider {
+  position: relative;
+  z-index: 1;
+  margin: 8rpx 0 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.header-line-thick {
+  height: 2rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 107, 74, 0.5) 10%,
+    rgba(139, 107, 74, 0.7) 50%,
+    rgba(139, 107, 74, 0.5) 90%,
+    transparent 100%
+  );
+}
+
+.header-line-thin {
+  height: 1rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 107, 74, 0.3) 10%,
+    rgba(139, 107, 74, 0.4) 50%,
+    rgba(139, 107, 74, 0.3) 90%,
+    transparent 100%
+  );
+}
+
+/* 落款分隔细金线 */
+.paper-signoff-divider {
+  position: relative;
+  z-index: 1;
+  height: 1rpx;
+  margin: 24rpx 0 16rpx;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 165, 91, 0.4) 30%,
+    rgba(200, 165, 91, 0.6) 70%,
+    transparent 100%
+  );
+}
+
+/* ========================================
+ * 点击反馈态
+ * ======================================== */
+.nav-btn:active {
+  opacity: 0.6;
+}
+
+.nav-more:active {
+  opacity: 0.6;
+}
+
+.full-letter-close:active {
+  opacity: 0.8;
+  transform: scale(0.92);
+}
+
+.full-letter-report-link:active {
+  opacity: 0.6;
+}
+
+.full-letter-reply-bar .report-link:active {
+  opacity: 0.6;
+}
+
+.full-letter-reply-bar .send-btn:active {
+  opacity: 0.7;
+}
+
+.full-letter-reply-bar .send-btn:active .send-btn-line {
+  width: 160rpx;
+}
+
+.full-letter-reply-bar .send-btn:active .send-btn-text {
+  letter-spacing: 16rpx;
+  text-indent: 16rpx;
+}
+
+.action-bar .report-link:active {
+  opacity: 0.6;
+}
+
+.action-bar .send-btn:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* ========================================
+ * 宣纸古卷风装饰（与写信页一致）
+ * ======================================== */
+
+/* 宣纸纹理层：淡墨晕染斑点 */
+.paper-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(139, 107, 74, 0.06) 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 60%, rgba(139, 107, 74, 0.05) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 85%, rgba(139, 107, 74, 0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 10% 70%, rgba(200, 165, 91, 0.03) 0%, transparent 25%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 朱砂印章装饰（已移除，保留样式兼容） */
+.paper-seal,
+.seal-square,
+.seal-text {
+  display: none;
+}
+
+@keyframes sealStampIn {
+  0% { opacity: 0; transform: scale(1.8) rotate(-30deg); }
+  60% { opacity: 1; transform: scale(0.9) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-6deg); }
+}
+
+/* 水墨晕染装饰角（已废弃，保留兼容） */
+.paper-ink-corner {
+  display: none;
+}
+
+/* ========================================
+ * 装饰元素层（已废弃，保留兼容）
+ * ======================================== */
+.paper-decorations {
+  display: none;
+}
+
+.deco-crane,
+.deco-lotus,
+.deco-heart,
+.deco-moon {
+  display: none;
+}
+
+/* 竖排标题装饰（左侧"展信"二字） */
+.paper-vertical-title {
+  position: absolute;
+  top: 48rpx;
+  left: 24rpx;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.vertical-char {
+  font-family: "STKaiti", "KaiTi", serif;
+  font-size: 44rpx;
+  color: #C8A55B;
+  font-weight: 600;
+  letter-spacing: 0;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+/* ========================================
+ * 信纸内容内边距（宣纸古卷风，与写信页一致）
+ * ======================================== */
+.paper-inner {
+  margin: 20rpx;
+  border-radius: 2rpx;
+  padding: 48rpx 40rpx 32rpx;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ========================================
+ * 信纸头部
+ * ======================================== */
+.paper-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.paper-sender-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.paper-sender-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold-deep), var(--accent-gold-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(200, 165, 91, 0.25);
+}
+
+.paper-avatar-char {
+  font-size: 26rpx;
+  color: var(--text-inverse);
+  font-weight: 700;
+}
+
+.paper-sender-name {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.paper-date-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4rpx;
+}
+
+.paper-lunar {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 22rpx;
+  color: var(--accent-gold-deep);
+  letter-spacing: 2rpx;
+  font-weight: 600;
+}
+
+.paper-time {
+  font-size: 22rpx;
+  color: var(--text-faint);
+}
+
+/* v2.0 邮戳时间戳风格 */
+.paper-postmark {
+  display: flex;
+  align-items: center;
+}
+
+.postmark-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 16rpx;
+  border: 2rpx solid rgba(200, 165, 91, 0.5);
+  border-radius: 8rpx;
+  background: rgba(200, 165, 91, 0.05);
+  position: relative;
+  transform: rotate(-3deg);
+}
+
+.postmark-circle::before {
+  content: '';
+  position: absolute;
+  top: -4rpx;
+  left: -4rpx;
+  right: -4rpx;
+  bottom: -4rpx;
+  border: 1rpx dashed rgba(200, 165, 91, 0.3);
+  border-radius: 12rpx;
+  pointer-events: none;
+}
+
+.postmark-lunar {
+  font-family: "STSong", "SimSun", serif;
+  font-size: 20rpx;
+  color: rgba(200, 165, 91, 0.8);
+  letter-spacing: 1rpx;
+  font-weight: 600;
+}
+
+.postmark-time {
+  font-size: 20rpx;
+  color: rgba(200, 165, 91, 0.75);
+  letter-spacing: 1rpx;
+  margin-top: 2rpx;
+  word-break: break-word;
+}
+
+/* v2.0 封蜡SVG装饰（右上角） */
+.seal-wax {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  z-index: 3;
+  animation: sealStampIn 0.6s var(--ease-spring) 0.3s both;
+}
+
+.seal-wax-circle {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(200, 165, 91, 0.9), rgba(139, 115, 64, 0.85));
+  border: 2rpx solid rgba(139, 115, 64, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(200, 165, 91, 0.3);
+  transform: rotate(-8deg);
+}
+
+.seal-wax-text {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #FFF8F0;
+  font-family: "STKaiti", "KaiTi", serif;
+  text-shadow: 0 1rpx 2rpx rgba(0, 0, 0, 0.3);
+}
+
+@keyframes sealStampIn {
+  0% {
+    opacity: 0;
+    transform: scale(2) rotate(-30deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.9) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+/* v2.0 举报印章风格 */
+.report-seal {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.report-seal-circle {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--gold-pure-dim);
+  background: rgba(200, 165, 91, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-5deg);
+}
+
+.report-seal-text {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--gold-pure);
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+.report-link-seal {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.report-seal-circle-small {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--gold-pure-dim);
+  background: rgba(200, 165, 91, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-5deg);
+}
+
+.report-seal-text-small {
+  font-size: 20rpx;
+  font-weight: 700;
+  color: var(--gold-pure);
+  font-family: "STKaiti", "KaiTi", serif;
+}
+
+/* v2.0 回信按钮毛笔SVG适配 */
+.full-letter-reply-bar .send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+
+/* 分隔线 */
+.paper-divider {
+  position: relative;
+  z-index: 2;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, var(--border-paper-strong), transparent);
+  margin: 20rpx 0;
+}
+
+/* ========================================
+ * 正文 + 落款
+ * ======================================== */
+.paper-body {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 40rpx;
+}
+
+.paper-body-text {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  line-height: 2;
+  letter-spacing: 2rpx;
+  text-align: justify;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.paper-signoff {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+}
+
+.signoff-salutation {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.signoff-name {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.signoff-date {
+  font-family: "Noto Serif SC", "STSong", serif;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+ * 关闭按钮
+ * ======================================== */
+.full-letter-close {
+  position: absolute;
+  top: -16rpx;
+  right: -16rpx;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1rpx solid var(--border-paper-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(61, 43, 31, 0.15);
+  z-index: 10;
+  transition: all 0.2s var(--ease-out-quart);
+}
+
+.close-icon {
+  font-size: 40rpx;
+  color: var(--text-secondary);
+  line-height: 1;
+  font-weight: 300;
+}
+
+/* ========================================
+ * 底部操作栏（与写信页一致：fixed 定位在 tab-bar 正上方，左举报 + 右大按钮）
+ * ======================================== */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(104rpx + env(safe-area-inset-bottom));
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  background: rgba(255, 248, 243, 0.95);
+  border-top: 1rpx solid var(--border-paper);
+  gap: 24rpx;
+  box-shadow: 0 -2rpx 8rpx rgba(61, 43, 31, 0.04);
+  backdrop-filter: blur(20rpx);
+}
+
+.action-bar .report-link {
+  padding: 16rpx 8rpx;
+  transition: opacity 0.2s var(--ease-out-quart);
+}
+
+.action-bar .report-text {
+  font-size: 24rpx;
+  color: var(--text-faint);
+  font-family: sans-serif;
+}
+
+.action-bar .send-btn {
+  flex: 1;
+  height: 96rpx;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent-gold-deep) 0%, var(--accent-gold-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8rpx 24rpx rgba(200, 165, 91, 0.3),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+/* 金光流转扫光 */
+.action-bar .send-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.6s var(--ease-out-expo);
+}
+
+.action-bar .send-btn:active {
+  opacity: 0.85;
+}
+
+.action-bar .send-btn:active::before {
+  left: 100%;
+}
+
+.action-bar .send-btn-text {
+  font-size: 30rpx;
+  color: var(--text-inverse);
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  font-family: "Noto Serif SC", "STSong", serif;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== EN-i18n label fix ===== */
+.lang-en .send-btn-text { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 28rpx; line-height: 1.3; }

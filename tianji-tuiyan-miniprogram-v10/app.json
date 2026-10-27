@@ -1,0 +1,113 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/index",
+    "pages/result/index",
+    "pages/profile/index",
+    "pages/about/about",
+    "pages/login/login",
+    "pages/webview/index"
+  ],
+  "subpackages": [
+    {
+      "root": "sub/learn",
+      "name": "learn",
+      "pages": [
+        "learn/index",
+        "native-gua/index",
+        "achievement/index"
+      ]
+    },
+    {
+      "root": "sub/profile",
+      "name": "profile",
+      "pages": [
+        "edit-profile/index",
+        "bind-email/index",
+        "notifications/index",
+        "share/index"
+      ]
+    },
+    {
+      "root": "sub/vip",
+      "name": "vip",
+      "pages": [
+        "vip/index"
+      ]
+    },
+    {
+      "root": "sub/match",
+      "name": "match",
+      "pages": [
+        "match/index",
+        "my-matches/index",
+        "match-pool/index",
+        "letter-write/index",
+        "letter-thread/index"
+      ]
+    },
+    {
+      "root": "sub/legal",
+      "name": "legal",
+      "pages": [
+        "agreement/index",
+        "privacy/index"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": [
+        "learn"
+      ]
+    },
+    "pages/my/index": {
+      "network": "all",
+      "packages": [
+        "profile",
+        "vip",
+        "match",
+        "legal"
+      ]
+    }
+  },
+  "window": {
+    "navigationBarTitleText": "易经天机推演",
+    "navigationBarBackgroundColor": "#0A0E17",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0A0E17",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#8B8BA0",
+    "selectedColor": "#C8A96E",
+    "backgroundColor": "#0A0E17",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 90000,
+    "connectSocket": 60000,
+    "uploadFile": 60000,
+    "downloadFile": 60000
+  },
+  "permission": {},
+  "__usePrivacyCheck__": true,
+  "requiredPrivateInfos": [],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "miniApp": {
+    "useAuthorizePage": true
+  }
+}

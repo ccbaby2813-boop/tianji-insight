@@ -1,0 +1,628 @@
+/* sub/learn/native-gua/index.wxss - 64卦人格详情 v3.0
+ * Visual Thesis: 黑金典藏卡牌 · 立体浮雕 · 分享欲优先
+ * 设计锚点：卡牌为视觉中心，五行标记立体浮雕，金线分隔，大量留白
+ */
+
+/* ===== 页面容器 ===== */
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-base);
+  overflow-x: hidden;
+  position: relative;
+}
+
+.gua-detail { overflow-x: hidden; position: relative; }
+
+/* 顶部背景光晕 */
+.hero-glow {
+  position: absolute;
+  top: -100rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600rpx;
+  height: 600rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 165, 91, 0.12) 0%, rgba(200, 165, 91, 0.04) 30%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  animation: heroGlowPulse 4s ease-in-out infinite;
+}
+
+@keyframes heroGlowPulse {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+
+/* 五行光晕变体 */
+.hero-glow.aura-jin { background: radial-gradient(circle, rgba(200, 165, 91, 0.14) 0%, transparent 65%); }
+.hero-glow.aura-mu { background: radial-gradient(circle, rgba(200, 165, 91, 0.10) 0%, transparent 65%); }
+.hero-glow.aura-shui { background: radial-gradient(circle, rgba(200, 165, 91, 0.07) 0%, transparent 65%); }
+.hero-glow.aura-huo { background: radial-gradient(circle, rgba(200, 165, 91, 0.13) 0%, transparent 65%); }
+.hero-glow.aura-tu { background: radial-gradient(circle, rgba(200, 165, 91, 0.11) 0%, transparent 65%); }
+
+/* ===== 人格典藏卡 ===== */
+.personality-card {
+  position: relative;
+  margin: 48rpx 40rpx 40rpx;
+  padding: 48rpx 40rpx 40rpx;
+  background: linear-gradient(145deg, rgba(20, 20, 43, 0.95) 0%, rgba(10, 10, 26, 0.98) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 24rpx 64rpx rgba(0, 0, 0, 0.5),
+    0 0 0 1rpx rgba(200, 165, 91, 0.15),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.05);
+  overflow: visible;
+  z-index: 1;
+  animation: cardReveal 1s var(--ease-out-expo) both;
+}
+
+@keyframes cardReveal {
+  0% { opacity: 0; transform: translateY(40rpx) scale(0.95) rotateX(8deg); }
+  60% { opacity: 1; transform: translateY(0) scale(1.01) rotateX(0deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+}
+
+/* 卡牌外框：多层金线 */
+.card-frame {
+  position: absolute;
+  pointer-events: none;
+  border-radius: var(--radius-lg);
+}
+
+.card-frame-outer {
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 2rpx solid rgba(200, 165, 91, 0.35);
+  box-shadow: inset 0 0 24rpx rgba(200, 165, 91, 0.06);
+}
+
+.card-frame-inner {
+  top: 12rpx; left: 12rpx; right: 12rpx; bottom: 12rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.18);
+}
+
+/* 四角装饰 */
+.card-corner {
+  position: absolute;
+  width: 32rpx;
+  height: 32rpx;
+  border-color: var(--gold-pure);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.card-corner-tl { top: 18rpx; left: 18rpx; border-top: 2rpx solid; border-left: 2rpx solid; }
+.card-corner-tr { top: 18rpx; right: 18rpx; border-top: 2rpx solid; border-right: 2rpx solid; }
+.card-corner-bl { bottom: 18rpx; left: 18rpx; border-bottom: 2rpx solid; border-left: 2rpx solid; }
+.card-corner-br { bottom: 18rpx; right: 18rpx; border-bottom: 2rpx solid; border-right: 2rpx solid; }
+
+/* 五行标记：立体浮雕 */
+.wuxing-mark {
+  position: absolute;
+  top: -16rpx;
+  left: -16rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  box-shadow:
+    0 6rpx 18rpx rgba(0, 0, 0, 0.4),
+    0 0 0 3rpx rgba(10, 10, 26, 0.8);
+}
+
+.wuxing-mark::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(255,255,255,0.25) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wuxing-mark::after {
+  content: '';
+  position: absolute;
+  top: 4rpx; left: 4rpx; right: 4rpx; bottom: 4rpx;
+  border-radius: 50%;
+  border: 2rpx dashed rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.wuxing-mark-text {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #FFF5E8;
+  font-family: "STKaiti", "KaiTi", serif;
+  position: relative;
+  z-index: 3;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.4);
+  word-break: break-word;
+}
+
+/* 英文态：Metal/Wood 等长词防溢出圆形标记 */
+.lang-en .wuxing-mark-text {
+  font-size: 20rpx;
+  letter-spacing: 0;
+}
+
+.wuxing-mark-shadow {
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  filter: blur(8rpx);
+  z-index: -1;
+}
+
+/* 五行配色 */
+.wuxing-jin { background: linear-gradient(145deg, #D4B570, #A88A4A); }
+.wuxing-mu { background: linear-gradient(145deg, #6A8A4A, #4A6A32); }
+.wuxing-shui { background: linear-gradient(145deg, #4A6A9A, #2A4A72); }
+.wuxing-huo { background: linear-gradient(145deg, #C8503A, #9A3020); }
+.wuxing-tu { background: linear-gradient(145deg, #B09060, #8A6A40); }
+
+/* 稀有度徽章 */
+.rarity-badge {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  padding: 8rpx 20rpx;
+  background: rgba(200, 165, 91, 0.1);
+  border: 1rpx solid rgba(200, 165, 91, 0.35);
+  border-radius: var(--radius-full);
+  z-index: 2;
+}
+
+.rarity-badge-text {
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  letter-spacing: 2rpx;
+  font-weight: 600;
+}
+
+/* 卡牌内容 */
+.card-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.card-owner {
+  margin-bottom: 24rpx;
+}
+
+.card-owner-text {
+  font-size: 24rpx;
+  color: rgba(200, 165, 91, 0.55);
+  letter-spacing: 4rpx;
+}
+
+/* 卦符舞台 */
+.symbol-stage {
+  position: relative;
+  width: 260rpx;
+  height: 260rpx;
+  margin: 0 auto 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbol-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1rpx solid rgba(200, 165, 91, 0.2);
+  pointer-events: none;
+}
+
+.symbol-ring-1 { width: 180rpx; height: 180rpx; animation: symbolRing1 4s ease-in-out infinite; }
+.symbol-ring-2 { width: 220rpx; height: 220rpx; animation: symbolRing2 4s ease-in-out infinite 0.5s; }
+.symbol-ring-3 { width: 260rpx; height: 260rpx; animation: symbolRing3 4s ease-in-out infinite 1s; }
+
+@keyframes symbolRing1 {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
+}
+@keyframes symbolRing2 {
+  0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.08); }
+}
+@keyframes symbolRing3 {
+  0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.gua-symbol {
+  font-size: 140rpx;
+  color: var(--gold-pure);
+  text-shadow:
+    0 0 40rpx rgba(200, 165, 91, 0.5),
+    0 0 80rpx rgba(200, 165, 91, 0.25),
+    0 4rpx 16rpx rgba(0, 0, 0, 0.4);
+  animation: goldReveal 1s var(--ease-out-expo) 0.3s both;
+  position: relative;
+  z-index: 1;
+}
+
+.gua-name {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: var(--gold-pure);
+  display: block;
+  letter-spacing: 10rpx;
+  word-break: break-word;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.4s both;
+}
+
+.gua-short-name {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: rgba(200, 165, 91, 0.45);
+  margin-top: 8rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.45s both;
+}
+
+.gua-tag-row {
+  margin-top: 20rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.5s both;
+}
+
+.gua-tag {
+  display: inline-block;
+  padding: 10rpx 28rpx;
+  background: rgba(200, 165, 91, 0.08);
+  border: 1rpx solid rgba(200, 165, 91, 0.3);
+  border-radius: var(--radius-full);
+  font-size: 24rpx;
+  color: var(--gold-pure);
+  letter-spacing: 3rpx;
+}
+
+.yi-ju-hua-wrap {
+  margin-top: 32rpx;
+  padding: 0 24rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.55s both;
+}
+
+.yi-ju-hua {
+  font-size: 28rpx;
+  color: rgba(232, 232, 240, 0.75);
+  line-height: 1.8;
+  font-style: italic;
+  letter-spacing: 2rpx;
+  word-break: break-word;
+}
+
+/* 卡牌底部装饰 */
+.card-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  margin-top: 32rpx;
+  opacity: 0.6;
+}
+
+.ornament-line {
+  width: 80rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, rgba(200, 165, 91, 0.4), transparent);
+}
+
+/* ===== 分享诱饵区 ===== */
+.share-bait {
+  margin: 0 40rpx 48rpx;
+  animation: fadeInUp 0.6s var(--ease-out-expo) 0.6s both;
+}
+
+.share-bait-inner {
+  padding: 32rpx;
+  background: linear-gradient(135deg, rgba(200, 165, 91, 0.1) 0%, rgba(200, 165, 91, 0.03) 100%);
+  border: 1rpx dashed rgba(200, 165, 91, 0.35);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.share-bait-title {
+  display: block;
+  font-size: 28rpx;
+  color: var(--gold-pure);
+  font-weight: 700;
+  letter-spacing: 4rpx;
+  margin-bottom: 8rpx;
+}
+
+.share-bait-desc {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(232, 232, 240, 0.5);
+  margin-bottom: 24rpx;
+  letter-spacing: 1rpx;
+}
+
+.share-bait-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  height: 72rpx;
+  padding: 0 40rpx;
+  background: var(--gold-pure);
+  color: var(--text-inverse);
+  font-size: 28rpx;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: none;
+  letter-spacing: 2rpx;
+  box-shadow: 0 4rpx 16rpx rgba(200, 165, 91, 0.3);
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.share-bait-btn::after { border: none; }
+
+.share-bait-btn-hover {
+  transform: scale(0.97);
+  box-shadow: 0 2rpx 8rpx rgba(200, 165, 91, 0.4);
+}
+
+/* ===== 金线分隔 ===== */
+.line-gold-thin {
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent 0%, rgba(200, 165, 91, 0.35) 20%, rgba(200, 165, 91, 0.35) 80%, transparent 100%);
+  margin: 0 48rpx;
+  animation: drawGoldLine 1s var(--ease-out-expo) both;
+}
+
+@keyframes drawGoldLine {
+  0% { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+
+/* ===== 信息区 ===== */
+.gua-info { padding: 40rpx 48rpx 0; }
+
+.poem-block {
+  margin-bottom: 40rpx;
+  padding: 24rpx 16rpx 24rpx 28rpx;
+  border-left: 2rpx solid rgba(200, 165, 91, 0.3);
+  animation: fadeInUp 0.5s var(--ease-out-expo) both;
+}
+
+.poem-block:nth-child(1) { animation-delay: 0s; }
+.poem-block:nth-child(2) { animation-delay: 0.08s; }
+.poem-block:nth-child(3) { animation-delay: 0.16s; }
+.poem-block:nth-child(4) { animation-delay: 0.24s; }
+.poem-block:nth-child(5) { animation-delay: 0.32s; }
+
+.info-label {
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  display: block;
+  margin-bottom: 10rpx;
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.info-text {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  line-height: 1.8;
+  display: block;
+  word-break: break-word;
+}
+
+.info-text.rarity { color: var(--gold-pure); font-weight: 700; font-size: 30rpx; }
+
+.info-text.tag-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 28rpx;
+  background: rgba(200, 165, 91, 0.08);
+  border: 2rpx dashed rgba(200, 165, 91, 0.35);
+  border-radius: 6rpx 18rpx 6rpx 18rpx;
+  font-size: 26rpx;
+  color: var(--gold-pure);
+  transform: rotate(-1.5deg);
+  animation: stickerWiggle 0.5s var(--ease-out-expo) both;
+  letter-spacing: 2rpx;
+}
+
+@keyframes stickerWiggle {
+  0%   { transform: rotate(-6deg) scale(0.8); opacity: 0; }
+  40%  { transform: rotate(2deg) scale(1.05); }
+  70%  { transform: rotate(-1.5deg) scale(0.98); }
+  100% { transform: rotate(-1.5deg) scale(1); opacity: 1; }
+}
+
+/* 标签行 */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+/* 印章风格标签 */
+.seal-row { gap: 16rpx; }
+
+.seal-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 20rpx;
+  border: 2rpx solid var(--gold-pure-dim);
+  border-radius: 4rpx;
+  font-family: "LXGWWenKaiMedium", "STKaiti", "KaiTi", serif;
+  font-size: 26rpx;
+  color: var(--gold-pure);
+  letter-spacing: 4rpx;
+  background: rgba(200, 165, 91, 0.04);
+  position: relative;
+}
+
+.seal-tag::before {
+  content: '';
+  position: absolute;
+  top: 4rpx; left: 4rpx; right: 4rpx; bottom: 4rpx;
+  border: 1rpx solid rgba(200, 165, 91, 0.25);
+  pointer-events: none;
+}
+
+/* 成长建议 */
+.growth-block { margin-bottom: 16rpx; }
+.growth-block:last-child { margin-bottom: 0; }
+
+.growth-sub-label {
+  font-size: 22rpx;
+  color: var(--gold-pure);
+  display: block;
+  margin-bottom: 10rpx;
+  letter-spacing: 4rpx;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ===== 折叠区 ===== */
+.collapse-section {
+  margin: 0 48rpx;
+  border-bottom: 1rpx solid rgba(200, 165, 91, 0.08);
+}
+
+.collapse-section:last-of-type { border-bottom: none; }
+
+.collapse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 0;
+}
+
+.collapse-header-title {
+  font-size: 28rpx;
+  color: var(--gold-pure);
+  letter-spacing: 4rpx;
+  font-weight: 500;
+}
+
+.collapse-arrow { transition: transform 0.3s var(--ease-out-expo); }
+.collapse-arrow.expanded { transform: rotate(180deg); }
+
+.collapse-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease-out-expo);
+}
+
+.collapse-body.expanded { max-height: 2000rpx; }
+
+.collapse-body-inner { padding: 0 0 32rpx; }
+
+.classic-block { margin-bottom: 24rpx; }
+.classic-block:last-child { margin-bottom: 0; }
+
+.classic-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--gold-pure);
+  margin-bottom: 12rpx;
+  letter-spacing: 4rpx;
+  opacity: 0.8;
+}
+
+.classic-text {
+  display: block;
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  line-height: 2;
+  letter-spacing: 2rpx;
+  word-break: break-word;
+}
+
+.jiedu-text {
+  display: block;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  line-height: 2;
+  letter-spacing: 1rpx;
+  word-break: break-word;
+}
+
+/* ===== 操作按钮 ===== */
+.gua-actions {
+  padding: 48rpx 48rpx calc(80rpx + env(safe-area-inset-bottom));
+}
+
+.gua-actions .btn { margin-bottom: 24rpx; width: 100%; }
+
+.btn-primary {
+  height: 96rpx;
+  background: var(--gold-pure);
+  border: none;
+  border-radius: var(--radius-full);
+  color: var(--text-inverse);
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 8rpx;
+  box-shadow: var(--shadow-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.btn-primary::after { border: none; }
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-gold-glow);
+}
+
+.btn-light {
+  height: 96rpx;
+  background: transparent;
+  border: 2rpx solid var(--accent-gold-border);
+  border-radius: var(--radius-full);
+  color: var(--accent-gold);
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 4rpx;
+}
+
+.btn-light::after { border: none; }
+
+.btn-light:active {
+  background: var(--accent-gold-subtle);
+  transform: scale(0.97);
+}
+
+/* ===== 加载态 ===== */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: var(--text-secondary);
+  font-size: 28rpx;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .btn-primary { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 28rpx; line-height: 1.3; }
+.lang-en .share-bait-btn { letter-spacing: 1rpx; text-indent: 1rpx; font-size: 26rpx; padding: 0 20rpx; line-height: 1.3; }
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .gua-name { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 34rpx; line-height: 1.25; }

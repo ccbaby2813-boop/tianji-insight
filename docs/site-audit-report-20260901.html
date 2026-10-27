@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>天机推演官网 - 全站质量审计报告 | 2026-09-01</title>
+<style>
+:root{--bg:#0a0a0f;--card:#12121c;--line:#23232f;--gold:#c9a96a;--gold-2:#e8d5a3;--text:#e8e6e1;--muted:#9a968c;--green:#5cb85c;--orange:#f0ad4e;--red:#d9534f}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",Georgia,serif;line-height:1.8;font-size:15px;-webkit-font-smoothing:antialiased}
+.container{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+.header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--line);margin-bottom:40px}
+.header h1{font-size:32px;color:var(--gold-2);letter-spacing:3px;margin-bottom:10px}
+.header .subtitle{color:var(--muted);font-size:14px;letter-spacing:2px}
+.header .date{color:var(--gold);font-size:13px;margin-top:8px}
+.score-overview{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:40px}
+@media(max-width:768px){.score-overview{grid-template-columns:1fr}}
+.score-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:30px;text-align:center}
+.score-card .label{font-size:13px;color:var(--muted);letter-spacing:2px;margin-bottom:15px;text-transform:uppercase}
+.score-card .score{font-size:64px;font-weight:bold;color:var(--gold);line-height:1}
+.score-card .score .total{font-size:24px;color:var(--muted)}
+.score-card .grade{display:inline-block;margin-top:12px;padding:4px 16px;border-radius:20px;font-size:14px;font-weight:bold}
+.grade-a{background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green)}
+.grade-b{background:rgba(240,173,78,.15);color:var(--orange);border:1px solid var(--orange)}
+.dim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+@media(max-width:768px){.dim-grid{grid-template-columns:1fr}}
+.dim-card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px}
+.dim-card .dim-name{font-size:14px;color:var(--muted);margin-bottom:8px}
+.dim-card .dim-score{font-size:28px;font-weight:bold;margin-bottom:8px}
+.dim-card .dim-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.dim-card .dim-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:30px;margin-bottom:30px}
+.section h2{font-size:20px;color:var(--gold-2);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line);letter-spacing:1px}
+.section h3{font-size:16px;color:var(--gold);margin:20px 0 10px}
+.issue-list{list-style:none}
+.issue-item{padding:14px 0;border-bottom:1px solid rgba(35,35,47,.5);display:flex;gap:12px;align-items:flex-start}
+.issue-item:last-child{border-bottom:none}
+.issue-severity{flex-shrink:0;width:60px;text-align:center;padding:3px 0;border-radius:3px;font-size:11px;font-weight:bold;letter-spacing:1px}
+.sev-high{background:rgba(217,83,79,.15);color:var(--red);border:1px solid var(--red)}
+.sev-medium{background:rgba(240,173,78,.15);color:var(--orange);border:1px solid var(--orange)}
+.sev-low{background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green)}
+.issue-content{flex:1}
+.issue-title{font-size:14px;color:var(--text);margin-bottom:4px}
+.issue-desc{font-size:13px;color:var(--muted)}
+.issue-fix{font-size:12px;color:var(--gold);margin-top:4px}
+.chart-container{width:100%;height:400px;margin:20px 0}
+.chart-container-sm{width:100%;height:300px;margin:20px 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;margin:15px 0;font-size:13px}
+th{background:var(--bg);color:var(--gold);text-align:left;padding:10px 12px;border-bottom:2px solid var(--gold)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--muted)}
+tr:hover td{background:rgba(201,169,106,.03)}
+.fixed-badge{display:inline-block;background:rgba(92,184,92,.15);color:var(--green);border:1px solid var(--green);padding:2px 8px;border-radius:3px;font-size:11px;margin-left:8px}
+.footer{text-align:center;padding:30px 0;color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:40px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>天机推演官网 · 全站质量审计报告</h1>
+  <div class="subtitle">claw-book.cn | 86 页面全量扫描 | 6 大维度</div>
+  <div class="date">审计日期：2026-09-01</div>
+</div>
+
+<div class="score-overview">
+  <div class="score-card">
+    <div class="label">综合评分（修复后）</div>
+    <div class="score">96<span class="total">/100</span></div>
+    <div class="grade grade-a">A 级 · 优秀</div>
+  </div>
+  <div class="score-card">
+    <div class="label">修复前综合评分</div>
+    <div class="score" style="color:var(--orange)">86<span class="total">/100</span></div>
+    <div class="grade grade-b">B 级 · 良好</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">安全头修复提升 +10 分</div>
+  </div>
+</div>
+
+<div class="dim-grid">
+  <div class="dim-card">
+    <div class="dim-name">HTTP 健康</div>
+    <div class="dim-score" style="color:var(--green)">100</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">SEO 元数据</div>
+    <div class="dim-score" style="color:var(--orange)">87</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:87%;background:var(--orange)"></div></div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">内容结构</div>
+    <div class="dim-score" style="color:var(--green)">100</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">性能</div>
+    <div class="dim-score" style="color:var(--green)">100</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">安全</div>
+    <div class="dim-score" style="color:var(--green)">100<span class="fixed-badge">已修复</span></div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+  <div class="dim-card">
+    <div class="dim-name">可访问性</div>
+    <div class="dim-score" style="color:var(--green)">100</div>
+    <div class="dim-bar"><div class="dim-bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>各维度得分对比</h2>
+  <div id="radarChart" class="chart-container"></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>SEO 元数据合格率</h2>
+    <div id="seoChart" class="chart-container-sm"></div>
+  </div>
+  <div class="section">
+    <h2>性能指标概览</h2>
+    <div id="perfChart" class="chart-container-sm"></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>问题清单与修复建议</h2>
+  
+  <h3>已修复问题</h3>
+  <ul class="issue-list">
+    <li class="issue-item">
+      <span class="issue-severity sev-high">高</span>
+      <div class="issue-content">
+        <div class="issue-title">安全头被 Cache-Control 覆盖（80/86 页面缺失安全头）<span class="fixed-badge">已修复</span></div>
+        <div class="issue-desc">nginx 的 add_header 指令不继承——server 级别配置了 HSTS/X-Frame/CSP 等安全头，但每个 location 块里的 add_header Cache-Control 会完全覆盖 server 级的所有 add_header，导致 80 个页面丢失全部安全头。</div>
+        <div class="issue-fix">修复：创建 /etc/nginx/snippets/security-headers.conf 共享片段，在 16 个有 add_header 的 location 块中 include 该片段。修复后 86/86 页面 5/5 安全头完整。</div>
+      </div>
+    </li>
+  </ul>
+
+  <h3>待修复问题（按优先级）</h3>
+  <ul class="issue-list">
+    <li class="issue-item">
+      <span class="issue-severity sev-medium">中</span>
+      <div class="issue-content">
+        <div class="issue-title">52 个卦页 meta description 过短（48 字，低于 50 字下限）</div>
+        <div class="issue-desc">gua-01 至 gua-64 中 52 个页面的 meta description 仅 48 字符，低于 SEO 推荐的 50-170 字范围。可能影响搜索结果摘要展示。</div>
+        <div class="issue-fix">建议：批量在 description 末尾补充"，仅供文化参考与自我探索。"（+14 字），使总长度达到 62 字，落入推荐区间。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-medium">中</span>
+      <div class="issue-content">
+        <div class="issue-title">首页 & 英文首页 title 过短（16 字，低于 20 字下限）</div>
+        <div class="issue-desc">首页 / 和 /?lang=en 的 title 仅 16 字符，低于 SEO 推荐的 20-70 字范围。关键词覆盖不足。</div>
+        <div class="issue-fix">建议：中文首页 title 改为"天机推演 - AI易经人格解读 | 六十四卦本命卦性格测试"（约 28 字）；英文首页改为"I Ching Insight - AI I Ching Personality Reading | 64 Hexagrams"。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">4 个协议页缺少 OG 标签和 JSON-LD 结构化数据</div>
+        <div class="issue-desc">/agreement、/agreement.en、/privacy、/privacy.en 四个页面缺少 Open Graph 标签和 JSON-LD 结构化数据。协议页通常不需要 SEO 排名，但补齐可提升完整性。</div>
+        <div class="issue-fix">建议：为协议页添加基础 OG 标签和 WebPage 类型 JSON-LD，或保持 noindex（协议页无需被搜索引擎收录）。</div>
+      </div>
+    </li>
+    <li class="issue-item">
+      <span class="issue-severity sev-low">低</span>
+      <div class="issue-content">
+        <div class="issue-title">英文知识库索引页 title/description 过长</div>
+        <div class="issue-desc">/knowledge.en.html 的 title 为 77 字（超过 70 字上限），description 为 217 字（超过 170 字上限）。过长会被搜索引擎截断。</div>
+        <div class="issue-fix">建议：title 精简为"Knowledge Center - I Ching, Yi Jing & Hexagrams | I Ching Insight"（约 65 字）；description 精简至 150 字以内。</div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>性能详细数据</h2>
+  <table>
+    <tr><th>指标</th><th>全站平均</th><th>推荐标准</th><th>状态</th></tr>
+    <tr><td>TTFB（首字节时间）</td><td>132 ms</td><td>&lt; 800 ms</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>页面大小</td><td>14.8 KB</td><td>&lt; 500 KB</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>gzip 压缩</td><td>86/86 (100%)</td><td>全部启用</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>HTTP 状态码</td><td>86/86 = 200</td><td>无 4xx/5xx</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>HTTPS</td><td>全站强制</td><td>全站 HTTPS</td><td style="color:var(--green)">优秀</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>内容结构详细数据</h2>
+  <table>
+    <tr><th>指标</th><th>结果</th><th>状态</th></tr>
+    <tr><td>H1 标签唯一</td><td>86/86 (100%)</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>正文 ≥ 300 字</td><td>86/86 (100%)</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>html lang 属性</td><td>86/86 (100%)</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>图片 alt 覆盖率</td><td>100%</td><td style="color:var(--green)">优秀</td></tr>
+    <tr><td>viewport 移动端适配</td><td>86/86 (100%)</td><td style="color:var(--green)">优秀</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>安全头详细数据（修复后）</h2>
+  <table>
+    <tr><th>安全头</th><th>覆盖率</th><th>作用</th></tr>
+    <tr><td>Strict-Transport-Security (HSTS)</td><td>86/86 (100%)</td><td>强制 HTTPS，防止 SSL 剥离攻击</td></tr>
+    <tr><td>X-Frame-Options</td><td>86/86 (100%)</td><td>防止点击劫持（iframe 嵌套）</td></tr>
+    <tr><td>X-Content-Type-Options</td><td>86/86 (100%)</td><td>防止 MIME 类型嗅探</td></tr>
+    <tr><td>Content-Security-Policy (CSP)</td><td>86/86 (100%)</td><td>防止 XSS、数据注入攻击</td></tr>
+    <tr><td>Referrer-Policy</td><td>86/86 (100%)</td><td>控制 Referer 信息泄露</td></tr>
+    <tr><td>X-XSS-Protection</td><td>86/86 (100%)</td><td>启用浏览器 XSS 过滤器</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>审计方法说明</h2>
+  <p style="color:var(--muted);font-size:13px;line-height:2">
+    本次审计基于行业标准的 6 大维度框架，对 claw-book.cn 全站 86 个 URL（来自 sitemap.xml）进行全量扫描。<br/>
+    <strong>审计维度：</strong>① HTTP 健康（状态码/重定向/TTFB）② SEO 元数据（title/description/canonical/hreflang/OG/JSON-LD）③ 内容结构（H1/H2/正文长度/alt/lang）④ 性能（TTFB/页面大小/gzip/缓存）⑤ 安全（HTTPS/安全头/CSP/HSTS）⑥ 可访问性（viewport/语义化/对比度基础）。<br/>
+    <strong>评分权重：</strong>HTTP 15% + SEO 20% + 内容 20% + 性能 20% + 安全 15% + 可访问性 10%。<br/>
+    <strong>参考标准：</strong>Google Search Console 指南、Core Web Vitals、WCAG 2.1 AA、Mozilla Web Security Guidelines、Ahrefs/SEMrush SEO Audit Checklist。
+  </p>
+</div>
+
+<div class="footer">
+  天机推演官网质量审计报告 · 2026-09-01 · 北京无元数字科技有限公司
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+// 雷达图
+var radarChart = echarts.init(document.getElementById('radarChart'));
+radarChart.setOption({
+  tooltip: {},
+  legend: {data: ['修复前', '修复后'], textStyle: {color: '#9a968c'}, bottom: 0},
+  radar: {
+    indicator: [
+      {name: 'HTTP健康', max: 100},
+      {name: 'SEO元数据', max: 100},
+      {name: '内容结构', max: 100},
+      {name: '性能', max: 100},
+      {name: '安全', max: 100},
+      {name: '可访问性', max: 100}
+    ],
+    axisName: {color: '#9a968c', fontSize: 12},
+    splitArea: {areaStyle: {color: ['rgba(201,169,106,0.02)', 'rgba(201,169,106,0.05)']}},
+    splitLine: {lineStyle: {color: '#23232f'}},
+    axisLine: {lineStyle: {color: '#23232f'}}
+  },
+  series: [{
+    type: 'radar',
+    data: [
+      {value: [100,87,100,100,26,100], name: '修复前', itemStyle: {color: '#f0ad4e'}, areaStyle: {color: 'rgba(240,173,78,0.2)'}},
+      {value: [100,87,100,100,100,100], name: '修复后', itemStyle: {color: '#c9a96a'}, areaStyle: {color: 'rgba(201,169,106,0.3)'}}
+    ]
+  }]
+});
+
+// SEO 合格率柱状图
+var seoChart = echarts.init(document.getElementById('seoChart'));
+seoChart.setOption({
+  tooltip: {trigger: 'axis'},
+  grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+  xAxis: {type: 'value', max: 100, axisLabel: {color: '#9a968c'}, splitLine: {lineStyle: {color: '#23232f'}}},
+  yAxis: {type: 'category', data: ['JSON-LD','OG标签','hreflang','canonical','description','title'], axisLabel: {color: '#9a968c', fontSize: 11}},
+  series: [{
+    type: 'bar',
+    data: [
+      {value: 95, itemStyle: {color: '#5cb85c'}},
+      {value: 95, itemStyle: {color: '#5cb85c'}},
+      {value: 100, itemStyle: {color: '#5cb85c'}},
+      {value: 100, itemStyle: {color: '#5cb85c'}},
+      {value: 40, itemStyle: {color: '#f0ad4e'}},
+      {value: 94, itemStyle: {color: '#5cb85c'}}
+    ],
+    label: {show: true, position: 'right', color: '#e8e6e1', formatter: '{c}%'},
+    barWidth: 18
+  }]
+});
+
+// 性能指标
+var perfChart = echarts.init(document.getElementById('perfChart'));
+perfChart.setOption({
+  tooltip: {trigger: 'axis'},
+  grid: {left: '3%', right: '4%', bottom: '3%', containLabel: true},
+  xAxis: {type: 'category', data: ['TTFB(ms)', '页面(KB)', 'gzip(%)', '200状态(%)'], axisLabel: {color: '#9a968c', fontSize: 11}},
+  yAxis: {type: 'value', axisLabel: {color: '#9a968c'}, splitLine: {lineStyle: {color: '#23232f'}}},
+  series: [{
+    type: 'bar',
+    data: [
+      {value: 132, itemStyle: {color: '#5cb85c'}},
+      {value: 14.8, itemStyle: {color: '#5cb85c'}},
+      {value: 100, itemStyle: {color: '#5cb85c'}},
+      {value: 100, itemStyle: {color: '#5cb85c'}}
+    ],
+    label: {show: true, position: 'top', color: '#e8e6e1'},
+    barWidth: 30
+  }]
+});
+
+window.addEventListener('resize', function(){
+  radarChart.resize(); seoChart.resize(); perfChart.resize();
+});
+</script>
+</body>
+</html>

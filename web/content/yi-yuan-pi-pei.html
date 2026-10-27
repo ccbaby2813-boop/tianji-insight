@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta property="og:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>易缘匹配｜六十四卦关系合盘查询 | 天机推演</title>
+<meta name="description" content="输入两个卦象，查看2080种易经人格匹配关系。包含关系解读、共鸣点、冲突点、相处建议和匹配等级。输入两个卦象，查看2080种易经人格匹配关系。包含关系解读、共鸣点、冲突点、相……"/>
+<link rel="canonical" href="https://claw-book.cn/yi-yuan-pi-pei.html"/>
+<link rel='alternate' hreflang='en' href='https://claw-book.cn/yi-yuan-pi-pei.en.html'/>
+<link rel='alternate' hreflang='x-default' href='https://claw-book.cn/yi-yuan-pi-pei.html'/>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" async></script>
+<style>
+:root{--bg:#0B0B12;--bg-2:#101018;--text:#E6E2DA;--text-2:#9C988E;--text-3:#6B6860;--gold:#C8A55B;--gold-2:#e8d5a3;--line:rgba(200,165,91,0.12);--card:#12121c;--green:#5a9a6e;--red:#c46565;--blue:#5b8db8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,'Times New Roman',serif;background:var(--bg);color:var(--text);line-height:1.85;font-size:16px}
+.container{max-width:1100px;margin:0 auto;padding:48px 32px}
+.header{text-align:center;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.header h1{font-size:42px;color:var(--text);margin-bottom:12px;letter-spacing:0.05em}
+.header .subtitle{color:var(--gold-2);font-size:18px;font-style:italic}
+.selector-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:36px;margin-bottom:36px}
+.selector-row{display:flex;gap:24px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:24px}
+.selector-box{flex:1;min-width:280px;max-width:400px}
+.selector-label{color:var(--gold);font-size:14px;margin-bottom:8px;font-weight:600}
+.gua-select{width:100%;padding:14px 16px;background:var(--bg-2);border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:16px;font-family:inherit;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C8A55B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.gua-select:focus{outline:none;border-color:var(--gold)}
+.gua-select option{background:var(--bg-2);color:var(--text)}
+.vs{font-size:28px;color:var(--gold);font-weight:bold;flex-shrink:0}
+.check-btn{display:block;margin:0 auto;padding:14px 48px;background:linear-gradient(135deg,var(--gold),#a88540);color:#0B0B12;border:none;border-radius:8px;font-size:18px;font-weight:600;cursor:pointer;font-family:inherit;transition:transform 0.2s,box-shadow 0.2s}
+.check-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,165,91,0.3)}
+.result-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:36px;margin-bottom:36px;min-height:200px}
+.result-placeholder{text-align:center;color:var(--text-3);padding:40px 0;font-size:16px}
+.match-header{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.match-level{display:inline-block;padding:6px 20px;background:rgba(200,165,91,0.15);border:1px solid var(--gold);border-radius:20px;color:var(--gold);font-size:14px;font-weight:600;margin-bottom:12px}
+.match-name{font-size:28px;color:var(--text);margin-bottom:8px}
+.match-oneliner{color:var(--gold-2);font-style:italic;font-size:16px}
+.match-guas{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:16px}
+.match-gua{text-align:center}
+.match-gua .symbol{font-size:48px;color:var(--gold)}
+.match-gua .name{color:var(--text-2);font-size:14px;margin-top:4px}
+.match-section{margin-bottom:24px}
+.match-section h3{color:var(--gold);font-size:18px;margin-bottom:12px;padding-left:12px;border-left:3px solid var(--gold)}
+.match-section p{color:var(--text);line-height:2}
+.match-tags{display:flex;flex-wrap:wrap;gap:10px}
+.match-tag{padding:6px 14px;background:rgba(90,154,110,0.1);border:1px solid rgba(90,154,110,0.3);border-radius:6px;color:var(--green);font-size:14px}
+.match-tag.conflict{background:rgba(196,101,101,0.1);border-color:rgba(196,101,101,0.3);color:var(--red)}
+.advice-box{background:rgba(200,165,91,0.05);border:1px solid var(--line);border-radius:8px;padding:20px;color:var(--text)}
+.popular-section{margin-bottom:36px}
+.popular-section h2{color:var(--gold);font-size:24px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.popular-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.popular-item{display:block;padding:12px 16px;font:inherit;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--text-2);text-decoration:none;font-size:14px;transition:all 0.2s;cursor:pointer}
+.popular-item:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,165,91,0.05)}
+.cta-section{background:linear-gradient(135deg,rgba(200,165,91,0.1),rgba(200,165,91,0.02));border:1px solid var(--gold);border-radius:14px;padding:40px;text-align:center;margin-bottom:36px}
+.cta-section h2{color:var(--gold);font-size:26px;margin-bottom:12px}
+.cta-section p{color:var(--text-2);margin-bottom:24px;max-width:600px;margin-left:auto;margin-right:auto}
+.cta-btn{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--gold),#a88540);color:#0B0B12;border-radius:8px;font-size:18px;font-weight:600;text-decoration:none;transition:transform 0.2s}
+.cta-btn:hover{transform:translateY(-2px)}
+.faq-section{margin-bottom:36px}
+.faq-section h2{color:var(--gold);font-size:24px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.faq-item{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;margin-bottom:12px}
+.faq-item h4{color:var(--gold-2);font-size:16px;margin-bottom:8px}
+.faq-item p{color:var(--text-2);font-size:14px;line-height:1.8}
+.footer{text-align:center;padding:32px;border-top:1px solid var(--line);color:var(--text-3);font-size:13px}
+@media(max-width:768px){.container{padding:32px 20px}.header h1{font-size:32px}.selector-row{flex-direction:column}.vs{transform:rotate(90deg)}.match-gua .symbol{font-size:36px}}
+
+/* ===== 站点导航 ===== */
+.site-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:24px;padding:14px 32px;background:rgba(11,11,18,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.site-nav a{color:var(--text-2);font-size:14px;letter-spacing:0.05em;text-decoration:none}
+.site-nav a:hover{color:var(--gold)}
+.site-nav .nav-brand{color:var(--gold);font-weight:600;font-size:16px;letter-spacing:0.1em}
+</style>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?bc2eeb3274de3884460e0368816fdd39";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Google tag (gtag.js) - GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNDSJZPLG6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NNDSJZPLG6');
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://claw-book.cn/"},{"@type":"ListItem","position":2,"name":"知识库","item":"https://claw-book.cn/knowledge.html"},{"@type":"ListItem","position":3,"name":"易缘匹配｜六十四卦关系合盘查询"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "易缘匹配是怎么算出来的？", "acceptedAnswer": {"@type": "Answer", "text": "易缘匹配基于宋代邵雍《梅花易数》的卦象关系理论，结合64卦各自的人格特质，对2080种卦象组合进行深度解读。每个组合都包含关系名称、共鸣点、冲突点和相处建议。"}}, {"@type": "Question", "name": "匹配等级有哪些？", "acceptedAnswer": {"@type": "Answer", "text": "匹配等级包括：天作之合、灵魂伴侣、志同道合、互补奇缘、需要磨合、需要调整等。等级越高，表示两个卦象在性格、价值观和相处模式上越契合。"}}, {"@type": "Question", "name": "怎么知道我的本命卦？", "acceptedAnswer": {"@type": "Answer", "text": "下载天机推演App，输入你的出生日期和时间，App会基于梅花易数算法算出你的本命卦，并提供完整的人格深度解读、情感模式、天赋盲点和历史人物代表。"}}, {"@type": "Question", "name": "匹配结果准确吗？", "acceptedAnswer": {"@type": "Answer", "text": "易缘匹配是基于易经卦象关系的人格分析工具，提供的是性格倾向和相处模式的参考，不能替代专业的心理咨询或关系咨询。建议将其作为自我认知和关系理解的辅助工具。"}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "易缘匹配｜六十四卦关系合盘查询 | 天机推演", "description": "输入两个卦象，查看2080种易经人格匹配关系。包含关系解读、共鸣点、冲突点、相处建议和匹配等级。输入两个卦象，查看2080种易经人格匹配关系。包含关系解读、共鸣点、冲突点、相……", "url": "https://claw-book.cn/yi-yuan-pi-pei.html", "inLanguage": "zh-CN", "datePublished": "2026-08-01", "dateModified": "2026-08-26", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://claw-book.cn/yi-yuan-pi-pei.html"}, "image": {"@type": "ImageObject", "url": "https://claw-book.cn/images/og-default.jpg", "width": 1200, "height": 630}, "author": {"@type": "Organization", "@id": "https://claw-book.cn/#organization", "name": "天机推演", "url": "https://claw-book.cn/"}, "publisher": {"@type": "Organization", "@id": "https://claw-book.cn/#organization", "name": "北京无元数字科技有限公司", "url": "https://claw-book.cn/", "logo": {"@type": "ImageObject", "url": "https://claw-book.cn/images/logo.png", "width": 512, "height": 512}}}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://claw-book.cn/#organization","name":"天机推演","alternateName":"I Ching Insight","url":"https://claw-book.cn/","logo":{"@type":"ImageObject","url":"https://claw-book.cn/images/logo.png"},"description":"天机推演将5000年易经智慧与AI技术结合，提供64卦解读、AI星座、人格分析与灵魂匹配服务。","sameAs":["https://x.com/ccbaby2813","https://www.instagram.com/ccbaby2813/"],"contactPoint":{"@type":"ContactPoint","contactType":"customer service","availableLanguage":["Chinese","English"]}}</script>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://claw-book.cn/images/og-default.jpg"/>
+<link rel="alternate" hreflang="en" href="https://claw-book.cn/yi-yuan-pi-pei.en.html"/>
+</head>
+<body>
+<nav class="site-nav"><a href="/" class="nav-brand">天机推演</a><a href="/#member">登录 / 注册</a><a href="/knowledge.html">知识库</a><a href="/#download">下载</a><a href="/yi-yuan-pi-pei.en.html" hreflang="en">EN</a></nav>
+<div class="container">
+  <div class="header">
+    <h1>易缘匹配</h1>
+<div class="article-lead">
+<p>输入两个卦象，查看2080种易经人格匹配关系。包含关系解读、共鸣点、冲突点、相处建议和匹配等级。</p>
+<p><strong>核心要点：</strong>本文涵盖易缘匹配｜六十四卦关系合盘查询的核心概念、实际应用和常见问题，帮助你快速建立完整认知。</p>
+</div>
+    <div class="subtitle">六十四卦关系合盘 · 2080种匹配全解析</div>
+  </div>
+
+  <div class="selector-section">
+    <div class="selector-row">
+      <div class="selector-box">
+        <div class="selector-label">选择你的本命卦</div>
+        <select class="gua-select" id="guaA">
+          <option value="">--</option>
+        </select>
+      </div>
+      <div class="vs">×</div>
+      <div class="selector-box">
+        <div class="selector-label">选择对方的卦象</div>
+        <select class="gua-select" id="guaB">
+          <option value="">--</option>
+        </select>
+      </div>
+    </div>
+    <button class="check-btn" id="checkBtn">查看匹配结果</button>
+  </div>
+
+  <div class="result-section" id="resultSection">
+    <div class="result-placeholder" id="resultPlaceholder">请先选择两个卦象</div>
+    <div id="resultContent" style="display:none"></div>
+  </div>
+
+  <div class="popular-section">
+    <h2>热门匹配查询</h2>
+    <div class="popular-grid">
+      <button type="button" class="popular-item" data-a="1" data-b="2">䷀ 乾为天 × ䷁ 坤为地</button>
+<button type="button" class="popular-item" data-a="1" data-b="11">䷀ 乾为天 × ䷊ 地天泰</button>
+<button type="button" class="popular-item" data-a="2" data-b="15">䷁ 坤为地 × ䷎ 地山谦</button>
+<button type="button" class="popular-item" data-a="11" data-b="12">䷊ 地天泰 × ䷋ 天地否</button>
+<button type="button" class="popular-item" data-a="15" data-b="16">䷎ 地山谦 × ䷏ 雷地豫</button>
+<button type="button" class="popular-item" data-a="1" data-b="8">䷀ 乾为天 × ䷇ 水地比</button>
+<button type="button" class="popular-item" data-a="2" data-b="7">䷁ 坤为地 × ䷆ 地水师</button>
+<button type="button" class="popular-item" data-a="5" data-b="6">䷄ 水天需 × ䷅ 天水讼</button>
+<button type="button" class="popular-item" data-a="13" data-b="14">䷌ 天火同人 × ䷍ 火天大有</button>
+<button type="button" class="popular-item" data-a="17" data-b="18">䷐ 泽雷随 × ䷑ 山风蛊</button>
+
+    </div>
+  </div>
+
+  
+<div class="author-box" style="margin-top:50px;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:8px;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gold-2),var(--gold));display:flex;align-items:center;justify-content:center;color:#1a1408;font-weight:700;font-size:20px;">天</div>
+    <div>
+      <div style="font-weight:600;color:var(--text);font-size:16px;">天机推演团队</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px;">传统易经文化 × AI技术 | 内容经学术审核</div>
+    </div>
+  </div>
+  <p style="margin-top:14px;font-size:14px;color:var(--muted);line-height:1.8;">本文由天机推演内容团队撰写，参考《周易》《梅花易数》《易经杂说》等权威文献，经传统文化学者审核后发布。内容仅供学习参考，不构成任何决策建议。</p>
+</div>
+
+<div class="references-box" style="margin-top:40px;padding-top:24px;border-top:1px solid var(--line);">
+  <h3 style="font-size:16px;color:var(--gold-2);margin-bottom:12px;">参考资料</h3>
+  <ul style="font-size:13px;color:var(--muted);line-height:2;padding-left:20px;">
+    <li>《周易》—— 中华书局，十三经注疏本</li>
+    <li>《梅花易数》—— 邵雍撰，九州出版社</li>
+    <li>《易经杂说》—— 南怀瑾，复旦大学出版社</li>
+    <li>《中国哲学史》—— 冯友兰，商务印书馆</li>
+  </ul>
+</div>
+<div class="cta-section">
+    <h2>想知道你的本命卦？</h2>
+    <p>下载天机推演App，输入出生日期即可算出你的本命卦和完整人格解读</p>
+    <a href="/" class="cta-btn">免费下载App</a>
+  </div>
+
+  <div class="faq-section">
+    <h2>常见问题</h2>
+    <div class="faq-item"><h3>易缘匹配是怎么算出来的？</h3>
+      <p>易缘匹配基于宋代邵雍《梅花易数》的卦象关系理论，结合64卦各自的人格特质，对2080种卦象组合进行深度解读。每个组合都包含关系名称、共鸣点、冲突点和相处建议。</p>
+    </div>
+    <div class="faq-item"><h3>匹配等级有哪些？</h3>
+      <p>匹配等级包括：天作之合、灵魂伴侣、志同道合、互补奇缘、需要磨合、需要调整等。等级越高，表示两个卦象在性格、价值观和相处模式上越契合。</p>
+    </div>
+    <div class="faq-item"><h3>怎么知道我的本命卦？</h3>
+      <p>下载天机推演App，输入你的出生日期和时间，App会基于梅花易数算法算出你的本命卦，并提供完整的人格深度解读、情感模式、天赋盲点和历史人物代表。</p>
+    </div>
+    <div class="faq-item"><h3>匹配结果准确吗？</h3>
+      <p>易缘匹配是基于易经卦象关系的人格分析工具，提供的是性格倾向和相处模式的参考，不能替代专业的心理咨询或关系咨询。建议将其作为自我认知和关系理解的辅助工具。</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>天机推演 · 易缘匹配 · 2080种卦象组合全解析</p>
+    <p>京ICP备16050769号-4 · 北京无元数字科技有限公司</p>
+  </div>
+</div>
+
+
+
+<script src="/tianji-media/yi-yuan-data.js"></script>
+</body>
+</html>

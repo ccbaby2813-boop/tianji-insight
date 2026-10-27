@@ -1,0 +1,415 @@
+/* eslint-disable */
+// config/jieqi-wuxing-en.js - 24节气五行归属英文版（name/wuxing/organ 中文键保留供内部查询，nameEn/WUXING_ORGAN_MAP_EN 供输出）
+// 由 scripts/gen-en-files.js 自动生成（2026-08-19T14:25:09.114Z），请勿手工编辑
+module.exports = {
+  "JIE_QI_WUXING": [
+    {
+      "index": 0,
+      "name": "立春",
+      "nameEn": "Beginning of Spring",
+      "wuxing": "木",
+      "organ": "肝",
+      "season": "春",
+      "emotion": "怒",
+      "bagua": "艮",
+      "seasonDesc": "Beginning of spring, all things revive and unfold.",
+      "dateRange": "Feb 3-5"
+    },
+    {
+      "index": 1,
+      "name": "雨水",
+      "nameEn": "Rain Water",
+      "wuxing": "木",
+      "organ": "肝",
+      "season": "春",
+      "emotion": "怒",
+      "bagua": "艮",
+      "seasonDesc": "Ice and snow melt, spring rain moistens all things.",
+      "dateRange": "Feb 18-20"
+    },
+    {
+      "index": 2,
+      "name": "惊蛰",
+      "nameEn": "Awakening of Insects",
+      "wuxing": "木",
+      "organ": "肝",
+      "season": "春",
+      "emotion": "怒",
+      "bagua": "艮",
+      "seasonDesc": "Spring thunder rumbles, all things awaken.",
+      "dateRange": "Mar 5-7"
+    },
+    {
+      "index": 3,
+      "name": "春分",
+      "nameEn": "Spring Equinox",
+      "wuxing": "木",
+      "organ": "肝",
+      "season": "春",
+      "emotion": "怒",
+      "bagua": "震",
+      "seasonDesc": "Yin and yang in balance, day and night equal length.",
+      "dateRange": "Mar 20-22"
+    },
+    {
+      "index": 4,
+      "name": "清明",
+      "nameEn": "Pure Brightness",
+      "wuxing": "木",
+      "organ": "肝",
+      "season": "春",
+      "emotion": "怒",
+      "bagua": "震",
+      "seasonDesc": "Sky clear and earth bright, pure and fresh.",
+      "dateRange": "Apr 4-6"
+    },
+    {
+      "index": 5,
+      "name": "谷雨",
+      "nameEn": "Grain Rain",
+      "wuxing": "土",
+      "organ": "脾",
+      "season": "春末",
+      "emotion": "思",
+      "bagua": "震",
+      "seasonDesc": "Late spring, earth element flourishes; rain brings forth all grains.",
+      "dateRange": "Apr 19-21"
+    },
+    {
+      "index": 6,
+      "name": "立夏",
+      "nameEn": "Beginning of Summer",
+      "wuxing": "火",
+      "organ": "心",
+      "season": "夏",
+      "emotion": "喜",
+      "bagua": "巽",
+      "seasonDesc": "Beginning of summer, all things flourish and grow.",
+      "dateRange": "May 5-7"
+    },
+    {
+      "index": 7,
+      "name": "小满",
+      "nameEn": "Grain Buds",
+      "wuxing": "火",
+      "organ": "心",
+      "season": "夏",
+      "emotion": "喜",
+      "bagua": "巽",
+      "seasonDesc": "Things reach fullness, yet only slightly filled.",
+      "dateRange": "May 20-22"
+    },
+    {
+      "index": 8,
+      "name": "芒种",
+      "nameEn": "Grain in Ear",
+      "wuxing": "火",
+      "organ": "心",
+      "season": "夏",
+      "emotion": "喜",
+      "bagua": "巽",
+      "seasonDesc": "The bearded grains can be sown and planted.",
+      "dateRange": "Jun 5-7"
+    },
+    {
+      "index": 9,
+      "name": "夏至",
+      "nameEn": "Summer Solstice",
+      "wuxing": "火",
+      "organ": "心",
+      "season": "夏",
+      "emotion": "喜",
+      "bagua": "离",
+      "seasonDesc": "Yang reaches its peak and yin arises; longest day, shortest night.",
+      "dateRange": "Jun 21-22"
+    },
+    {
+      "index": 10,
+      "name": "小暑",
+      "nameEn": "Minor Heat",
+      "wuxing": "火",
+      "organ": "心",
+      "season": "夏",
+      "emotion": "喜",
+      "bagua": "离",
+      "seasonDesc": "Heat gradually intensifies, but not yet at its extreme.",
+      "dateRange": "Jul 6-8"
+    },
+    {
+      "index": 11,
+      "name": "大暑",
+      "nameEn": "Major Heat",
+      "wuxing": "土",
+      "organ": "脾",
+      "season": "夏末",
+      "emotion": "思",
+      "bagua": "离",
+      "seasonDesc": "Late summer, earth element flourishes; extreme heat gives birth to cold.",
+      "dateRange": "Jul 22-24"
+    },
+    {
+      "index": 12,
+      "name": "立秋",
+      "nameEn": "Beginning of Autumn",
+      "wuxing": "金",
+      "organ": "肺",
+      "season": "秋",
+      "emotion": "悲",
+      "bagua": "坤",
+      "seasonDesc": "Beginning of autumn, all things contract and gather.",
+      "dateRange": "Aug 7-9"
+    },
+    {
+      "index": 13,
+      "name": "处暑",
+      "nameEn": "End of Heat",
+      "wuxing": "金",
+      "organ": "肺",
+      "season": "秋",
+      "emotion": "悲",
+      "bagua": "坤",
+      "seasonDesc": "Summer heat subsides; autumn skies are high and air crisp.",
+      "dateRange": "Aug 22-24"
+    },
+    {
+      "index": 14,
+      "name": "白露",
+      "nameEn": "White Dew",
+      "wuxing": "金",
+      "organ": "肺",
+      "season": "秋",
+      "emotion": "悲",
+      "bagua": "坤",
+      "seasonDesc": "Yin qi gradually deepens; dew condenses and turns white.",
+      "dateRange": "Sep 7-9"
+    },
+    {
+      "index": 15,
+      "name": "秋分",
+      "nameEn": "Autumn Equinox",
+      "wuxing": "金",
+      "organ": "肺",
+      "season": "秋",
+      "emotion": "悲",
+      "bagua": "兑",
+      "seasonDesc": "Yin and yang in balance, day and night equal length.",
+      "dateRange": "Sep 22-24"
+    },
+    {
+      "index": 16,
+      "name": "寒露",
+      "nameEn": "Cold Dew",
+      "wuxing": "金",
+      "organ": "肺",
+      "season": "秋",
+      "emotion": "悲",
+      "bagua": "兑",
+      "seasonDesc": "Dew becomes cold, chill gradually grows.",
+      "dateRange": "Oct 8-9"
+    },
+    {
+      "index": 17,
+      "name": "霜降",
+      "nameEn": "Frost's Descent",
+      "wuxing": "土",
+      "organ": "脾",
+      "season": "秋末",
+      "emotion": "思",
+      "bagua": "兑",
+      "seasonDesc": "Late autumn, earth element flourishes; frost descends, winter approaches.",
+      "dateRange": "Oct 23-24"
+    },
+    {
+      "index": 18,
+      "name": "立冬",
+      "nameEn": "Beginning of Winter",
+      "wuxing": "水",
+      "organ": "肾",
+      "season": "冬",
+      "emotion": "恐",
+      "bagua": "乾",
+      "seasonDesc": "Beginning of winter, all things withdraw and store within.",
+      "dateRange": "Nov 7-8"
+    },
+    {
+      "index": 19,
+      "name": "小雪",
+      "nameEn": "Minor Snow",
+      "wuxing": "水",
+      "organ": "肾",
+      "season": "冬",
+      "emotion": "恐",
+      "bagua": "乾",
+      "seasonDesc": "Cold deepens, first snowfall arrives.",
+      "dateRange": "Nov 22-23"
+    },
+    {
+      "index": 20,
+      "name": "大雪",
+      "nameEn": "Major Snow",
+      "wuxing": "水",
+      "organ": "肾",
+      "season": "冬",
+      "emotion": "恐",
+      "bagua": "乾",
+      "seasonDesc": "Heavy snow falls thickly; heaven and earth are sealed in hiding.",
+      "dateRange": "Dec 6-8"
+    },
+    {
+      "index": 21,
+      "name": "冬至",
+      "nameEn": "Winter Solstice",
+      "wuxing": "水",
+      "organ": "肾",
+      "season": "冬",
+      "emotion": "恐",
+      "bagua": "坎",
+      "seasonDesc": "Yin reaches its extreme and yang is born; one yang returns.",
+      "dateRange": "Dec 21-23"
+    },
+    {
+      "index": 22,
+      "name": "小寒",
+      "nameEn": "Minor Cold",
+      "wuxing": "水",
+      "organ": "肾",
+      "season": "冬",
+      "emotion": "恐",
+      "bagua": "坎",
+      "seasonDesc": "Cold gradually deepens, but not yet at its extreme.",
+      "dateRange": "Jan 5-7"
+    },
+    {
+      "index": 23,
+      "name": "大寒",
+      "nameEn": "Major Cold",
+      "wuxing": "土",
+      "organ": "脾",
+      "season": "冬末",
+      "emotion": "思",
+      "bagua": "坎",
+      "seasonDesc": "Late winter, earth element flourishes; extreme cold heralds spring.",
+      "dateRange": "Jan 20-21"
+    }
+  ],
+  "WUXING_ORGAN_MAP": {
+    "木": {
+      "organ": "肝",
+      "emotion": "怒",
+      "season": "春",
+      "flavor": "酸",
+      "direction": "东",
+      "color": "青",
+      "desc": "肝主疏泄，藏血，主筋。怒伤肝，悲胜怒。"
+    },
+    "火": {
+      "organ": "心",
+      "emotion": "喜",
+      "season": "夏",
+      "flavor": "苦",
+      "direction": "南",
+      "color": "赤",
+      "desc": "心主血脉，藏神，主舌。喜伤心，恐胜喜。"
+    },
+    "土": {
+      "organ": "脾",
+      "emotion": "思",
+      "season": "长夏",
+      "flavor": "甘",
+      "direction": "中",
+      "color": "黄",
+      "desc": "脾主运化，藏意，主肌肉。思伤脾，怒胜思。"
+    },
+    "金": {
+      "organ": "肺",
+      "emotion": "悲",
+      "season": "秋",
+      "flavor": "辛",
+      "direction": "西",
+      "color": "白",
+      "desc": "肺主气，藏魄，主皮毛。悲伤肺，喜胜悲。"
+    },
+    "水": {
+      "organ": "肾",
+      "emotion": "恐",
+      "season": "冬",
+      "flavor": "咸",
+      "direction": "北",
+      "color": "黑",
+      "desc": "肾主水，藏精，主骨。恐伤肾，思胜恐。"
+    }
+  },
+  "JIE_QI_BY_NAME": {
+    "立春": 0,
+    "雨水": 1,
+    "惊蛰": 2,
+    "春分": 3,
+    "清明": 4,
+    "谷雨": 5,
+    "立夏": 6,
+    "小满": 7,
+    "芒种": 8,
+    "夏至": 9,
+    "小暑": 10,
+    "大暑": 11,
+    "立秋": 12,
+    "处暑": 13,
+    "白露": 14,
+    "秋分": 15,
+    "寒露": 16,
+    "霜降": 17,
+    "立冬": 18,
+    "小雪": 19,
+    "大雪": 20,
+    "冬至": 21,
+    "小寒": 22,
+    "大寒": 23
+  },
+  "WUXING_ORGAN_MAP_EN": {
+    "Wood": {
+      "organ": "Liver",
+      "emotion": "Anger",
+      "season": "Spring",
+      "flavor": "酸",
+      "direction": "东",
+      "color": "青",
+      "desc": "肝主疏泄，藏血，主筋。怒伤肝，悲胜怒。"
+    },
+    "Fire": {
+      "organ": "Heart",
+      "emotion": "Joy",
+      "season": "Summer",
+      "flavor": "苦",
+      "direction": "南",
+      "color": "赤",
+      "desc": "心主血脉，藏神，主舌。喜伤心，恐胜喜。"
+    },
+    "Earth": {
+      "organ": "Spleen",
+      "emotion": "Pensiveness",
+      "season": "Late Summer",
+      "flavor": "甘",
+      "direction": "中",
+      "color": "黄",
+      "desc": "脾主运化，藏意，主肌肉。思伤脾，怒胜思。"
+    },
+    "Metal": {
+      "organ": "Lungs",
+      "emotion": "Grief",
+      "season": "Autumn",
+      "flavor": "辛",
+      "direction": "西",
+      "color": "白",
+      "desc": "肺主气，藏魄，主皮毛。悲伤肺，喜胜悲。"
+    },
+    "Water": {
+      "organ": "Kidneys",
+      "emotion": "Fear",
+      "season": "Winter",
+      "flavor": "咸",
+      "direction": "北",
+      "color": "黑",
+      "desc": "肾主水，藏精，主骨。恐伤肾，思胜恐。"
+    }
+  }
+};

@@ -1,0 +1,271 @@
+/* sub/profile/bind-email/index.wxss - 绑定邮箱页
+ * 与登录页统一：墨韵黑金 + 诗集式排版 + 聚焦金色边框
+ */
+.bind-page {
+  min-height: 100vh;
+  background: var(--bg-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 48rpx;
+  padding-top: calc(140rpx + env(safe-area-inset-top));
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  position: relative;
+  box-sizing: border-box;
+}
+
+.bind-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center top, rgba(200, 165, 91, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* 英文态衬线体 */
+.lang-en .bind-title,
+.lang-en .bind-subtitle,
+.lang-en .form-label,
+.lang-en .bind-btn,
+.lang-en .send-code-btn,
+.lang-en .password-hint,
+.lang-en .bound-label,
+.lang-en .bound-email {
+  font-family: Georgia, 'Times New Roman', 'Palatino Linotype', serif;
+}
+
+.lang-en .bind-title {
+  font-style: italic;
+  letter-spacing: 1rpx;
+}
+
+.lang-en .bind-subtitle {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* ========================================
+ * 头部
+ * ======================================== */
+.bind-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 88rpx;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-expo) both;
+}
+
+.bind-title {
+  font-size: 56rpx;
+  color: var(--text-primary);
+  letter-spacing: 12rpx;
+  margin-bottom: 24rpx;
+  text-indent: 12rpx;
+  text-shadow: 0 0 32rpx rgba(200, 165, 91, 0.3);
+}
+
+.title-gold-line {
+  width: 64rpx;
+  height: 2rpx;
+  background: var(--gold-pure);
+  margin-bottom: 24rpx;
+  box-shadow: 0 0 8rpx rgba(200, 165, 91, 0.4);
+}
+
+.bind-subtitle {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  letter-spacing: 4rpx;
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* ========================================
+ * 已绑定态
+ * ======================================== */
+.bound-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+  padding: 64rpx 0;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
+}
+
+.bound-label {
+  font-size: 24rpx;
+  color: var(--text-muted);
+  letter-spacing: 6rpx;
+}
+
+.bound-email {
+  font-size: 36rpx;
+  color: var(--gold-pure);
+  letter-spacing: 2rpx;
+  word-break: break-all;
+  text-align: center;
+}
+
+/* ========================================
+ * 表单区（与登录页统一风格）
+ * ======================================== */
+.bind-form {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
+}
+
+.form-group {
+  margin-bottom: 48rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-muted);
+  margin-bottom: 20rpx;
+  letter-spacing: 6rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 104rpx;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1rpx solid rgba(232, 232, 240, 0.08);
+  border-radius: 0;
+  padding: 0 32rpx;
+  color: var(--text-primary);
+  font-size: 32rpx;
+  letter-spacing: 2rpx;
+  box-sizing: border-box;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.form-input:focus {
+  border-color: var(--gold-pure);
+  background: rgba(200, 165, 91, 0.04);
+  box-shadow:
+    0 0 0 1rpx var(--gold-pure),
+    0 0 24rpx rgba(200, 165, 91, 0.15);
+}
+
+.input-placeholder {
+  color: var(--text-muted);
+}
+
+.code-row {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.code-input {
+  flex: 1;
+}
+
+.send-code-btn {
+  flex-shrink: 0;
+  width: 240rpx;
+  height: 104rpx;
+  line-height: 104rpx;
+  background: transparent;
+  border: 1rpx solid var(--gold-pure);
+  color: var(--gold-pure);
+  font-size: 24rpx;
+  border-radius: 0;
+  padding: 0;
+  letter-spacing: 2rpx;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+/* 英文态压缩按钮文案，避免溢出 */
+.lang-en .send-code-btn {
+  font-size: 20rpx;
+  letter-spacing: 0;
+}
+
+.send-code-btn.disabled {
+  opacity: 0.4;
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+.send-code-btn::after {
+  border: none;
+}
+
+.send-code-btn:not(.disabled):active {
+  background: rgba(200, 165, 91, 0.08);
+}
+
+.password-hint {
+  display: block;
+  font-size: 20rpx;
+  color: var(--text-muted);
+  letter-spacing: 1rpx;
+  margin-top: 14rpx;
+  opacity: 0.7;
+  max-width: 100%;
+}
+
+/* ========================================
+ * 提交按钮
+ * ======================================== */
+.bind-btn {
+  width: 100%;
+  height: 112rpx;
+  line-height: 112rpx;
+  background: linear-gradient(135deg, #E8C896 0%, #C8A55B 50%, #B08B56 100%);
+  color: #0A0A0A;
+  font-size: 34rpx;
+  font-weight: 800;
+  border-radius: 0;
+  margin-top: 32rpx;
+  letter-spacing: 12rpx;
+  text-indent: 12rpx;
+  box-shadow:
+    0 8rpx 32rpx rgba(200, 165, 91, 0.3),
+    0 2rpx 8rpx rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.bind-btn::after {
+  border: none;
+}
+
+.bind-btn[disabled] {
+  background: rgba(200, 165, 91, 0.08);
+  color: rgba(232, 232, 240, 0.25);
+  box-shadow: none;
+}
+
+.bind-btn:not([disabled]):active {
+  transform: scale(0.97);
+}
+
+/* 英文态按钮字距收缩，防溢出 */
+.lang-en .bind-btn {
+  letter-spacing: 2rpx;
+  text-indent: 2rpx;
+  font-size: 30rpx;
+}
+
+/* ===== EN-i18n layout fix ===== */
+.lang-en .bind-btn {
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1.3; height: auto; min-height: 112rpx;
+  padding: 0 24rpx; box-sizing: border-box; white-space: normal;
+}
+
+/* ===== EN-i18n title fix ===== */
+.lang-en .bind-title { letter-spacing: 2rpx; text-indent: 2rpx; font-size: 36rpx; line-height: 1.25; }

@@ -1,0 +1,176 @@
+<view class="page-container letter-thread-page {{lang === 'en' ? 'lang-en' : ''}}">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-btn nav-back" bindtap="onBack">
+      <icon-guo name="chevron-left" size="40" color="#8B7340" />
+    </view>
+    <view class="nav-title">
+      <text class="nav-title-text font-title">{{t.threadTitle}}{{friendNickname}}{{t.threadTitle2}}</text>
+      <text class="vip-badge" wx:if="{{friendIsVip}}">V</text>
+      <text class="nav-subtitle" wx:if="{{total >= 0}}">{{friendGuaName}}{{friendGuaGe ? ' · ' + friendGuaGe : ''}} · {{t.threadCount}} {{total}} {{t.threadCountUnit}}</text>
+    </view>
+    <view class="nav-right-group">
+      <view class="nav-btn nav-write" bindtap="goWrite" wx:if="{{pageState === 'loaded'}}">
+        <icon-guo name="edit" size="36" color="#8B7340" />
+      </view>
+      <view class="nav-btn nav-more" bindtap="onMore">
+        <text class="nav-more-icon">⋯</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="state-wrap" wx:if="{{pageState === 'loading'}}">
+    <view class="loading-dot-wrap">
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+      <view class="loading-dot"></view>
+    </view>
+    <text class="state-text">{{t.loading}}</text>
+  </view>
+
+  <!-- 错误 -->
+  <view class="state-wrap" wx:elif="{{pageState === 'error'}}">
+    <text class="state-text">{{errorMsg || t.loadFail}}</text>
+    <view class="retry-btn" bindtap="loadThread"><text class="retry-btn-text">{{t.retry}}</text></view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="state-wrap" wx:elif="{{pageState === 'empty'}}">
+    <view class="empty-envelope">
+      <icon-guo name="envelope" size="80" color="#8B7340" />
+    </view>
+    <text class="state-text">{{t.emptyTip}}</text>
+    <view class="empty-write-btn" bindtap="goWrite">
+      <text class="empty-write-btn-text">{{t.writeLetter}}</text>
+    </view>
+  </view>
+
+  <!-- 信件缩略列表（v2.0：信封开合图标区分已读/未读） -->
+  <scroll-view class="letter-list" scroll-y wx:elif="{{pageState === 'loaded'}}">
+    <view class="list-inner">
+      <view
+        class="letter-preview-card {{item.isMine ? 'preview-sent' : 'preview-received'}}"
+        wx:for="{{letters}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="onLetterTap"
+      >
+        <!-- v2.0 信封缩略图标：未读=envelope（关闭），已读=envelope-open（打开） -->
+        <view class="preview-envelope">
+          <icon-guo name="{{item.unread ? 'envelope' : 'envelope-open'}}" size="48" color="{{item.unread ? '#C8A55B' : '#8B7340'}}" />
+        </view>
+        <!-- 缩略内容 -->
+        <view class="preview-body">
+          <view class="preview-header">
+            <view style="display:flex;align-items:center;">
+              <text class="preview-sender">{{item.isMine ? t.myself : (item.senderNickname || t.appName)}}</text>
+              <text class="vip-badge" wx:if="{{!item.isMine && item.senderIsVip}}">V</text>
+              <view class="preview-unread-dot" wx:if="{{item.unread}}"></view>
+            </view>
+            <text class="preview-date">{{item.lunarDate || item.timeText}}</text>
+          </view>
+          <view class="preview-content">
+            <text class="preview-content-text">{{item.previewText}}</text>
+          </view>
+        </view>
+        <!-- 展开箭头 -->
+        <view class="preview-arrow">
+          <icon-guo name="chevron-right" size="32" color="#8B7340" />
+        </view>
+      </view>
+      <view class="list-bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 完整信纸浮层（古朴浪漫信纸：宣纸底 + 横纹格子 + 四角金线 + 双线装裱） -->
+  <view class="full-letter-mask" wx:if="{{showFullLetter}}" bindtap="onCloseFullLetter">
+    <view class="full-letter-scroll" catchtap="">
+      <view class="full-letter-paper">
+        <!-- 装裱外层：双线边框模拟古卷装裱 -->
+        <view class="paper-mount-border"></view>
+
+        <!-- 四角金线装饰 -->
+        <view class="paper-corner paper-corner-tl" aria-hidden="true"></view>
+        <view class="paper-corner paper-corner-tr" aria-hidden="true"></view>
+        <view class="paper-corner paper-corner-bl" aria-hidden="true"></view>
+        <view class="paper-corner paper-corner-br" aria-hidden="true"></view>
+
+        <!-- 信纸内容 -->
+        <view class="paper-inner">
+          <!-- 信纸纹理层：横向格子线 + 淡墨晕染 -->
+          <view class="paper-texture"></view>
+
+          <!-- 抬头装饰：竖排"展信"二字（英文态隐藏，避免 LET/TER 逐字母竖排） -->
+          <view class="paper-vertical-title" aria-hidden="true" wx:if="{{lang !== 'en'}}">
+            <text class="vertical-char">{{t.vertical1}}</text>
+            <text class="vertical-char">{{t.vertical2}}</text>
+          </view>
+
+          <!-- 头部：寄件人 + 邮戳 -->
+          <view class="paper-header">
+            <view class="paper-sender-info">
+              <view class="paper-sender-avatar">
+                <text class="paper-avatar-char">{{fullLetter.avatarChar}}</text>
+              </view>
+              <text class="paper-sender-name">{{fullLetter.isMine ? t.myself : (fullLetter.senderNickname || t.appName)}}</text>
+              <text class="vip-badge" wx:if="{{fullLetter && !fullLetter.isMine && fullLetter.senderIsVip}}">V</text>
+            </view>
+            <view class="paper-postmark">
+              <view class="postmark-circle">
+                <text class="postmark-lunar" wx:if="{{fullLetter.lunarDate}}">{{fullLetter.lunarDate}}</text>
+                <text class="postmark-time">{{fullLetter.timeText}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 抬头双横线分隔（一粗一细，模拟信纸抬头） -->
+          <view class="paper-header-divider" aria-hidden="true">
+            <view class="header-line-thick"></view>
+            <view class="header-line-thin"></view>
+          </view>
+
+          <!-- 正文 -->
+          <view class="paper-body">
+            <text class="paper-body-text">{{fullLetter.content}}</text>
+          </view>
+
+          <!-- 落款分隔细金线 -->
+          <view class="paper-signoff-divider" aria-hidden="true"></view>
+
+          <!-- 落款 -->
+          <view class="paper-signoff">
+            <text class="signoff-salutation">{{t.salutation}}</text>
+            <text class="signoff-name">{{fullLetter.isMine ? t.myself : (fullLetter.senderNickname || t.appName)}}</text>
+            <text class="vip-badge" wx:if="{{fullLetter && !fullLetter.isMine && fullLetter.senderIsVip}}">V</text>
+            <text class="signoff-date" wx:if="{{fullLetter.lunarDate}}">{{fullLetter.lunarDate}}</text>
+          </view>
+        </view>
+
+        <!-- 举报小链接（左下角，仅收到的信件） -->
+        <view class="full-letter-report-link" wx:if="{{fullLetter && !fullLetter.isMine}}" catchtap="onReportLetter">
+          <text class="report-link-text">{{t.report}}</text>
+        </view>
+      </view>
+
+      <!-- 关闭按钮 -->
+      <view class="full-letter-close" bindtap="onCloseFullLetter">
+        <text class="close-icon">×</text>
+      </view>
+    </view>
+
+    <!-- 收信浮层底部回信按钮（艺术感性风格，与写信页一致） -->
+    <view class="full-letter-reply-bar" wx:if="{{fullLetter && !fullLetter.isMine}}">
+      <view class="report-link" catchtap="onReportLetter">
+        <text class="report-text">{{t.report}}</text>
+      </view>
+      <view class="send-btn" catchtap="onReplyFromLetter">
+        <text class="send-btn-text font-title">{{t.reply}}</text>
+        <view class="send-btn-line"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部3-tab导航 -->
+  <letter-tab-bar active="friends"></letter-tab-bar>
+</view>

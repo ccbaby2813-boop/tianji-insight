@@ -1,0 +1,16 @@
+<!-- components/match-card/match-card.wxml -->
+<view class="match-card match-pattern-{{matchClass}}" bindtap="onTap">
+  <!-- v2.0 装饰SVG纹样（按匹配等级） -->
+  <view class="match-decor">
+    <icon-guo wx:if="{{matchClass === 'tianzuo'}}" name="twin-lotus" size="80" color="rgba(82, 196, 26, 0.18)" />
+    <icon-guo wx:elif="{{matchClass === 'moqi'}}" name="sun-moon" size="80" color="rgba(24, 144, 255, 0.18)" />
+    <icon-guo wx:elif="{{matchClass === 'hubu'}}" name="yin-yang-fish" size="80" color="rgba(250, 140, 22, 0.18)" />
+    <icon-guo wx:else name="cloud-pattern" size="80" color="rgba(200, 165, 91, 0.15)" />
+  </view>
+  <view class="match-header">
+    <text class="match-name">{{item.relationship_name || '--'}}</text>
+    <view class="match-level {{matchClass}}">{{item.match_level || ''}}</view>
+  </view>
+  <text class="match-oneliner">{{item.one_liner || ''}}</text>
+  <text class="match-time">{{item.created_at || ''}}</text>
+</view>
