@@ -1,3 +1,13 @@
+## 2026-10-27 全量源码开源至 GitHub（PolyForm Noncommercial 1.0.0 + 商用联系授权）
+
+- **仓库地址**：https://github.com/ccbaby2813-boop/tianji-insight（public，默认分支 main，首个 commit `7b88a5a`，**608 个文件 / 约 56 MB**）。
+- **导出范围（白名单）**：`tianji-tuiyan-miniprogram-v10/`（Donut 小程序+App 共用代码）、`_backend_src/`（Node 后端）、`web/`（官网与静态页生成产物）、`docs/`（架构/拓扑/frontend/部署等文档），落在 `d:\MyCode\天机推演\open_source\tianji-insight\`。
+- **排除项（未推送）**：`node_modules` / `miniprogram_npm` / `.secrets` / `.venv` / `backup` / 所有 `.apk` `.aab` `.jks` `.keystore` `.p12` / `google-services.json` / `agconnect-services.json` / Play 服务账号 JSON / `_backend_src/scripts/`（内含服务器运维脚本）/ `qa_points_test.js` / `web/_*.py` 运维脚本 / `_verify_*.py`。
+- **脱敏**：服务器 IP → `YOUR_SERVER_HOST`、SSH 口令 → `YOUR_SSH_PASSWORD`、数据库 root 口令 → `YOUR_DB_PASSWORD`（共 6 个文件）；复扫无高危命中（仅 changelog 中出现 `client_secret_web.json` 文件名，无内容）。
+- **授权模式（双许可，source-available，非 OSI 开源）**：`LICENSE` = PolyForm Noncommercial License 1.0.0（Required Notice: Copyright 2026 北京无元数字科技有限公司），**个人学习/研究/非商业修改与分发免费**；`LICENSE-COMMERCIAL.md` = 商用（含 SaaS、企业内部业务、品牌/白标、付费分发）须书面授权，申请邮箱 `ccbaby2813@139.com`，**商标与品牌不随代码授权**。
+- **新增文件**：`README.md`（中英双语功能/结构/本地运行/密钥说明）、`SECURITY.md`（漏洞私下报告、禁生产跳过验签）、`.gitignore`、`_backend_src/.env.example`（按后端实际读取的 58 个环境变量键分组，值留空）。
+- **验证**：未认证 `git ls-remote` 通过（证明公开可读）；GitHub Trees API 回读 **608 个 blob**、禁用文件命中 **0**；根目录含 `LICENSE` / `LICENSE-COMMERCIAL.md` / `README.md` / `SECURITY.md` / `.gitignore` / `_backend_src/.env.example`。GitHub 侧边栏许可证识别为「Other」（PolyForm 不在 GitHub 自动识别列表内），以仓库内 LICENSE 全文为准。
+
 ## 2026-10-27 百度 sitemap 主动推送（定时任务）
 - **执行成功：HTTP 200，success=10，remain=0（当日配额用尽）**。一次运行即成功（无 505）：推送 10 条（yi-yuan-pi-pei.html / yushui 中英 / tianji/gua/ / sitemap.html / plum-blossom-real-time-ai.en / data-driven-seo-pages.en / birth-hexagram-personality.en / i-ching-compatibility.en / tianji/gua/?lang=en，priority 0.80/0.70）。
 - **进度文件已更新**：_baidu_pushed.txt 210 → 220 条；sitemap.xml 227 条，待推 7 条，剩余按每日配额 10 条由次日定时任务续推。
