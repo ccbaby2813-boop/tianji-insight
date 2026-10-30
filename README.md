@@ -1,7 +1,17 @@
 # 天机推演 · I Ching Insight
 
+**I Ching Insight — the I Ching / Yijing personality app: your birth date → your birth hexagram → one of 64 hexagram personality archetypes → 4,096 compatibility pairings.**
+
 > 以《易经》六十四卦为框架的**人格解读与关系匹配**应用：生日 → 本命卦 → 64 型人格 → 4096 组合盘。
 > Android（Google Play）· 微信小程序 · 官网 <https://claw-book.cn>
+
+<div align="center">
+
+[![Website](https://img.shields.io/badge/website-claw--book.cn-8B5E3C)](https://claw-book.cn)
+[![Google Play](https://img.shields.io/badge/Google%20Play-I%20Ching%20Insight-00C853)](https://play.google.com/store/apps/details?id=com.clawbook.tianji)
+[![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue)](./LICENSE)
+
+</div>
 
 这是一个 **source-available（源码可见）** 项目，不是 OSI 定义的开源项目。
 
@@ -110,7 +120,13 @@ Required Notice: Copyright 2026 北京无元数字科技有限公司 (https://cl
 
 # English Summary
 
-**I Ching Insight** turns the 64 hexagrams of the *I Ching* into a personality system: birth date → birth hexagram → one of 64 archetypes → 4,096 compatibility pairings. Android app (Google Play), WeChat Mini Program, and a static website.
+**I Ching Insight** turns the 64 hexagrams of the *I Ching* (*Yijing*) into a personality system: birth date → birth hexagram → one of 64 archetypes → 4,096 compatibility pairings. Android app (Google Play), WeChat Mini Program, and a static website.
+
+**What makes it different:** it uses the I Ching as a personality framework, not fortune-telling. Each of the 64 hexagrams maps to a detailed personality profile (strengths, blind spots, communication style); pair two people and you get a 4,096-combination compatibility reading.
+
+**Try it free on the web** (birth-hexagram calculator, hexagram personality test, I Ching compatibility tool): <https://claw-book.cn>
+
+**Get the Android app on Google Play**: [I Ching Insight: Personality](https://play.google.com/store/apps/details?id=com.clawbook.tianji)
 
 This repository is **source-available, not OSI open source**.
 
